@@ -1,0 +1,27 @@
+.tabs {
+  display: inline-block;
+  border-bottom: 3px solid #F37121;
+}
+
+.tabs button {
+  /* Text */
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  align-items: center;
+  text-align: center;
+  color: #1B1C1D;
+
+  /* Button */
+  width: 151px;
+  height: 40px;
+  background: #FFFFFF;
+  border-radius: 6px 6px 0 0;
+  border: none;
+}
+
+.tabs button:hover {
+  background-color: #F37121;
+}

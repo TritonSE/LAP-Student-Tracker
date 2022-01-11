@@ -14,3 +14,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --orange: #F37121;
+  --white: #FFFFFF;
+  --black: #000000;
+  --gray-darker-3: #1B1C1D;
+}

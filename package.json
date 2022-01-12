@@ -6,6 +6,7 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
+    "migrate": "node scripts/migrate.ts",
     "format": "prettier --write .",
     "lint-fix": "(eslint --fix --cache --report-unused-disable-directives . || true) && prettier --write .",
     "lint-check": "eslint --cache --report-unused-disable-directives . && prettier --check .",

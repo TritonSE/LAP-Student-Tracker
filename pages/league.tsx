@@ -1,6 +1,10 @@
 import type { NextPage } from 'next';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/League.module.css';
+import Classes from '../components/classes';
+import Students from '../components/students';
+import Staff from '../components/staff';
+import { render } from '@testing-library/react';
 
 const allTabs = ['Classes', 'Students', 'Staff'] as const;
 type Tab = (typeof allTabs)[number];
@@ -11,7 +15,7 @@ const League: NextPage = () => {
 
   useEffect(
     () => {
-      // eventually api call to get classes/students/staff...
+      // Eventually api call to get classes/students/staff...
       setContent({
         'Classes': ['Class 1', 'Class 2'],
         'Students': ['Student 1', 'Student 2'],
@@ -20,9 +24,16 @@ const League: NextPage = () => {
     },
     []);
 
+  // Renders specific component based on state
+  const renderComponent = (display: String) => {
+    if (display == 'Classes') return <Classes classes={content?.Classes}/>
+    if (display == 'Students') return <Students students={content?.Students}/>
+    if (display == 'Staff') return <Staff staff={content?.Staff}/>
+  }
+
   return (
     <>
-      <div className={styles.tabContainer}>
+      <div className={styles.tabsContainer}>
         {/* Render Classes, Students, Staff tabs */}
         <div className={styles.tabs}>
           {allTabs.map((tabName) => {
@@ -37,8 +48,7 @@ const League: NextPage = () => {
         </div>
       </div>
 
-      <h1>{display}</h1>
-      {content ? content[display].map((item) => <li>{item}</li>) : null}
+      {renderComponent(display)}
     </>
 
   )

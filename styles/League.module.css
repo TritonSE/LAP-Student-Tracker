@@ -1,3 +1,7 @@
+.tabsContainer {
+  margin: none;
+}
+
 .tabs {
   display: inline-block;
   border-bottom: 3px solid #F37121;

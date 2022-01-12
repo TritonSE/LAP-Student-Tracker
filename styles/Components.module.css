@@ -1,0 +1,31 @@
+.compContainer {
+  background: #F6F6FA;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 85px;
+  padding-right: 69px;
+}
+
+.compTitle {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 40px;
+  color: #000000;
+  float: left;
+}
+
+.searchBar {
+  float: right;
+  background: #FFFFFF;
+  border: 1px solid #85888C;
+  box-sizing: border-box;
+  border-radius: 8px;
+  width: 263px;
+  height: 30px;
+}

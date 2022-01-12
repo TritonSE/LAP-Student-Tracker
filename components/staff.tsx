@@ -11,6 +11,11 @@ const Staff: FunctionComponent<Props> = ({ staff }) => (
       <h1 className={styles.compTitle}>Staff</h1>
       <input type="text" placeholder="Search staff" className={styles.searchBar}></input>
     </div>
+    <div className={styles.compList}>
+      <ul>
+        {staff?.map((c) => <li className={styles.listElem} key="{c}">{c}</li>)}
+      </ul>
+    </div>
   </div>
 )
 

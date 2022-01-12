@@ -1,13 +1,13 @@
 .compContainer {
   background: #F6F6FA;
+  padding-left: 85px;
+  padding-right: 69px;
 }
 
 .topBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 85px;
-  padding-right: 69px;
 }
 
 .compTitle {
@@ -28,4 +28,31 @@
   border-radius: 8px;
   width: 263px;
   height: 30px;
+}
+
+.compList ul {
+  padding-left: 0px;
+}
+
+.listElem {
+  background: #FFFFFF;
+  border: 1px solid #E1E2E4;
+  box-sizing: border-box;
+  border-radius: 8px;
+  list-style-type: none;
+  width: 897px;
+  height: 55px;
+  padding: 24px 17px 24px 17px;
+
+  /* Text */
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.1px;
+  color: #000000;
+  margin-bottom: 25px;
 }

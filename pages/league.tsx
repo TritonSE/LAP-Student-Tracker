@@ -38,7 +38,7 @@ const League: NextPage = () => {
         <div className={styles.tabs}>
           {allTabs.map((tabName) => {
             return (
-              <button
+              <button key="{tabName}"
                 className={display === tabName ? styles.activeTab : styles.inactiveTab}
                 onClick={() => setDisplay(tabName)}
               >

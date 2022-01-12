@@ -4,7 +4,7 @@
 
 .tabs {
   display: inline-block;
-  border-bottom: 3px solid #F37121;
+  border-bottom: 3px solid var(--orange);
 }
 
 .tabs button {
@@ -27,11 +27,11 @@
 }
 
 .activeTab {
-  background-color: #F37121;
-  color: #FFFFFF;
+  background-color: var(--orange);
+  color: var(--white);
 }
 
 .inactiveTab {
-  background-color: #FFFFFF;
-  color: #1B1C1D;
+  background-color: var(--white);
+  color: var(--gray-darker-3);
 }

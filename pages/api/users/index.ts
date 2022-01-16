@@ -13,14 +13,6 @@
 
 // import { object, string, TypeOf } from "yup"; 
 
-// export const userScheme = object({
-//     id: string().ensure().required(),
-//     firstName: string().ensure().required(),
-//     lastName: string().ensure().required(),
-//     email: string().ensure().required(),
-//     role: string().ensure().required(), // parent, volunteer, student, admin, teacher
-//     phoneNumber: string().optional(),    
-// })
 
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createUser } from "../../../lib/database/users";
@@ -36,9 +28,6 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
   if (req.method == "POST") {
     let newUser;
     try {
-      // validate the incoming request schema
-      // we will be using yup to validate JSON being sent to the API
-      // relevent docs: https://github.com/jquense/yup
       newUser = await requestUserSchema.validate(req.body);
     } catch (e) {
       console.log(e);
@@ -47,11 +36,12 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     try {
       // call the function that actually inserts the data into the database
       const result = await createUser(
+        newUser.first_name,
+        newUser.last_name,
         newUser.email,
         newUser.role,
-        newUser.firstName,
-        newUser.lastName,
-        newUser.phone
+        newUser.address,
+        newUser.phone_number,
       );
       return res.status(201).json(result);
     } catch (e) {

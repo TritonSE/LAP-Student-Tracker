@@ -8,21 +8,20 @@ import { string } from "yup/lib/locale";
  *
  */
 const createUser = async (
-    id:string,
-  first_name: string,
-  last_name: string,
-  email: string,
-  role: string,
-  phone_number?: string || null,
-  address:string,
+    first_name: string,
+    last_name: string,
+    email: string,
+    role: string,
+    address:string,
+    phone_number?: string,
 ): Promise<User> => {
   // basic query syntax. We will be using pg to work with postgres. Read more
   // it here: https://node-postgres.com/
   const query = {
     text:
-      "INSERT INTO users(email, role, first_name, last_name, phone) VALUES($1, $2, $3, $4, $5)" +
+      "INSERT INTO users(email, role, first_name, last_name, phone_number, address) VALUES($1, $2, $3, $4, $5, $6)" +
       "RETURNING id, email, role, first_name, last_name, phone",
-    values: [email, role, first_name, last_name, phone],
+    values: [email, role, first_name, last_name, phone_number, address],
   };
 
   const res = await client.query(query);

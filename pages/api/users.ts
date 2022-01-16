@@ -1,5 +1,3 @@
-
-
 // POST new user to database
 
 // GET user based on id
@@ -8,7 +6,9 @@
 
 // GET list of all users with a certain role
 
-// PUT new user information given an id
+// PATCH new user information given an id
+
+// GET all staff
 
 
 // import { object, string, TypeOf } from "yup"; 

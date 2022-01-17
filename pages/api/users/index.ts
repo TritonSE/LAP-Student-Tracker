@@ -36,6 +36,7 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     try {
       // call the function that actually inserts the data into the database
       const result = await createUser(
+        newUser.id,
         newUser.first_name,
         newUser.last_name,
         newUser.email,

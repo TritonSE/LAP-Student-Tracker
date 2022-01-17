@@ -1,5 +1,6 @@
 import { object, string, TypeOf } from "yup";
 export const requestUserSchema = object({
+    id: string().ensure().required(),
     first_name: string().ensure().required(),
     last_name: string().ensure().required(),
     email: string().ensure().required(),

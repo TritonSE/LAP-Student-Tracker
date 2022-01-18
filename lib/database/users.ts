@@ -42,4 +42,46 @@ const createUser = async (
   return user;
 };
 
-export { createUser };
+const findUser = async (
+  id: string,
+): Promise<User> => {
+
+  const query = {
+    text: 
+      "SELECT id, name, email, role, first_name, last_name, phone_number, address FROM users WHERE id = VALUE($1)", 
+    values: [id]
+  };
+
+  const res = await client.query(query);
+
+  console.log(res);
+  let user: User;
+
+  try {
+    user = await userSchema.validate(res);
+  }
+
+  catch {
+    throw Error("Error on return from database");
+  }
+
+  return user;
+};
+
+const findStaff = async (): Promise<User[]> => {
+  const query = {
+    text: 
+      "SELECT id, name, email, role, first_name, last_name, phone_number, address FROM users WHERE role = Teacher OR role = Admin",
+  };
+
+  const res = await client.query(query);
+
+  console.log(res);
+
+  let user: User[] = [];
+
+
+  return user;
+}
+
+export { createUser, findUser };

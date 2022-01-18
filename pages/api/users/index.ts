@@ -24,7 +24,8 @@ import { requestUserSchema, RequestUser } from "../../../models/users";
  * https://nextjs.org/docs/api-routes/response-helpers
  *
  */
-export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+
   if (req.method == "POST") {
     let newUser;
     try {
@@ -48,7 +49,11 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     } catch (e) {
       res.status(500).json({ error: "Internal Server Error" });
     }
-  } else {
+  } 
+
+  else {
     res.status(405).json({ error: "Method not allowed" });
   }
 };
+
+export default userHandler;

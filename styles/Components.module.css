@@ -2,12 +2,9 @@
   background: #F6F6FA;
   padding-left: 85px;
   padding-right: 69px;
-}
-
-.topBar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  padding-top: 74px;
 }
 
 .compTitle {
@@ -16,26 +13,37 @@
   font-weight: 500;
   font-size: 32px;
   line-height: 40px;
-  color: #000000;
+  color: var(--black);
   float: left;
+  margin-bottom: 32px;
+  margin-top: 0px;
 }
 
 .searchBar {
   float: right;
-  background: #FFFFFF;
+  background: var(--white);;
   border: 1px solid #85888C;
   box-sizing: border-box;
   border-radius: 8px;
   width: 263px;
   height: 30px;
+  margin-bottom: 32px;
+}
+
+.rightContainer {
+  float: left;
 }
 
 .compList ul {
   padding-left: 0px;
+  overflow: scroll;
+  overflow-x: hidden;
+  width: 922px;
+  height: 600px;
 }
 
 .listElem {
-  background: #FFFFFF;
+  background: var(--white);
   border: 1px solid #E1E2E4;
   box-sizing: border-box;
   border-radius: 8px;
@@ -53,6 +61,78 @@
   display: flex;
   align-items: center;
   letter-spacing: 0.1px;
-  color: #000000;
+  color: var(--black);
   margin-bottom: 25px;
+}
+
+.orderTitle {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--black);
+  margin-bottom: 8px;
+}
+
+.orderElem {
+  background: #FFFFFF;
+  border: 1px solid #E1E2E4;
+  box-sizing: border-box;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 16px;
+  padding-left: 16px;
+  margin-bottom: 8px;
+}
+
+.orderElem p {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.filterTitle {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--black);
+  margin-top: 14px;
+  margin-bottom: 8px;
+}
+
+.filterList {
+  background: #FFFFFF;
+  border: 1px solid #E1E2E4;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding-right: 16px;
+  padding-left: 16px; 
+}
+
+.filterList li {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterList li p {
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.1px;
+  color: #000000;
+}
+
+.scroll::-webkit-scrollbar {
+  background: transparent;
 }

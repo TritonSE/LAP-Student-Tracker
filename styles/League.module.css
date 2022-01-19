@@ -28,7 +28,7 @@
 
 .activeTab {
   background-color: var(--orange);
-  color: var(--white);
+  color: var(--gray-darker-3);
 }
 
 .inactiveTab {

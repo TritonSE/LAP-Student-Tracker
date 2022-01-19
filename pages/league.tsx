@@ -17,9 +17,9 @@ const League: NextPage = () => {
     () => {
       // Eventually api call to get classes/students/staff...
       setContent({
-        'Classes': ['Class 1', 'Class 2'],
-        'Students': ['Student 1', 'Student 2'],
-        'Staff': ['Staff 1', 'Staff 2'],
+        'Classes': ['Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10',],
+        'Students': ['Student 1', 'Student 2', 'Student 3', 'Student 4', 'Student 5', 'Student 6', 'Student 7', 'Student 8', 'Student 9', 'Student 10'],
+        'Staff': ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5', 'Staff 6', 'Staff 7', 'Staff 8', 'Staff 9', 'Staff 10'],
       })
     },
     []);

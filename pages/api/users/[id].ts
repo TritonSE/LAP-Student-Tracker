@@ -1,21 +1,5 @@
-// POST new user to database
-
-// GET user based on id
-
-// GET list of all users
-
-// GET list of all users with a certain role
-
-// PATCH new user information given an id
-
-// GET all staff
-
-
-// import { object, string, TypeOf } from "yup"; 
-
-
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { createUser } from "../../../lib/database/users";
+import { createUser, updateUser } from "../../../lib/database/users";
 import { requestUserSchema, RequestUser, User } from "../../../models/users";
 
 /**
@@ -25,19 +9,19 @@ import { requestUserSchema, RequestUser, User } from "../../../models/users";
  *
  */
 export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-
-  if (req.method == "POST") {
+    const {id} = req.query;
+  if (req.method == "PATCH") {
     let newUser;
     try {
-      newUser = await requestUserSchema.validate(req.body); 
+      newUser = await requestUserSchema.validate(req.body);
     } catch (e) {
       console.log(e);
       return res.status(400).json({ error: "Fields are not correctly entered" });
     }
     try {
       // call the function that actually inserts the data into the database
-      const result = await createUser(
-        newUser.id,
+      const result = await updateUser(
+        id,
         newUser.first_name,
         newUser.last_name,
         newUser.email,
@@ -49,5 +33,8 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     } catch (e) {
       res.status(500).json({ error: "Internal Server Error" });
     }
-  } 
+  } else {
+    res.status(405).json({ error: "Method not allowed" });
+  }
+
 };

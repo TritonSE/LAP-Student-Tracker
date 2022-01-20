@@ -21,7 +21,7 @@ const createUser = async (
   const query = {
     text:
       "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address) VALUES($1, $2, $3, $4, $5, $6, $7)" +
-      "RETURNING id, email, role, first_name, last_name, phone",
+      "RETURNING id, first_name, last_name, email, role, phone_number, address",
     values: [id, email, role, first_name, last_name, phone_number, address],
   };
 
@@ -46,19 +46,20 @@ const findUser = async (
   id: string,
 ): Promise<User> => {
 
+  console.log("here")
   const query = {
     text: 
-      "SELECT id, name, email, role, first_name, last_name, phone_number, address FROM users WHERE id = VALUE($1)", 
+      "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1", 
     values: [id]
   };
 
   const res = await client.query(query);
-
-  console.log(res);
+  
+  console.log(res.rows[0]);
   let user: User;
-
+  // console.log("here")
   try {
-    user = await userSchema.validate(res);
+    user = await userSchema.validate(res.rows[0]);
   }
 
   catch {
@@ -71,7 +72,7 @@ const findUser = async (
 const findStaff = async (): Promise<User[]> => {
   const query = {
     text: 
-      "SELECT id, name, email, role, first_name, last_name, phone_number, address FROM users WHERE role = Teacher OR role = Admin",
+      "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE role = 'Teacher' OR role = 'Admin'",
   };
 
   const res = await client.query(query);

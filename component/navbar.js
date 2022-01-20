@@ -8,17 +8,19 @@ export default function Navbar({children}){
           <ul className={styles.navmenu}>
             <li className={styles.navitem}>
                 <a 
-                href= "league.tsx"
+                href= "home"
                 className={styles.navlink}>Home</a>
             </li>
             <li className={styles.navitem}>
-              
-                <a className={styles.navlink}>The League</a>
+                <a 
+                href= "league"
+                className={styles.navlink}>The League</a>
        
             </li>
             <li className={styles.navitem}>
-           
-                <a className={styles.navlink}>Profile</a>
+                <a 
+                href= "profile"
+                className={styles.navlink}>Profile</a>
       
             </li>
           </ul>

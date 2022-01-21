@@ -8,13 +8,13 @@ import { string, array, TypeOf } from "yup";
  *
  */
 const createUser = async (
-    id: string, 
-    first_name: string,
-    last_name: string,
-    email: string,
-    role: string,
-    address:string,
-    phone_number?: string,
+  id: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+  role: string,
+  address: string,
+  phone_number?: string
 ): Promise<User> => {
   // basic query syntax. We will be using pg to work with postgres. Read more
   // it here: https://node-postgres.com/
@@ -43,13 +43,13 @@ const createUser = async (
 };
 
 const updateUser = async (
-    id: string, 
-    first_name: string,
-    last_name: string,
-    email: string,
-    role: string,
-    address:string,
-    phone_number?: string,
+  id: string,
+  first_name: string,
+  last_name: string,
+  email: string,
+  role: string,
+  address: string,
+  phone_number?: string
 ): Promise<User> => {
   // basic query syntax. We will be using pg to work with postgres. Read more
   // it here: https://node-postgres.com/
@@ -77,28 +77,21 @@ const updateUser = async (
   return user;
 };
 
-
-const findUser = async (
-  id: string,
-): Promise<User> => {
-
-  console.log("here")
+const findUser = async (id: string): Promise<User> => {
+  console.log("here");
   const query = {
-    text: 
-      "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1", 
-    values: [id]
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1",
+    values: [id],
   };
 
   const res = await client.query(query);
-  
+
   console.log(res.rows[0]);
   let user: User;
   // console.log("here")
   try {
     user = await userSchema.validate(res.rows[0]);
-  }
-
-  catch {
+  } catch {
     throw Error("Error on return from database");
   }
 
@@ -107,8 +100,7 @@ const findUser = async (
 
 const findStaff = async (): Promise<User[]> => {
   const query = {
-    text: 
-      "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE role = 'Teacher' OR role = 'Admin'",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE role = 'Teacher' OR role = 'Admin'",
   };
 
   const res = await client.query(query);
@@ -119,13 +111,11 @@ const findStaff = async (): Promise<User[]> => {
 
   try {
     user = await userArraySchema.validate(res.rows);
-  }
-
-  catch(e) {
+  } catch (e) {
     throw Error("Error on return from database");
   }
 
   return user;
-}
+};
 
 export { createUser, findUser, updateUser, findStaff };

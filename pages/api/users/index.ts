@@ -10,14 +10,11 @@
 
 // GET all staff
 
-
-// import { object, string, TypeOf } from "yup"; 
-
+// import { object, string, TypeOf } from "yup";
 
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createUser } from "../../../lib/database/users";
 import { userSchema } from "../../../models/users";
-
 
 /**
  * This handles a POST request to /api/users. In Next.js, the file names are what
@@ -26,11 +23,10 @@ import { userSchema } from "../../../models/users";
  *
  */
 export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-
   if (req.method == "POST") {
     let newUser;
     try {
-      newUser = await userSchema.validate(req.body); 
+      newUser = await userSchema.validate(req.body);
     } catch (e) {
       console.log(e);
       return res.status(400).json({ error: "Fields are not correctly entered" });
@@ -44,16 +40,14 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         newUser.email,
         newUser.role,
         newUser.address,
-        newUser.phone_number,
+        newUser.phone_number
       );
       return res.status(201).json({ body: result });
     } catch (e) {
-      console.log(e)
+      console.log(e);
       res.status(500).json({ error: "Internal Server Error" });
     }
-  } 
-
-  else {
+  } else {
     res.status(405).json({ error: "Method not allowed" });
   }
 };

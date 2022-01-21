@@ -3,7 +3,6 @@ import { updateUser } from "../../../lib/database/users";
 import { userSchema } from "../../../models/users";
 import { findUser } from "../../../lib/database/users";
 
-
 /**
  * This handles a POST request to /api/users. In Next.js, the file names are what
  * denotes the route. Read more about requests within Next here:
@@ -11,7 +10,7 @@ import { findUser } from "../../../lib/database/users";
  *
  */
 export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const {id} = req.query;
+  const { id } = req.query;
   if (req.method == "PATCH") {
     let newUser;
     try {
@@ -29,30 +28,24 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         newUser.email,
         newUser.role,
         newUser.address,
-        newUser.phone_number,
+        newUser.phone_number
       );
       return res.status(201).json(result);
     } catch (e) {
       res.status(500).json({ error: "Internal Server Error" });
     }
-  } 
-
-  else if(req.method == "GET"){
-     
-    let identifier = req.query['id'] as string;
+  } else if (req.method == "GET") {
+    let identifier = req.query["id"] as string;
 
     try {
-        const user = await findUser(identifier);
-        res.status(200).json(user)
+      const user = await findUser(identifier);
+      res.status(200).json(user);
+    } catch (e) {
+      res.status(500).json({ error: "Internal Server Error" });
     }
-    catch (e) {
-        res.status(500).json({ error: "Internal Server Error" })
-    }        
-    }   
-  else {
+  } else {
     res.status(405).json({ error: "Method not allowed" });
   }
-
 };
 
 export default userHandler;

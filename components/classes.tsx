@@ -33,7 +33,7 @@ const Classes: FunctionComponent<Props> = ({ classes }) => (
       <h2 className={styles.filterTitle}>Filter By:</h2>
       <ul className={styles.filterList}>
         {filters.map((l) => 
-          <li className={styles.filterElem} key={l}>
+          <li key={l}>
             <p>{l}</p>
             <input type="checkbox"></input>
           </li>)

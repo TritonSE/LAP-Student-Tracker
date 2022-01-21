@@ -3,14 +3,14 @@
 }
 
 .tabs {
-  display: inline-block;
+  display: inline-flex;
+  width: 454px;
   border-bottom: 3px solid var(--orange);
 }
 
 .tabs button {
   /* Text */
   font-family: Inter;
-  color: var(--black);
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -29,8 +29,23 @@
 
 .activeTab {
   background-color: var(--orange);
+  color: var(--black);
+  margin: 0px -1px;
+  z-index: 1;
 }
 
 .inactiveTab {
   background-color: var(--white);
+  color: var(--gray-1);
+}
+
+.tabWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.verticalLine {
+  border-left: 1px solid #85888C;
+  height: 25px;
+  z-index: 0;
 }

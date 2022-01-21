@@ -33,13 +33,13 @@ const League: NextPage = () => {
     address: '123',
   }
   const testClass: Class = {
-      id: 'class_id',
-      name: 'CSE 123',
-      level: 3,
-      recurrence: [1,2,3],
-      timeStart: "13:00",
-      timeEnd: "14:00",
-      teachers: [testStaff]
+    id: 'class_id',
+    name: 'CSE 123',
+    level: 3,
+    recurrence: [1, 2, 3],
+    timeStart: "13:00",
+    timeEnd: "14:00",
+    teachers: [testStaff]
   }
   const testStudent: Student = {
     id: 'student_id',
@@ -50,9 +50,10 @@ const League: NextPage = () => {
     phone_number: '(123) 456-7890',
     address: '123',
     level: 3,
+    classes: ['CSE 123'],
   }
   const testStaffArray: User[] = Array(5).fill(testStaff);
-  const testClassArray: Class[] = Array(5).fill(testClass);
+  const testClassArray: Class[] = Array(25).fill(testClass);
   const testStudentArray: Student[] = Array(5).fill(testStudent);
   // end dummy data
 
@@ -70,9 +71,9 @@ const League: NextPage = () => {
 
   // Renders specific content component based on tab state
   const renderComponent = (display: String) => {
-    if (display == 'Classes') return <Classes classes={content?.Classes}/>
-    if (display == 'Students') return <Students students={content?.Students}/>
-    if (display == 'Staff') return <Staff staff={content?.Staff}/>
+    if (display == 'Classes') return <Classes classes={content?.Classes} />
+    if (display == 'Students') return <Students students={content?.Students} />
+    if (display == 'Staff') return <Staff staff={content?.Staff} />
   }
 
   return (
@@ -81,14 +82,20 @@ const League: NextPage = () => {
 
         {/* Render Classes, Students, Staff tabs */}
         <div className={styles.tabs}>
-          {allTabs.map((tabName) => {
+          {allTabs.map((tabName, idx) => {
             return (
-              <button key={tabName}
-                className={display === tabName ? styles.activeTab : styles.inactiveTab}
-                onClick={() => setDisplay(tabName)}
-              >
-                {tabName}
-              </button>)
+              <div className={styles.tabWrapper}>
+                <button key={tabName}
+                  className={display === tabName ? styles.activeTab : styles.inactiveTab}
+                  onClick={() => setDisplay(tabName)}
+                >
+                  {tabName}
+                </button>
+                {idx !== allTabs.length - 1 ?
+                  <div className={styles.verticalLine} /> : null
+                }
+              </div>
+            )
           })}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { object, string, number, TypeOf } from 'yup';
+import { object, string, number, array, TypeOf } from 'yup';
 
 export const requestUserSchema = object({
     id: string().ensure().required(),
@@ -26,6 +26,7 @@ export type User = TypeOf<typeof userSchema>;
 const studentSchema = userSchema.concat(
   object({
     level: number().required(),
+    classes: array().ensure().required().of(string()),
 }))
 
 export type Student = TypeOf<typeof studentSchema>;

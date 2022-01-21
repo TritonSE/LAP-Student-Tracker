@@ -20,14 +20,21 @@
 }
 
 .searchBar {
+  font-family: Inter;
+  font-size: 15px;
+  padding: 15px;
   float: right;
   background: var(--white);;
   border: 1px solid #85888C;
   box-sizing: border-box;
   border-radius: 8px;
   width: 263px;
-  height: 30px;
+  height: 40px;
   margin-bottom: 32px;
+}
+
+.leftContainer {
+  flex: 1;
 }
 
 .rightContainer {
@@ -36,9 +43,10 @@
 
 .compList ul {
   padding-left: 0px;
+  padding-right: 95px;
   overflow: scroll;
   overflow-x: hidden;
-  width: 922px;
+  width: 100%;
   height: 600px;
 }
 
@@ -50,7 +58,7 @@
   justify-content: space-between;
   border-radius: 8px;
   list-style-type: none;
-  width: 897px;
+  width: 100%;
   height: 55px;
   padding: 24px 17px 24px 17px;
 
@@ -105,7 +113,7 @@
   font-size: 24px;
   line-height: 32px;
   color: var(--black);
-  margin-top: 14px;
+  margin-top: 30px;
   margin-bottom: 8px;
 }
 

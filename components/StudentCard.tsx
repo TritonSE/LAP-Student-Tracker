@@ -13,7 +13,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ student: studentObj }) => {
         <div>
           {['Level ' + studentObj.level,
           '•',
-          studentObj.email].join(' ')}
+          studentObj.classes[0]].join(' ')}
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
 import { client } from "../db";
-import { User, userSchema, updateUserSchema } from "../../models/users";
-import { string } from "yup/lib/locale";
+import { User, userSchema } from "../../models/users";
+import { string, array, TypeOf } from "yup";
 
 /**
  * Creates a user and enters it into the database
@@ -21,7 +21,7 @@ const createUser = async (
   const query = {
     text:
       "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7)" +
-      "RETURNING id, email, role, first_name, last_name, phone",
+      "RETURNING  id, first_name, last_name, email, role, phone_number, address",
     values: [id, first_name, last_name, email, role, address, phone_number],
   };
 
@@ -68,7 +68,7 @@ const updateUser = async (
   // validate if the schema returned conforms to the types we have set
   // We validate with Yup (document: https://github.com/jquense/yup)
   try {
-    user = await updateUserSchema.validate(res.rows[0]);
+    user = await userSchema.validate(res.rows[0]);
   } catch {
     throw Error("Error on return from database");
   }
@@ -113,10 +113,17 @@ const findStaff = async (): Promise<User[]> => {
 
   const res = await client.query(query);
 
-  console.log(res);
+  let userArraySchema = array(userSchema).defined();
 
-  let user: User[] = [];
+  let user: TypeOf<typeof userArraySchema>;
 
+  try {
+    user = await userArraySchema.validate(res.rows);
+  }
+
+  catch(e) {
+    throw Error("Error on return from database");
+  }
 
   return user;
 }

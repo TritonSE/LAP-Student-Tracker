@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { createUser, updateUser } from "../../../lib/database/users";
-import { requestUserSchema, RequestUser, User } from "../../../models/users";
+import { updateUser } from "../../../lib/database/users";
+import { userSchema } from "../../../models/users";
 import { findUser } from "../../../lib/database/users";
 
 
@@ -15,7 +15,7 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
   if (req.method == "PATCH") {
     let newUser;
     try {
-      newUser = await requestUserSchema.validate(req.body);
+      newUser = await userSchema.validate(req.body);
     } catch (e) {
       console.log(e);
       return res.status(400).json({ error: "Fields are not correctly entered" });
@@ -36,18 +36,17 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       res.status(500).json({ error: "Internal Server Error" });
     }
   } 
-  else if(req.method == "GET"){
 
-        
+  else if(req.method == "GET"){
+     
     let identifier = req.query['id'] as string;
 
     try {
         const user = await findUser(identifier);
-        res.status(200).json({ body: user})
+        res.status(200).json(user)
     }
     catch (e) {
-        console.log(e);
-        res.status(500).json({ error: "Database failure" })
+        res.status(500).json({ error: "Internal Server Error" })
     }        
     }   
   else {

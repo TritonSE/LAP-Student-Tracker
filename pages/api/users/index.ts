@@ -27,6 +27,7 @@ import { requestUserSchema, RequestUser, User } from "../../../models/users";
 export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method == "POST") {
+    // res.status(200).json({ body: "success" })
     let newUser;
     try {
       newUser = await requestUserSchema.validate(req.body); 
@@ -34,6 +35,8 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       console.log(e);
       return res.status(400).json({ error: "Fields are not correctly entered" });
     }
+
+    console.log("here");
     try {
       // call the function that actually inserts the data into the database
       const result = await createUser(
@@ -47,7 +50,14 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       );
       return res.status(201).json(result);
     } catch (e) {
+      console.log(e)
       res.status(500).json({ error: "Internal Server Error" });
     }
   } 
+
+  else {
+    res.status(405).json({ error: "Method not allowed" });
+  }
 };
+
+export default userHandler;

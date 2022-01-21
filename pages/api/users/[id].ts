@@ -1,6 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createUser, updateUser } from "../../../lib/database/users";
 import { requestUserSchema, RequestUser, User } from "../../../models/users";
+import { findUser } from "../../../lib/database/users";
+
 
 /**
  * This handles a POST request to /api/users. In Next.js, the file names are what
@@ -33,8 +35,25 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     } catch (e) {
       res.status(500).json({ error: "Internal Server Error" });
     }
-  } else {
+  } 
+  else if(req.method == "GET"){
+
+        
+    let identifier = req.query['id'] as string;
+
+    try {
+        const user = await findUser(identifier);
+        res.status(200).json({ body: user})
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).json({ error: "Database failure" })
+    }        
+    }   
+  else {
     res.status(405).json({ error: "Method not allowed" });
   }
 
 };
+
+export default userHandler;

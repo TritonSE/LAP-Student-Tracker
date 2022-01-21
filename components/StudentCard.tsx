@@ -1,5 +1,5 @@
-import { Student } from '../models/users';
-import styles from '../styles/Components.module.css';
+import { Student } from "../models/users";
+import styles from "../styles/Components.module.css";
 
 type StudentCardProps = { student: Student };
 
@@ -8,17 +8,12 @@ const StudentCard: React.FC<StudentCardProps> = ({ student: studentObj }) => {
     <>
       <div className={styles.listElem}>
         <div>
-          <p>{studentObj.first_name + ' ' + studentObj.last_name}</p>
+          <p>{studentObj.first_name + " " + studentObj.last_name}</p>
         </div>
-        <div>
-          {['Level ' + studentObj.level,
-          '•',
-          studentObj.classes[0]].join(' ')}
-        </div>
+        <div>{["Level " + studentObj.level, "•", studentObj.classes[0]].join(" ")}</div>
       </div>
     </>
-
-  )
-}
+  );
+};
 
 export default StudentCard;

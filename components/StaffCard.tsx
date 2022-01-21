@@ -1,5 +1,5 @@
-import { User } from '../models/users';
-import styles from '../styles/Components.module.css';
+import { User } from "../models/users";
+import styles from "../styles/Components.module.css";
 
 type StaffCardProps = { staff: User };
 
@@ -8,17 +8,12 @@ const StaffCard: React.FC<StaffCardProps> = ({ staff: staffObj }) => {
     <>
       <div className={styles.listElem}>
         <div>
-          <p>{staffObj.first_name + ' ' + staffObj.last_name}</p>
+          <p>{staffObj.first_name + " " + staffObj.last_name}</p>
         </div>
-        <div>
-          {[staffObj.phone_number,
-          '•',
-          staffObj.email].join(' ')}
-        </div>
+        <div>{[staffObj.phone_number, "•", staffObj.email].join(" ")}</div>
       </div>
     </>
-
-  )
-}
+  );
+};
 
 export default StaffCard;

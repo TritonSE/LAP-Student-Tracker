@@ -1,13 +1,23 @@
-import React, { FunctionComponent } from 'react';
-import { Class } from '../models/classes';
-import ClassCard from '../components/ClassCard';
-import styles from '../styles/Components.module.css';
+import React, { FunctionComponent } from "react";
+import { Class } from "../models/classes";
+import ClassCard from "../components/ClassCard";
+import styles from "../styles/Components.module.css";
 
 type Props = {
   classes: Class[] | undefined;
-}
+};
 
-const filters =  ["Level 0", "Level 1", "Level 2", "Level 3", "Level 4", "Level 5", "Level 6", "Level 7", "Level 8"];
+const filters = [
+  "Level 0",
+  "Level 1",
+  "Level 2",
+  "Level 3",
+  "Level 4",
+  "Level 5",
+  "Level 6",
+  "Level 7",
+  "Level 8",
+];
 
 const Classes: FunctionComponent<Props> = ({ classes }) => (
   <div className={styles.compContainer}>
@@ -15,7 +25,9 @@ const Classes: FunctionComponent<Props> = ({ classes }) => (
       <h1 className={styles.compTitle}>Classes</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
-          {classes?.map((c) => <ClassCard key={c.id} class={c} />)}
+          {classes?.map((c) => (
+            <ClassCard key={c.id} class={c} />
+          ))}
         </ul>
       </div>
     </div>
@@ -32,15 +44,15 @@ const Classes: FunctionComponent<Props> = ({ classes }) => (
       </div>
       <h2 className={styles.filterTitle}>Filter By:</h2>
       <ul className={styles.filterList}>
-        {filters.map((l) => 
+        {filters.map((l) => (
           <li key={l}>
             <p>{l}</p>
             <input type="checkbox"></input>
-          </li>)
-        }
+          </li>
+        ))}
       </ul>
     </div>
   </div>
-)
+);
 
 export default Classes;

@@ -1,5 +1,5 @@
 .compContainer {
-  background: #F6F6FA;
+  background: #f6f6fa;
   padding-left: 85px;
   padding-right: 69px;
   display: flex;
@@ -24,8 +24,8 @@
   font-size: 15px;
   padding: 15px;
   float: right;
-  background: var(--white);;
-  border: 1px solid #85888C;
+  background: var(--white);
+  border: 1px solid #85888c;
   box-sizing: border-box;
   border-radius: 8px;
   width: 263px;
@@ -52,7 +52,7 @@
 
 .listElem {
   background: var(--white);
-  border: 1px solid #E1E2E4;
+  border: 1px solid #e1e2e4;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -86,8 +86,8 @@
 }
 
 .orderElem {
-  background: #FFFFFF;
-  border: 1px solid #E1E2E4;
+  background: #ffffff;
+  border: 1px solid #e1e2e4;
   box-sizing: border-box;
   border-radius: 8px;
   display: flex;
@@ -118,12 +118,12 @@
 }
 
 .filterList {
-  background: #FFFFFF;
-  border: 1px solid #E1E2E4;
+  background: #ffffff;
+  border: 1px solid #e1e2e4;
   box-sizing: border-box;
   border-radius: 8px;
   padding-right: 16px;
-  padding-left: 16px; 
+  padding-left: 16px;
 }
 
 .filterList li {

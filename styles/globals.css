@@ -20,3 +20,8 @@ a {
   --white: #FFFFFF;
   --black: #1B1C1D;
 }
+
+@font-face {
+  font-family: 'Inter';
+  src: url(../assets/fonts/Inter.otf) format('opentype');
+}

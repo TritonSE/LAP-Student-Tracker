@@ -1,5 +1,5 @@
-import { object, string, number, InferType } from 'yup';
-//import * as yup from 'yup';
+import { object, string, number, TypeOf } from 'yup';
+
 export const requestUserSchema = object({
     id: string().ensure().required(),
     first_name: string().ensure().required(),
@@ -11,19 +11,21 @@ export const requestUserSchema = object({
 });
 
 export const userSchema= object({
-    id: string().ensure().required(),
-    first_name: string().ensure().required(),
-    last_name: string().ensure().required(),
-    email: string().ensure().required(),
-    role: string().ensure().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
-    phone_number: string().optional(), 
-    address: string().ensure().required(),   
+  id: string().ensure().required(),
+  first_name: string().ensure().required(),
+  last_name: string().ensure().required(),
+  email: string().ensure().required(),
+  role: string().ensure().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
+  phone_number: string().optional(), 
+  address: string().ensure().required(), 
 });
 
-export type RequestUser = InferType<typeof requestUserSchema>;
-export type User = InferType<typeof userSchema>;
+export type RequestUser = TypeOf<typeof requestUserSchema>;
+export type User = TypeOf<typeof userSchema>;
 
-export const studentSchema = object({
-    ...userSchema,
+const studentSchema = userSchema.concat(
+  object({
     level: number().required(),
-});
+}))
+
+export type Student = TypeOf<typeof studentSchema>;

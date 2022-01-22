@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { updateUser } from "../../../lib/database/users";
 import { userSchema } from "../../../models/users";
 import { findUser } from "../../../lib/database/users";
+import { StatusCodes } from "http-status-codes";
 
 /**
  * This handles a POST request to /api/users. In Next.js, the file names are what
@@ -10,13 +11,25 @@ import { findUser } from "../../../lib/database/users";
  *
  */
 export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+<<<<<<< HEAD
+=======
+  if (req.query == undefined) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" })
+  }
+
+  const id = req.query.id as string;
+
+  if (!id) {
+    return res.status(400).json("no id specified")
+  }
+
+>>>>>>> hotfix/Anshul-Birla/fix-jest-issues
   if (req.method == "PATCH") {
     const id = req.query["id"] as string;
     let newUser;
     try {
       newUser = await userSchema.validate(req.body);
     } catch (e) {
-      console.log(e);
       return res.status(400).json({ error: "Fields are not correctly entered" });
     }
     try {
@@ -35,13 +48,20 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       res.status(500).json({ error: "Internal Server Error" });
     }
   } else if (req.method == "GET") {
+<<<<<<< HEAD
     let identifier = req.query.id as string;
 
+=======
+    const id = req.query.id as string;
+>>>>>>> hotfix/Anshul-Birla/fix-jest-issues
     try {
-      const user = await findUser(identifier);
-      res.status(200).json(user);
+      const user = await findUser(id);
+      if (user == null) {
+        return res.status(400).json("user not found")
+      }
+      return res.status(200).json(user);
     } catch (e) {
-      res.status(500).json({ error: "Internal Server Error" });
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
     }
   } else {
     res.status(405).json({ error: "Method not allowed" });

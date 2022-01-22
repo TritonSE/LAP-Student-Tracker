@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { updateUser } from "../../../lib/database/users";
 import { userSchema } from "../../../models/users";
 import { findUser } from "../../../lib/database/users";
+import { StatusCodes } from "http-status-codes";
 
 /**
  * This handles a POST request to /api/users. In Next.js, the file names are what
@@ -9,8 +10,17 @@ import { findUser } from "../../../lib/database/users";
  * https://nextjs.org/docs/api-routes/response-helpers
  *
  */
-export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.query == undefined) {
+    return res.status(500).json({ error: "Internal Server Error" })
+  }
+
+  const id = req.query.id as string;
+
+  if (!id) {
+    return res.status(400).json("no id specified")
+  }
+
   if (req.method == "PATCH") {
     let newUser;
     try {
@@ -35,17 +45,19 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       res.status(500).json({ error: "Internal Server Error" });
     }
   } else if (req.method == "GET") {
-    let identifier = req.query["id"] as string;
-
+    const id = req.query.id as string;
     try {
-      const user = await findUser(identifier);
-      res.status(200).json(user);
+      const user = await findUser(id);
+      if (user == null) {
+        return res.status(400).json("user not found")
+      }
+      return res.status(200).json(user);
     } catch (e) {
-      res.status(500).json({ error: "Internal Server Error" });
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
     }
   } else {
     res.status(405).json({ error: "Method not allowed" });
   }
 };
 
-export default userHandler;
+export default userIDHandler;

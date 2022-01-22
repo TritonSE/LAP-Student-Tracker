@@ -1,25 +1,19 @@
-import { apiResolver, __ApiPreviewProps } from "next/dist/server/api-utils";
-import http from "http";
-import supertest, { Response } from "supertest";
+import { NextApiRequest, NextApiResponse } from "next/types";
+import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 
-const makeHTTPRequest = async (server: http.Server, endpoint: string, method: string, body: Object, responseCodeExpected: number, returnExpected: Object): Promise<Response> => {
-  const testServer = supertest(server);
-  let res: Response;
-  if (method == "POST") {
-    res = await testServer
-      .post(endpoint)
-      .send(body)
-      .expect(responseCodeExpected)
-  } else {
-    res = await testServer
-      .get(endpoint)
-      .expect(responseCodeExpected);
-  }
+const makeHTTPRequest = async (handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>, endpoint: string, query: Object | undefined, method: RequestMethod, body: Object | undefined, expectedResponseCode: number, expectedBody: Object): Promise<MockResponse<NextApiResponse<any>>> => {
 
-  if (returnExpected) {
-    console.log(returnExpected)
-    expect(res.body).toEqual(returnExpected);
-  }
+  const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
+    method: method,
+    url: endpoint,
+    query: query,
+    body: body
+  });
+
+  await handler(req, res)
+
+  expect(res._getStatusCode()).toBe(expectedResponseCode)
+  expect(JSON.parse(res._getData())).toEqual(expectedBody)
 
   return res;
 }

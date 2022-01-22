@@ -77,8 +77,7 @@ const updateUser = async (
   return user;
 };
 
-const findUser = async (id: string): Promise<User> => {
-  console.log("here");
+const findUser = async (id: string): Promise<User | null> => {
   const query = {
     text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1",
     values: [id],
@@ -86,7 +85,10 @@ const findUser = async (id: string): Promise<User> => {
 
   const res = await client.query(query);
 
-  console.log(res.rows[0]);
+  if (res.rows.length == 0) {
+    return null;
+  }
+
   let user: User;
   // console.log("here")
   try {

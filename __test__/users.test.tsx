@@ -94,55 +94,55 @@ describe("[POST] /api/users", () => {
   });
 });
 
-describe("[GET] /api/users/[id]", () => {
-  let server: http.Server;
+// describe("[GET] /api/users/[id]", () => {
+//   let server: http.Server;
 
-  // this mocks an http server for our app so we can test our API
-  beforeEach(async () => {
-    const requestHandler = (request: http.IncomingMessage, response: http.ServerResponse) =>
-      apiResolver(request, response, undefined, userIDHandler, preview, true);
-    server = http.createServer(requestHandler);
+//   // this mocks an http server for our app so we can test our API
+//   beforeEach(async () => {
+//     const requestHandler = (request: http.IncomingMessage, response: http.ServerResponse) =>
+//       apiResolver(request, response, undefined, userIDHandler, preview, true);
+//     server = http.createServer(requestHandler);
 
-    await client.query("DELETE from users;");
-    await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890');");
-    await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890');");
-    await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890');");
-  });
+//     await client.query("DELETE from users;");
+//     await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890');");
+//     await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890');");
+//     await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890');");
+//   });
 
-  afterEach(() => {
-    server.close();
-  });
+//   afterEach(() => {
+//     server.close();
+//   });
 
-  // find a user
-  it("look for a user that exists", async () => {
-    // send the request, and test the results
-    // we use supertest to make sure that the response code and the response
-    // type is what we expect
-    // await supertest(server).get("/api/users/1").expect("Content-Type", /json/).expect(200);
-    const expected = {
-      id: "1",
-      first_name: "John",
-      last_name: "Doe",
-      email: "john@gmail.com",
-      role: "Student",
-      address: "123 Main Street",
-      phone_number: "1234567890",
-    };
-    const res = await makeHTTPRequest(server, "/api/users/1", "GET", undefined, 200, expected)
-  });
+//   // find a user
+//   it("look for a user that exists", async () => {
+//     // send the request, and test the results
+//     // we use supertest to make sure that the response code and the response
+//     // type is what we expect
+//     // await supertest(server).get("/api/users/1").expect("Content-Type", /json/).expect(200);
+//     const expected = {
+//       id: "1",
+//       first_name: "John",
+//       last_name: "Doe",
+//       email: "john@gmail.com",
+//       role: "Student",
+//       address: "123 Main Street",
+//       phone_number: "1234567890",
+//     };
+//     const res = await makeHTTPRequest(server, "/api/users/1", "GET", undefined, 200, expected)
+//   });
 
-  // find a user that doesnt exist
-  it("look for a user that doesnt exist", async () => {
-    // send the request, and test the results
-    // we use supertest to make sure that the response code and the response
-    // type is what we expect
-    // await supertest(server).get("/api/users/10").expect("Content-Type", /json/).expect(500);
-    const error = { 
-      "error": "Internal Server Error"
-    }
-    const res = await makeHTTPRequest(server, "/api/users/10", "GET", undefined, 500, error)
-  });
-});
+//   // find a user that doesnt exist
+//   it("look for a user that doesnt exist", async () => {
+//     // send the request, and test the results
+//     // we use supertest to make sure that the response code and the response
+//     // type is what we expect
+//     // await supertest(server).get("/api/users/10").expect("Content-Type", /json/).expect(500);
+//     const error = { 
+//       "error": "Internal Server Error"
+//     }
+//     const res = await makeHTTPRequest(server, "/api/users/10", "GET", undefined, 500, error)
+//   });
+// });
 
 describe("[GET] /api/staff", () => {
   let server: http.Server;

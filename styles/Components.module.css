@@ -1,3 +1,4 @@
+/* styles for overall tab content component */
 .compContainer {
   background: #f6f6fa;
   padding-left: 85px;
@@ -8,11 +9,7 @@
 }
 
 .compTitle {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 40px;
+  composes: headlineLarge from "./globals.css";
   color: var(--black);
   float: left;
   margin-bottom: 32px;
@@ -50,37 +47,8 @@
   height: 600px;
 }
 
-.listElem {
-  background: var(--white);
-  border: 1px solid #e1e2e4;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 8px;
-  list-style-type: none;
-  width: 100%;
-  height: 55px;
-  padding: 24px 17px 24px 17px;
-
-  /* Text */
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 24px;
-  display: flex;
-  align-items: center;
-  letter-spacing: 0.1px;
-  color: var(--black);
-  margin-bottom: 25px;
-}
-
 .orderTitle {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 32px;
+  composes: headlineSmall from "./globals.css";
   color: var(--black);
   margin-bottom: 8px;
 }
@@ -98,20 +66,12 @@
   margin-bottom: 8px;
 }
 
-.orderElem p {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
+.listItemText {
+  composes: titleSmall from "./globals.css";
 }
 
 .filterTitle {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 32px;
+  composes: headlineSmall from "./globals.css";
   color: var(--black);
   margin-top: 30px;
   margin-bottom: 8px;
@@ -133,16 +93,35 @@
   align-items: center;
 }
 
-.filterList li p {
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.1px;
-  color: #000000;
-}
-
 .scroll::-webkit-scrollbar {
   background: transparent;
+}
+
+/* styles for individual class/student/staff card components */
+.listElem {
+  background: var(--white);
+  border: 1px solid #e1e2e4;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 8px;
+  list-style-type: none;
+  width: 100%;
+  height: 55px;
+  padding: 24px 17px 24px 17px;
+
+  /* Text */
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.1px;
+  color: var(--black);
+  margin-bottom: 25px;
+}
+
+.leftText {
+  composes: titleMedium from "./globals.css";
+}
+
+.rightText {
+  composes: titleSmall from "./globals.css";
 }

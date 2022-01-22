@@ -25,8 +25,8 @@ const League: NextPage = () => {
   // start dummy data, delete once api is implemented
   const testStaff: User = {
     id: "staff_id",
-    first_name: "Rick",
-    last_name: "Ord",
+    firstName: "Rick",
+    lastName: "Ord",
     email: "ricko@ucsd.edu",
     role: "Teacher",
     phone_number: "(123) 456-7890",
@@ -43,8 +43,8 @@ const League: NextPage = () => {
   };
   const testStudent: Student = {
     id: "student_id",
-    first_name: "Gary",
-    last_name: "Gillespie",
+    firstName: "Gary",
+    lastName: "Gillespie",
     email: "garyg@ucsd.edu",
     role: "Student",
     phone_number: "(123) 456-7890",
@@ -84,7 +84,9 @@ const League: NextPage = () => {
               <div className={styles.tabWrapper}>
                 <button
                   key={tabName}
-                  className={display === tabName ? styles.activeTab : styles.inactiveTab}
+                  className={`${styles.tabButton} ${
+                    display === tabName ? styles.activeTab : styles.inactiveTab
+                  }`}
                   onClick={() => setDisplay(tabName)}
                 >
                   {tabName}

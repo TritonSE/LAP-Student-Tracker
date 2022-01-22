@@ -4,7 +4,7 @@ import StudentCard from "../components/StudentCard";
 import styles from "../styles/Components.module.css";
 
 type Props = {
-  students: Student[] | undefined;
+  students: Student[];
 };
 
 const filters = [
@@ -25,7 +25,7 @@ const Students: FunctionComponent<Props> = ({ students }) => (
       <h1 className={styles.compTitle}>Students</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
-          {students?.map((c) => (
+          {students.map((c) => (
             <StudentCard key={c.id} student={c} />
           ))}
         </ul>
@@ -35,18 +35,18 @@ const Students: FunctionComponent<Props> = ({ students }) => (
       <input type="text" placeholder="Search students" className={styles.searchBar}></input>
       <h2 className={styles.orderTitle}>Order By:</h2>
       <div className={styles.orderElem}>
-        <p>Alphabetical</p>
+        <p className={styles.listItemText}>Alphabetical</p>
         <input type="radio"></input>
       </div>
       <div className={styles.orderElem}>
-        <p>Level</p>
+        <p className={styles.listItemText}>Level</p>
         <input type="radio"></input>
       </div>
       <h2 className={styles.filterTitle}>Filter By:</h2>
       <ul className={styles.filterList}>
         {filters.map((l) => (
           <li key={l}>
-            <p>{l}</p>
+            <p className={styles.listItemText}>{l}</p>
             <input type="checkbox"></input>
           </li>
         ))}

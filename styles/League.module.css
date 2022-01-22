@@ -8,13 +8,9 @@
   border-bottom: 3px solid var(--orange);
 }
 
-.tabs button {
+.tabButton {
   /* Text */
-  font-family: Inter;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
+  composes: labelLarge from "./globals.css";
   align-items: center;
   text-align: center;
 

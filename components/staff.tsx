@@ -4,7 +4,7 @@ import StaffCard from "../components/StaffCard";
 import styles from "../styles/Components.module.css";
 
 type Props = {
-  staff: User[] | undefined;
+  staff: User[];
 };
 
 const filters = [
@@ -28,7 +28,7 @@ const Staff: FunctionComponent<Props> = ({ staff }) => (
       <h1 className={styles.compTitle}>Staff</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
-          {staff?.map((c) => (
+          {staff.map((c) => (
             <StaffCard key={c.id} staff={c} />
           ))}
         </ul>
@@ -40,7 +40,7 @@ const Staff: FunctionComponent<Props> = ({ staff }) => (
       <ul className={styles.filterList}>
         {filters.map((l) => (
           <li key={l}>
-            <p>{l}</p>
+            <p className={styles.listItemText}>{l}</p>
             <input type="checkbox"></input>
           </li>
         ))}

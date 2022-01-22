@@ -1,33 +1,33 @@
-import { object, string, number, array, TypeOf } from "yup";
+import { object, string, number, array, InferType } from "yup";
 
 export const requestUserSchema = object({
-  id: string().ensure().required(),
-  first_name: string().ensure().required(),
-  last_name: string().ensure().required(),
-  email: string().ensure().required(),
-  role: string().ensure().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
+  id: string().required(),
+  firstName: string().required(),
+  lastName: string().required(),
+  email: string().required(),
+  role: string().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
   phone_number: string().optional(),
-  address: string().ensure().required(),
+  address: string().required(),
 });
 
 export const userSchema = object({
-  id: string().ensure().required(),
-  first_name: string().ensure().required(),
-  last_name: string().ensure().required(),
-  email: string().ensure().required(),
-  role: string().ensure().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
+  id: string().required(),
+  firstName: string().required(),
+  lastName: string().required(),
+  email: string().required(),
+  role: string().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
   phone_number: string().optional(),
-  address: string().ensure().required(),
+  address: string().required(),
 });
 
-export type RequestUser = TypeOf<typeof requestUserSchema>;
-export type User = TypeOf<typeof userSchema>;
+export type RequestUser = InferType<typeof requestUserSchema>;
+export type User = InferType<typeof userSchema>;
 
 const studentSchema = userSchema.concat(
   object({
     level: number().required(),
-    classes: array().ensure().required().of(string()),
+    classes: array(string().required()).required(),
   })
 );
 
-export type Student = TypeOf<typeof studentSchema>;
+export type Student = InferType<typeof studentSchema>;

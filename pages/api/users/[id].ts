@@ -12,7 +12,7 @@ import { StatusCodes } from "http-status-codes";
  */
 export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.query == undefined) {
-    return res.status(500).json({ error: "Internal Server Error" })
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" })
   }
 
   const id = req.query.id as string;
@@ -26,7 +26,6 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
     try {
       newUser = await userSchema.validate(req.body);
     } catch (e) {
-      console.log(e);
       return res.status(400).json({ error: "Fields are not correctly entered" });
     }
     try {

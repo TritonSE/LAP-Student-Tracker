@@ -3,6 +3,7 @@ import http from "http";
 import supertest from "supertest";
 import { userHandler } from "../pages/api/users";
 import { client } from "../lib/db";
+import { makeHTTPRequest } from "./__testutils__/testutils.test";
 
 const preview: __ApiPreviewProps = {
   previewModeId: "",
@@ -10,12 +11,12 @@ const preview: __ApiPreviewProps = {
   previewModeSigningKey: "",
 };
 
-beforeAll(() => {
-  client.query("DELETE from users");
+beforeAll(async () => {
+  await client.query("DELETE from users");
 });
 
-afterAll(() => {
-  client.end();
+afterAll(async () => {
+  await client.end();
 });
 
 describe("[POST] /api/users", () => {
@@ -46,11 +47,7 @@ describe("[POST] /api/users", () => {
     // send the request, and test the results
     // we use supertest to make sure that the response code and the response
     // type is what we expect
-    await supertest(server)
-      .post("/api/users")
-      .send(body)
-      .expect("Content-Type", /json/)
-      .expect(201);
+    const res = await makeHTTPRequest(server, "/api/users/", "POST", body, 201, body)
   });
 
   it("creates a duplicate user", async () => {

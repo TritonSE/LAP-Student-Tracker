@@ -42,7 +42,7 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         newUser.address,
         newUser.phone_number
       );
-      return res.status(201).json({ body: result });
+      return res.status(201).json(result);
     } catch (e) {
       console.log(e);
       res.status(500).json({ error: "Internal Server Error" });

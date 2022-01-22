@@ -2,7 +2,7 @@ import { apiResolver, __ApiPreviewProps } from "next/dist/server/api-utils";
 import http from "http";
 import supertest, { Response } from "supertest";
 
-const makeHTTPRequest = async (server: http.Server, endpoint: string, method: string, body: Object, responseCodeExpected: number, returnExpected: Object): Promise<Response> => {
+const makeHTTPRequest = async (server: http.Server, endpoint: string, method: string, body: Object | undefined, responseCodeExpected: number, returnExpected: Object): Promise<Response> => {
   const testServer = supertest(server);
   let res: Response;
   if (method == "POST") {
@@ -17,7 +17,7 @@ const makeHTTPRequest = async (server: http.Server, endpoint: string, method: st
   }
 
   if (returnExpected) {
-    console.log(returnExpected)
+    // console.log(returnExpected)
     expect(res.body).toEqual(returnExpected);
   }
 

@@ -28,7 +28,6 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     try {
       newUser = await userSchema.validate(req.body);
     } catch (e) {
-      console.log(e);
       return res.status(400).json({ error: "Fields are not correctly entered" });
     }
     try {
@@ -44,7 +43,6 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       );
       return res.status(201).json(result);
     } catch (e) {
-      console.log(e);
       res.status(500).json({ error: "Internal Server Error" });
     }
   } else {

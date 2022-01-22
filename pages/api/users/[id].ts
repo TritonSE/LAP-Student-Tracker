@@ -9,9 +9,9 @@ import { findUser } from "../../../lib/database/users";
  * https://nextjs.org/docs/api-routes/response-helpers
  *
  */
-export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "PATCH") {
+    const id = req.query["id"] as string;
     let newUser;
     try {
       newUser = await userSchema.validate(req.body);
@@ -35,7 +35,7 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       res.status(500).json({ error: "Internal Server Error" });
     }
   } else if (req.method == "GET") {
-    let identifier = req.query["id"] as string;
+    let identifier = req.query.id as string;
 
     try {
       const user = await findUser(identifier);
@@ -48,4 +48,4 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
   }
 };
 
-export default userHandler;
+export default userIDHandler;

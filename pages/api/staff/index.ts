@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { findStaff } from "../../../lib/database/users";
 
-const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
     try {
       const result = await findStaff();
@@ -14,4 +14,4 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
   }
 };
 
-export default userHandler;
+export default staffHandler;

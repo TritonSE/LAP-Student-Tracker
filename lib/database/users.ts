@@ -77,11 +77,7 @@ const updateUser = async (
   return user;
 };
 
-<<<<<<< HEAD
-const findUser = async (id: string): Promise<User> => {
-=======
 const findUser = async (id: string): Promise<User | null> => {
->>>>>>> hotfix/Anshul-Birla/fix-jest-issues
   const query = {
     text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1",
     values: [id],
@@ -89,13 +85,10 @@ const findUser = async (id: string): Promise<User | null> => {
 
   const res = await client.query(query);
 
-<<<<<<< HEAD
-=======
   if (res.rows.length == 0) {
     return null;
   }
 
->>>>>>> hotfix/Anshul-Birla/fix-jest-issues
   let user: User;
   try {
     user = await userSchema.validate(res.rows[0]);

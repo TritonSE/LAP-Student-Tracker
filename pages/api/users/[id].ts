@@ -11,8 +11,6 @@ import { StatusCodes } from "http-status-codes";
  *
  */
 export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-<<<<<<< HEAD
-=======
   if (req.query == undefined) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" })
   }
@@ -23,7 +21,6 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
     return res.status(400).json("no id specified")
   }
 
->>>>>>> hotfix/Anshul-Birla/fix-jest-issues
   if (req.method == "PATCH") {
     const id = req.query["id"] as string;
     let newUser;
@@ -48,12 +45,7 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       res.status(500).json({ error: "Internal Server Error" });
     }
   } else if (req.method == "GET") {
-<<<<<<< HEAD
-    let identifier = req.query.id as string;
-
-=======
     const id = req.query.id as string;
->>>>>>> hotfix/Anshul-Birla/fix-jest-issues
     try {
       const user = await findUser(id);
       if (user == null) {

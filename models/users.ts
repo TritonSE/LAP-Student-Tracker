@@ -20,9 +20,6 @@ export const userSchema = object({
   address: string().required(),
 });
 
-export type RequestUser = InferType<typeof requestUserSchema>;
-export type User = InferType<typeof userSchema>;
-
 const studentSchema = userSchema.concat(
   object({
     level: number().required(),
@@ -30,4 +27,6 @@ const studentSchema = userSchema.concat(
   })
 );
 
+export type RequestUser = InferType<typeof requestUserSchema>;
+export type User = InferType<typeof userSchema>;
 export type Student = InferType<typeof studentSchema>;

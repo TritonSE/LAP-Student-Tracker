@@ -39,7 +39,7 @@ describe("[POST] /api/users", () => {
     await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 201, body);
   });
 
-  it("creates a duplicate user", async () => {
+  it("doesn't create a duplicate user", async () => {
     const body = {
       id: "1",
       first_name: "John",
@@ -104,7 +104,7 @@ describe("[GET] /api/users/[id]", () => {
       id: 1,
     };
 
-    await makeHTTPRequest(userIDHandler, "/api/users/1", query, "GET", undefined, 200, expected);
+    await makeHTTPRequest(userIDHandler, "/api/users/1", query, "GET", undefined, 202, expected);
   });
 
   it("fails for a user that does not exist", async () => {
@@ -118,7 +118,7 @@ describe("[GET] /api/users/[id]", () => {
       query,
       "GET",
       undefined,
-      400,
+      404,
       USER_NOT_FOUND_ERROR
     );
   });
@@ -164,11 +164,11 @@ describe("[GET] /api/staff", () => {
         phone_number: "1234567890",
       },
     ];
-    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, 200, expected);
+    await makeHTTPRequest(staffHandler, "/api/staff", undefined, "GET", undefined, 202, expected);
   });
 
   it("look for all staff when there are none", async () => {
     client.query("DELETE from users");
-    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, 200, []);
+    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, 202, []);
   });
 });

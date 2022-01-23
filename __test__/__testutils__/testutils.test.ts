@@ -1,6 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 
+/**
+ * Create and test a HTTP Request
+ *
+ * @param handler the handler that defines the API route
+ * @param endpoint the API request endpoint
+ * @param query the query that goes with the request
+ * @param method the type of request
+ * @param body the body of the request
+ * @param expectedResponseCode the expected response code
+ * @param expectedBody the expected body of the response
+ * @returns result of the operation (whether the test passes or not)
+ */
 const makeHTTPRequest = async (
   handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
   endpoint: string,

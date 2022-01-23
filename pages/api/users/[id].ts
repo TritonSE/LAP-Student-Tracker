@@ -12,7 +12,7 @@ import { StatusCodes } from "http-status-codes";
  */
 export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.query == undefined) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 
   const id = req.query.id as string;
@@ -26,13 +26,11 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       try {
         const user = await findUser(id);
         if (user == null) {
-          return res.status(400).json("user not found");
+          return res.status(StatusCodes.NOT_FOUND).json("user not found");
         }
-        return res.status(200).json(user);
+        return res.status(StatusCodes.ACCEPTED).json(user);
       } catch (e) {
-        return res
-          .status(StatusCodes.INTERNAL_SERVER_ERROR)
-          .json({ error: "Internal Server Error" });
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
 
     case "PATCH":
@@ -40,7 +38,7 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       try {
         newUser = await userSchema.validate(req.body);
       } catch (e) {
-        return res.status(400).json("Fields are not correctly entered");
+        return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
         // call the function that actually inserts the data into the database
@@ -53,13 +51,13 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
           newUser.address,
           newUser.phone_number
         );
-        return res.status(201).json(result);
+        return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        res.status(500).json("Internal Server Error");
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
 
     default:
-      return res.status(405).json("Method not allowed");
+      return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
   }
 };
 

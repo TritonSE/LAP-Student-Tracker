@@ -5,7 +5,7 @@ import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { User } from "../models/users";
 
-const INTERNAL_SERVER_ERROR = { error: "Internal Server Error" }
+const INTERNAL_SERVER_ERROR = "Internal Server Error"
 const USER_NOT_FOUND_ERROR = "user not found";
 
 beforeAll(async () => {

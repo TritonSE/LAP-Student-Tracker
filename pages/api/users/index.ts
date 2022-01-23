@@ -23,30 +23,33 @@ import { userSchema } from "../../../models/users";
  *
  */
 export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method == "POST") {
-    let newUser;
-    try {
-      newUser = await userSchema.validate(req.body);
-    } catch (e) {
-      return res.status(400).json({ error: "Fields are not correctly entered" });
-    }
-    try {
-      // call the function that actually inserts the data into the database
-      const result = await createUser(
-        newUser.id,
-        newUser.first_name,
-        newUser.last_name,
-        newUser.email,
-        newUser.role,
-        newUser.address,
-        newUser.phone_number
-      );
-      return res.status(201).json(result);
-    } catch (e) {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
+
+  switch(req.method) {
+    case "POST":
+      let newUser;
+      try {
+        newUser = await userSchema.validate(req.body);
+      } catch (e) {
+        return res.status(400).json("Fields are not correctly entered");
+      }
+      try {
+        // call the function that actually inserts the data into the database
+        const result = await createUser(
+          newUser.id,
+          newUser.first_name,
+          newUser.last_name,
+          newUser.email,
+          newUser.role,
+          newUser.address,
+          newUser.phone_number
+        );
+        return res.status(201).json(result);
+      } catch (e) {
+        return res.status(500).json("Internal Server Error");
+      }
+
+    default: 
+      return res.status(405).json("Method not allowed");
   }
 };
 

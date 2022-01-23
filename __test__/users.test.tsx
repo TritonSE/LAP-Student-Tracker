@@ -79,7 +79,6 @@ describe("[POST] /api/users", () => {
 });
 
 describe("[GET] /api/users/[id]", () => {
-
   it("look for a user that exists", async () => {
     const expected: User = {
       id: "1",
@@ -104,8 +103,6 @@ describe("[GET] /api/users/[id]", () => {
     }
 
     await makeHTTPRequest(userIDHandler, "/api/users/101", query, "GET", undefined, 400, USER_NOT_FOUND_ERROR)
-
-
 
   })
 });

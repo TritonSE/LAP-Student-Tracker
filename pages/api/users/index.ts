@@ -23,8 +23,7 @@ import { userSchema } from "../../../models/users";
  *
  */
 export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-
-  switch(req.method) {
+  switch (req.method) {
     case "POST":
       let newUser;
       try {
@@ -48,7 +47,7 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         return res.status(500).json("Internal Server Error");
       }
 
-    default: 
+    default:
       return res.status(405).json("Method not allowed");
   }
 };

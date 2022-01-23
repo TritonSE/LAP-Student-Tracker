@@ -12,25 +12,27 @@ import { StatusCodes } from "http-status-codes";
  */
 export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.query == undefined) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" })
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
   }
 
   const id = req.query.id as string;
 
   if (!id) {
-    return res.status(400).json("no id specified")
+    return res.status(400).json("no id specified");
   }
 
-  switch(req.method) {
+  switch (req.method) {
     case "GET":
       try {
         const user = await findUser(id);
         if (user == null) {
-          return res.status(400).json("user not found")
+          return res.status(400).json("user not found");
         }
         return res.status(200).json(user);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal Server Error" });
+        return res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .json({ error: "Internal Server Error" });
       }
 
     case "PATCH":
@@ -56,7 +58,7 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
         res.status(500).json("Internal Server Error");
       }
 
-    default: 
+    default:
       return res.status(405).json("Method not allowed");
   }
 };

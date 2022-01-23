@@ -1,18 +1,24 @@
 import { userHandler } from "../pages/api/users";
 import { userIDHandler } from "../pages/api/users/[id]";
-import { staffHandler } from "../pages/api/staff"
+import { staffHandler } from "../pages/api/staff";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { User } from "../models/users";
 
-const INTERNAL_SERVER_ERROR = "Internal Server Error"
+const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const USER_NOT_FOUND_ERROR = "user not found";
 
 beforeAll(async () => {
   await client.query("DELETE from users");
-  await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')");
-  await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')");
-  await client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')");
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"
+  );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+  );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')"
+  );
 });
 
 afterAll(async () => {
@@ -44,9 +50,15 @@ describe("[POST] /api/users", () => {
       phone_number: "1234567890",
     };
 
-
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 500, INTERNAL_SERVER_ERROR)
-
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "POST",
+      body,
+      500,
+      INTERNAL_SERVER_ERROR
+    );
   });
 
   it("creates an Admin user", async () => {
@@ -59,8 +71,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phone_number: "1234567890",
     };
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 201, body)
-
+    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 201, body);
   });
 
   it("creates an Teacher user", async () => {
@@ -73,8 +84,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phone_number: "1234567890",
     };
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 201, body)
-
+    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 201, body);
   });
 });
 
@@ -88,28 +98,34 @@ describe("[GET] /api/users/[id]", () => {
       role: "Student",
       address: "123 Main Street",
       phone_number: "1234567890",
-    }
+    };
 
     const query = {
-      id: 1
-    }
+      id: 1,
+    };
 
-    await makeHTTPRequest(userIDHandler, "/api/users/1", query, "GET", undefined, 200, expected)
+    await makeHTTPRequest(userIDHandler, "/api/users/1", query, "GET", undefined, 200, expected);
   });
 
   it("fails for a user that does not exist", async () => {
     const query = {
-      id: 101
-    }
+      id: 101,
+    };
 
-    await makeHTTPRequest(userIDHandler, "/api/users/101", query, "GET", undefined, 400, USER_NOT_FOUND_ERROR)
-
-  })
+    await makeHTTPRequest(
+      userIDHandler,
+      "/api/users/101",
+      query,
+      "GET",
+      undefined,
+      400,
+      USER_NOT_FOUND_ERROR
+    );
+  });
 });
 
 describe("[GET] /api/staff", () => {
   it("look for all staff", async () => {
-
     const expected = [
       {
         id: "2",
@@ -146,14 +162,13 @@ describe("[GET] /api/staff", () => {
         role: "Admin",
         address: "123 Main Street",
         phone_number: "1234567890",
-      }
-
+      },
     ];
-    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, 200, expected)
+    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, 200, expected);
   });
 
   it("look for all staff when there are none", async () => {
     client.query("DELETE from users");
-    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, 200, [])
+    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, 200, []);
   });
 });

@@ -26,7 +26,15 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
       <div className={styles.compList}>
         <ul className={styles.scroll}>
           {classes.map((c) => (
-            <ClassCard key={c.id} name={c.name} minLevel={c.minLevel} maxLevel={c.maxLevel} recurrence={c.recurrence} timeStart={c.timeStart} timeEnd={c.timeEnd} />
+            <ClassCard
+              key={c.id}
+              name={c.name}
+              minLevel={c.minLevel}
+              maxLevel={c.maxLevel}
+              recurrence={c.recurrence}
+              timeStart={c.timeStart}
+              timeEnd={c.timeEnd}
+            />
           ))}
         </ul>
       </div>

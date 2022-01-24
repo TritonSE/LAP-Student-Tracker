@@ -1,5 +1,6 @@
 import styles from "../styles/Navbar.module.css";
-export default function Navbar({children}){
+import type { NextPage } from 'next'
+export const Navbar: NextPage = ({children})=>{
     return <> 
           <header className={styles.header}>
         <nav className={styles.navbar}>

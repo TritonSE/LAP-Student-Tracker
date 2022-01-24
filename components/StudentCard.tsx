@@ -1,17 +1,19 @@
-import { Student } from "../models/users";
 import styles from "../styles/Components.module.css";
 
-type StudentCardProps = { student: Student };
+type StudentCardProps = {
+  firstName: string;
+  lastName: string;
+  level: number;
+  classes: string[];
+};
 
-const StudentCard: React.FC<StudentCardProps> = ({ student: studentObj }) => {
+const StudentCard: React.FC<StudentCardProps> = ({ firstName, lastName, level, classes }) => {
   return (
     <div className={styles.listElem}>
       <div>
-        <p className={styles.leftText}>{studentObj.firstName + " " + studentObj.lastName}</p>
+        <p className={styles.leftText}>{firstName + " " + lastName}</p>
       </div>
-      <div className={styles.rightText}>
-        {["Level " + studentObj.level, "•", studentObj.classes[0]].join(" ")}
-      </div>
+      <div className={styles.rightText}>{["Level " + level, "•", classes[0]].join(" ")}</div>
     </div>
   );
 };

@@ -1,10 +1,10 @@
-import React, { FunctionComponent } from "react";
-import { Class } from "../models/classes";
-import ClassCard from "../components/ClassCard";
+import React from "react";
+import { Student } from "../models/users";
+import StudentCard from "./StudentCard";
 import styles from "../styles/Components.module.css";
 
-type Props = {
-  classes: Class[];
+type StudentViewProp = {
+  students: Student[];
 };
 
 const filters = [
@@ -19,20 +19,26 @@ const filters = [
   "Level 8",
 ];
 
-const Classes: FunctionComponent<Props> = ({ classes }) => (
+const StudentView: React.FC<StudentViewProp> = ({ students }) => (
   <div className={styles.compContainer}>
     <div className={styles.leftContainer}>
-      <h1 className={styles.compTitle}>Classes</h1>
+      <h1 className={styles.compTitle}>Students</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
-          {classes.map((c) => (
-            <ClassCard key={c.id} class={c} />
+          {students.map((c) => (
+            <StudentCard
+              key={c.id}
+              firstName={c.firstName}
+              lastName={c.lastName}
+              level={c.level}
+              classes={c.classes}
+            />
           ))}
         </ul>
       </div>
     </div>
     <div className={styles.rightContainer}>
-      <input type="text" placeholder="Search classes" className={styles.searchBar}></input>
+      <input type="text" placeholder="Search students" className={styles.searchBar}></input>
       <h2 className={styles.orderTitle}>Order By:</h2>
       <div className={styles.orderElem}>
         <p className={styles.listItemText}>Alphabetical</p>
@@ -55,4 +61,4 @@ const Classes: FunctionComponent<Props> = ({ classes }) => (
   </div>
 );
 
-export default Classes;
+export default StudentView;

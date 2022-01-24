@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import styles from "../styles/League.module.css";
-import Classes from "../components/classes";
-import Students from "../components/students";
-import Staff from "../components/staff";
+import ClassView from "../components/ClassView";
+import StudentView from "../components/StudentView";
+import StaffView from "../components/StaffView";
 import { Class } from "../models/classes";
 import { User, Student } from "../models/users";
 
@@ -34,8 +34,9 @@ const League: NextPage = () => {
   };
   const testClass: Class = {
     id: "class_id",
-    name: "CSE 123",
-    level: 3,
+    name: "Intro to Java",
+    minLevel: 3,
+    maxLevel: 5,
     recurrence: [1, 2, 3],
     timeStart: "13:00",
     timeEnd: "14:00",
@@ -69,9 +70,9 @@ const League: NextPage = () => {
 
   // Renders specific content component based on tab state
   const renderComponent = (display: String) => {
-    if (display == "Classes") return <Classes classes={content?.Classes} />;
-    if (display == "Students") return <Students students={content?.Students} />;
-    if (display == "Staff") return <Staff staff={content?.Staff} />;
+    if (display == "Classes") return <ClassView classes={content?.Classes} />;
+    if (display == "Students") return <StudentView students={content?.Students} />;
+    if (display == "Staff") return <StaffView staff={content?.Staff} />;
   };
 
   return (

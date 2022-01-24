@@ -4,7 +4,8 @@ import { userSchema } from "./users";
 export const classSchema = object({
   id: string().required(),
   name: string().required(),
-  level: number().required(),
+  minLevel: number().required(),
+  maxLevel: number().required(),
   recurrence: array(number().required()).required(),
   timeStart: string().required(),
   timeEnd: string().required(),

@@ -1,10 +1,23 @@
-import { Class } from "../models/classes";
 import moment from "moment";
 import styles from "../styles/Components.module.css";
 
-type ClassCardProps = { class: Class };
+type ClassCardProps = {
+  name: string;
+  minLevel: number;
+  maxLevel: number;
+  recurrence: number[];
+  timeStart: string;
+  timeEnd: string;
+};
 
-const ClassCard: React.FC<ClassCardProps> = ({ class: classObj }) => {
+const ClassCard: React.FC<ClassCardProps> = ({
+  name,
+  minLevel,
+  maxLevel,
+  recurrence,
+  timeStart,
+  timeEnd,
+}) => {
   const weekday: string[] = [
     "Sunday",
     "Monday",
@@ -23,13 +36,15 @@ const ClassCard: React.FC<ClassCardProps> = ({ class: classObj }) => {
   return (
     <div className={styles.listElem}>
       <div>
-        <p className={styles.leftText}>{classObj.name}</p>
+        <p className={styles.leftText}>{`${name} ${
+          minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
+        }`}</p>
       </div>
       <div className={styles.rightText}>
         {[
-          classObj.recurrence.map((day: number) => weekday[day]).join(", "),
+          recurrence.map((day: number) => weekday[day]).join(", "),
           "•",
-          convertTime(classObj.timeStart, classObj.timeEnd),
+          convertTime(timeStart, timeEnd),
         ].join(" ")}
       </div>
     </div>

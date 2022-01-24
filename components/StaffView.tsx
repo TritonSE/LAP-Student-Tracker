@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import { User } from "../models/users";
-import StaffCard from "../components/StaffCard";
+import StaffCard from "./StaffCard";
 import styles from "../styles/Components.module.css";
 
-type Props = {
+type StaffViewProp = {
   staff: User[];
 };
 
@@ -22,14 +22,20 @@ const filters = [
   "Level 8",
 ];
 
-const Staff: FunctionComponent<Props> = ({ staff }) => (
+const StaffView: React.FC<StaffViewProp> = ({ staff }) => (
   <div className={styles.compContainer}>
     <div className={styles.leftContainer}>
       <h1 className={styles.compTitle}>Staff</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
           {staff.map((c) => (
-            <StaffCard key={c.id} staff={c} />
+            <StaffCard
+              key={c.id}
+              firstName={c.firstName}
+              lastName={c.lastName}
+              phone_number={c.phone_number}
+              email={c.email}
+            />
           ))}
         </ul>
       </div>
@@ -49,4 +55,4 @@ const Staff: FunctionComponent<Props> = ({ staff }) => (
   </div>
 );
 
-export default Staff;
+export default StaffView;

@@ -177,3 +177,87 @@ describe("[GET] /api/users/[id]", () => {
     );
   });
 });
+
+describe("[PATCH] /api/users/[id]", () => {
+  it("editing everything for a user that does exist", async () => {
+    const expected: User = {
+      id: "1",
+      first_name: "Bill",
+      last_name: "Brown",
+      email: "john123@gmail.com",
+      role: "Admin",
+      address: "456 Main Street",
+      phone_number: "4567890",
+    };
+
+    const query = {
+      id: 1,
+      
+    };
+
+    const body = {
+      first_name: "Bill",
+      last_name: "Brown",
+      email: "john123@gmail.com",
+      role: "Admin",
+      address: "456 Main Street",
+      phone_number: "4567890",
+    }
+
+    await makeHTTPRequest(
+      userIDHandler,
+      "/api/users/1",
+      query,
+      "PATCH",
+      body,
+      StatusCodes.CREATED,
+      expected
+    );
+  });
+
+
+  it("editing a user that does not exist", async () => {
+    const query = {
+      id: 101,
+    };
+
+    const body = {
+      first_name: "Joe",
+    }
+
+    await makeHTTPRequest(
+      userIDHandler,
+      "/api/users/101",
+      query,
+      "PATCH",
+      body,
+      404,
+      USER_NOT_FOUND_ERROR
+    );
+  });
+
+  it("editing a user that exists with existing email", async () => {
+
+    const query = {
+      id: 2,
+    };
+
+    const body = {
+      email: "admin@gmail.com"
+    };
+
+    await makeHTTPRequest(
+      userIDHandler,
+      "/api/users/2",
+      query,
+      "PATCH",
+      body,
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      INTERNAL_SERVER_ERROR
+    );
+  });
+
+
+});
+
+

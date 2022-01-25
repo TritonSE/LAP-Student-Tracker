@@ -1,15 +1,10 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { updateUser } from "../../../lib/database/users";
 import { userSchema } from "../../../models/users";
-import { findUser } from "../../../lib/database/users";
+import { getUser } from "../../../lib/database/users";
 import { StatusCodes } from "http-status-codes";
 
-/**
- * This handles a POST request to /api/users. In Next.js, the file names are what
- * denotes the route. Read more about requests within Next here:
- * https://nextjs.org/docs/api-routes/response-helpers
- *
- */
+// handles requests to /api/users/[id]
 export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.query == undefined) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
@@ -24,7 +19,7 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
   switch (req.method) {
     case "GET":
       try {
-        const user = await findUser(id);
+        const user = await getUser(id);
         if (user == null) {
           return res.status(StatusCodes.NOT_FOUND).json("user not found");
         }

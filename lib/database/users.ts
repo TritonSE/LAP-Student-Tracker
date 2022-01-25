@@ -5,9 +5,7 @@ import { array, InferType } from "yup";
 const userArraySchema = array(userSchema).defined();
 type userArrayType = InferType<typeof userArraySchema>;
 
-/**
- * Create a user in the database with given parameters.
- */
+// create a user in the database with given parameters.
 const createUser = async (
   id: string,
   first_name: string,
@@ -39,6 +37,7 @@ const createUser = async (
   return user;
 };
 
+// updates user given new parameters
 const updateUser = async (
   id: string,
   first_name: string,
@@ -50,19 +49,18 @@ const updateUser = async (
 ): Promise<User> => {
   const query = {
     text:
-      "UPDATE users SET first_name = COALESCE($2, first_name) last_name = COALESCE($3, last_name) email = COALESCE($3, email) role = COALESCE($4, role) address = COALESCE($5, address) phone_number = COALESCE($6, phone_number) WHERE id=$1" +
-      "RETURNING id, email, role, first_name, last_name, phone",
+      "UPDATE users SET first_name = COALESCE($2, first_name) last_name = COALESCE($3, last_name) email = COALESCE($3, email) role = COALESCE($4, role) address = COALESCE($5, address) phone_number = COALESCE($6, phone_number) WHERE id=$1",
     values: [first_name, last_name, email, role, address, phone_number],
   };
 
-  const res = await client.query(query);
+  const res = getUser(id)
 
-  if (res.rowCount != 1) throw Error("Database returned the incorrect number of rows");
+  if (res == null) throw Error("Incorrect return from database");
 
   let user: User;
 
   try {
-    user = await userSchema.validate(res.rows[0]);
+    user = await userSchema.validate(res);
   } catch {
     throw Error("Error on return from database");
   }
@@ -70,7 +68,8 @@ const updateUser = async (
   return user;
 };
 
-const findUser = async (id: string): Promise<User | null> => {
+// get a user given an id
+const getUser = async (id: string): Promise<User | null> => {
   const query = {
     text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1",
     values: [id],
@@ -92,7 +91,8 @@ const findUser = async (id: string): Promise<User | null> => {
   return user;
 };
 
-const findStaff = async (): Promise<User[]> => {
+// gets all staff in the database
+const getStaff = async (): Promise<User[]> => {
   const query = {
     text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE role = 'Teacher' OR role = 'Admin'",
   };
@@ -110,4 +110,4 @@ const findStaff = async (): Promise<User[]> => {
   return user;
 };
 
-export { createUser, findUser, updateUser, findStaff };
+export { createUser, getUser, updateUser, getStaff };

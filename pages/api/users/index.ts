@@ -3,6 +3,7 @@ import { createUser } from "../../../lib/database/users";
 import { userSchema } from "../../../models/users";
 import { StatusCodes } from "http-status-codes";
 
+// handles requests to /api/users/
 export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST":

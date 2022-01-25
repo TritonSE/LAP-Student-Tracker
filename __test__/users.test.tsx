@@ -4,6 +4,7 @@ import { staffHandler } from "../pages/api/staff";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { User } from "../models/users";
+import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const USER_NOT_FOUND_ERROR = "user not found";
@@ -36,7 +37,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phone_number: "1234567890",
     };
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 201, body);
+    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, StatusCodes.CREATED , body);
   });
 
   it("doesn't create a duplicate user", async () => {
@@ -56,7 +57,29 @@ describe("[POST] /api/users", () => {
       undefined,
       "POST",
       body,
-      500,
+      StatusCodes.INTERNAL_SERVER_ERROR,
+      INTERNAL_SERVER_ERROR
+    );
+  });
+
+  it("doesn't create a different user with an existing email", async () => {
+    const body = {
+      id: "54",
+      first_name: "John",
+      last_name: "John",
+      email: "john@gmail.com",
+      role: "Student",
+      address: "123 Main Street",
+      phone_number: "1234567890",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.INTERNAL_SERVER_ERROR,
       INTERNAL_SERVER_ERROR
     );
   });
@@ -71,7 +94,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phone_number: "1234567890",
     };
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 201, body);
+    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, StatusCodes.CREATED, body);
   });
 
   it("creates an Teacher user", async () => {
@@ -84,7 +107,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phone_number: "1234567890",
     };
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, 201, body);
+    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, StatusCodes.CREATED, body);
   });
 });
 
@@ -104,7 +127,7 @@ describe("[GET] /api/users/[id]", () => {
       id: 1,
     };
 
-    await makeHTTPRequest(userIDHandler, "/api/users/1", query, "GET", undefined, 202, expected);
+    await makeHTTPRequest(userIDHandler, "/api/users/1", query, "GET", undefined, StatusCodes.ACCEPTED, expected);
   });
 
   it("fails for a user that does not exist", async () => {
@@ -126,7 +149,7 @@ describe("[GET] /api/users/[id]", () => {
 
 describe("[GET] /api/staff", () => {
   it("look for all staff", async () => {
-    const expected = [
+    const expected: User[] = [
       {
         id: "2",
         first_name: "Teacher",
@@ -164,11 +187,11 @@ describe("[GET] /api/staff", () => {
         phone_number: "1234567890",
       },
     ];
-    await makeHTTPRequest(staffHandler, "/api/staff", undefined, "GET", undefined, 202, expected);
+    await makeHTTPRequest(staffHandler, "/api/staff", undefined, "GET", undefined, StatusCodes.ACCEPTED, expected);
   });
 
   it("look for all staff when there are none", async () => {
     client.query("DELETE from users");
-    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, 202, []);
+    await makeHTTPRequest(staffHandler, "/api/users/1", undefined, "GET", undefined, StatusCodes.ACCEPTED, []);
   });
 });

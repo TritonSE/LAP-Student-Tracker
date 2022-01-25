@@ -1,15 +1,23 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { createUser } from "../../../lib/database/users";
-import { requestUserSchema, RequestUser } from "../../../models/users";
+import { getStaff } from "../../../lib/database/users";
+import { StatusCodes } from "http-status-codes";
 
+// handles requests to /api/staff/
+export const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  switch (req.method) {
+    case "GET":
+      try {
+        const result = await getStaff();
+        res.status(StatusCodes.ACCEPTED).json(result);
+      } catch (e) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+      }
+      break;
 
-const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    if(req.method == "GET"){
-        res.status(200).json({ body: "staff" });
-    }
-    else {
-        res.status(405).json({ error: "Method not allowed" });
-    }
-}
+    default:
+      res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
+      break;
+  }
+};
 
-export default userHandler;
+export default staffHandler;

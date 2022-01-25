@@ -1,23 +1,14 @@
-import { object, string, TypeOf } from "yup";
-export const requestUserSchema = object({
-    id: string().ensure().required(),
-    first_name: string().ensure().required(),
-    last_name: string().ensure().required(),
-    email: string().ensure().required(),
-    role: string().ensure().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
-    phone_number: string().optional(), 
-    address: string().ensure().required(),   
-});
+import { object, string, InferType } from "yup";
 
-export const userSchema= object({
-    id: string().ensure().required(),
-    first_name: string().ensure().required(),
-    last_name: string().ensure().required(),
-    email: string().ensure().required(),
-    role: string().ensure().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
-    phone_number: string().optional(), 
-    address: string().ensure().required(),   
-})
+export const userSchema = object({
+  id: string().required(),
+  first_name: string().required(),
+  last_name: string().required(),
+  email: string().required(),
+  role: string().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
+  phone_number: string().optional(),
+  address: string().required(),
+});
 
 export const updateUserSchema = object({
     first_name: string().optional(),
@@ -27,7 +18,6 @@ export const updateUserSchema = object({
     phone_number: string().optional(),
     address: string().optional(),
 
-})
+});
 
-export type RequestUser = TypeOf<typeof requestUserSchema>;
-export type User = TypeOf<typeof userSchema>;
+export type User = InferType<typeof userSchema>;

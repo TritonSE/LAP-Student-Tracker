@@ -20,7 +20,6 @@ export const userSchema= object({
 })
 
 export const updateUserSchema = object({
-    id: string().required(), //not sure about this
     first_name: string().optional(),
     last_name: string().optional(),
     email: string().optional(),

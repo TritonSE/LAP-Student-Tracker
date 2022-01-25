@@ -54,7 +54,6 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       res.status(500).json({ error: "Internal Server Error" });
     }
   } 
-
   else {
     res.status(405).json({ error: "Method not allowed" });
   }

@@ -10,8 +10,8 @@ import { findUser } from "../../../lib/database/users";
  * https://nextjs.org/docs/api-routes/response-helpers
  *
  */
-export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    const {id} = req.query;
+export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+    const id = req.query.id as string;
   if (req.method == "PATCH") {
     let newUser;
     try {
@@ -56,4 +56,4 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
 
 };
 
-export default userHandler;
+export default userIDHandler;

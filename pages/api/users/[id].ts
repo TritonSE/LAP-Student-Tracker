@@ -52,7 +52,7 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
 
     default:

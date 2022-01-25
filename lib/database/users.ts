@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { User, userSchema } from "../../models/users";
+import { updateUserSchema, User, userSchema, UpdateUser } from "../../models/users";
 import { array, InferType } from "yup";
 
 const userArraySchema = array(userSchema).defined();
@@ -40,31 +40,34 @@ const createUser = async (
 // updates user given new parameters
 const updateUser = async (
   id: string,
-  first_name: string,
-  last_name: string,
-  email: string,
-  role: string,
-  address: string,
-  phone_number?: string
-): Promise<User> => {
+  first_name?: string,
+  last_name?: string,
+  email?: string,
+  role?: string,
+  address?: string,
+  phone_number?: string,
+): Promise<User | null> => {
   const query = {
-    text: "UPDATE users SET first_name = COALESCE($2, first_name) last_name = COALESCE($3, last_name) email = COALESCE($3, email) role = COALESCE($4, role) address = COALESCE($5, address) phone_number = COALESCE($6, phone_number) WHERE id=$1",
-    values: [first_name, last_name, email, role, address, phone_number],
-  };
-
-  const res = getUser(id);
-
-  if (res == null) throw Error("Incorrect return from database");
-
-  let user: User;
-
-  try {
-    user = await userSchema.validate(res);
-  } catch {
-    throw Error("Error on return from database");
+      text:"UPDATE users " +
+      "SET first_name = COALESCE($2, first_name), "+ 
+      "last_name = COALESCE($3, last_name), " +
+      "email = COALESCE($4, email), " +
+      "role = COALESCE($5, role), " +
+      "address = COALESCE($6, address), " +
+      "phone_number = COALESCE($7, phone_number) " + 
+      "WHERE id=$1",
+      values: [id, first_name, last_name, email, role, address, phone_number],
   }
+        
+    try {
+        const res = await client.query(query);
+    }
+    catch{
+        throw Error("Internal Server Error");
+    }
 
-  return user;
+  
+  return getUser(id);
 };
 
 // get a user given an id

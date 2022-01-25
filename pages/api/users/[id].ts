@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { updateUser } from "../../../lib/database/users";
-import { userSchema } from "../../../models/users";
+import { updateUserSchema, userSchema } from "../../../models/users";
 import { getUser } from "../../../lib/database/users";
 import { StatusCodes } from "http-status-codes";
 
@@ -29,9 +29,13 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       }
 
     case "PATCH":
+      let user = await getUser(id);
+      if (user == null) {
+        return res.status(StatusCodes.NOT_FOUND).json("user not found");
+      }
       let newUser;
       try {
-        newUser = await userSchema.validate(req.body);
+        newUser = await updateUserSchema.validate(req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

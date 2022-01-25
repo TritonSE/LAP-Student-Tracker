@@ -20,3 +20,4 @@ export const updateUserSchema = object({
 });
 
 export type User = InferType<typeof userSchema>;
+export type UpdateUser = InferType<typeof updateUserSchema>;

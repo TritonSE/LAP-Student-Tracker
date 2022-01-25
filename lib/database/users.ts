@@ -63,7 +63,7 @@ const updateUser = async (
         const res = await client.query(query);
     }
     catch{
-        throw Error("Error on update user"); //need to change status code and test error message?
+        throw Error("Error on update user"); 
     }
 
   

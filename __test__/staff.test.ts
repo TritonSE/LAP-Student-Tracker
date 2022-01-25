@@ -54,16 +54,15 @@ describe("[GET] /api/staff", () => {
     );
   });
 
-  it("look for all staff when there are none", async () => {
-    client.query("DELETE from users");
-    await makeHTTPRequest(
-      staffHandler,
-      "/api/users/1",
-      undefined,
-      "GET",
-      undefined,
-      StatusCodes.ACCEPTED,
-      []
-    );
-  });
 });
+
+describe("[GET] /api/staff with no staff", () => {
+    beforeAll(async () => {
+      await client.query("DELETE from users WHERE role = 'Teacher' OR role = 'Admin'")
+    })
+  
+    it("Works correctly with 0 users", async () => {
+      await makeHTTPRequest(staffHandler, "/api/users/", undefined, "GET", undefined, StatusCodes.ACCEPTED, []);
+    });
+  
+  })

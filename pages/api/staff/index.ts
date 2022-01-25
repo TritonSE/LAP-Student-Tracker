@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getStaff } from "../../../lib/database/users";
+import { getAllStaff } from "../../../lib/database/staff";
 import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/staff/
@@ -7,7 +7,7 @@ export const staffHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
   switch (req.method) {
     case "GET":
       try {
-        const result = await getStaff();
+        const result = await getAllStaff();
         res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

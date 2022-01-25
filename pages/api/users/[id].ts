@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/users/[id]
 export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.query == undefined) {
+  if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 

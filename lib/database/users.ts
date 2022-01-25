@@ -1,9 +1,5 @@
 import { client } from "../db";
-import { updateUserSchema, User, userSchema, UpdateUser } from "../../models/users";
-import { array, InferType } from "yup";
-
-const userArraySchema = array(userSchema).defined();
-type userArrayType = InferType<typeof userArraySchema>;
+import { User, userSchema } from "../../models/users";
 
 // create a user in the database with given parameters.
 const createUser = async (
@@ -93,23 +89,4 @@ const getUser = async (id: string): Promise<User | null> => {
   return user;
 };
 
-// gets all staff in the database
-const getStaff = async (): Promise<User[]> => {
-  const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE role = 'Teacher' OR role = 'Admin'",
-  };
-
-  const res = await client.query(query);
-
-  let user: userArrayType;
-
-  try {
-    user = await userArraySchema.validate(res.rows);
-  } catch (e) {
-    throw Error("Error on return from database");
-  }
-
-  return user;
-};
-
-export { createUser, getUser, updateUser, getStaff };
+export { createUser, getUser, updateUser };

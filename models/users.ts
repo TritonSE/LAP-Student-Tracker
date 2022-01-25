@@ -11,13 +11,12 @@ export const userSchema = object({
 });
 
 export const updateUserSchema = object({
-    first_name: string().optional(),
-    last_name: string().optional(),
-    email: string().optional(),
-    role: string().optional().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
-    phone_number: string().optional(),
-    address: string().optional(),
-
+  first_name: string().optional(),
+  last_name: string().optional(),
+  email: string().optional(),
+  role: string().optional().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
+  phone_number: string().optional(),
+  address: string().optional(),
 });
 
 export type User = InferType<typeof userSchema>;

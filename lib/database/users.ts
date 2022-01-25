@@ -48,12 +48,11 @@ const updateUser = async (
   phone_number?: string
 ): Promise<User> => {
   const query = {
-    text:
-      "UPDATE users SET first_name = COALESCE($2, first_name) last_name = COALESCE($3, last_name) email = COALESCE($3, email) role = COALESCE($4, role) address = COALESCE($5, address) phone_number = COALESCE($6, phone_number) WHERE id=$1",
+    text: "UPDATE users SET first_name = COALESCE($2, first_name) last_name = COALESCE($3, last_name) email = COALESCE($3, email) role = COALESCE($4, role) address = COALESCE($5, address) phone_number = COALESCE($6, phone_number) WHERE id=$1",
     values: [first_name, last_name, email, role, address, phone_number],
   };
 
-  const res = getUser(id)
+  const res = getUser(id);
 
   if (res == null) throw Error("Incorrect return from database");
 

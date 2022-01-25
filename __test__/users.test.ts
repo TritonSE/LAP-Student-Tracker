@@ -1,6 +1,5 @@
 import { userHandler } from "../pages/api/users";
 import { userIDHandler } from "../pages/api/users/[id]";
-import { staffHandler } from "../pages/api/staff";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { User } from "../models/users";
@@ -37,7 +36,15 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phone_number: "1234567890",
     };
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, StatusCodes.CREATED , body);
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      body
+    );
   });
 
   it("doesn't create a duplicate user", async () => {
@@ -94,7 +101,15 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phone_number: "1234567890",
     };
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, StatusCodes.CREATED, body);
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      body
+    );
   });
 
   it("creates an Teacher user", async () => {
@@ -107,7 +122,15 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phone_number: "1234567890",
     };
-    await makeHTTPRequest(userHandler, "/api/users/", undefined, "POST", body, StatusCodes.CREATED, body);
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      body
+    );
   });
 });
 
@@ -127,7 +150,15 @@ describe("[GET] /api/users/[id]", () => {
       id: 1,
     };
 
-    await makeHTTPRequest(userIDHandler, "/api/users/1", query, "GET", undefined, StatusCodes.ACCEPTED, expected);
+    await makeHTTPRequest(
+      userIDHandler,
+      "/api/users/1",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.ACCEPTED,
+      expected
+    );
   });
 
   it("fails for a user that does not exist", async () => {

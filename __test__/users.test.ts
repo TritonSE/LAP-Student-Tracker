@@ -28,7 +28,7 @@ afterAll(async () => {
 
 describe("[POST] /api/users", () => {
   it("creates a new user", async () => {
-    const body = {
+    const body: User = {
       id: "100",
       first_name: "John",
       last_name: "Doe",
@@ -49,7 +49,7 @@ describe("[POST] /api/users", () => {
   });
 
   it("doesn't create a duplicate user", async () => {
-    const body = {
+    const body: User = {
       id: "1",
       first_name: "John",
       last_name: "Doe",
@@ -71,7 +71,7 @@ describe("[POST] /api/users", () => {
   });
 
   it("doesn't create a different user with an existing email", async () => {
-    const body = {
+    const body: User = {
       id: "54",
       first_name: "John",
       last_name: "John",
@@ -93,7 +93,7 @@ describe("[POST] /api/users", () => {
   });
 
   it("creates an Admin user", async () => {
-    const body = {
+    const body: User = {
       id: "50",
       first_name: "Admin",
       last_name: "Doe",
@@ -114,7 +114,7 @@ describe("[POST] /api/users", () => {
   });
 
   it("creates an Teacher user", async () => {
-    const body = {
+    const body: User = {
       id: "45",
       first_name: "Teacher",
       last_name: "Doe",

@@ -1,0 +1,47 @@
+.tabsContainer {
+  margin: none;
+}
+
+.tabs {
+  display: inline-flex;
+  width: 454px;
+  border-bottom: 3px solid var(--orange);
+}
+
+.tabButton {
+  /* Text */
+  composes: labelLarge from "./globals.css";
+  align-items: center;
+  text-align: center;
+
+  /* Button */
+  width: 151px;
+  height: 40px;
+  border-radius: 6px 6px 0 0;
+  border: none;
+
+  cursor: pointer;
+}
+
+.activeTab {
+  background-color: var(--orange);
+  color: var(--black);
+  margin: 0px -1px;
+  z-index: 1;
+}
+
+.inactiveTab {
+  background-color: var(--white);
+  color: var(--gray-1);
+}
+
+.tabWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.verticalLine {
+  border-left: 1px solid #85888c;
+  height: 25px;
+  z-index: 0;
+}

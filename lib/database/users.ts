@@ -63,7 +63,7 @@ const updateUser = async (
         const res = await client.query(query);
     }
     catch{
-        throw Error("Internal Server Error");
+        throw Error("Error on update user"); //need to change status code and test error message?
     }
 
   
@@ -87,7 +87,7 @@ const getUser = async (id: string): Promise<User | null> => {
   try {
     user = await userSchema.validate(res.rows[0]);
   } catch {
-    throw Error("Error on return from database");
+    throw Error("Fields returned incorrectly in database");
   }
 
   return user;
@@ -106,7 +106,7 @@ const getStaff = async (): Promise<User[]> => {
   try {
     user = await userArraySchema.validate(res.rows);
   } catch (e) {
-    throw Error("Error on return from database");
+    throw Error("Fields returned incorrectly in database");
   }
 
   return user;

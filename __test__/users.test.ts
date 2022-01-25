@@ -7,6 +7,7 @@ import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const USER_NOT_FOUND_ERROR = "user not found";
+const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
 beforeAll(async () => {
   await client.query("DELETE from users");
@@ -132,6 +133,27 @@ describe("[POST] /api/users", () => {
       body
     );
   });
+
+  it("body does not have a required field", async() =>{
+    const body = {
+      first_name: "ABCD",
+      last_name: "EFGH",
+      email: "adcd@efgh.com",
+      role: "Student",
+      address: "123 Main Street",
+      phone_number: "1234567890",
+    };
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      FIELDS_NOT_ENTERED_CORRECTLY
+    );
+
+  });
 });
 
 describe("[GET] /api/users/[id]", () => {
@@ -214,6 +236,43 @@ describe("[PATCH] /api/users/[id]", () => {
       expected
     );
   });
+
+  it("editing few fields for a user that does exist", async () => {
+    const expected: User = {
+      id: "3",
+      first_name: "Admin123",
+      last_name: "Brown",
+      email: "admin@gmail.com",
+      role: "Admin",
+      address: "456 Main Street",
+      phone_number: "4567890",
+    };
+
+    const query = {
+      id: 3,
+      
+    };
+
+    const body = {
+      id: "3",
+      first_name: "Admin123",
+      last_name: "Brown",
+      address: "456 Main Street",
+      phone_number: "4567890",
+    }
+
+    await makeHTTPRequest(
+      userIDHandler,
+      "/api/users/3",
+      query,
+      "PATCH",
+      body,
+      StatusCodes.CREATED,
+      expected
+    );
+  });
+
+
 
 
   it("editing a user that does not exist", async () => {

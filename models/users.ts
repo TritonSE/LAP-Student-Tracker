@@ -23,7 +23,6 @@ export const UserSchema = t.intersection([
 ]);
 
 export const UpdateUserSchema = t.partial({
-  id: t.string,
   firstName: t.string,
   lastName: t.string,
   email: t.string,

@@ -14,7 +14,11 @@ const createUser = async (
   const query = {
     text:
       "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7)",
+<<<<<<< HEAD
     values: [id, firstName, lastName, email, role, address, phone_number],
+=======
+    values: [id, first_name, last_name, email, role, address, phone_number],
+>>>>>>> e27a678f2dbf236d309a6a657a585cbd0b1783a8
   };
 
   try {
@@ -46,12 +50,19 @@ const updateUser = async (
       "address = COALESCE($6, address), " +
       "phone_number = COALESCE($7, phone_number) " +
       "WHERE id=$1",
+<<<<<<< HEAD
     values: [id, firstName, lastName, email, role, address, phone_number],
+=======
+    values: [id, first_name, last_name, email, role, address, phone_number],
+>>>>>>> e27a678f2dbf236d309a6a657a585cbd0b1783a8
   }
 
   try {
     const res = await client.query(query);
+<<<<<<< HEAD
     console.log(res)
+=======
+>>>>>>> e27a678f2dbf236d309a6a657a585cbd0b1783a8
   }
   catch {
     throw Error("Error on update user");

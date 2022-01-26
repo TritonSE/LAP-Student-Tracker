@@ -1,5 +1,5 @@
 import React from "react";
-import { Student } from "../models/users";
+import { Student } from "../models/students";
 import StudentCard from "./StudentCard";
 import styles from "../styles/Components.module.css";
 

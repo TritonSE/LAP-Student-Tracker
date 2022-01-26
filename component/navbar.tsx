@@ -1,6 +1,7 @@
 import styles from "../styles/Navbar.module.css";
 import type { NextPage } from 'next'
-export const Navbar: NextPage = ({children})=>{
+import React from "react";
+export const Navbar: React.FC<NextPage> = ({children})=>{
     return <> 
           <header className={styles.header}>
         <nav className={styles.navbar}>

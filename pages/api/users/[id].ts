@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { updateUser } from "../../../lib/database/users";
-import { updateUserSchema, userSchema } from "../../../models/users";
+import { UpdateUserSchema, UpdateUser } from "../../../models/users";
+import { decode } from 'io-ts-promise';
 import { getUser } from "../../../lib/database/users";
 import { StatusCodes } from "http-status-codes";
 
@@ -35,7 +36,7 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       }
       let newUser;
       try {
-        newUser = await updateUserSchema.validate(req.body);
+        newUser = await decode(UpdateUserSchema, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
@@ -43,12 +44,12 @@ export const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
         // call the function that actually inserts the data into the database
         const result = await updateUser(
           id,
-          newUser.first_name,
-          newUser.last_name,
+          newUser.firstName,
+          newUser.lastName,
           newUser.email,
           newUser.role,
           newUser.address,
-          newUser.phone_number
+          newUser.phoneNumber
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {

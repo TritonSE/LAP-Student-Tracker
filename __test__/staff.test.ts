@@ -26,21 +26,21 @@ describe("[GET] /api/staff", () => {
     const expected: User[] = [
       {
         id: "2",
-        first_name: "Teacher",
-        last_name: "Doe",
+        firstName: "Teacher",
+        lastName: "Doe",
         email: "teacher@gmail.com",
         role: "Teacher",
         address: "123 Main Street",
-        phone_number: "1234567890",
+        phoneNumber: "1234567890",
       },
       {
         id: "3",
-        first_name: "Admin",
-        last_name: "Doe",
+        firstName: "Admin",
+        lastName: "Doe",
         email: "admin@gmail.com",
         role: "Admin",
         address: "123 Main Street",
-        phone_number: "1234567890",
+        phoneNumber: "1234567890",
       },
     ];
     await makeHTTPRequest(
@@ -57,12 +57,12 @@ describe("[GET] /api/staff", () => {
 });
 
 describe("[GET] /api/staff with no staff", () => {
-    beforeAll(async () => {
-      await client.query("DELETE from users WHERE role = 'Teacher' OR role = 'Admin'")
-    })
-  
-    it("Works correctly with 0 users", async () => {
-      await makeHTTPRequest(staffHandler, "/api/users/", undefined, "GET", undefined, StatusCodes.ACCEPTED, []);
-    });
-  
+  beforeAll(async () => {
+    await client.query("DELETE from users WHERE role = 'Teacher' OR role = 'Admin'")
   })
+
+  it("Works correctly with 0 users", async () => {
+    await makeHTTPRequest(staffHandler, "/api/users/", undefined, "GET", undefined, StatusCodes.ACCEPTED, []);
+  });
+
+})

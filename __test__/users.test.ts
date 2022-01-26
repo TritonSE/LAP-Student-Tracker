@@ -30,12 +30,12 @@ describe("[POST] /api/users", () => {
   it("creates a new user", async () => {
     const body: User = {
       id: "100",
-      first_name: "John",
-      last_name: "Doe",
+      firstName: "John",
+      lastName: "Doe",
       email: "mynaME@gmail.com",
       role: "Student",
       address: "123 Main Street",
-      phone_number: "1234567890",
+      phoneNumber: "1234567890",
     };
     await makeHTTPRequest(
       userHandler,

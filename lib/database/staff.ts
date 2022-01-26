@@ -1,28 +1,29 @@
 import { client } from "../db";
-import { User, userSchema } from "../../models/users";
-import { array, InferType } from "yup";
+import { User, UserSchema } from "../../models/users";
+import { array, TypeOf } from "io-ts";
+import { decode } from "io-ts-promise"
 
-const userArraySchema = array(userSchema).defined();
-type userArrayType = InferType<typeof userArraySchema>;
+const UserArraySchema = array(UserSchema)
+type userArrayType = TypeOf<typeof UserArraySchema>;
 
 // gets all staff in the database
 const getAllStaff = async (): Promise<User[]> => {
-    const query = {
-      text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE role = 'Teacher' OR role = 'Admin'",
-    };
-  
-    const res = await client.query(query);
-  
-    let user: userArrayType;
-  
-    try {
-      user = await userArraySchema.validate(res.rows);
-    } catch (e) {
-      throw Error("Fields returned incorrectly from database");
-    }
-  
-    return user;
+  const query = {
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE role = 'Teacher' OR role = 'Admin'",
   };
-  
 
-  export { getAllStaff };
+  const res = await client.query(query);
+
+  let staffArray: userArrayType;
+
+  try {
+    staffArray = await decode(UserArraySchema, res.rows);
+  } catch (e) {
+    throw Error("Fields returned incorrectly from database");
+  }
+
+  return staffArray;
+};
+
+
+export { getAllStaff };

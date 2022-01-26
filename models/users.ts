@@ -1,12 +1,12 @@
-import * as t from 'io-ts';
+import * as t from "io-ts";
 
 const possibleRoles = t.keyof({
   Admin: null,
   Volunteer: null,
   Student: null,
   Teacher: null,
-  Parent: null
-})
+  Parent: null,
+});
 
 export const UserSchema = t.intersection([
   t.type({
@@ -18,9 +18,9 @@ export const UserSchema = t.intersection([
   }),
   t.partial({
     phoneNumber: t.string,
-    address: t.string
-  })
-])
+    address: t.string,
+  }),
+]);
 
 export const UpdateUserSchema = t.partial({
   id: t.string,
@@ -29,8 +29,8 @@ export const UpdateUserSchema = t.partial({
   email: t.string,
   role: possibleRoles,
   phoneNumber: t.string,
-  address: t.string
-})
+  address: t.string,
+});
 
-export type User = t.TypeOf<typeof UserSchema>
-export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>
+export type User = t.TypeOf<typeof UserSchema>;
+export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>;

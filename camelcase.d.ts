@@ -1,1 +1,1 @@
-declare module 'pg-camelcase';
+declare module "pg-camelcase";

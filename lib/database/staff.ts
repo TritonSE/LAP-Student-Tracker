@@ -1,9 +1,9 @@
 import { client } from "../db";
 import { User, UserSchema } from "../../models/users";
 import { array, TypeOf } from "io-ts";
-import { decode } from "io-ts-promise"
+import { decode } from "io-ts-promise";
 
-const UserArraySchema = array(UserSchema)
+const UserArraySchema = array(UserSchema);
 type userArrayType = TypeOf<typeof UserArraySchema>;
 
 // gets all staff in the database
@@ -24,6 +24,5 @@ const getAllStaff = async (): Promise<User[]> => {
 
   return staffArray;
 };
-
 
 export { getAllStaff };

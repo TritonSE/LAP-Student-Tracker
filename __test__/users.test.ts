@@ -152,7 +152,6 @@ describe("[POST] /api/users", () => {
       StatusCodes.BAD_REQUEST,
       FIELDS_NOT_ENTERED_CORRECTLY
     );
-
   });
 });
 
@@ -214,7 +213,6 @@ describe("[PATCH] /api/users/[id]", () => {
 
     const query = {
       id: 1,
-
     };
 
     const body: UpdateUser = {
@@ -224,7 +222,7 @@ describe("[PATCH] /api/users/[id]", () => {
       role: "Admin",
       address: "456 Main Street",
       phoneNumber: "4567890",
-    }
+    };
 
     await makeHTTPRequest(
       userIDHandler,
@@ -250,15 +248,14 @@ describe("[PATCH] /api/users/[id]", () => {
 
     const query = {
       id: 3,
-
     };
 
     const body: UpdateUser = {
       firstName: "Admin123",
       lastName: "Brown",
       address: "456 Main Street",
-      phoneNumber: "4567890"
-    }
+      phoneNumber: "4567890",
+    };
 
     await makeHTTPRequest(
       userIDHandler,
@@ -271,9 +268,6 @@ describe("[PATCH] /api/users/[id]", () => {
     );
   });
 
-
-
-
   it("editing a user that does not exist", async () => {
     const query = {
       id: 101,
@@ -281,7 +275,7 @@ describe("[PATCH] /api/users/[id]", () => {
 
     const body: UpdateUser = {
       firstName: "Joe",
-    }
+    };
 
     await makeHTTPRequest(
       userIDHandler,
@@ -295,13 +289,12 @@ describe("[PATCH] /api/users/[id]", () => {
   });
 
   it("editing a user that exists with existing email", async () => {
-
     const query = {
       id: 2,
     };
 
     const body = {
-      email: "admin@gmail.com"
+      email: "admin@gmail.com",
     };
 
     await makeHTTPRequest(
@@ -314,8 +307,4 @@ describe("[PATCH] /api/users/[id]", () => {
       INTERNAL_SERVER_ERROR
     );
   });
-
-
 });
-
-

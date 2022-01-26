@@ -1,6 +1,6 @@
 import { client } from "../db";
 import { User, UserSchema } from "../../models/users";
-import { decode } from 'io-ts-promise'
+import { decode } from "io-ts-promise";
 // create a user in the database with given parameters.
 const createUser = async (
   id: string,
@@ -12,19 +12,17 @@ const createUser = async (
   phone_number?: string
 ): Promise<User | null> => {
   const query = {
-    text:
-      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7)",
+    text: "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7)",
     values: [id, firstName, lastName, email, role, address, phone_number],
   };
 
   try {
     await client.query(query);
-  }
-  catch {
-    throw Error("Error on insert into database")
+  } catch {
+    throw Error("Error on insert into database");
   }
 
-  return getUser(id)
+  return getUser(id);
 };
 
 // updates user given new parameters
@@ -35,10 +33,11 @@ const updateUser = async (
   email?: string,
   role?: string,
   address?: string,
-  phone_number?: string,
+  phone_number?: string
 ): Promise<User | null> => {
   const query = {
-    text: "UPDATE users " +
+    text:
+      "UPDATE users " +
       "SET first_name = COALESCE($2, first_name), " +
       "last_name = COALESCE($3, last_name), " +
       "email = COALESCE($4, email), " +
@@ -47,15 +46,13 @@ const updateUser = async (
       "phone_number = COALESCE($7, phone_number) " +
       "WHERE id=$1",
     values: [id, firstName, lastName, email, role, address, phone_number],
-  }
+  };
 
   try {
     const res = await client.query(query);
-  }
-  catch {
+  } catch {
     throw Error("Error on update user");
   }
-
 
   return getUser(id);
 };

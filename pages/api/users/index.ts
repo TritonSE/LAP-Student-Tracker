@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createUser } from "../../../lib/database/users";
 import { UserSchema, User } from "../../../models/users";
-import { decode } from 'io-ts-promise'
+import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/users/

@@ -2,7 +2,7 @@ import { userHandler } from "../pages/api/users";
 import { userIDHandler } from "../pages/api/users/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { User } from "../models/users";
+import { UpdateUser, User } from "../models/users";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
@@ -51,12 +51,12 @@ describe("[POST] /api/users", () => {
   it("doesn't create a duplicate user", async () => {
     const body: User = {
       id: "1",
-      first_name: "John",
-      last_name: "Doe",
+      firstName: "John",
+      lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
       address: "123 Main Street",
-      phone_number: "1234567890",
+      phoneNumber: "1234567890",
     };
 
     await makeHTTPRequest(
@@ -73,12 +73,12 @@ describe("[POST] /api/users", () => {
   it("doesn't create a different user with an existing email", async () => {
     const body: User = {
       id: "54",
-      first_name: "John",
-      last_name: "John",
+      firstName: "John",
+      lastName: "John",
       email: "john@gmail.com",
       role: "Student",
       address: "123 Main Street",
-      phone_number: "1234567890",
+      phoneNumber: "1234567890",
     };
 
     await makeHTTPRequest(
@@ -95,12 +95,12 @@ describe("[POST] /api/users", () => {
   it("creates an Admin user", async () => {
     const body: User = {
       id: "50",
-      first_name: "Admin",
-      last_name: "Doe",
+      firstName: "Admin",
+      lastName: "Doe",
       email: "newAdmin@gmail.com",
       role: "Admin",
       address: "123 Main Street",
-      phone_number: "1234567890",
+      phoneNumber: "1234567890",
     };
     await makeHTTPRequest(
       userHandler,
@@ -116,12 +116,12 @@ describe("[POST] /api/users", () => {
   it("creates an Teacher user", async () => {
     const body: User = {
       id: "45",
-      first_name: "Teacher",
-      last_name: "Doe",
+      firstName: "Teacher",
+      lastName: "Doe",
       email: "newTeacher@gmail.com",
       role: "Admin",
       address: "123 Main Street",
-      phone_number: "1234567890",
+      phoneNumber: "1234567890",
     };
     await makeHTTPRequest(
       userHandler,
@@ -134,14 +134,14 @@ describe("[POST] /api/users", () => {
     );
   });
 
-  it("body does not have a required field", async() =>{
+  it("body does not have a required field", async () => {
     const body = {
-      first_name: "ABCD",
-      last_name: "EFGH",
+      firstName: "ABCD",
+      lastName: "EFGH",
       email: "adcd@efgh.com",
       role: "Student",
       address: "123 Main Street",
-      phone_number: "1234567890",
+      phoneNumber: "1234567890",
     };
     await makeHTTPRequest(
       userHandler,
@@ -160,12 +160,12 @@ describe("[GET] /api/users/[id]", () => {
   it("look for a user that exists", async () => {
     const expected: User = {
       id: "1",
-      first_name: "John",
-      last_name: "Doe",
+      firstName: "John",
+      lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
       address: "123 Main Street",
-      phone_number: "1234567890",
+      phoneNumber: "1234567890",
     };
 
     const query = {
@@ -204,26 +204,26 @@ describe("[PATCH] /api/users/[id]", () => {
   it("editing everything for a user that does exist", async () => {
     const expected: User = {
       id: "1",
-      first_name: "Bill",
-      last_name: "Brown",
+      firstName: "Bill",
+      lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
       address: "456 Main Street",
-      phone_number: "4567890",
+      phoneNumber: "4567890",
     };
 
     const query = {
       id: 1,
-      
+
     };
 
-    const body = {
-      first_name: "Bill",
-      last_name: "Brown",
+    const body: UpdateUser = {
+      firstName: "Bill",
+      lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
       address: "456 Main Street",
-      phone_number: "4567890",
+      phoneNumber: "4567890",
     }
 
     await makeHTTPRequest(
@@ -240,25 +240,24 @@ describe("[PATCH] /api/users/[id]", () => {
   it("editing few fields for a user that does exist", async () => {
     const expected: User = {
       id: "3",
-      first_name: "Admin123",
-      last_name: "Brown",
+      firstName: "Admin123",
+      lastName: "Brown",
       email: "admin@gmail.com",
       role: "Admin",
       address: "456 Main Street",
-      phone_number: "4567890",
+      phoneNumber: "4567890",
     };
 
     const query = {
       id: 3,
-      
+
     };
 
-    const body = {
-      id: "3",
-      first_name: "Admin123",
-      last_name: "Brown",
+    const body: UpdateUser = {
+      firstName: "Admin123",
+      lastName: "Brown",
       address: "456 Main Street",
-      phone_number: "4567890",
+      phoneNumber: "4567890"
     }
 
     await makeHTTPRequest(
@@ -280,8 +279,8 @@ describe("[PATCH] /api/users/[id]", () => {
       id: 101,
     };
 
-    const body = {
-      first_name: "Joe",
+    const body: UpdateUser = {
+      firstName: "Joe",
     }
 
     await makeHTTPRequest(

@@ -1,23 +1,36 @@
-import { object, string, InferType } from "yup";
+import * as t from 'io-ts';
 
-export const userSchema = object({
-  id: string().required(),
-  first_name: string().required(),
-  last_name: string().required(),
-  email: string().required(),
-  role: string().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
-  phone_number: string().optional(),
-  address: string().required(),
-});
+const possibleRoles = t.keyof({
+  Admin: null,
+  Volunteer: null,
+  Student: null,
+  Teacher: null,
+  Parent: null
+})
 
-export const updateUserSchema = object({
-  first_name: string().optional(),
-  last_name: string().optional(),
-  email: string().optional(),
-  role: string().optional().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
-  phone_number: string().optional(),
-  address: string().optional(),
-});
+export const UserSchema = t.intersection([
+  t.type({
+    id: t.string,
+    firstName: t.string,
+    lastName: t.string,
+    email: t.string,
+    role: possibleRoles,
+  }),
+  t.partial({
+    phoneNumber: t.string,
+    address: t.string
+  })
+])
 
-export type User = InferType<typeof userSchema>;
-export type UpdateUser = InferType<typeof updateUserSchema>;
+export const UpdateUserSchema = t.partial({
+  id: t.string,
+  firstName: t.string,
+  lastName: t.string,
+  email: t.string,
+  role: possibleRoles,
+  phoneNumber: t.string,
+  address: t.string
+})
+
+export type User = t.TypeOf<typeof UserSchema>
+export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>

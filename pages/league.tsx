@@ -71,9 +71,9 @@ const League: NextPage = () => {
 
   // Renders specific content component based on tab state
   const renderComponent = (display: String) => {
-    if (display == "Classes") return <ClassView classes={content?.Classes} />;
-    if (display == "Students") return <StudentView students={content?.Students} />;
-    if (display == "Staff") return <StaffView staff={content?.Staff} />;
+    if (display == "Classes") return <ClassView classes={content.Classes} />;
+    if (display == "Students") return <StudentView students={content.Students} />;
+    if (display == "Staff") return <StaffView staff={content.Staff} />;
   };
 
   return (
@@ -86,9 +86,8 @@ const League: NextPage = () => {
               <div className={styles.tabWrapper}>
                 <button
                   key={tabName}
-                  className={`${styles.tabButton} ${
-                    display === tabName ? styles.activeTab : styles.inactiveTab
-                  }`}
+                  className={`${styles.tabButton} ${display === tabName ? styles.activeTab : styles.inactiveTab
+                    }`}
                   onClick={() => setDisplay(tabName)}
                 >
                   {tabName}

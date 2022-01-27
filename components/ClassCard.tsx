@@ -1,5 +1,5 @@
 import moment from "moment";
-import styles from "../styles/Components.module.css";
+import styles from "../styles/league-components.module.css";
 
 type ClassCardProps = {
   name: string;
@@ -36,9 +36,8 @@ const ClassCard: React.FC<ClassCardProps> = ({
   return (
     <div className={styles.listElem}>
       <div>
-        <p className={styles.leftText}>{`${name} ${
-          minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
-        }`}</p>
+        <p className={styles.leftText}>{`${name} ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
+          }`}</p>
       </div>
       <div className={styles.rightText}>
         {[

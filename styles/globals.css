@@ -1,21 +1,44 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@font-face {
+  font-family: "Inter";
+  src: url(../assets/fonts/Inter.otf) format("opentype");
 }
 
-html,body, body * { 
-  font-family: 'Open Sans', sans-serif; 
-  color:inherit;
-  background-color:inherit;
- font-size: 62.5%;
+.headlineLarge {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 32px;
+  line-height: 40px;
 }
 
-li {
-  list-style: none;
+.headlineSmall {
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 32px;
 }
 
-a {
-  text-decoration: none;
+.titleMedium {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 24px;
 }
 
+.titleSmall {
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.labelLarge {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 20px;
+}

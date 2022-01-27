@@ -1,3 +1,4 @@
+
 .header{
     border-bottom: 1px solid #E2E8F0;
 }
@@ -27,6 +28,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    list-style-type: none;
 }
 
 .navitem {
@@ -34,10 +36,11 @@
 }
 
 .navlink{
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 400;
     color: #000000;
     bottom: 20px;
+    text-decoration: none;
 }
 .navlink::after{
     content:"";
@@ -54,9 +57,10 @@
         content: '';
         position: relative;
         width: 100%;
-        height: 0.175rem;
+        height: 0.6px;
         left: 0;
         bottom: 0;
+        border-radius: 3px;
         
     }
 

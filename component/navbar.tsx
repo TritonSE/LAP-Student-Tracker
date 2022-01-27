@@ -9,7 +9,12 @@ export const Navbar: React.FC = ({ children }) => {
         <ul className={styles.navmenu}>
           <li className={styles.navitem}>
             <a
-              href="home"
+            /* 
+            These are the 3 navbar buttons, we may want to add some conditional 
+            statements here to say when the buttons are displayed and not, like in
+            the signup page, where they shouldn't be displayed
+            */  
+            href="home"
               className={styles.navlink}>Home</a>
           </li>
           <li className={styles.navitem}>

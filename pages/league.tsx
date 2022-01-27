@@ -5,7 +5,8 @@ import ClassView from "../components/ClassView";
 import StudentView from "../components/StudentView";
 import StaffView from "../components/StaffView";
 import { Class } from "../models/classes";
-import { User, Student } from "../models/users";
+import { User } from "../models/users";
+import { Student } from "../models/students";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
@@ -29,7 +30,7 @@ const League: NextPage = () => {
     lastName: "Ord",
     email: "ricko@ucsd.edu",
     role: "Teacher",
-    phone_number: "(123) 456-7890",
+    phoneNumber: "(123) 456-7890",
     address: "123",
   };
   const testClass: Class = {
@@ -48,7 +49,7 @@ const League: NextPage = () => {
     lastName: "Gillespie",
     email: "garyg@ucsd.edu",
     role: "Student",
-    phone_number: "(123) 456-7890",
+    phoneNumber: "(123) 456-7890",
     address: "123",
     level: 3,
     classes: ["CSE 123"],

@@ -1,32 +1,35 @@
-import { object, string, number, array, InferType } from "yup";
+import * as t from "io-ts";
 
-export const requestUserSchema = object({
-  id: string().required(),
-  firstName: string().required(),
-  lastName: string().required(),
-  email: string().required(),
-  role: string().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
-  phone_number: string().optional(),
-  address: string().required(),
+const possibleRoles = t.keyof({
+  Admin: null,
+  Volunteer: null,
+  Student: null,
+  Teacher: null,
+  Parent: null,
 });
 
-export const userSchema = object({
-  id: string().required(),
-  firstName: string().required(),
-  lastName: string().required(),
-  email: string().required(),
-  role: string().required().oneOf(["Admin", "Volunteer", "Teacher", "Student", "Parent"]),
-  phone_number: string().optional(),
-  address: string().required(),
+export const UserSchema = t.intersection([
+  t.type({
+    id: t.string,
+    firstName: t.string,
+    lastName: t.string,
+    email: t.string,
+    role: possibleRoles,
+  }),
+  t.partial({
+    phoneNumber: t.string,
+    address: t.string,
+  }),
+]);
+
+export const UpdateUserSchema = t.partial({
+  firstName: t.string,
+  lastName: t.string,
+  email: t.string,
+  role: possibleRoles,
+  phoneNumber: t.string,
+  address: t.string,
 });
 
-const studentSchema = userSchema.concat(
-  object({
-    level: number().required(),
-    classes: array(string().required()).required(),
-  })
-);
-
-export type RequestUser = InferType<typeof requestUserSchema>;
-export type User = InferType<typeof userSchema>;
-export type Student = InferType<typeof studentSchema>;
+export type User = t.TypeOf<typeof UserSchema>;
+export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>;

@@ -33,7 +33,7 @@ const StaffView: React.FC<StaffViewProp> = ({ staff }) => (
               key={c.id}
               firstName={c.firstName}
               lastName={c.lastName}
-              phone_number={c.phone_number}
+              phone_number={c.phoneNumber}
               email={c.email}
             />
           ))}

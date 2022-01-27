@@ -1,15 +1,14 @@
-import { object, array, number, string, InferType } from "yup";
-import { userSchema } from "./users";
-
-export const classSchema = object({
-  id: string().required(),
-  name: string().required(),
-  minLevel: number().required(),
-  maxLevel: number().required(),
-  recurrence: array(number().required()).required(),
-  timeStart: string().required(),
-  timeEnd: string().required(),
-  teachers: array(userSchema.required()).required(),
+import * as t from "io-ts";
+import { UserSchema } from "./users";
+export const ClassSchema = t.type({
+  id: t.string,
+  name: t.string,
+  minLevel: t.number,
+  maxLevel: t.number,
+  recurrence: t.array(t.number),
+  timeStart: t.string,
+  timeEnd: t.string,
+  teachers: t.array(UserSchema),
 });
 
-export type Class = InferType<typeof classSchema>;
+export type Class = t.TypeOf<typeof ClassSchema>;

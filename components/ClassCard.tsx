@@ -36,8 +36,9 @@ const ClassCard: React.FC<ClassCardProps> = ({
   return (
     <div className={styles.listElem}>
       <div>
-        <p className={styles.leftText}>{`${name} ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
-          }`}</p>
+        <p className={styles.leftText}>{`${name} ${
+          minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
+        }`}</p>
       </div>
       <div className={styles.rightText}>
         {[

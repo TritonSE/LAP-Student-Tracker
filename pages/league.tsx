@@ -86,8 +86,9 @@ const League: NextPage = () => {
               <div className={styles.tabWrapper}>
                 <button
                   key={tabName}
-                  className={`${styles.tabButton} ${display === tabName ? styles.activeTab : styles.inactiveTab
-                    }`}
+                  className={`${styles.tabButton} ${
+                    display === tabName ? styles.activeTab : styles.inactiveTab
+                  }`}
                   onClick={() => setDisplay(tabName)}
                 >
                   {tabName}

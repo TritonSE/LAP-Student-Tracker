@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Navbar } from "../navbar"
+import { Navbar } from "../Navbar"
 import React, { FC } from "react";
 
 //using Layout to render the Navbar on select pages

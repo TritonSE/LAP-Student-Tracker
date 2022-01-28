@@ -36,38 +36,28 @@
 }
 
 .navlink{
-    font-size: 1.5rem;
-    font-weight: 400;
-    color: #000000;
+    composes: headlineSmall from "./globals.css";
     bottom: 20px;
     text-decoration: none;
+    position: relative;
+    bottom: 0px;
 }
-.navlink::after{
-    content:"";
-    position: absolute;
-    background-color: #F26522;
-    height: 3px;
-    width: 100%;
-    left: 0;
-    bottom:-8px;
-    
-    
-    }
-    .navlink:hover{
-        content: '';
-        position: relative;
+
+    .navlink:hover::after{
+        content:'';
+        position:absolute;
         width: 100%;
-        height: 0.6px;
-        left: 0;
-        bottom: 0;
-        border-radius: 3px;
+        height: 0;    
+        left:0;
+        bottom:-6px;
+        border-bottom: 4px solid var(--orange);
         
     }
 
 .navlogo {
     font-size: 2.1rem;
     font-weight: 500;
-    color: #F26522;
+    color: var(--orange);
 }
 
 

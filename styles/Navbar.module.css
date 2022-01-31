@@ -41,7 +41,18 @@
   position: relative;
   bottom: 0px;
 }
+.clicked {
+  composes: headlineSmall from "./globals.css";
+  bottom: 20px;
+  text-decoration: none;
+  position: relative;
+  bottom: 0px;
 
+  border-bottom: 4px solid var(--orange);
+}
+.underline {
+  background-color: aqua;
+}
 .navlink:hover::after {
   content: "";
   position: absolute;
@@ -50,10 +61,4 @@
   left: 0;
   bottom: -6px;
   border-bottom: 4px solid var(--orange);
-}
-
-.navlogo {
-  font-size: 2.1rem;
-  font-weight: 500;
-  color: var(--orange);
 }

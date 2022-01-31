@@ -47,11 +47,7 @@
   text-decoration: none;
   position: relative;
   bottom: 0px;
-
   border-bottom: 4px solid var(--orange);
-}
-.underline {
-  background-color: aqua;
 }
 .navlink:hover::after {
   content: "";

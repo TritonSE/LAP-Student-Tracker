@@ -1,7 +1,7 @@
 import React from "react";
 import { Class } from "../models/classes";
 import ClassCard from "./ClassCard";
-import styles from "../styles/league-components.module.css";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type ClassViewProp = {
   classes: Class[];

@@ -1,7 +1,7 @@
 import React from "react";
 import { User } from "../models/users";
 import StaffCard from "./StaffCard";
-import styles from "../styles/league-components.module.css";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type StaffViewProp = {
   staff: User[];

@@ -1,7 +1,7 @@
 import React from "react";
 import { User } from "../models/users";
 import StaffCard from "./StaffCard";
-import styles from "../styles/Components.module.css";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type StaffViewProp = {
   staff: User[];
@@ -40,6 +40,7 @@ const StaffView: React.FC<StaffViewProp> = ({ staff }) => (
         </ul>
       </div>
     </div>
+    <span className={styles.spacer} />
     <div className={styles.rightContainer}>
       <input type="text" placeholder="Search staff" className={styles.searchBar}></input>
       <h2 className={styles.filterTitle}>Filter By:</h2>

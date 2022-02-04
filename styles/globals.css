@@ -42,3 +42,11 @@
   font-size: 18px;
   line-height: 20px;
 }
+
+.react-date-picker__wrapper {
+  border: none !important;
+}
+
+.react-time-picker__wrapper {
+  border: none !important;
+}

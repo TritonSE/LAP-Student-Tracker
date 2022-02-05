@@ -1,5 +1,5 @@
 import moment from "moment";
-import styles from "../styles/Components.module.css";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type ClassCardProps = {
   name: string;

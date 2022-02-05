@@ -1,7 +1,7 @@
 import React from "react";
 import { Class } from "../models/classes";
 import ClassCard from "./ClassCard";
-import styles from "../styles/Components.module.css";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type ClassViewProp = {
   classes: Class[];
@@ -39,6 +39,7 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
         </ul>
       </div>
     </div>
+    <span className={styles.spacer} />
     <div className={styles.rightContainer}>
       <input type="text" placeholder="Search classes" className={styles.searchBar}></input>
       <h2 className={styles.orderTitle}>Order By:</h2>

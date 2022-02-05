@@ -65,8 +65,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       });
 
       setRruleStr(rule.toText());
-    }
-    else {
+    } else {
       setRruleStr("No Repeat");
     }
   };

@@ -12,7 +12,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <button onClick={() => setShowWizard(true)}>Create Class</button>
-      <CreateEventsWizard show={showWizard} handleClose={handleClose} />
+      {showWizard ? <CreateEventsWizard show={showWizard} handleClose={handleClose} /> : null}
       Home
     </div>
   );

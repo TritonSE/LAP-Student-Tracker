@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import styles from "../styles/RepeatModal.module.css";
+
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
-
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 
 type RepeatModalProps = {
-  show: boolean;
   handleClose: () => void;
   handleStates: (
     repeat: boolean,
@@ -17,16 +16,33 @@ type RepeatModalProps = {
     endDate: Date,
     count: number
   ) => void;
+  initRepeat: boolean;
+  initInterval: number;
+  initFreq: string;
+  initWeekDays: number[];
+  initEndSelection: string;
+  initEndDate: Date;
+  initCount: number;
 };
 
-const RepeatModal: React.FC<RepeatModalProps> = ({ show, handleClose, handleStates }) => {
-  const [repeat, setRepeat] = useState(false);
-  const [interval, setInterval] = useState(1);
-  const [freq, setFreq] = useState("weekly");
-  const [weekDays, setWeekDays] = useState<number[]>([]);
-  const [endSelection, setEndSelection] = useState("never");
-  const [endDate, setEndDate] = useState(new Date());
-  const [count, setCount] = useState(1);
+const RepeatModal: React.FC<RepeatModalProps> = ({
+  handleClose,
+  handleStates,
+  initRepeat,
+  initInterval,
+  initFreq,
+  initWeekDays,
+  initEndSelection,
+  initEndDate,
+  initCount,
+}) => {
+  const [repeat, setRepeat] = useState(initRepeat);
+  const [interval, setInterval] = useState(initInterval);
+  const [freq, setFreq] = useState(initFreq);
+  const [weekDays, setWeekDays] = useState<number[]>(initWeekDays);
+  const [endSelection, setEndSelection] = useState(initEndSelection);
+  const [endDate, setEndDate] = useState(initEndDate);
+  const [count, setCount] = useState(initCount);
 
   const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -43,13 +59,11 @@ const RepeatModal: React.FC<RepeatModalProps> = ({ show, handleClose, handleStat
   };
 
   const handleSave = () => {
-    //alert("submitted");
-    alert(interval)
     handleStates(repeat, interval, freq, weekDays, endSelection, endDate, count);
     handleClose();
   };
 
-  return show ? (
+  return (
     <div className={styles.modalWrapper}>
       <div className={styles.modalContent}>
         <div className={styles.headerWrapper}>
@@ -169,7 +183,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({ show, handleClose, handleStat
         </div>
       </div>
     </div>
-  ) : null;
+  );
 };
 
 export default RepeatModal;

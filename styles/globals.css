@@ -43,10 +43,12 @@
   line-height: 20px;
 }
 
+/* override default date-picker style */
 .react-date-picker__wrapper {
   border: none !important;
 }
 
+/* override default time-picker style */
 .react-time-picker__wrapper {
   border: none !important;
 }

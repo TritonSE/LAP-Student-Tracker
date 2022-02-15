@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';  
-import { User, UserSchema } from "../../models/users";
+import { User } from "../../models/users";
 
 class LeagueAPI {
     client: AxiosInstance;
@@ -22,4 +22,3 @@ class LeagueAPI {
 }
 
 export { LeagueAPI };
-

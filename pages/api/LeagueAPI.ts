@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';  
 import { User, UserSchema } from "../../models/users";
 
-class StaffAPI {
+class LeagueAPI {
     client: AxiosInstance;
     token?: string;
 
@@ -20,4 +20,6 @@ class StaffAPI {
         return res.data;
     }
 }
+
+export { LeagueAPI };
 

@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';  
 import { User } from "../models/users";
+import useSWR from 'swr';
 
 class LeagueAPI {
     client: AxiosInstance;
@@ -16,8 +17,10 @@ class LeagueAPI {
     }
 
     async getStaff():Promise<User[]>{
-        const res = await this.client.get('api/staff');
-        return res.data;
+        const { data, error } = useSWR('/api/user');
+        if (error) return error;
+        if (!data) return data;
+        return data;
     }
 }
 

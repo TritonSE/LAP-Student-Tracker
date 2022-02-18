@@ -1,4 +1,4 @@
-import styles from "../styles/Components.module.css";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type StaffCardProps = {
   firstName: string;

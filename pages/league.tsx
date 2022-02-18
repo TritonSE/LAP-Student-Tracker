@@ -7,6 +7,8 @@ import StaffView from "../components/StaffView";
 import { Class } from "../models/classes";
 import { User } from "../models/users";
 import { Student } from "../models/students";
+import { RRule, RRuleSet, rrulestr } from "rrule";
+
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
@@ -38,10 +40,12 @@ const League: NextPage = () => {
     name: "Intro to Java",
     minLevel: 3,
     maxLevel: 5,
-    recurrence: [1, 2, 3],
+    rrstring: new RRule({
+      freq: RRule.WEEKLY,
+      byweekday: [0, 1]
+    }),
     timeStart: "13:00",
     timeEnd: "14:00",
-    teachers: [testStaff],
   };
   const testStudent: Student = {
     id: "student_id",
@@ -71,9 +75,9 @@ const League: NextPage = () => {
 
   // Renders specific content component based on tab state
   const renderComponent = (display: String) => {
-    if (display == "Classes") return <ClassView classes={content?.Classes} />;
-    if (display == "Students") return <StudentView students={content?.Students} />;
-    if (display == "Staff") return <StaffView staff={content?.Staff} />;
+    if (display == "Classes") return <ClassView classes={content.Classes} />;
+    if (display == "Students") return <StudentView students={content.Students} />;
+    if (display == "Staff") return <StaffView staff={content.Staff} />;
   };
 
   return (

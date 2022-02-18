@@ -1,11 +1,11 @@
 import moment from "moment";
-import styles from "../styles/Components.module.css";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type ClassCardProps = {
   name: string;
   minLevel: number;
   maxLevel: number;
-  recurrence: number[];
+  rrstring: string;
   timeStart: string;
   timeEnd: string;
 };
@@ -14,7 +14,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
   name,
   minLevel,
   maxLevel,
-  recurrence,
+  rrstring,
   timeStart,
   timeEnd,
 }) => {

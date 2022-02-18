@@ -1,7 +1,7 @@
 import React from "react";
 import { Student } from "../models/students";
 import StudentCard from "./StudentCard";
-import styles from "../styles/Components.module.css";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type StudentViewProp = {
   students: Student[];
@@ -37,6 +37,7 @@ const StudentView: React.FC<StudentViewProp> = ({ students }) => (
         </ul>
       </div>
     </div>
+    <span className={styles.spacer} />
     <div className={styles.rightContainer}>
       <input type="text" placeholder="Search students" className={styles.searchBar}></input>
       <h2 className={styles.orderTitle}>Order By:</h2>

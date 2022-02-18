@@ -5,7 +5,7 @@ type ClassCardProps = {
   name: string;
   minLevel: number;
   maxLevel: number;
-  rrstring: string;
+  //rrstring: string;
   timeStart: string;
   timeEnd: string;
 };

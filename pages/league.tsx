@@ -10,13 +10,12 @@ import { Student } from "../models/students";
 import useSWR from "swr";
 import axios from "axios";
 
-
 const getStaff = () => {
-  const { data, error } = useSWR('/api/user');
-  if (error) return error
-  if (!data) return undefined
-  return {data}
-}
+  const { data, error } = useSWR("/api/user");
+  if (error) return error;
+  if (!data) return undefined;
+  return { data };
+};
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];

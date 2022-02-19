@@ -10,13 +10,6 @@ import { Student } from "../models/students";
 import useSWR from "swr";
 import axios from "axios";
 
-const getStaff = () => {
-  const { data, error } = useSWR("/api/user");
-  if (error) return error;
-  if (!data) return undefined;
-  return { data };
-};
-
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
 
@@ -31,6 +24,16 @@ const League: NextPage = () => {
     Students: [],
     Staff: [],
   });
+
+  const { data, error } = useSWR("/api/staff");
+  let staffArray: User[];
+  if (error) {
+    staffArray = new Array();
+  } else if (!data) {
+    staffArray = new Array();
+  } else {
+    staffArray = data;
+  }
 
   // start dummy data, delete once api is implemented
   const testStaff: User = {
@@ -71,7 +74,6 @@ const League: NextPage = () => {
   useEffect(() => {
     // Eventually api call to get classes/students/staff...
     // Use dummy data for now
-    const staffArray = getStaff();
 
     setContent({
       Classes: testClassArray,

@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { User } from "../models/users";
 
 class LeagueAPI {
@@ -15,8 +15,14 @@ class LeagueAPI {
   }
 
   async getStaff(): Promise<User[]> {
+    // console.log("ran")
     const res = await this.client.get("api/staff");
     return res.data;
+  }
+
+  async tempGetStaff(): Promise<AxiosResponse<any, any>> {
+    console.log("ran")
+    return this.client.get("api/staff");
   }
 }
 

@@ -1,5 +1,6 @@
 import { NextPage } from "next";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { APIContext } from "../context/APIContext";
 import styles from "../styles/League.module.css";
 import ClassView from "../components/ClassView";
 import StudentView from "../components/StudentView";
@@ -10,10 +11,12 @@ import { Student } from "../models/students";
 import useSWR from "swr";
 import axios from "axios";
 
+
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
 
 const League: NextPage = () => {
+  const client = useContext(APIContext)
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
   const [content, setContent] = useState<{
     Classes: Class[];
@@ -25,9 +28,15 @@ const League: NextPage = () => {
     Staff: [],
   });
 
-  const { data, error } = useSWR("/api/staff");
+  const fetcher = () => client.tempGetStaff().then(res => res.data);
+  const fetcher2 = () => client.getStaff();
+
+  
+
+  const { data, error } = useSWR("/api/staff", fetcher2);
   let staffArray: User[];
   if (error) {
+    console.log(error)
     staffArray = new Array();
   } else if (!data) {
     staffArray = new Array();
@@ -66,9 +75,9 @@ const League: NextPage = () => {
     level: 3,
     classes: ["CSE 123"],
   };
-  const testStaffArray: User[] = Array(5).fill(testStaff);
-  const testClassArray: Class[] = Array(25).fill(testClass);
-  const testStudentArray: Student[] = Array(5).fill(testStudent);
+  const testStaffArray: User[] = Array(1).fill(testStaff);
+  const testClassArray: Class[] = Array(1).fill(testClass);
+  const testStudentArray: Student[] = Array(1).fill(testStudent);
   // end dummy data
 
   useEffect(() => {

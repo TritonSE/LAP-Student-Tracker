@@ -1,0 +1,95 @@
+/* Login Page Main */
+.comContainer{
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+    margin:auto;
+    align-items: center;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 1.5rem;
+}
+.logoContainer{
+    padding-top: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.mainPageLogo{
+    margin-top: 15%;
+    width: 292px;
+    height: 240.05px;
+}
+.contentContainer{
+    padding-left: 8rem;
+}
+.bottomContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: top;
+    width: 690px;
+}
+.title{
+    color: #1B1C1D;
+    /* font-family: Inter; */
+    font-style: normal;
+    font-weight: 500;
+    font-size: 57px;
+    line-height: 64px;
+    letter-spacing: -0.25px;
+}
+.checkbox{
+    width: 15px;
+    height: 15px;
+    border: 1px solid #1B1C1D;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+.chkboxLabel{
+    padding-left: 7px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    color: #1B1C1D;
+}
+.forgotPassword{
+    font-family: Inter;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 17px;
+    text-decoration-line: underline;
+    color: #494C4E;
+}
+
+/* Login Name Input */
+.headerContainer{
+    padding: 2rem;
+}
+
+.nameContainer{
+    display: flex;
+    flex-direction: column;
+    width:690px;
+    margin: auto;
+    padding-top: 1rem;
+}
+
+/* Login Position Input */
+.positionContainer{
+    width: 690px;
+    margin:auto;
+}
+.radioBox{
+    width: 32px;
+    height: 32px;
+    accent-color: black;
+    margin-top: 2rem;
+}
+.positionText{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 44px;
+    color: #1B1C1D;
+    padding-left: 1rem;
+}

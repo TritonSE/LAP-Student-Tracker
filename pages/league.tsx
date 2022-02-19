@@ -7,6 +7,16 @@ import StaffView from "../components/StaffView";
 import { Class } from "../models/classes";
 import { User } from "../models/users";
 import { Student } from "../models/students";
+import useSWR from "swr";
+import axios from "axios";
+
+
+const getStaff = () => {
+  const { data, error } = useSWR('/api/user');
+  if (error) return error
+  if (!data) return undefined
+  return {data}
+}
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
@@ -62,10 +72,12 @@ const League: NextPage = () => {
   useEffect(() => {
     // Eventually api call to get classes/students/staff...
     // Use dummy data for now
+    const staffArray = getStaff();
+
     setContent({
       Classes: testClassArray,
       Students: testStudentArray,
-      Staff: testStaffArray,
+      Staff: staffArray,
     });
   }, []);
 

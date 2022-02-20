@@ -93,3 +93,19 @@
     color: #1B1C1D;
     padding-left: 1rem;
 }
+
+.enterTitle{
+    font-weight: 500;
+    font-size: 45px;
+    line-height: 52px;
+    color: #1B1C1D;
+}
+
+.createContainer {
+    width: 690px;
+    margin:auto;
+}
+
+.textBoxContainer{
+    margin-top: 2rem;
+}

@@ -43,4 +43,6 @@ const InputBox: React.FC<{ text: string }> = ({ text }) => {
 
 };
 
+
+
 export default InputBox;

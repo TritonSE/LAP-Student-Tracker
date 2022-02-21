@@ -28,22 +28,6 @@ const League: NextPage = () => {
     Staff: [],
   });
 
-  const fetcher = () => client.tempGetStaff().then(res => res.data);
-  const fetcher2 = () => client.getStaff();
-
-  
-
-  const { data, error } = useSWR("/api/staff", fetcher2);
-  let staffArray: User[];
-  if (error) {
-    console.log(error)
-    staffArray = new Array();
-  } else if (!data) {
-    staffArray = new Array();
-  } else {
-    staffArray = data;
-  }
-
   // start dummy data, delete once api is implemented
   const testStaff: User = {
     id: "staff_id",
@@ -87,7 +71,7 @@ const League: NextPage = () => {
     setContent({
       Classes: testClassArray,
       Students: testStudentArray,
-      Staff: staffArray,
+      Staff: [],
     });
   }, []);
 

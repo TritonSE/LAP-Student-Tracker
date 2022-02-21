@@ -1,10 +1,10 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { createEvent } from "../../../lib/database/events";
-import { CreateEvent, Event, CreateClassEventSchema, ClassEventSchema } from "../../../models/events";
+import { createEvent } from "../../../../lib/database/events";
+import { CreateEvent, Event, CreateClassEventSchema, ClassEventSchema } from "../../../../models/events";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
-// handles requests to /api/events/
+// handles requests to /api/events/class
 export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST":

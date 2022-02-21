@@ -18,8 +18,8 @@ const createEvent = async (
   teachers: string[],
 ): Promise<Any | void> => {
   const query = {
-    text: "INSERT INTO events(name, startTime, endTime, timeZone, rrule, language, neverEnding, backgroundColor, teachers) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
-    values: [name, startTime, endTime, timeZone, rrule, language, neverEnding, backgroundColor, teachers],
+    text: "INSERT INTO events(name, background_color, type, never_ending) VALUES($1, $2, $3, $4) RETURNING id",
+    values: [name, backgroundColor, language, neverEnding],
   };
   
   client.query(query.text, query.values, (err, res) => {

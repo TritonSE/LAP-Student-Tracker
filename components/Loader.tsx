@@ -2,6 +2,7 @@ import styles from "../styles/components/Loading.module.css";
 import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 
+// Loading animation
 const Loader: React.FC = () => {
   return (
     <div className={styles.loader}>

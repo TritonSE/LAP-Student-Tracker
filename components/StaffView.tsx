@@ -29,11 +29,15 @@ const filters = [
 const StaffView: React.FC<StaffViewProp> = ({ staff }) => {
   const client = useContext(APIContext);
 
+  // Use SWR hook to get the data from the backend
   const { data, error } = useSWR("/api/staff", () => client.getStaff());
 
+  // Dynamically load the data from the backend and render the respective component
   const staffData: any = (data: User[] | undefined, error: Error) => {
     if (error) return <Error />;
     if (!data) return <Loader />;
+
+    // Render the staff
     return data.map((c: any) => (
       <StaffCard
         key={c.id}

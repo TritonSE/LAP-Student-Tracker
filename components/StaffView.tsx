@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "../styles/components/LeagueViews.module.css";
-import StaffScroll from "./StaffScroll";
+import StaffCard from "./StaffCard";
+import { APIContext } from "../context/APIContext";
+import Loader from "./Loader";
+import Error from "./Error";
+import Empty from "./Empty";
+import useSWR from "swr";
+import { User } from "../models/users";
 
 const filters = [
   "Administration",
@@ -16,6 +22,32 @@ const filters = [
   "Level 7",
   "Level 8",
 ];
+
+const StaffScroll: React.FC = () => {
+  const client = useContext(APIContext);
+
+  // Use SWR hook to get the data from the backend
+  const { data, error } = useSWR("/api/staff", () => client.getStaff());
+
+  if (error) return <Error />;
+  if (!data) return <Loader />;
+  if (data.length == 0) return <Empty />;
+
+  return (
+    <>
+      {data.map((user: User) => (
+        <StaffCard
+          key={user.id}
+          firstName={user.firstName}
+          lastName={user.lastName}
+          phone_number={user.phoneNumber}
+          email={user.email}
+        />
+      ))}
+    </>
+  );
+};
+
 
 const StaffView: React.FC = () => {
   return (

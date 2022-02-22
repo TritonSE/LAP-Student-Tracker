@@ -1,4 +1,4 @@
-import styles from "../styles/components/LoginViews.module.css";
+import styles from "../../styles/components/LoginViews.module.css";
 import React from "react";
 
 const LoginPositionInput: React.FC = () => {

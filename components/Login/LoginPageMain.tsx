@@ -1,8 +1,14 @@
-import styles from "../styles/components/LoginViews.module.css";
+import styles from "../../styles/components/LoginViews.module.css";
 import React from "react";
 import InputBox from "./LoginInputBox";
 
-const LoginPageMain: React.FC = () => {
+type LoginPageMainProps = {
+    pageNumber: number;
+    changePage: (newPage: number) => void;
+};
+
+const LoginPageMain: React.FC<LoginPageMainProps> = 
+({pageNumber, changePage}) => {
     return (
         <div className={styles.comContainer}>
             <img src="login-logo.png" className={styles.mainPageLogo}></img>
@@ -22,6 +28,10 @@ const LoginPageMain: React.FC = () => {
                     <div>
                         <a className={styles.forgotPassword}>Forgot Password?</a>
                     </div>
+                </div>
+                <div className={styles.buttonContainer}> 
+                    <button className={styles.buttonOutline} onClick={ () => changePage(pageNumber+1) }>Create Account</button>
+                    <button className={styles.buttonFilled}>Login</button>
                 </div>
             </div>
             

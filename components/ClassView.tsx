@@ -31,7 +31,7 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
               name={c.name}
               minLevel={c.minLevel}
               maxLevel={c.maxLevel}
-              recurrence={c.recurrence}
+              rrstring={c.rrstring}
               timeStart={c.timeStart}
               timeEnd={c.timeEnd}
             />

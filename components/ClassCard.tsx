@@ -1,11 +1,12 @@
 import moment from "moment";
 import styles from "../styles/components/LeagueViews.module.css";
+import { RRule, RRuleSet, rrulestr } from "rrule";
 
 type ClassCardProps = {
   name: string;
   minLevel: number;
   maxLevel: number;
-  recurrence: number[];
+  rrstring: string;
   timeStart: string;
   timeEnd: string;
 };
@@ -14,25 +15,25 @@ const ClassCard: React.FC<ClassCardProps> = ({
   name,
   minLevel,
   maxLevel,
-  recurrence,
+  rrstring,
   timeStart,
   timeEnd,
 }) => {
-  const weekday: string[] = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
+  const rule = RRule.fromString(rrstring);
+  const tempRule = rule.toText();
+  //geting all days of week from the rrule object to output
+  const dates = tempRule.substring(tempRule.indexOf("on") + 3, tempRule.indexOf("until"));
+  //this takes in teh start and end times, converts them to ISO format, then outputs the hour the class starts and ends
   const convertTime = (startTime: string, endTime: string) => {
-    const startTimeStr: string = moment(moment().format(startTime), "HH:mm").format("h");
-    const endTimeStr: string = moment(moment().format(endTime), "HH:mm").format("h A");
-    return startTimeStr + "-" + endTimeStr;
+    const { DateTime } = require("luxon");
+    const startTime_ISO = DateTime.fromISO(startTime);
+    const endTime_ISO = DateTime.fromISO(endTime);
+    const finalTimes =
+      DateTime.fromISO(startTime_ISO).toFormat("h") +
+      " - " +
+      DateTime.fromISO(endTime_ISO).toFormat("ha");
+    return finalTimes + "";
   };
-
   return (
     <div className={styles.listElem}>
       <div>
@@ -41,11 +42,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
         }`}</p>
       </div>
       <div className={styles.rightText}>
-        {[
-          recurrence.map((day: number) => weekday[day]).join(", "),
-          "•",
-          convertTime(timeStart, timeEnd),
-        ].join(" ")}
+        {[dates, "•", convertTime(timeStart, timeEnd)].join(" ")}
       </div>
     </div>
   );

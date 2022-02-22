@@ -5,10 +5,10 @@ export const ClassSchema = t.type({
   name: t.string,
   minLevel: t.number,
   maxLevel: t.number,
-  recurrence: t.array(t.number),
+  rrstring: t.string,
   timeStart: t.string,
   timeEnd: t.string,
-  teachers: t.array(UserSchema),
+  //teachers: t.array(UserSchema),
 });
 
 export type Class = t.TypeOf<typeof ClassSchema>;

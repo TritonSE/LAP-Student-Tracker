@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { createEvent } from "../../../../lib/database/events";
-import { CreateEvent, Event, CreateClassEventSchema, ClassEventSchema } from "../../../../models/events";
+import { createClassEvent } from "../../../../lib/database/events";
+import { CreateClassEvent, Event, CreateClassEventSchema, ClassEventSchema } from "../../../../models/events";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
@@ -8,14 +8,14 @@ import { StatusCodes } from "http-status-codes";
 export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST":
-      let newEvent: CreateEvent;
+      let newEvent: CreateClassEvent;
       try {
         newEvent = await decode(CreateClassEventSchema, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
-        const result = await createEvent(
+        const result = await createClassEvent(
           newEvent.name,
           newEvent.startTime,
           newEvent.endTime,
@@ -28,6 +28,7 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        console.log(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
       break;

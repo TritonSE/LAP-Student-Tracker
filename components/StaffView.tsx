@@ -4,6 +4,7 @@ import StaffCard from "./StaffCard";
 import styles from "../styles/components/LeagueViews.module.css";
 import { APIContext } from "../context/APIContext";
 import Loader from "./Loader";
+import Error from "./Error";
 import useSWR from "swr";
 
 type StaffViewProp = {
@@ -30,12 +31,9 @@ const StaffView: React.FC<StaffViewProp> = ({ staff }) => {
   const client = useContext(APIContext)
 
   const { data, error } = useSWR("/api/staff", () => client.getStaff());
-    if (error) return <div>Something went wrong. </div>
-    if (!data) return <Loader/> 
-
 
   const staffData: any = (data: User[] | undefined, error:Error) => {
-    if (error) return <div>Something went wrong.</div>
+    if (error) return <Error />
     if (!data) return <Loader/> 
     return(
         data.map((c:any) => (      

@@ -21,7 +21,7 @@ class LeagueAPI {
   }
 
   async tempGetStaff(): Promise<AxiosResponse<any, any>> {
-    console.log("ran")
+    console.log("ran");
     return this.client.get("api/staff");
   }
 }

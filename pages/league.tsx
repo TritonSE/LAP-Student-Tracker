@@ -11,12 +11,11 @@ import { Student } from "../models/students";
 import useSWR from "swr";
 import axios from "axios";
 
-
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
 
 const League: NextPage = () => {
-  const client = useContext(APIContext)
+  const client = useContext(APIContext);
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
   const [content, setContent] = useState<{
     Classes: Class[];

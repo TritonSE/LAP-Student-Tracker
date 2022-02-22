@@ -16,7 +16,7 @@ class LeagueAPI {
     });
   }
 
-  // Get the staff from the backends
+  // Get the staff from the backend
   async getStaff(): Promise<User[]> {
     const res = await this.client.get("api/staff");
     return res.data;

@@ -1,6 +1,5 @@
 import { NextPage } from "next";
-import React, { useState, useEffect, useContext } from "react";
-import { APIContext } from "../context/APIContext";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/League.module.css";
 import ClassView from "../components/ClassView";
 import StudentView from "../components/StudentView";
@@ -8,14 +7,11 @@ import StaffView from "../components/StaffView";
 import { Class } from "../models/classes";
 import { User } from "../models/users";
 import { Student } from "../models/students";
-import useSWR from "swr";
-import axios from "axios";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
 
 const League: NextPage = () => {
-  const client = useContext(APIContext);
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
   const [content, setContent] = useState<{
     Classes: Class[];
@@ -28,15 +24,6 @@ const League: NextPage = () => {
   });
 
   // start dummy data, delete once api is implemented
-  const testStaff: User = {
-    id: "staff_id",
-    firstName: "Rick",
-    lastName: "Ord",
-    email: "ricko@ucsd.edu",
-    role: "Teacher",
-    phoneNumber: "(123) 456-7890",
-    address: "123",
-  };
   const testClass: Class = {
     id: "class_id",
     name: "Intro to Java",
@@ -45,7 +32,7 @@ const League: NextPage = () => {
     recurrence: [1, 2, 3],
     timeStart: "13:00",
     timeEnd: "14:00",
-    teachers: [testStaff],
+    teachers: [],
   };
   const testStudent: Student = {
     id: "student_id",
@@ -58,9 +45,8 @@ const League: NextPage = () => {
     level: 3,
     classes: ["CSE 123"],
   };
-  const testStaffArray: User[] = Array(1).fill(testStaff);
-  const testClassArray: Class[] = Array(1).fill(testClass);
-  const testStudentArray: Student[] = Array(1).fill(testStudent);
+  const testClassArray: Class[] = Array(25).fill(testClass);
+  const testStudentArray: Student[] = Array(5).fill(testStudent);
   // end dummy data
 
   useEffect(() => {
@@ -78,7 +64,7 @@ const League: NextPage = () => {
   const renderComponent = (display: String) => {
     if (display == "Classes") return <ClassView classes={content.Classes} />;
     if (display == "Students") return <StudentView students={content.Students} />;
-    if (display == "Staff") return <StaffView staff={content.Staff} />;
+    if (display == "Staff") return <StaffView />;
   };
 
   return (

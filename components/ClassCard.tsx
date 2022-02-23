@@ -1,6 +1,6 @@
-import moment from "moment";
+import React from "react";
 import styles from "../styles/components/LeagueViews.module.css";
-import { RRule, RRuleSet, rrulestr } from "rrule";
+import { RRule } from "rrule";
 import { DateTime } from "luxon";
 type ClassCardProps = {
   name: string;
@@ -29,12 +29,11 @@ const ClassCard: React.FC<ClassCardProps> = ({
     "Sunday",
   ];
   const rule = RRule.fromString(rrstring);
-  const tempRule = rule.toText();
   //geting all days of week from the rrule object to output
   const dates = rule.options.byweekday.map((val) => weekday[val]).join(", ");
 
   //this takes in the start and end times, converts them to ISO format, then outputs the hour the class starts and ends
-  const convertTime = (startTime: string, endTime: string) => {
+  const convertTime = (startTime: string, endTime: string): string => {
     const startTimeISO = DateTime.fromISO(startTime).toLocal().toFormat("h");
     const endTimeISO = DateTime.fromISO(endTime).toLocal().toFormat("ha");
     const finalTimes = startTimeISO + " - " + endTimeISO;
@@ -54,4 +53,4 @@ const ClassCard: React.FC<ClassCardProps> = ({
   );
 };
 
-export default ClassCard;
+export { ClassCard };

@@ -1,6 +1,6 @@
 import React from "react";
 import { User } from "../models/users";
-import StaffCard from "./StaffCard";
+import { StaffCard } from "./StaffCard";
 import styles from "../styles/components/LeagueViews.module.css";
 
 type StaffViewProp = {
@@ -56,4 +56,4 @@ const StaffView: React.FC<StaffViewProp> = ({ staff }) => (
   </div>
 );
 
-export default StaffView;
+export { StaffView };

@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import styles from "../styles/League.module.css";
-import ClassView from "../components/ClassView";
-import StudentView from "../components/StudentView";
-import StaffView from "../components/StaffView";
+import { ClassView } from "../components/ClassView";
+import { StudentView } from "../components/StudentView";
+import { StaffView } from "../components/StaffView";
 import { Class } from "../models/classes";
 import { User } from "../models/users";
 import { Student } from "../models/students";
@@ -70,7 +70,7 @@ const League: NextPage = () => {
   }, []);
 
   // Renders specific content component based on tab state
-  const renderComponent = (display: String) => {
+  const renderComponent = (display: string): JSX.Element | undefined => {
     if (display == "Classes") return <ClassView classes={content.Classes} />;
     if (display == "Students") return <StudentView students={content.Students} />;
     if (display == "Staff") return <StaffView staff={content.Staff} />;
@@ -83,7 +83,7 @@ const League: NextPage = () => {
         <div className={styles.tabs}>
           {allTabs.map((tabName, idx) => {
             return (
-              <div className={styles.tabWrapper}>
+              <div className={styles.tabWrapper} key={tabName}>
                 <button
                   key={tabName}
                   className={`${styles.tabButton} ${
@@ -106,4 +106,4 @@ const League: NextPage = () => {
   );
 };
 
-export default League;
+export { League };

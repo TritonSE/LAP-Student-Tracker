@@ -1,6 +1,6 @@
 import React from "react";
 import { Class } from "../models/classes";
-import ClassCard from "./ClassCard";
+import { ClassCard } from "./ClassCard";
 import styles from "../styles/components/LeagueViews.module.css";
 
 type ClassViewProp = {
@@ -64,4 +64,4 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
   </div>
 );
 
-export default ClassView;
+export { ClassView };

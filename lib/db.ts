@@ -1,6 +1,6 @@
 import pg, { Pool } from "pg";
 import pgCamelCase from "pg-camelcase";
-const _ = pgCamelCase.inject(pg);
+pgCamelCase.inject(pg);
 const client: Pool = new Pool({
   user: process.env.DB_USER || "postgres",
   host: process.env.DB_HOST || "localhost",

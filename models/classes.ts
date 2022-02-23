@@ -1,5 +1,4 @@
 import * as t from "io-ts";
-import { UserSchema } from "./users";
 export const ClassSchema = t.type({
   id: t.string,
   name: t.string,

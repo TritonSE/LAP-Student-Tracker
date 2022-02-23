@@ -7,7 +7,6 @@ import StaffView from "../components/StaffView";
 import { Class } from "../models/classes";
 import { User } from "../models/users";
 import { Student } from "../models/students";
-import { RRule, RRuleSet, rrulestr } from "rrule";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
@@ -40,9 +39,9 @@ const League: NextPage = () => {
     minLevel: 3,
     maxLevel: 5,
     rrstring:
-      "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=SU,MO,WE,FR;INTERVAL=1",
-    timeStart: "13:00",
-    timeEnd: "14:00",
+      "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
+    timeStart: "07:34Z",
+    timeEnd: "08:34Z",
   };
   const testStudent: Student = {
     id: "student_id",

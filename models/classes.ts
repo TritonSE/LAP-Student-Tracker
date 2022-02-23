@@ -8,7 +8,6 @@ export const ClassSchema = t.type({
   rrstring: t.string,
   timeStart: t.string,
   timeEnd: t.string,
-  //teachers: t.array(UserSchema),
 });
 
 export type Class = t.TypeOf<typeof ClassSchema>;

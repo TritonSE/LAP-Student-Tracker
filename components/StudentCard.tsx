@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "../styles/components/LeagueViews.module.css";
 
 type StudentCardProps = {
@@ -18,4 +19,4 @@ const StudentCard: React.FC<StudentCardProps> = ({ firstName, lastName, level, c
   );
 };
 
-export default StudentCard;
+export { StudentCard };

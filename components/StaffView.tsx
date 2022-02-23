@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
 import styles from "../styles/components/LeagueViews.module.css";
-import StaffCard from "./StaffCard";
+import { StaffCard } from "./StaffCard";
 import { APIContext } from "../context/APIContext";
-import Loader from "./util/Loader";
-import Error from "./util/Error";
-import Empty from "./util/Empty";
-import useSWR from "swr";
+import { Loader } from "./util/Loader";
+import { Error } from "./util/Error";
+import { Empty } from "./util/Empty";
 import { User } from "../models/users";
+import useSWR from "swr";
 
 const filters = [
   "Administration",
@@ -77,4 +77,4 @@ const StaffView: React.FC = () => {
   );
 };
 
-export default StaffView;
+export { StaffView, StaffScroll };

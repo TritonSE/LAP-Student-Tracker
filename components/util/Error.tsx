@@ -6,4 +6,4 @@ const Error: React.FC = () => {
   return <div className={styles.error}>Something went wrong.</div>;
 };
 
-export default Error;
+export { Error };

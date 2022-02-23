@@ -6,4 +6,4 @@ const Empty: React.FC<{ userType: string }> = ({ userType }) => {
   return <div className={styles.empty}>There are no {userType}.</div>;
 };
 
-export default Empty;
+export { Empty };

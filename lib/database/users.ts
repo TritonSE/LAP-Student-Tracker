@@ -49,7 +49,7 @@ const updateUser = async (
   };
 
   try {
-    const res = await client.query(query);
+    await client.query(query);
   } catch {
     throw Error("Error on update user");
   }

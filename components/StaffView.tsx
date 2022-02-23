@@ -23,6 +23,7 @@ const filters = [
   "Level 8",
 ];
 
+// Renders the list of staff or the corresponding error
 const StaffScroll: React.FC = () => {
   const client = useContext(APIContext);
 
@@ -31,7 +32,7 @@ const StaffScroll: React.FC = () => {
 
   if (error) return <Error />;
   if (!data) return <Loader />;
-  if (data.length == 0) return <Empty userType="Staff"/>;
+  if (data.length == 0) return <Empty userType="Staff" />;
 
   return (
     <>
@@ -47,7 +48,6 @@ const StaffScroll: React.FC = () => {
     </>
   );
 };
-
 
 const StaffView: React.FC = () => {
   return (

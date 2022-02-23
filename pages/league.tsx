@@ -24,15 +24,6 @@ const League: NextPage = () => {
   });
 
   // start dummy data, delete once api is implemented
-  const testStaff: User = {
-    id: "staff_id",
-    firstName: "Rick",
-    lastName: "Ord",
-    email: "ricko@ucsd.edu",
-    role: "Teacher",
-    phoneNumber: "(123) 456-7890",
-    address: "123",
-  };
   const testClass: Class = {
     id: "class_id",
     name: "Intro to Java",
@@ -54,7 +45,6 @@ const League: NextPage = () => {
     level: 3,
     classes: ["CSE 123"],
   };
-  const testStaffArray: User[] = Array(5).fill(testStaff);
   const testClassArray: Class[] = Array(25).fill(testClass);
   const testStudentArray: Student[] = Array(5).fill(testStudent);
   // end dummy data
@@ -62,10 +52,11 @@ const League: NextPage = () => {
   useEffect(() => {
     // Eventually api call to get classes/students/staff...
     // Use dummy data for now
+
     setContent({
       Classes: testClassArray,
       Students: testStudentArray,
-      Staff: testStaffArray,
+      Staff: [],
     });
   }, []);
 
@@ -73,7 +64,7 @@ const League: NextPage = () => {
   const renderComponent = (display: string): JSX.Element | undefined => {
     if (display == "Classes") return <ClassView classes={content.Classes} />;
     if (display == "Students") return <StudentView students={content.Students} />;
-    if (display == "Staff") return <StaffView staff={content.Staff} />;
+    if (display == "Staff") return <StaffView />;
   };
 
   return (

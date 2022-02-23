@@ -1,4 +1,4 @@
-import styles from "../../styles/components/Empty.module.css";
+import styles from "../../styles/components/util/Empty.module.css";
 import React from "react";
 
 // Displayed when there is no data to display

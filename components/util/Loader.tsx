@@ -1,4 +1,4 @@
-import styles from "../../styles/components/Loading.module.css";
+import styles from "../../styles/components/util/Loading.module.css";
 import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 

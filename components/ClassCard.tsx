@@ -26,7 +26,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
     "Thursday",
     "Friday",
     "Saturday",
-    "Sunday"
+    "Sunday",
   ];
   const rule = RRule.fromString(rrstring);
   const tempRule = rule.toText();
@@ -35,12 +35,9 @@ const ClassCard: React.FC<ClassCardProps> = ({
 
   //this takes in the start and end times, converts them to ISO format, then outputs the hour the class starts and ends
   const convertTime = (startTime: string, endTime: string) => {
-    const startTimeISO = DateTime.fromISO(startTime).toLocal().toFormat('h');
-    const endTimeISO = DateTime.fromISO(endTime).toLocal().toFormat('ha');
-    const finalTimes =
-    startTimeISO +
-      " - " +
-      endTimeISO;
+    const startTimeISO = DateTime.fromISO(startTime).toLocal().toFormat("h");
+    const endTimeISO = DateTime.fromISO(endTime).toLocal().toFormat("ha");
+    const finalTimes = startTimeISO + " - " + endTimeISO;
     return finalTimes + "";
   };
   return (

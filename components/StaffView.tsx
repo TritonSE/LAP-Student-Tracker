@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import styles from "../styles/components/LeagueViews.module.css";
 import StaffCard from "./StaffCard";
 import { APIContext } from "../context/APIContext";
-import Loader from "./Loader";
-import Error from "./Error";
-import Empty from "./Empty";
+import Loader from "./util/Loader";
+import Error from "./util/Error";
+import Empty from "./util/Empty";
 import useSWR from "swr";
 import { User } from "../models/users";
 
@@ -31,7 +31,7 @@ const StaffScroll: React.FC = () => {
 
   if (error) return <Error />;
   if (!data) return <Loader />;
-  if (data.length == 0) return <Empty />;
+  if (data.length == 0) return <Empty userType="Staff"/>;
 
   return (
     <>

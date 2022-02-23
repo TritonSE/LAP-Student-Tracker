@@ -26,6 +26,14 @@
     }
   },
   "ignorePatterns": ["*.config.js", ".next/*", "scripts/"],
+  "overrides": [
+    {
+      "files": ["pages/*.tsx"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
+    }
+  ],
   "rules": {
     "indent": "off",
     "@typescript-eslint/indent": ["error", 2],

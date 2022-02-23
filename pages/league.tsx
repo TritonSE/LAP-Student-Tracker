@@ -106,4 +106,4 @@ const League: NextPage = () => {
   );
 };
 
-export { League };
+export default League;

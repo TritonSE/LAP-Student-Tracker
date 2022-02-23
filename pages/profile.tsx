@@ -5,4 +5,4 @@ import type { NextPage } from "next";
 const Profile: NextPage = () => {
   return <h1>PROFILE</h1>;
 };
-export { Profile };
+export default Profile;

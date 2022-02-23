@@ -12,4 +12,4 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
   );
 }
 
-export { MyApp };
+export default MyApp;

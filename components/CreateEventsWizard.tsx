@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import RepeatModal from "./RepeatModal";
+import { APIContext } from "../context/APIContext";
+import { CreateClass, Class } from "../models/classes";
 import { CreateClassEvent, ClassEvent } from "../models/events";
 import styles from "../styles/CreateEventsWizard.module.css";
 
@@ -7,6 +9,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
 
+import useSWR from "swr";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import TimePicker from "react-time-picker/dist/entry.nostyle";
 import { RRule } from "rrule";
@@ -20,6 +23,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   // create wizard states
   const [name, setName] = useState("");
   const [multipleLevels, setMultipleLevels] = useState(false);
+  const [minLevel, setMinLevel] = useState(1);
+  const [maxLevel, setMaxLevel] = useState(1);
   const [startDate, setStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState((new Date()).toTimeString());
   const [endTime, setEndTime] = useState((new Date()).toTimeString());
@@ -35,6 +40,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [endType, setEndType] = useState("never");
   const [endDate, setEndDate] = useState(new Date());
   const [count, setCount] = useState(1);
+
+  const client = useContext(APIContext);
 
   // callback for hiding modal on close
   const handleRepeatClose = () => {
@@ -126,15 +133,26 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       teachers: teachers.split(','),
     }
     console.log(createEvent)
-   /* const response = await fetch("/api/events", {
-      method: "POST",
-      body: JSON.stringify({ createEvent }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await response.json();
-    console.log(data);*/
+    const { data, error } = useSWR("event/class", () => client.createClassEvent(createEvent));
+    if(error) {
+      // error on create class event
+      return;
+    }
+    console.log(data);
+    if(data) {
+      const createClass: CreateClass = {
+        minLevel: minLevel,
+        maxLevel: maxLevel,
+        rrule: rruleStr,
+        language: lang,
+        timeStart: startTime,
+        timeEnd: endTime,
+      }
+      const { data, error } = useSWR("class/[id]", () => client.createClass("", createClass));
+    }
+    if(error) {
+      return;
+    }
     handleClose();
   };
 
@@ -176,11 +194,11 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
                 }`}
             >
               <p className={styles.label}>Levels</p>
-              <input className={styles.levelInput} type="number" min={1} />
+              <input className={styles.levelInput} type="number" min={1} value={minLevel} onChange={(e) => setMinLevel(e.target.valueAsNumber)} />
               {multipleLevels ? (
                 <>
                   <span className={styles.dash} />
-                  <input className={styles.levelInput} type="number" min={1} />
+                  <input className={styles.levelInput} type="number" min={1} value={maxLevel} onChange={(e) => setMaxLevel(e.target.valueAsNumber)} />
                 </>
               ) : null}
               <input

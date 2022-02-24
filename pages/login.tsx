@@ -1,12 +1,16 @@
 import { NextPage } from "next";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "../styles/Login.module.css";
 import LoginPageMain from "../components/Login/LoginPageMain";
 import LoginNameInput from "../components/Login/LoginNameInput";
 import LoginPositionInput from "../components/Login/LoginPositionInput";
 import CreatePassword from "../components/Login/CreatePassword";
+<<<<<<< HEAD
 import { boolean } from "io-ts";
 import { first } from "fp-ts/lib/Reader";
+=======
+import { AuthContext } from "../context/AuthContext";
+>>>>>>> feature/Anshul-Birla/9-authentication-api
 
 const Login: React.FC = () => {
 
@@ -20,6 +24,7 @@ const Login: React.FC = () => {
     const [new_password, setNewPassword] = useState<string>("");    
     const [confirm_password, setConfirmPassword] = useState<string>("");
 
+<<<<<<< HEAD
     const handleLoginPageMain = (newEmail: string, newPassword:string): void => {
         setEmail(newEmail);
         setPassword(newPassword);
@@ -65,8 +70,31 @@ const Login: React.FC = () => {
         }
         if (cont){
             setCurrentPage(newPage)
+=======
+    const authProvider = useContext(AuthContext)
+
+    const onClickHandlerRight = (): void => {
+        if (currentPage == 1 || currentPage == 2) {
+            setCurrentPage(currentPage + 1);
         }
     };
+
+    const onClickHandlerLeft = (): void => {
+        if (currentPage == 0) {
+            setCurrentPage(currentPage + 1);
+        }
+        else {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const changePage = (newPage: number): void => {
+        if (newPage >= 0 && newPage < 4) {
+            setCurrentPage(newPage);
+>>>>>>> feature/Anshul-Birla/9-authentication-api
+        }
+    };
+
 
     const pages = [
         <LoginPageMain key={0} onContentChange={handleLoginPageMain} currEmail={email} currPassword={password} pageNumber={currentPage} changePage={changePage}></LoginPageMain>,
@@ -74,18 +102,18 @@ const Login: React.FC = () => {
         <LoginPositionInput key={2} onContentChange={handlePosition} currPosition={position}></LoginPositionInput>,
         <CreatePassword key={3} onContentChange={handleCreatePassword} currNewEmail={new_email} currNewPassword={new_password} currConfirmPassword={confirm_password}></CreatePassword>,
     ];
-    
+
     return (
         <div>
             {pages[currentPage]}
             {currentPage > 0 &&
-                <div className={styles.buttonContainer}> 
-                    <button className={styles.buttonOutline} onClick={() => changePage(currentPage-1)}>Back</button>
-                    <button className={styles.buttonFilled} onClick={ () => changePage(currentPage+1) }>Next</button>
+                <div className={styles.buttonContainer}>
+                    <button className={styles.buttonOutline} onClick={() => changePage(currentPage - 1)}>Back</button>
+                    <button className={styles.buttonFilled} onClick={() => changePage(currentPage + 1)}>Next</button>
                 </div>
             }
         </div>
-        
+
 
     );
 };

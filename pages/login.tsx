@@ -5,6 +5,8 @@ import LoginPageMain from "../components/Login/LoginPageMain";
 import LoginNameInput from "../components/Login/LoginNameInput";
 import LoginPositionInput from "../components/Login/LoginPositionInput";
 import CreatePassword from "../components/Login/CreatePassword";
+import { boolean } from "io-ts";
+import { first } from "fp-ts/lib/Reader";
 
 const Login: React.FC = () => {
 
@@ -35,16 +37,42 @@ const Login: React.FC = () => {
         setConfirmPassword(confirmPassword);
     };
     const changePage = (newPage: number): void => {
-        if (newPage >= 0 && newPage < 4){
-            setCurrentPage(newPage);
+        
+        let cont: boolean;
+        cont = true;
+        if (newPage < 0 || newPage >= 4){
+            cont = false;
+        }
+        else{
+            switch(newPage){
+                // case 1:
+                //     if (email == "" || password == ""){
+                //         cont = false;
+                //     }
+                //     break;
+                case 2:
+                    console.log(first_name)
+                    if (first_name == "" || last_name == ""){
+                        cont = false;
+                    }
+                    break;
+                case 3:
+                    if (position == ""){
+                        cont = false;
+                    }
+                    break;
+            };
+        }
+        if (cont){
+            setCurrentPage(newPage)
         }
     };
 
     const pages = [
-        <LoginPageMain onContentChange={handleLoginPageMain} currEmail={email} currPassword={password} pageNumber={currentPage} changePage={changePage} key={0}></LoginPageMain>,
-        <LoginNameInput onContentChange={handleLoginNameInput} currFirstName={first_name} currLastName={last_name} key={1}></LoginNameInput>,
-        <LoginPositionInput onContentChange={handlePosition} currPosition={position} key={2}></LoginPositionInput>,
-        <CreatePassword onContentChange={handleCreatePassword} currNewEmail={new_email} currNewPassword={new_password} currConfirmPassword={confirm_password} key={3}></CreatePassword>,
+        <LoginPageMain key={0} onContentChange={handleLoginPageMain} currEmail={email} currPassword={password} pageNumber={currentPage} changePage={changePage}></LoginPageMain>,
+        <LoginNameInput key={1} onContentChange={handleLoginNameInput} currFirstName={first_name} currLastName={last_name}></LoginNameInput>,
+        <LoginPositionInput key={2} onContentChange={handlePosition} currPosition={position}></LoginPositionInput>,
+        <CreatePassword key={3} onContentChange={handleCreatePassword} currNewEmail={new_email} currNewPassword={new_password} currConfirmPassword={confirm_password}></CreatePassword>,
     ];
     
     return (

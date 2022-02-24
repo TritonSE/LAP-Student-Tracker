@@ -15,12 +15,12 @@ const LoginPositionInput: React.FC <LoginPositionInputProps>=
 
     useEffect(() =>{
         onContentChange(position);
-    });
+    }, [position]);
 
     // set current values
     useEffect(() => {
         setPosition(currPosition);
-    });
+    }, []);
 
     return (
         <div>
@@ -33,10 +33,10 @@ const LoginPositionInput: React.FC <LoginPositionInputProps>=
             <div className={styles.positionContainer}>
                 <h2 className={styles.title}>Select your position:</h2>
                 <form>
-                    <input type="radio" id="position" name="select-position" value="Admin" onChange={e => setPosition(e.target.value)} className={styles.radioBox}/>
-                    <label className={styles.positionText}>Admin</label><br></br>
-                    <input type="radio" id="position" name="select-position" value="Teacher" onChange={e => setPosition(e.target.value)} className={styles.radioBox}/>
-                    <label className={styles.positionText}>Teacher</label>
+                    <input type="radio" id="admin" name="select-position" value="Admin" onChange={e => setPosition(e.target.value)} className={styles.radioBox}/>
+                    <label htmlFor="admin" className={styles.positionText}>Admin</label><br></br>
+                    <input type="radio" id="teacher" name="select-position" value="Teacher" onChange={e => setPosition(e.target.value)} className={styles.radioBox}/>
+                    <label htmlFor="teacher" className={styles.positionText}>Teacher</label>
                 </form>
             </div>
         </div>

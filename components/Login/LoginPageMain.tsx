@@ -30,21 +30,21 @@ const LoginPageMain: React.FC<LoginPageMainProps> =
 
     useEffect(() =>{
         onContentChange(email, password);
-    });
+    }, [email, password]);
 
     // set current values
     useEffect(() => {
         setEmail(currEmail);
         setPassword(currPassword);
-    });
+    }, []);
 
     return (
         <div className={styles.comContainer}>
             <img src="login-logo.png" className={styles.mainPageLogo}></img>
             <div className={styles.contentContainer}>
                 <h2 className={styles.title}>Login</h2>
-                <TextField id="filled-basic" label="Email" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setEmail(e.target.value)} />
-                <TextField id="filled-basic" label="Password" variant="filled" type="password" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setPassword(e.target.value)} />
+                <TextField id="filled-basic" value={email} label="Email" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setEmail(e.target.value)} />
+                <TextField id="filled-basic" value={password} label="Password" variant="filled" type="password" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setPassword(e.target.value)} />
                 <div className={styles.bottomContainer}>
                     <form>
                         <input type="checkbox" id="remember-me" name="remember-me" className={styles.checkbox}/>

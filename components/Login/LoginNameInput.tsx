@@ -1,6 +1,7 @@
 import styles from "../../styles/components/LoginViews.module.css";
 import React, { useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
+import { last } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 const cssTextField = {
     color: "black",
@@ -28,13 +29,13 @@ const LoginNameInput: React.FC<LoginNameInputProps> =
 
     useEffect(() =>{
         onContentChange(firstName, lastName);
-    });
+    }, [firstName, lastName]);
 
     // set current values
     useEffect(() => {
         setFirstName(currFirstName);
         setLastName(currLastName);
-    });
+    }, []);
 
     return (
         <div>
@@ -46,8 +47,8 @@ const LoginNameInput: React.FC<LoginNameInputProps> =
             </div>
             <div className={styles.nameContainer}>
                 <h2 className={styles.title}>What is your name?</h2>
-                <TextField id="filled-basic" label="First" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setFirstName(e.target.value)} />
-                <TextField id="filled-basic" label="Last" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setLastName(e.target.value)} />
+                <TextField id="filled-basic" value={firstName} label="First" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setFirstName(e.target.value)} />
+                <TextField id="filled-basic" value={lastName} label="Last" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setLastName(e.target.value)} />
             </div>
 
         </div>

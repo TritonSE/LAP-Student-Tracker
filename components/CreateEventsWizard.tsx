@@ -9,7 +9,6 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
 
-import useSWR from "swr";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import TimePicker from "react-time-picker/dist/entry.nostyle";
 import { RRule } from "rrule";
@@ -133,26 +132,29 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       teachers: teachers.split(','),
     }
     console.log(createEvent)
-    const { data, error } = useSWR("event/class", () => client.createClassEvent(createEvent));
-    if(error) {
-      // error on create class event
-      return;
-    }
-    console.log(data);
-    if(data) {
-      const createClass: CreateClass = {
-        minLevel: minLevel,
-        maxLevel: maxLevel,
-        rrule: rruleStr,
-        language: lang,
-        timeStart: startTime,
-        timeEnd: endTime,
+
+    try {
+      const classEvent = await client.createClassEvent(createEvent);
+      try {
+        const createClass: CreateClass = {
+          minLevel: minLevel,
+          maxLevel: multipleLevels ? maxLevel : minLevel,
+          rrule: rruleStr,
+          language: lang,
+          timeStart: startTime,
+          timeEnd: endTime,
+        }
+        await client.createClass(classEvent.id, createClass);
+
       }
-      const { data, error } = useSWR("class/[id]", () => client.createClass("", createClass));
+      catch(err: any) {
+        alert(`Error on class creation: ${err.message}`);
+      }
     }
-    if(error) {
-      return;
+    catch(err: any) {
+      alert(`Error on class event creation: ${err.message}`);
     }
+
     handleClose();
   };
 

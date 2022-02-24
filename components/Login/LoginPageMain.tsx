@@ -1,25 +1,50 @@
 import styles from "../../styles/components/LoginViews.module.css";
-import React from "react";
-import InputBox from "./LoginInputBox";
+import React, { useState, useEffect } from "react";
+import TextField from '@mui/material/TextField';
+
+const cssTextField = {
+    color: "black",
+    width: 690,
+    height: 80,
+    '& .MuiFilledInput-input': {
+        color: "#000000"
+    },
+    '& .MuiFormLabel-root': {
+        color: "#494C4E"
+    },
+};
 
 type LoginPageMainProps = {
     pageNumber: number;
     changePage: (newPage: number) => void;
+    onContentChange: (newEmail: string, newPassword:string) => void;
+    currEmail: string;
+    currPassword: string;
 };
 
 const LoginPageMain: React.FC<LoginPageMainProps> = 
-({pageNumber, changePage}) => {
+({pageNumber, changePage, onContentChange, currEmail, currPassword}) => {
+    
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+
+    useEffect(() =>{
+        onContentChange(email, password);
+    });
+
+    // set current values
+    useEffect(() => {
+        setEmail(currEmail);
+        setPassword(currPassword);
+    });
+
     return (
         <div className={styles.comContainer}>
             <img src="login-logo.png" className={styles.mainPageLogo}></img>
-            {/* <div className={styles.logoContainer}>
-                <img src="logo1.png"></img>
-                <img src="logo2.png"></img>
-            </div> */}
             <div className={styles.contentContainer}>
                 <h2 className={styles.title}>Login</h2>
-                <InputBox text="email"/>
-                <InputBox text="password"/>
+                <TextField id="filled-basic" label="Email" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setEmail(e.target.value)} />
+                <TextField id="filled-basic" label="Password" variant="filled" type="password" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setPassword(e.target.value)} />
                 <div className={styles.bottomContainer}>
                     <form>
                         <input type="checkbox" id="remember-me" name="remember-me" className={styles.checkbox}/>

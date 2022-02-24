@@ -1,8 +1,41 @@
 import styles from "../../styles/components/LoginViews.module.css";
-import React from "react";
-import InputBox from "./LoginInputBox";
+import React, { useState, useEffect } from "react";
+import TextField from '@mui/material/TextField';
 
-const LoginNameInput: React.FC = () => {
+const cssTextField = {
+    color: "black",
+    width: 690,
+    height: 80,
+    '& .MuiFilledInput-input': {
+        color: "#000000"
+    },
+    '& .MuiFormLabel-root': {
+        color: "#494C4E"
+    },
+};
+
+type LoginNameInputProps = {
+    onContentChange: (newFirstName: string, newLastName:string) => void;
+    currFirstName: string;
+    currLastName: string;
+};
+
+const LoginNameInput: React.FC<LoginNameInputProps> = 
+({onContentChange, currFirstName, currLastName}) => {
+
+    const [firstName, setFirstName] = useState<string>("");
+    const [lastName, setLastName] = useState<string>("");
+
+    useEffect(() =>{
+        onContentChange(firstName, lastName);
+    });
+
+    // set current values
+    useEffect(() => {
+        setFirstName(currFirstName);
+        setLastName(currLastName);
+    });
+
     return (
         <div>
             <div className={styles.headerContainer}>
@@ -13,13 +46,11 @@ const LoginNameInput: React.FC = () => {
             </div>
             <div className={styles.nameContainer}>
                 <h2 className={styles.title}>What is your name?</h2>
-                <InputBox text="first"/>
-                <InputBox text="last"/>
+                <TextField id="filled-basic" label="First" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setFirstName(e.target.value)} />
+                <TextField id="filled-basic" label="Last" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setLastName(e.target.value)} />
             </div>
 
         </div>
-        
-
     );
 }
 

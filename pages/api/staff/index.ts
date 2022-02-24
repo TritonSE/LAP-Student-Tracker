@@ -3,7 +3,7 @@ import { getAllStaff } from "../../../lib/database/staff";
 import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/staff/
-export const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
       try {
@@ -20,4 +20,4 @@ export const staffHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
   }
 };
 
-export default staffHandler;
+export { staffHandler };

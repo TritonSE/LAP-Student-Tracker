@@ -6,11 +6,7 @@ export const ClassSchema = t.type({
   maxLevel: t.number,
   rrstring: t.string,
   timeStart: t.string,
-  timeEnd: t.string
-  /*
-  recurrence: t.array(t.number),
-  teachers: t.array(UserSchema),
-  */
+  timeEnd: t.string,
 });
 export const UpdateClassSchema = t.partial({
   name: t.string,

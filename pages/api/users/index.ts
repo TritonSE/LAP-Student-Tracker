@@ -5,9 +5,9 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/users/
-export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
-    case "POST":
+    case "POST": {
       let newUser: User;
       try {
         newUser = await decode(UserSchema, req.body);
@@ -28,10 +28,11 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
+    }
 
     default:
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
   }
 };
 
-export default userHandler;
+export { userHandler };

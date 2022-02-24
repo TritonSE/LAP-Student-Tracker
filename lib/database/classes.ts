@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { Class, ClassSchema } from "../../models/classes";
+import { Class, ClassSchema } from "../../models/class";
 import { decode } from "io-ts-promise";
 const createClass = async (
   id: string,
@@ -11,7 +11,7 @@ const createClass = async (
   timeEnd: string,
 ): Promise<Class | null> => {
   const query = {
-    text: "INSERT INTO classes(id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd) VALUES($1, $2, $3, $4, $5, $6, $7)",
+    text: "INSERT INTO class(id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd) VALUES($1, $2, $3, $4, $5, $6, $7)",
     values: [id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd],
   };
 
@@ -59,7 +59,7 @@ const updateClass = async (
 // get an id from a class
 const getClass = async (id: string): Promise<Class | null> => {
   const query = {
-    text: "SELECT id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd FROM classes WHERE id = $1",
+    text: "SELECT id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd FROM class WHERE id = $1",
     values: [id],
   };
 
@@ -69,7 +69,7 @@ const getClass = async (id: string): Promise<Class | null> => {
     return null;
   }
 
-  let classes: Class;
+  var classes: Class;
   try {
     classes = await decode(ClassSchema, res.rows[0]);
   } catch {

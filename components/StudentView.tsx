@@ -1,6 +1,6 @@
 import React from "react";
 import { Student } from "../models/students";
-import StudentCard from "./StudentCard";
+import { StudentCard } from "./StudentCard";
 import styles from "../styles/components/LeagueViews.module.css";
 
 type StudentViewProp = {
@@ -62,4 +62,4 @@ const StudentView: React.FC<StudentViewProp> = ({ students }) => (
   </div>
 );
 
-export default StudentView;
+export { StudentView };

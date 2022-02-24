@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { updateClass } from "../../../lib/database/classes";
-import {UpdateClassSchema, UpdateClass } from "../../../models/classes";
+import {UpdateClassSchema, UpdateClass } from "../../../models/class";
 import { decode } from "io-ts-promise";
 import { getClass } from "../../../lib/database/classes";
 import { StatusCodes } from "http-status-codes";

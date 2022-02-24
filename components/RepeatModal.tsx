@@ -10,15 +10,14 @@ type RepeatModalProps = {
   handleStates: (
     repeat: boolean,
     interval: number,
-    freq: string,
     weekDays: number[],
     endSelection: string,
     endDate: Date,
     count: number
   ) => void;
+  // props for initial state values
   initRepeat: boolean;
   initInterval: number;
-  initFreq: string;
   initWeekDays: number[];
   initEndSelection: string;
   initEndDate: Date;
@@ -30,22 +29,23 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
   handleStates,
   initRepeat,
   initInterval,
-  initFreq,
   initWeekDays,
   initEndSelection,
   initEndDate,
   initCount,
 }) => {
+  // repeat modal states initialized by init props
   const [repeat, setRepeat] = useState(initRepeat);
   const [interval, setInterval] = useState(initInterval);
-  const [freq, setFreq] = useState(initFreq);
   const [weekDays, setWeekDays] = useState<number[]>(initWeekDays);
   const [endSelection, setEndSelection] = useState(initEndSelection);
   const [endDate, setEndDate] = useState(initEndDate);
   const [count, setCount] = useState(initCount);
 
+  // display strings for week days
   const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
 
+  // adds/removes day from weekDay state
   const handleDayOfWeekChange = (day: number) => {
     if (weekDays.includes(day)) {
       setWeekDays(weekDays.filter((item) => item !== day));
@@ -54,12 +54,14 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
     }
   };
 
+  // converts daysOfWeek idx to RRule weekday idx (0 == RRule.MO, ...)
   const convertDayIdx = (idx: number) => {
     return (((idx - 1) % 7) + 7) % 7;
   };
 
+  // passes state values to callback and closes modal on save
   const handleSave = () => {
-    handleStates(repeat, interval, freq, weekDays, endSelection, endDate, count);
+    handleStates(repeat, interval, weekDays, endSelection, endDate, count);
     handleClose();
   };
 
@@ -86,16 +88,12 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
             value={interval}
             onChange={(e) => setInterval(e.target.valueAsNumber)}
           />
-          <select
-            className={styles.dropDown}
+         <input
+            className={styles.freqField}
             disabled={!repeat}
-            value={freq}
-            onChange={(e) => setFreq(e.target.value)}
-          >
-            <option value="weekly">week</option>
-            <option value="daily">day</option>
-            <option value="monthly">month</option>
-          </select>
+            type="text"
+            value="weekly"
+          />
         </div>
 
         <p className={styles.smallLabel}>Repeat on</p>

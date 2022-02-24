@@ -1,48 +1,50 @@
 import React, { useState } from "react";
 import RepeatModal from "./RepeatModal";
+import { CreateClassEvent, ClassEvent } from "../models/events";
 import styles from "../styles/CreateEventsWizard.module.css";
 
 import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
+
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import TimePicker from "react-time-picker/dist/entry.nostyle";
 import { RRule } from "rrule";
+const { DateTime } = require("luxon");
 
 type CreateEventsWizardProps = {
   handleClose: () => void;
 };
 
 const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) => {
+  // create wizard states
+  const [name, setName] = useState("");
   const [multipleLevels, setMultipleLevels] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const [startTime, setStartTime] = useState((new Date()).toTimeString());
+  const [endTime, setEndTime] = useState((new Date()).toTimeString());
   const [showRepeatModal, setShowRepeatModal] = useState(false);
-  const [rruleStr, setRruleStr] = useState("No Repeat");
+  const [rruleText, setRruleText] = useState("No Repeat");
+  const [color, setColor] = useState("yellow");
+  const [teachers, setTeachers] = useState("");
 
+  // saved repeat modal states
   const [repeat, setRepeat] = useState(false);
   const [interval, setInterval] = useState(1);
-  const [freq, setFreq] = useState("weekly");
   const [weekDays, setWeekDays] = useState<number[]>([]);
   const [endType, setEndType] = useState("never");
   const [endDate, setEndDate] = useState(new Date());
   const [count, setCount] = useState(1);
 
-  const freqMap = {
-    weekly: RRule.WEEKLY,
-    daily: RRule.DAILY,
-    monthly: RRule.MONTHLY,
-  };
-
+  // callback for hiding modal on close
   const handleRepeatClose = () => {
     setShowRepeatModal(false);
   };
 
+  // callback for setting repeat modal states on save
   const handleRepeatStates = (
     repeat_param: boolean,
     interval_param: number,
-    freq_param: string,
     weekDays_param: number[],
     endType_param: string,
     endDate_param: Date,
@@ -51,8 +53,6 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     setRepeat(repeat_param);
     if (repeat_param) {
       setInterval(interval_param);
-      alert(interval_param);
-      setFreq(freq_param);
       setWeekDays(weekDays_param);
       setEndType(endType_param);
       setEndDate(endDate_param);
@@ -60,41 +60,81 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
       const rule = new RRule({
         interval: interval_param,
-        freq: freqMap[freq_param],
+        freq: RRule.WEEKLY,
         byweekday: weekDays_param,
       });
 
-      setRruleStr(rule.toText());
+      setRruleText(rule.toText());
     } else {
-      setRruleStr("No Repeat");
+      setRruleText("No Repeat");
     }
   };
 
-  const handleSubmit = () => {
-    alert("submitted");
-    var rule;
+  // handles create wizard submit
+  const handleSubmit = async () => {
+    var lang: string = "unknown";
+    if(name.toLowerCase().includes("java")) {
+      lang = "Java";
+    }
+    else if(name.toLowerCase().includes("python")) {
+      lang = "Python";
+    }
+
+    var rruleStr = "";
+    var rrule;
     if (repeat) {
       switch (endType) {
         case "never":
-          rule = new RRule({
+          rrule = new RRule({
+            dtstart: startDate,
             interval: interval,
-            freq: freqMap[freq],
+            freq: RRule.WEEKLY,
             byweekday: weekDays,
           });
+          rruleStr = rrule.toString();
           break;
         case "on":
-          rule = new RRule({
+          rrule = new RRule({
+            dtstart: startDate,
             interval: interval,
-            freq: freqMap[freq],
+            freq: RRule.WEEKLY,
             byweekday: weekDays,
+            until: endDate,
           });
           break;
         case "after":
-
-        default:
-        // code block
+          rrule = new RRule({
+            dtstart: startDate,
+            interval: interval,
+            freq: RRule.WEEKLY,
+            byweekday: weekDays,
+            count: count,
+          });
+          break;
       }
     }
+
+    const createEvent: CreateClassEvent = {
+      name: name,
+      startTime: startTime,
+      endTime: endTime,
+      timeZone: DateTime.local().zoneName,
+      rrule: rruleStr,
+      language: lang,
+      neverEnding: endType === "never",
+      backgroundColor: color,
+      teachers: teachers.split(','),
+    }
+    console.log(createEvent)
+   /* const response = await fetch("/api/events", {
+      method: "POST",
+      body: JSON.stringify({ createEvent }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);*/
     handleClose();
   };
 
@@ -106,7 +146,6 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           handleStates={handleRepeatStates}
           initRepeat={repeat}
           initInterval={interval}
-          initFreq={freq}
           initWeekDays={weekDays}
           initEndSelection={endType}
           initEndDate={endDate}
@@ -124,6 +163,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
             </div>
             <input
               className={`${styles.label} ${styles.classInput}`}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               type="text"
               placeholder="Java Bear"
             />
@@ -131,9 +172,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
           <div className={styles.scrollableContent}>
             <div
-              className={`${styles.levelsWrapper} ${
-                multipleLevels ? styles.multiLevel : styles.singleLevel
-              }`}
+              className={`${styles.levelsWrapper} ${multipleLevels ? styles.multiLevel : styles.singleLevel
+                }`}
             >
               <p className={styles.label}>Levels</p>
               <input className={styles.levelInput} type="number" min={1} />
@@ -181,20 +221,28 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
                 format="h:mma"
               />
               <button className={styles.recurrenceButton} onClick={() => setShowRepeatModal(true)}>
-                {rruleStr}
+                {rruleText}
               </button>
             </div>
 
-            <select className={styles.dropDown}>
-              <option value="" selected>
-                Yellow
-              </option>
-              <option value="">Blue</option>
+            <select
+              className={styles.dropDown}
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+            >
+              <option value="yellow">Yellow</option>
+              <option value="blue">Blue</option>
             </select>
 
             <div className={styles.row}>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
-              <input className={styles.textInput} type="text" placeholder="Add teachers" />
+              <input
+                className={styles.textInput}
+                type="text"
+                placeholder="Add teachers"
+                value={teachers}
+                onChange={(e) => setTeachers(e.target.value)}
+              />
             </div>
           </div>
 

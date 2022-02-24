@@ -25,8 +25,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [minLevel, setMinLevel] = useState(1);
   const [maxLevel, setMaxLevel] = useState(1);
   const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState((new Date()).toTimeString());
-  const [endTime, setEndTime] = useState((new Date()).toTimeString());
+  const [startTime, setStartTime] = useState(new Date().toTimeString());
+  const [endTime, setEndTime] = useState(new Date().toTimeString());
   const [showRepeatModal, setShowRepeatModal] = useState(false);
   const [rruleText, setRruleText] = useState("No Repeat");
   const [color, setColor] = useState("yellow");
@@ -78,16 +78,15 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
   // handles create wizard submit
   const handleSubmit = async () => {
-    var lang: string = "unknown";
-    if(name.toLowerCase().includes("java")) {
+    let lang = "unknown";
+    if (name.toLowerCase().includes("java")) {
       lang = "Java";
-    }
-    else if(name.toLowerCase().includes("python")) {
+    } else if (name.toLowerCase().includes("python")) {
       lang = "Python";
     }
 
-    var rruleStr = "";
-    var rrule;
+    let rruleStr = "";
+    let rrule;
     if (repeat) {
       switch (endType) {
         case "never":
@@ -129,9 +128,9 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       language: lang,
       neverEnding: endType === "never",
       backgroundColor: color,
-      teachers: teachers.split(','),
-    }
-    console.log(createEvent)
+      teachers: teachers.split(","),
+    };
+    console.log(createEvent);
 
     try {
       const classEvent = await client.createClassEvent(createEvent);
@@ -143,15 +142,12 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           language: lang,
           timeStart: startTime,
           timeEnd: endTime,
-        }
+        };
         await client.createClass(classEvent.id, createClass);
-
-      }
-      catch(err: any) {
+      } catch (err: any) {
         alert(`Error on class creation: ${err.message}`);
       }
-    }
-    catch(err: any) {
+    } catch (err: any) {
       alert(`Error on class event creation: ${err.message}`);
     }
 
@@ -192,15 +188,28 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
           <div className={styles.scrollableContent}>
             <div
-              className={`${styles.levelsWrapper} ${multipleLevels ? styles.multiLevel : styles.singleLevel
-                }`}
+              className={`${styles.levelsWrapper} ${
+                multipleLevels ? styles.multiLevel : styles.singleLevel
+              }`}
             >
               <p className={styles.label}>Levels</p>
-              <input className={styles.levelInput} type="number" min={1} value={minLevel} onChange={(e) => setMinLevel(e.target.valueAsNumber)} />
+              <input
+                className={styles.levelInput}
+                type="number"
+                min={1}
+                value={minLevel}
+                onChange={(e) => setMinLevel(e.target.valueAsNumber)}
+              />
               {multipleLevels ? (
                 <>
                   <span className={styles.dash} />
-                  <input className={styles.levelInput} type="number" min={1} value={maxLevel} onChange={(e) => setMaxLevel(e.target.valueAsNumber)} />
+                  <input
+                    className={styles.levelInput}
+                    type="number"
+                    min={1}
+                    value={maxLevel}
+                    onChange={(e) => setMaxLevel(e.target.valueAsNumber)}
+                  />
                 </>
               ) : null}
               <input

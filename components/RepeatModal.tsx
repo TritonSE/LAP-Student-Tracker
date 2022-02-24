@@ -88,12 +88,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
             value={interval}
             onChange={(e) => setInterval(e.target.valueAsNumber)}
           />
-         <input
-            className={styles.freqField}
-            disabled={!repeat}
-            type="text"
-            value="weekly"
-          />
+          <input className={styles.freqField} disabled={!repeat} type="text" value="weekly" />
         </div>
 
         <p className={styles.smallLabel}>Repeat on</p>

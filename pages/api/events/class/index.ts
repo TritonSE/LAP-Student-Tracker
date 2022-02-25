@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createClassEvent } from "../../../../lib/database/events";
 import { createCalenderEvent } from "../../../../lib/database/calender";
+import { createCommitment } from "../../../../lib/database/commitments";
 import { CreateClassEvent, Event, CreateClassEventSchema, ClassEventSchema } from "../../../../models/events";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
@@ -60,8 +61,15 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
           } catch (e) {
             return res.status(StatusCodes.BAD_REQUEST).json("Calender information is incorrect");
           }
-
         };
+
+        try {
+          for (const teacher of newEvent.teachers) {
+            const commitmentResult = await createCommitment(teacher, result);
+          }
+        } catch (e) {
+          return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");
+        }
 
         return res.status(StatusCodes.CREATED).json({
           "id": result, 

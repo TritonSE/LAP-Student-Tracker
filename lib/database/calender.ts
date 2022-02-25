@@ -1,16 +1,12 @@
 import { client } from "../db";
-import { decode } from "io-ts-promise";
-import { string } from "fp-ts";
-import { userInfo } from "os";
-import { Any, NullType } from "io-ts";
+import { Any } from "io-ts";
 
 // Creates a calender event in database
 const createCalenderEvent = async (
   id: string,
   startString: string,
-  endString: string,
+  endString: string
 ): Promise<Any[]> => {
-
   const query = {
     text: "INSERT INTO calender_information(event_information_id, start_str, end_str) VALUES($1, $2, $3)",
     values: [id, startString, endString],

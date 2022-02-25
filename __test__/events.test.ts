@@ -1,11 +1,11 @@
 import { eventHandler } from "../pages/api/events/class";
 import { client } from "../lib/db";
-import { makeHTTPRequest, makeEventHTTPRequest } from "./__testutils__/testutils.test";
+import { makeEventHTTPRequest } from "./__testutils__/testutils.test";
 import { CreateClassEvent, ClassEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
 
-const INTERNAL_SERVER_ERROR = "Internal Server Error";
-const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
+// const INTERNAL_SERVER_ERROR = "Internal Server Error";
+// const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
 beforeAll(async () => {
   await client.query("DELETE from users");
@@ -35,7 +35,7 @@ describe("[POST] /api/events/class", () => {
       language: "english",
       neverEnding: false,
       backgroundColor: "blue",
-      teachers: ["teacher@gmail.com"] 
+      teachers: ["teacher@gmail.com"],
     };
 
     const expectedBody: ClassEvent = {
@@ -46,7 +46,7 @@ describe("[POST] /api/events/class", () => {
       rrule: "FREQ=WEEKLY;BYDAY=SU,MO;INTERVAL=1;UNTIL=20220424",
       language: "english",
       neverEnding: false,
-      backgroundColor: "blue"
+      backgroundColor: "blue",
     };
 
     await makeEventHTTPRequest(

@@ -2,18 +2,16 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createClassEvent } from "../../../../lib/database/events";
 import { createCalenderEvent } from "../../../../lib/database/calender";
 import { createCommitment } from "../../../../lib/database/commitments";
-import { CreateClassEvent, ClassEvent, CreateClassEventSchema, ClassEventSchema } from "../../../../models/events";
+import { CreateClassEvent, ClassEvent, CreateClassEventSchema } from "../../../../models/events";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import { RRule, RRuleSet, rrulestr } from 'rrule'
-import { STATUS_CODES } from "http";
-import { DateTime } from 'luxon';
-import { date } from "fp-ts";
+import { rrulestr } from "rrule";
+import { DateTime } from "luxon";
 
 // handles requests to /api/events/class
-export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
-    case "POST":
+    case "POST": {
       let newEvent: CreateClassEvent;
       try {
         newEvent = await decode(CreateClassEventSchema, req.body);
@@ -40,54 +38,54 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
 
         // Loops through all dates and inserts into calender_information table
         for (const date of allDates) {
-          let dateStart = DateTime.fromJSDate(date, { zone: newEvent.timeZone }).set({
+          const dateStart = DateTime.fromJSDate(date, { zone: newEvent.timeZone }).set({
             hour: startTime.hour,
             minute: startTime.minute,
             second: startTime.second,
           });
 
-          let dateEnd = DateTime.fromJSDate(date, { zone: newEvent.timeZone }).set({
+          const dateEnd = DateTime.fromJSDate(date, { zone: newEvent.timeZone }).set({
             hour: endTime.hour,
             minute: endTime.minute,
             second: endTime.second,
           });
 
           try {
-            const calenderResult = await createCalenderEvent(result[0], dateStart.toISO(), dateEnd.toISO());
+            await createCalenderEvent(result[0], dateStart.toISO(), dateEnd.toISO());
           } catch (e) {
             return res.status(StatusCodes.BAD_REQUEST).json("Calender information is incorrect");
           }
-        };
-        
+        }
+
         // Loops through teachers and inserts into commitments table
         try {
           for (const teacher of result.splice(1)) {
-            const commitmentResult = await createCommitment(teacher, result[0]);
+            await createCommitment(teacher, result[0]);
           }
         } catch (e) {
           return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");
         }
 
         const responseBody: ClassEvent = {
-          eventInformationId: result[0], 
-          startTime: newEvent.startTime, 
-          endTime: newEvent.endTime, 
+          eventInformationId: result[0],
+          startTime: newEvent.startTime,
+          endTime: newEvent.endTime,
           timeZone: newEvent.timeZone,
-          rrule: newEvent.rrule, 
-          language: newEvent.language, 
+          rrule: newEvent.rrule,
+          language: newEvent.language,
           neverEnding: newEvent.neverEnding,
-          backgroundColor: newEvent.backgroundColor, 
-        }
+          backgroundColor: newEvent.backgroundColor,
+        };
 
         return res.status(StatusCodes.CREATED).json(responseBody);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
-      break;
+    }
 
     default:
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
   }
 };
 
-export default eventHandler;
+export { eventHandler };

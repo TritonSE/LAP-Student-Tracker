@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
-import { CreateClassEvent, ClassEvent } from "../../models/events";
+import { ClassEvent } from "../../models/events";
 
 /**
  * Create and test a HTTP Request
@@ -60,18 +60,21 @@ const makeEventHTTPRequest = async (
   });
 
   await handler(req, res);
-  console.log(res);
+  
   expect(res._getStatusCode()).toBe(expectedResponseCode);
-  expect(JSON.parse(res._getData())).toEqual(expect.objectContaining({
-      eventInformationId: expect.stringMatching(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i),
+  expect(JSON.parse(res._getData())).toEqual(
+    expect.objectContaining({
+      eventInformationId: expect.stringMatching(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+      ),
       startTime: expectedBody.startTime,
       endTime: expectedBody.endTime,
       timeZone: expectedBody.timeZone,
       rrule: expectedBody.rrule,
       language: expectedBody.language,
       neverEnding: expectedBody.neverEnding,
-      backgroundColor: expectedBody.backgroundColor
-    }),
+      backgroundColor: expectedBody.backgroundColor,
+    })
   );
 
   return res;

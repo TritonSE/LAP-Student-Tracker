@@ -13,7 +13,13 @@ const teachersExist = async (teachers: string[]): Promise<Any[]> => {
     values: [teachers],
   };
 
-  const res = await client.query(query);
+  let res;
+  try {
+    res = await client.query(query);
+  } catch (e) {
+    throw Error("Error on select of database.");
+  }
+
   return res.rows;
 }
 
@@ -28,28 +34,26 @@ const createClassEvent = async (
   neverEnding: boolean,
   backgroundColor: string,
   teachers: string[],
-): Promise<Any | null> => {
+): Promise<string> => {
 
   let teacherResult = await teachersExist(teachers);
   if (teacherResult.length != teachers.length) {
-    return null;
+    return "";
   }
 
   const query = {
-    text: "INSERT INTO events(name, background_color, type, never_ending) VALUES($1, $2, $3, $4) RETURNING id",
+    text: "INSERT INTO event_information(name, background_color, type, never_ending) VALUES($1, $2, $3, $4) RETURNING id",
     values: [name, backgroundColor, 'Class', neverEnding],
   };
   
-
-  client.query(query.text, query.values, (err, res) => {
-    if (err) {
-      console.log(err.stack);
-    } else {
-      return res;
-    }
-  });
+  let res;
+  try {
+    res = await client.query(query);
+  } catch (e) {
+    throw Error("Error on insert into database.");
+  }
   
-  return null;
+  return res.rows[0].id;
 }
 
 export { createClassEvent };

@@ -5,7 +5,7 @@
 
 CREATE TABLE commitments (
     user_id text,
-    event_id text,
+    event_information_id text,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE  
+    FOREIGN KEY (event_information_id) REFERENCES event_information (id) ON DELETE CASCADE  
 );

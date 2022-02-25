@@ -4,8 +4,8 @@
  **/
 
 CREATE TABLE calender_information (
-    event_id text,
+    event_information_id text,
     start_str TIMESTAMP WITH TIME ZONE,
     end_str TIMESTAMP WITH TIME ZONE,
-    FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE  
+    FOREIGN KEY (event_information_id) REFERENCES event_information (id) ON DELETE CASCADE  
 );

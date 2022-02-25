@@ -35,7 +35,7 @@ describe("[POST] /api/events/class", () => {
       language: "english",
       neverEnding: false,
       backgroundColor: "blue",
-      teachers: ["random129387@gmail.com"] 
+      teachers: ["teacher@gmail.com"] 
     };
 
     const expectedBody: ClassEvent = {

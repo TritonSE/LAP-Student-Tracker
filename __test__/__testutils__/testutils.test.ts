@@ -60,7 +60,7 @@ const makeEventHTTPRequest = async (
   });
 
   await handler(req, res);
-  
+
   expect(res._getStatusCode()).toBe(expectedResponseCode);
   expect(JSON.parse(res._getData())).toEqual(
     expect.objectContaining({

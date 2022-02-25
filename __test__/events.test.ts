@@ -5,7 +5,6 @@ import { CreateClassEvent, ClassEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
-const TEACHERS_DO_NOT_EXIST = "The given teachers do not exist";
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
 beforeAll(async () => {
@@ -36,8 +35,9 @@ describe("[POST] /api/events/class", () => {
       language: "english",
       neverEnding: false,
       backgroundColor: "blue",
-      teachers: ["teacher@gmail.com"] 
+      teachers: ["random129387@gmail.com"] 
     };
+
     const expectedBody: ClassEvent = {
       eventInformationId: "",
       startTime: "2022-02-27T05:11:45.000Z",
@@ -46,8 +46,9 @@ describe("[POST] /api/events/class", () => {
       rrule: "FREQ=WEEKLY;BYDAY=SU,MO;INTERVAL=1;UNTIL=20220424",
       language: "english",
       neverEnding: false,
-      backgroundColor: "blue",
+      backgroundColor: "blue"
     };
+
     await makeEventHTTPRequest(
       eventHandler,
       "/api/events/class",

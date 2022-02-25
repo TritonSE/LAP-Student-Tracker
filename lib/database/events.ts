@@ -38,7 +38,7 @@ const createClassEvent = async (
 
   const teacherResult: User[] = await teachersExist(teachers);
   if (teacherResult.length != teachers.length) {
-    return [];
+    throw Error("Some or all the teachers given do not exist");
   }
   const teacherIds = teacherResult.map(teacher => teacher.id);
 

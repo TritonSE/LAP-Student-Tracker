@@ -33,10 +33,6 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
           newEvent.teachers
         );
 
-        if (result == null) {
-          res.status(StatusCodes.BAD_REQUEST).json("The given teachers do not exist");
-        }
-
         const ruleObj = rrulestr(newEvent.rrule);
         const allDates = newEvent.neverEnding ? ruleObj.all().splice(0, 365) : ruleObj.all();
         const startTime = DateTime.fromISO(newEvent.startTime);

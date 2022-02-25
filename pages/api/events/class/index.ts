@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createClassEvent } from "../../../../lib/database/events";
 import { createCalenderEvent } from "../../../../lib/database/calender";
 import { createCommitment } from "../../../../lib/database/commitments";
-import { CreateClassEvent, Event, CreateClassEventSchema, ClassEventSchema } from "../../../../models/events";
+import { CreateClassEvent, ClassEvent, CreateClassEventSchema, ClassEventSchema } from "../../../../models/events";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { RRule, RRuleSet, rrulestr } from 'rrule'
@@ -34,7 +34,7 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         );
 
         if (result == null) {
-          res.status(StatusCodes.NOT_ACCEPTABLE).json("The given teachers do not exist");
+          res.status(StatusCodes.BAD_REQUEST).json("The given teachers do not exist");
         }
 
         const ruleObj = rrulestr(newEvent.rrule);
@@ -43,7 +43,6 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         const endTime = DateTime.fromISO(newEvent.endTime);
 
         for (const date of allDates) {
-
           let dateStart = DateTime.fromJSDate(date, { zone: newEvent.timeZone }).set({
             hour: startTime.hour,
             minute: startTime.minute,
@@ -57,30 +56,32 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
           });
 
           try {
-            const calenderResult = await createCalenderEvent(result, dateStart.toISO(), dateEnd.toISO());
+            const calenderResult = await createCalenderEvent(result[0], dateStart.toISO(), dateEnd.toISO());
           } catch (e) {
             return res.status(StatusCodes.BAD_REQUEST).json("Calender information is incorrect");
           }
         };
 
         try {
-          for (const teacher of newEvent.teachers) {
-            const commitmentResult = await createCommitment(teacher, result);
+          for (const teacher of result.splice(1)) {
+            const commitmentResult = await createCommitment(teacher, result[0]);
           }
         } catch (e) {
           return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");
         }
 
-        return res.status(StatusCodes.CREATED).json({
-          "id": result, 
-          "startTime": newEvent.startTime, 
-          "endTime": newEvent.endTime, 
-          "timeZone": newEvent.timeZone,
-          "rrule": newEvent.rrule, 
-          "language": newEvent.language, 
-          "neverEnding": newEvent.neverEnding,
-          "backgroundColor": newEvent.backgroundColor, 
-          });
+        const responseBody: ClassEvent = {
+          eventInformationId: result[0], 
+          startTime: newEvent.startTime, 
+          endTime: newEvent.endTime, 
+          timeZone: newEvent.timeZone,
+          rrule: newEvent.rrule, 
+          language: newEvent.language, 
+          neverEnding: newEvent.neverEnding,
+          backgroundColor: newEvent.backgroundColor, 
+        }
+
+        return res.status(StatusCodes.CREATED).json(responseBody);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }

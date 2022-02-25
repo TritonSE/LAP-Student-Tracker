@@ -24,4 +24,4 @@ export const ClassEventSchema = t.type({
 });
 
 export type CreateClassEvent = t.TypeOf<typeof CreateClassEventSchema>;
-export type Event = t.TypeOf<typeof ClassEventSchema>;
+export type ClassEvent = t.TypeOf<typeof ClassEventSchema>;

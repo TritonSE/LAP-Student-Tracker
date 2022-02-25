@@ -4,6 +4,7 @@ import { string } from "fp-ts";
 import { userInfo } from "os";
 import { Any, NullType } from "io-ts";
 
+// Creates a calender event in database
 const createCalenderEvent = async (
   id: string,
   startString: string,

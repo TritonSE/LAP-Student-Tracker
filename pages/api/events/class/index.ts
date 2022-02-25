@@ -38,6 +38,7 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         const startTime = DateTime.fromISO(newEvent.startTime);
         const endTime = DateTime.fromISO(newEvent.endTime);
 
+        // Loops through all dates and inserts into calender_information table
         for (const date of allDates) {
           let dateStart = DateTime.fromJSDate(date, { zone: newEvent.timeZone }).set({
             hour: startTime.hour,
@@ -57,7 +58,8 @@ export const eventHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
             return res.status(StatusCodes.BAD_REQUEST).json("Calender information is incorrect");
           }
         };
-
+        
+        // Loops through teachers and inserts into commitments table
         try {
           for (const teacher of result.splice(1)) {
             const commitmentResult = await createCommitment(teacher, result[0]);

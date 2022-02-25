@@ -1,6 +1,6 @@
 import { eventHandler } from "../pages/api/events/class";
 import { client } from "../lib/db";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
+import { makeHTTPRequest, makeEventHTTPRequest } from "./__testutils__/testutils.test";
 import { CreateClassEvent, ClassEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
 
@@ -48,7 +48,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
     };
-    await makeHTTPRequest(
+    await makeEventHTTPRequest(
       eventHandler,
       "/api/events/class",
       undefined,

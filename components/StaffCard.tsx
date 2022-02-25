@@ -1,4 +1,5 @@
-import styles from "../styles/Components.module.css";
+import React from "react";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type StaffCardProps = {
   firstName: string;
@@ -18,4 +19,4 @@ const StaffCard: React.FC<StaffCardProps> = ({ firstName, lastName, phone_number
   );
 };
 
-export default StaffCard;
+export { StaffCard };

@@ -1,9 +1,9 @@
 import { NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import styles from "../styles/League.module.css";
-import ClassView from "../components/ClassView";
-import StudentView from "../components/StudentView";
-import StaffView from "../components/StaffView";
+import { ClassView } from "../components/ClassView";
+import { StudentView } from "../components/StudentView";
+import { StaffView } from "../components/StaffView";
 import { Class } from "../models/classes";
 import { User } from "../models/users";
 import { Student } from "../models/students";
@@ -24,24 +24,15 @@ const League: NextPage = () => {
   });
 
   // start dummy data, delete once api is implemented
-  const testStaff: User = {
-    id: "staff_id",
-    firstName: "Rick",
-    lastName: "Ord",
-    email: "ricko@ucsd.edu",
-    role: "Teacher",
-    phoneNumber: "(123) 456-7890",
-    address: "123",
-  };
   const testClass: Class = {
     id: "class_id",
     name: "Intro to Java",
     minLevel: 3,
     maxLevel: 5,
-    recurrence: [1, 2, 3],
-    timeStart: "13:00",
-    timeEnd: "14:00",
-    teachers: [testStaff],
+    rrstring:
+      "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
+    timeStart: "07:34Z",
+    timeEnd: "08:34Z",
   };
   const testStudent: Student = {
     id: "student_id",
@@ -54,7 +45,6 @@ const League: NextPage = () => {
     level: 3,
     classes: ["CSE 123"],
   };
-  const testStaffArray: User[] = Array(5).fill(testStaff);
   const testClassArray: Class[] = Array(25).fill(testClass);
   const testStudentArray: Student[] = Array(5).fill(testStudent);
   // end dummy data
@@ -62,18 +52,19 @@ const League: NextPage = () => {
   useEffect(() => {
     // Eventually api call to get classes/students/staff...
     // Use dummy data for now
+
     setContent({
       Classes: testClassArray,
       Students: testStudentArray,
-      Staff: testStaffArray,
+      Staff: [],
     });
   }, []);
 
   // Renders specific content component based on tab state
-  const renderComponent = (display: String) => {
-    if (display == "Classes") return <ClassView classes={content?.Classes} />;
-    if (display == "Students") return <StudentView students={content?.Students} />;
-    if (display == "Staff") return <StaffView staff={content?.Staff} />;
+  const renderComponent = (display: string): JSX.Element | undefined => {
+    if (display == "Classes") return <ClassView classes={content.Classes} />;
+    if (display == "Students") return <StudentView students={content.Students} />;
+    if (display == "Staff") return <StaffView />;
   };
 
   return (
@@ -83,7 +74,7 @@ const League: NextPage = () => {
         <div className={styles.tabs}>
           {allTabs.map((tabName, idx) => {
             return (
-              <div className={styles.tabWrapper}>
+              <div className={styles.tabWrapper} key={tabName}>
                 <button
                   key={tabName}
                   className={`${styles.tabButton} ${

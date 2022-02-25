@@ -1,7 +1,7 @@
 import React from "react";
 import { Class } from "../models/classes";
-import ClassCard from "./ClassCard";
-import styles from "../styles/Components.module.css";
+import { ClassCard } from "./ClassCard";
+import styles from "../styles/components/LeagueViews.module.css";
 
 type ClassViewProp = {
   classes: Class[];
@@ -25,20 +25,21 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
       <h1 className={styles.compTitle}>Classes</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
-          {classes.map((c) => (
+          {classes.map((tempClass) => (
             <ClassCard
-              key={c.id}
-              name={c.name}
-              minLevel={c.minLevel}
-              maxLevel={c.maxLevel}
-              recurrence={c.recurrence}
-              timeStart={c.timeStart}
-              timeEnd={c.timeEnd}
+              key={tempClass.id}
+              name={tempClass.name}
+              minLevel={tempClass.minLevel}
+              maxLevel={tempClass.maxLevel}
+              rrstring={tempClass.rrstring}
+              timeStart={tempClass.timeStart}
+              timeEnd={tempClass.timeEnd}
             />
           ))}
         </ul>
       </div>
     </div>
+    <span className={styles.spacer} />
     <div className={styles.rightContainer}>
       <input type="text" placeholder="Search classes" className={styles.searchBar}></input>
       <h2 className={styles.orderTitle}>Order By:</h2>
@@ -63,4 +64,4 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
   </div>
 );
 
-export default ClassView;
+export { ClassView };

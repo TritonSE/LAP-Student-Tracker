@@ -5,40 +5,39 @@ import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { UpdateClass, Class } from "../models/class";
 import { StatusCodes } from "http-status-codes";
 import { max } from "moment";
+//import eventInformation from "../migrations";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const CLASS_NOT_FOUND_ERROR = "class not found";
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
 beforeAll(async () => {
-  await client.query("DELETE from class");
+  await client.query("DELETE from event_Information");
+  await client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('11', 'class1', 'blue', 'class', false)");
+  await client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('22', 'class2', 'green', 'class', true)");
+  await client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('33', 'class2', 'green', 'class', true)");
+  await client.query("DELETE from classes");
   await client.query(
-    "INSERT INTO class(id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd) VALUES('1', 'Intro to Java', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z')"
+    "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('11', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english')"
   );
- /* await client.query(
-    "INSERT INTO classes(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
-  );
-  await client.query(
-    "INSERT INTO classes(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')"
-  );*/
 });
 
 afterAll(async () => {
-  await client.query("DELETE from class");
+  await client.query("DELETE from classes");
   await client.end();
 });
 
 describe("[POST] /api/class", () => {
   test("creates a new class", async () => {
     const body: Class = {
-        id: "1",
-        name: "Intro to Java",
+        id: "33",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
         "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
         timeStart: "07:34Z",
         timeEnd: "08:34Z",
+        language: "english"
     };
     await makeHTTPRequest(
       classHandler,
@@ -53,14 +52,14 @@ describe("[POST] /api/class", () => {
 
   test("doesn't create a duplicate class", async () => {
     const body: Class = {
-        id: "1",
-        name: "Intro to Java",
+      id: "11",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
         "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
         timeStart: "07:34Z",
         timeEnd: "08:34Z",
+        language: "english"
     };
 
     await makeHTTPRequest(
@@ -77,8 +76,7 @@ describe("[POST] /api/class", () => {
   
   test("body does not have a required field", async () => {
     const body = {
-        id: "1",
-        name: "Intro to Java",
+      id: "11",
         minLevel: 3,
         maxLevel: 5,
         timeStart: "07:34Z",
@@ -99,23 +97,23 @@ describe("[POST] /api/class", () => {
 describe("[GET] /api/class/[id]", () => {
   test("look for a class that exists", async () => {
     const expected: Class = {
-        id: "1",
-        name: "Intro to Java",
+      id: "22",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
         "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
         timeStart: "07:34Z",
         timeEnd: "08:34Z",
+        language: "english"
     };
 
     const query = {
-      id: "1",
+      id: "22",
     };
 
     await makeHTTPRequest(
       classIDHandler,
-      "/api/class/1",
+      "/api/class/22",
       query,
       "GET",
       undefined,
@@ -144,33 +142,33 @@ describe("[GET] /api/class/[id]", () => {
 describe("[PATCH] /api/class/[id]", () => {
   test("editing everything for a class that does exist", async () => {
     const expected: Class = {
-        id: "1",
-        name: "Intro to Java",
+      id: "11",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
         "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
         timeStart: "07:34Z",
         timeEnd: "08:34Z",
+        language: "english"
     };
 
     const query = {
-      id: "1",
+      id: "11",
     };
 
     const body: UpdateClass = {
-        name: "Advanced Java",
         minLevel: 4,
         maxLevel: 6,
         rrstring:
         "DTSTART:20230222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20240222T093000Z;BYDAY=TU,FR;INTERVAL=1",
         timeStart: "07:34Z",
         timeEnd: "08:34Z",
+        language: "english"
     };
 
     await makeHTTPRequest(
       classIDHandler,
-      "/api/class/1",
+      "/api/class/11",
       query,
       "PATCH",
       body,
@@ -181,29 +179,29 @@ describe("[PATCH] /api/class/[id]", () => {
 
   test("editing few fields for a class that does exist", async () => {
     const expected: Class = {
-        id: "1",
-        name: "Intro to Java",
+      id: "11",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
         "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
         timeStart: "07:34Z",
         timeEnd: "08:34Z",
+        language: "english"
     };
 
     const query = {
-      id: "1",
+      id: "11",
     };
 
     const body: UpdateClass = {
       minLevel: 4,
       maxLevel: 6,
-      name: "Advanced Java"
+      language: "Java"
     };
 
     await makeHTTPRequest(
       classIDHandler,
-      "/api/class/1",
+      "/api/class/11",
       query,
       "PATCH",
       body,
@@ -218,7 +216,7 @@ describe("[PATCH] /api/class/[id]", () => {
     };
 
     const body: UpdateClass = {
-      name: "Not a real Class",
+      language: "Python"
     };
 
     await makeHTTPRequest(

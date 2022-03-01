@@ -16,18 +16,17 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         try {
           const result = await createClass(
             newClass.id,
-            newClass.name,
             newClass.minLevel,
             newClass.maxLevel,
             newClass.rrstring,
             newClass.timeStart,
-            newClass.timeEnd
+            newClass.timeEnd,
+            newClass.language
           );
           return res.status(StatusCodes.CREATED).json(result);
         } catch (e) {
           return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
         }
-
       default:
         return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
     }

@@ -3,16 +3,16 @@ import { Class, ClassSchema } from "../../models/class";
 import { decode } from "io-ts-promise";
 const createClass = async (
   id: string,
-  name: string,
   minLevel: number,
   maxLevel: number,
   rrstring: string,
   timeStart: string,
   timeEnd: string,
+  language: string
 ): Promise<Class | null> => {
   const query = {
-    text: "INSERT INTO class(id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd) VALUES($1, $2, $3, $4, $5, $6, $7)",
-    values: [id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd],
+    text: "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES($1, $2, $3, $4, $5, $6, $7)",
+    values: [id, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
   };
 
   try {
@@ -27,24 +27,24 @@ const createClass = async (
 // updates class's veriables
 const updateClass = async (
   id: string,
-  name?: string,
   minLevel?: number,
   maxLevel?: number,
   rrstring?: string,
   timeStart?: string,
-  timeEnd?: string
+  timeEnd?: string,
+  language?: string
 ): Promise<Class | null> => {
   const query = {
     text:
-      "UPDATE class " +
-      "SET name = COALESCE($2, name), " +
-      "minLevel = COALESCE($3, minLevel), " +
-      "maxLevel = COALESCE($4, maxLevel), " +
-      "rrstring = COALESCE($5, rrstring), " +
-      "timeStart = COALESCE($6, timeStart), " +
-      "timeEnd = COALESCE($7, timeEnd) " +
+      "UPDATE classes " +
+      "SET min_level = COALESCE($2, minLevel), " +
+      "max_level = COALESCE($3, maxLevel), " +
+      "rrstring = COALESCE($4, rrstring), " +
+      "start_time = COALESCE($5, timeStart), " +
+      "end_time = COALESCE($6, timeEnd) " +
+      "language = COALESCE($7, language) " +
       "WHERE id=$1",
-    values: [id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd],
+    values: [id, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
   };
 
   try {
@@ -59,7 +59,7 @@ const updateClass = async (
 // get an id from a class
 const getClass = async (id: string): Promise<Class | null> => {
   const query = {
-    text: "SELECT id, name, minLevel, maxLevel, rrstring, timeStart, timeEnd FROM class WHERE id = $1",
+    text: "SELECT event_information_id, min_level, max_level, rrstring, start_time, end_time, language FROM classes WHERE event_information_id = $1",
     values: [id],
   };
 

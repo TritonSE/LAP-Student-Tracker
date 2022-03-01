@@ -47,12 +47,12 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
 
         const result = await updateClass(
           id,
-          new_class.name,
           new_class.minLevel,
           new_class.maxLevel,
           new_class.rrstring,
           new_class.timeStart,
-          new_class.timeEnd
+          new_class.timeEnd,
+          new_class.language
         );
 
         return res.status(StatusCodes.CREATED).json(result);

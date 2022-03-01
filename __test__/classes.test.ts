@@ -5,7 +5,6 @@ import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { UpdateClass, Class } from "../models/class";
 import { StatusCodes } from "http-status-codes";
 import { max } from "moment";
-//import eventInformation from "../migrations";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const CLASS_NOT_FOUND_ERROR = "class not found";
@@ -30,7 +29,7 @@ afterAll(async () => {
 describe("[POST] /api/class", () => {
   test("creates a new class", async () => {
     const body: Class = {
-        id: "33",
+        eventInformationId: "33",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
@@ -52,7 +51,7 @@ describe("[POST] /api/class", () => {
 
   test("doesn't create a duplicate class", async () => {
     const body: Class = {
-      id: "11",
+      eventInformationId: "11",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
@@ -76,7 +75,7 @@ describe("[POST] /api/class", () => {
   
   test("body does not have a required field", async () => {
     const body = {
-      id: "11",
+      eventInformationId: "11",
         minLevel: 3,
         maxLevel: 5,
         timeStart: "07:34Z",
@@ -97,7 +96,7 @@ describe("[POST] /api/class", () => {
 describe("[GET] /api/class/[id]", () => {
   test("look for a class that exists", async () => {
     const expected: Class = {
-      id: "22",
+      eventInformationId: "22",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
@@ -108,7 +107,7 @@ describe("[GET] /api/class/[id]", () => {
     };
 
     const query = {
-      id: "22",
+      eventInformationId: "22",
     };
 
     await makeHTTPRequest(
@@ -142,7 +141,7 @@ describe("[GET] /api/class/[id]", () => {
 describe("[PATCH] /api/class/[id]", () => {
   test("editing everything for a class that does exist", async () => {
     const expected: Class = {
-      id: "11",
+      eventInformationId: "22",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
@@ -153,7 +152,7 @@ describe("[PATCH] /api/class/[id]", () => {
     };
 
     const query = {
-      id: "11",
+      eventInformationId: "11",
     };
 
     const body: UpdateClass = {
@@ -163,7 +162,7 @@ describe("[PATCH] /api/class/[id]", () => {
         "DTSTART:20230222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20240222T093000Z;BYDAY=TU,FR;INTERVAL=1",
         timeStart: "07:34Z",
         timeEnd: "08:34Z",
-        language: "english"
+        language: "Java"
     };
 
     await makeHTTPRequest(
@@ -179,7 +178,7 @@ describe("[PATCH] /api/class/[id]", () => {
 
   test("editing few fields for a class that does exist", async () => {
     const expected: Class = {
-      id: "11",
+      eventInformationId: "11",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
@@ -190,7 +189,7 @@ describe("[PATCH] /api/class/[id]", () => {
     };
 
     const query = {
-      id: "11",
+      eventInformationId: "11",
     };
 
     const body: UpdateClass = {

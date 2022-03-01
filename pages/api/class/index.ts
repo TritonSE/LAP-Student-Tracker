@@ -15,7 +15,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         }
         try {
           const result = await createClass(
-            newClass.id,
+            newClass.eventInformationId,
             newClass.minLevel,
             newClass.maxLevel,
             newClass.rrstring,

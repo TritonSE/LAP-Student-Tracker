@@ -1,6 +1,6 @@
 import * as t from "io-ts";
 export const ClassSchema = t.type({
-  id: t.string,
+  eventInformationId: t.string,
   minLevel: t.number,
   maxLevel: t.number,
   rrstring: t.string,

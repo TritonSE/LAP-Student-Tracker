@@ -2,7 +2,7 @@ import { client } from "../db";
 import { Class, ClassSchema } from "../../models/class";
 import { decode } from "io-ts-promise";
 const createClass = async (
-  id: string,
+  eventInformationId: string,
   minLevel: number,
   maxLevel: number,
   rrstring: string,
@@ -12,7 +12,7 @@ const createClass = async (
 ): Promise<Class | null> => {
   const query = {
     text: "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES($1, $2, $3, $4, $5, $6, $7)",
-    values: [id, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
+    values: [eventInformationId, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
   };
 
   try {
@@ -21,12 +21,12 @@ const createClass = async (
     throw Error("Error on insert into database");
   }
 
-  return getClass(id);
+  return getClass(eventInformationId);
 };
 
 // updates class's veriables
 const updateClass = async (
-  id: string,
+  eventInformationId: string,
   minLevel?: number,
   maxLevel?: number,
   rrstring?: string,
@@ -43,8 +43,8 @@ const updateClass = async (
       "start_time = COALESCE($5, timeStart), " +
       "end_time = COALESCE($6, timeEnd) " +
       "language = COALESCE($7, language) " +
-      "WHERE id=$1",
-    values: [id, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
+      "WHERE eventInformationId=$1",
+    values: [eventInformationId, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
   };
 
   try {
@@ -53,7 +53,7 @@ const updateClass = async (
     throw Error("Error on update class");
   }
 
-  return getClass(id);
+  return getClass(eventInformationId);
 };
 
 // get an id from a class

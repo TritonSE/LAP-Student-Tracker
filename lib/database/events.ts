@@ -29,7 +29,7 @@ const createClassEvent = async (
   neverEnding: boolean,
   backgroundColor: string,
   teachers: string[]
-): Promise<string[]> => {
+): Promise<any> => {
   const teacherResult: User[] = await teachersExist(teachers);
   if (teacherResult.length != teachers.length) {
     throw Error("Some or all the teachers given do not exist");
@@ -48,7 +48,10 @@ const createClassEvent = async (
     throw Error("Error on insert into database.");
   }
 
-  return [res.rows[0].id].concat(teacherIds);
+  return {
+    classEventId: res.rows[0].id,
+    teacherIds: teacherIds
+  };
 };
 
 export { createClassEvent };

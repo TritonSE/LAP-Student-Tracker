@@ -21,6 +21,10 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await client.query("DELETE from commitments");
+  await client.query("DELETE from calender_information");
+  await client.query("DELETE from event_information");
+  await client.query("DELETE from users");
   await client.end();
 });
 
@@ -30,7 +34,7 @@ describe("[POST] /api/events/class", () => {
       name: "Math 101",
       startTime: "2022-02-27T05:11:45.000Z",
       endTime: "2022-02-27T05:11:45.000Z",
-      timeZone: "utc",
+      timeZone: "America/Los_Angeles",
       rrule: "FREQ=WEEKLY;BYDAY=SU,MO;INTERVAL=1;UNTIL=20220424",
       language: "english",
       neverEnding: false,
@@ -40,9 +44,9 @@ describe("[POST] /api/events/class", () => {
 
     const expectedBody: ClassEvent = {
       eventInformationId: "",
-      startTime: "2022-02-27T05:11:45.000Z",
-      endTime: "2022-02-27T05:11:45.000Z",
-      timeZone: "utc",
+      startTime: "21:11:45.000-08:00",
+      endTime: "21:11:45.000-08:00",
+      timeZone: "America/Los_Angeles",
       rrule: "FREQ=WEEKLY;BYDAY=SU,MO;INTERVAL=1;UNTIL=20220424",
       language: "english",
       neverEnding: false,

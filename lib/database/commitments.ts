@@ -1,10 +1,10 @@
 import { client } from "../db";
 import { Any } from "io-ts";
 
-const createCommitment = async (user_id: string, event_information_id: string): Promise<Any[]> => {
+const createCommitment = async (userId: string, eventInformationId: string): Promise<Any[]> => {
   const query = {
     text: "INSERT INTO commitments(user_id, event_information_id) VALUES($1, $2)",
-    values: [user_id, event_information_id],
+    values: [userId, eventInformationId],
   };
 
   let res;

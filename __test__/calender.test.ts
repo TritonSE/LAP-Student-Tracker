@@ -1,4 +1,4 @@
-import { eventFeedHandler } from "../pages/api/event-feed";
+import eventFeedHandler from "../pages/api/event-feed";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { CalendarEvent } from "../models/events";

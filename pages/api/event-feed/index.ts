@@ -33,4 +33,4 @@ const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextAp
   }
 };
 
-export { eventFeedHandler };
+export default eventFeedHandler;

@@ -34,8 +34,8 @@ describe("[POST] /api/class", () => {
         maxLevel: 5,
         rrstring:
         "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
-        timeStart: "07:34Z",
-        timeEnd: "08:34Z",
+        startTime: "07:34Z",
+        endTime: "08:34Z",
         language: "english"
     };
     await makeHTTPRequest(
@@ -56,8 +56,8 @@ describe("[POST] /api/class", () => {
         maxLevel: 5,
         rrstring:
         "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
-        timeStart: "07:34Z",
-        timeEnd: "08:34Z",
+        startTime: "07:34Z",
+        endTime: "08:34Z",
         language: "english"
     };
 
@@ -78,8 +78,8 @@ describe("[POST] /api/class", () => {
       eventInformationId: "11",
         minLevel: 3,
         maxLevel: 5,
-        timeStart: "07:34Z",
-        timeEnd: "08:34Z",
+        startTime: "07:34Z",
+        endTime: "08:34Z",
     };
     await makeHTTPRequest(
       classHandler,
@@ -96,23 +96,23 @@ describe("[POST] /api/class", () => {
 describe("[GET] /api/class/[id]", () => {
   test("look for a class that exists", async () => {
     const expected: Class = {
-      eventInformationId: "22",
+      eventInformationId: "11",
         minLevel: 3,
         maxLevel: 5,
         rrstring:
         "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
-        timeStart: "07:34Z",
-        timeEnd: "08:34Z",
+        startTime: "07:34Z",
+        endTime: "08:34Z",
         language: "english"
     };
 
     const query = {
-      eventInformationId: "22",
+      id: "11",
     };
 
     await makeHTTPRequest(
       classIDHandler,
-      "/api/class/22",
+      "/api/class/11",
       query,
       "GET",
       undefined,
@@ -141,18 +141,18 @@ describe("[GET] /api/class/[id]", () => {
 describe("[PATCH] /api/class/[id]", () => {
   test("editing everything for a class that does exist", async () => {
     const expected: Class = {
-      eventInformationId: "22",
-        minLevel: 3,
-        maxLevel: 5,
+      eventInformationId: "11",
+        minLevel: 4,
+        maxLevel: 6,
         rrstring:
-        "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
-        timeStart: "07:34Z",
-        timeEnd: "08:34Z",
-        language: "english"
+        "DTSTART:20230222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20240222T093000Z;BYDAY=TU,FR;INTERVAL=1",
+        startTime: "07:34Z",
+        endTime: "08:34Z",
+        language: "Java"
     };
 
     const query = {
-      eventInformationId: "11",
+      id: "11",
     };
 
     const body: UpdateClass = {
@@ -160,8 +160,6 @@ describe("[PATCH] /api/class/[id]", () => {
         maxLevel: 6,
         rrstring:
         "DTSTART:20230222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20240222T093000Z;BYDAY=TU,FR;INTERVAL=1",
-        timeStart: "07:34Z",
-        timeEnd: "08:34Z",
         language: "Java"
     };
 
@@ -179,17 +177,17 @@ describe("[PATCH] /api/class/[id]", () => {
   test("editing few fields for a class that does exist", async () => {
     const expected: Class = {
       eventInformationId: "11",
-        minLevel: 3,
-        maxLevel: 5,
+        minLevel: 4,
+        maxLevel: 6,
         rrstring:
-        "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
-        timeStart: "07:34Z",
-        timeEnd: "08:34Z",
-        language: "english"
+        "DTSTART:20230222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20240222T093000Z;BYDAY=TU,FR;INTERVAL=1",
+        startTime: "07:34Z",
+        endTime: "08:34Z",
+        language: "Java"
     };
 
     const query = {
-      eventInformationId: "11",
+      id: "11",
     };
 
     const body: UpdateClass = {

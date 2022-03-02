@@ -12,8 +12,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 
-  const id = req.query.eventInformationId as string;
-
+  const id = req.query.id as string;
   if (!id) {
     return res.status(400).json("no id specified");
   }
@@ -50,8 +49,8 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
           new_class.minLevel,
           new_class.maxLevel,
           new_class.rrstring,
-          new_class.timeStart,
-          new_class.timeEnd,
+          new_class.startTime,
+          new_class.endTime,
           new_class.language
         );
 

@@ -1,6 +1,7 @@
 import { client } from "../db";
 import { Class, ClassSchema } from "../../models/class";
 import { decode } from "io-ts-promise";
+import { Console } from "console";
 const createClass = async (
   eventInformationId: string,
   minLevel: number,
@@ -30,26 +31,27 @@ const updateClass = async (
   minLevel?: number,
   maxLevel?: number,
   rrstring?: string,
-  timeStart?: string,
-  timeEnd?: string,
+  startTime?: string,
+  endTime?: string,
   language?: string
 ): Promise<Class | null> => {
   const query = {
     text:
       "UPDATE classes " +
-      "SET min_level = COALESCE($2, minLevel), " +
-      "max_level = COALESCE($3, maxLevel), " +
+      "SET min_level = COALESCE($2, min_level), " +
+      "max_level = COALESCE($3, max_level), " +
       "rrstring = COALESCE($4, rrstring), " +
-      "start_time = COALESCE($5, timeStart), " +
-      "end_time = COALESCE($6, timeEnd) " +
+      "start_time = COALESCE($5, start_time), " +
+      "end_time = COALESCE($6, end_time), " +
       "language = COALESCE($7, language) " +
-      "WHERE eventInformationId=$1",
-    values: [eventInformationId, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
+      "WHERE event_information_id=$1",
+    values: [eventInformationId, minLevel, maxLevel, rrstring, startTime, endTime, language],
   };
 
   try {
     const res = await client.query(query);
-  } catch {
+  } catch(e) {
+    console.log(e);
     throw Error("Error on update class");
   }
 
@@ -64,7 +66,6 @@ const getClass = async (id: string): Promise<Class | null> => {
   };
 
   const res = await client.query(query);
-
   if (res.rows.length == 0) {
     return null;
   }

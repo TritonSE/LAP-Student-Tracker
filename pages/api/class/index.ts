@@ -19,8 +19,8 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
             newClass.minLevel,
             newClass.maxLevel,
             newClass.rrstring,
-            newClass.timeStart,
-            newClass.timeEnd,
+            newClass.startTime,
+            newClass.endTime,
             newClass.language
           );
           return res.status(StatusCodes.CREATED).json(result);

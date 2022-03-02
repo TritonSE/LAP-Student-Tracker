@@ -4,16 +4,16 @@ export const ClassSchema = t.type({
   minLevel: t.number,
   maxLevel: t.number,
   rrstring: t.string,
-  timeStart: t.string,
-  timeEnd: t.string,
+  startTime: t.string,
+  endTime: t.string,
   language: t.string
 });
 export const UpdateClassSchema = t.partial({
   minLevel: t.number,
   maxLevel: t.number,
   rrstring: t.string,
-  timeStart: t.string,
-  timeEnd: t.string,
+  startTime: t.string,
+  endTime: t.string,
   language: t.string
 
 })

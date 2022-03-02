@@ -7,8 +7,6 @@ import { StaffView } from "../components/StaffView";
 import { Class } from "../models/class";
 import { User } from "../models/users";
 import { Student } from "../models/students";
-import { RRule, RRuleSet, rrulestr } from "rrule";
-
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
@@ -34,7 +32,7 @@ const League: NextPage = () => {
       "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
     startTime: "07:34Z",
     endTime: "08:34Z",
-    language: "java"
+    language: "java",
   };
   const testStudent: Student = {
     id: "student_id",

@@ -1,7 +1,6 @@
 import { client } from "../db";
 import { Class, ClassSchema } from "../../models/class";
 import { decode } from "io-ts-promise";
-import { Console } from "console";
 const createClass = async (
   eventInformationId: string,
   minLevel: number,
@@ -49,9 +48,8 @@ const updateClass = async (
   };
 
   try {
-    const res = await client.query(query);
-  } catch(e) {
-    console.log(e);
+    await client.query(query);
+  } catch (e) {
     throw Error("Error on update class");
   }
 
@@ -70,7 +68,7 @@ const getClass = async (id: string): Promise<Class | null> => {
     return null;
   }
 
-  var classes: Class;
+  let classes: Class;
   try {
     classes = await decode(ClassSchema, res.rows[0]);
   } catch {

@@ -6,7 +6,7 @@ export const ClassSchema = t.type({
   rrstring: t.string,
   startTime: t.string,
   endTime: t.string,
-  language: t.string
+  language: t.string,
 });
 export const UpdateClassSchema = t.partial({
   minLevel: t.number,
@@ -14,9 +14,8 @@ export const UpdateClassSchema = t.partial({
   rrstring: t.string,
   startTime: t.string,
   endTime: t.string,
-  language: t.string
-
-})
+  language: t.string,
+});
 
 export type Class = t.TypeOf<typeof ClassSchema>;
-export type UpdateClass = t.TypeOf<typeof UpdateClassSchema>
+export type UpdateClass = t.TypeOf<typeof UpdateClassSchema>;

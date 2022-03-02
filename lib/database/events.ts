@@ -4,6 +4,7 @@ import { User } from "../../models/users";
 interface resultIds {
   classEventId: string;
   teacherIds: string[];
+  failed: boolean;
 }
 
 // Checks if the given teachers exist in the database and returns them
@@ -32,7 +33,11 @@ const createClassEvent = async (
 ): Promise<resultIds> => {
   const teacherResult: User[] = await teachersExist(teachers);
   if (teacherResult.length != teachers.length) {
-    throw Error("Some or all the teachers given do not exist");
+    return {
+      classEventId: "",
+      teacherIds: [],
+      failed: true,
+    };
   }
   const teacherIds = teacherResult.map((teacher) => teacher.id);
 
@@ -51,6 +56,7 @@ const createClassEvent = async (
   return {
     classEventId: res.rows[0].id,
     teacherIds: teacherIds,
+    failed: false,
   };
 };
 

@@ -26,10 +26,15 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
           newEvent.teachers
         );
 
+        if (result.failed) {
+          return res.status(StatusCodes.BAD_REQUEST).json("The given teachers do no exist");
+        }
+
         const ruleObj = rrulestr(newEvent.rrule);
         const initialDate = ruleObj.all()[0];
         const yearInAdvanceDate = ruleObj.all()[0];
         yearInAdvanceDate.setFullYear(initialDate.getFullYear() + 1);
+        // If rrule occurences are never-ending, only get the first year of occurences
         const allDates = newEvent.neverEnding
           ? ruleObj.between(initialDate, yearInAdvanceDate)
           : ruleObj.all();

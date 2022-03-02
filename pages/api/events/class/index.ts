@@ -25,14 +25,6 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
           newEvent.backgroundColor,
           newEvent.teachers
         );
-        
-        const rule = new RRule({
-          freq: RRule.WEEKLY,
-          interval: 5,
-          byweekday: [RRule.MO, RRule.FR],
-          dtstart: new Date(Date.now()),
-          until: new Date(Date.UTC(2012, 12, 31))
-        });
 
         const ruleObj = rrulestr(newEvent.rrule);
         const initialDate = ruleObj.all()[0];
@@ -88,7 +80,6 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
 
         return res.status(StatusCodes.CREATED).json(responseBody);
       } catch (e) {
-        console.log(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

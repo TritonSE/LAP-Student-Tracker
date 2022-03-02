@@ -3,9 +3,20 @@ import { client } from "../lib/db";
 import { makeEventHTTPRequest, makeEventErrorHTTPRequest } from "./__testutils__/testutils.test";
 import { CreateClassEvent, ClassEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
+import RRule, { rrulestr } from "rrule";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
+
+const currDate = new Date();
+const rule = new RRule({
+  freq: 2,
+  interval: 1,
+  byweekday: [RRule.MO, RRule.FR],
+  until: new Date(currDate.getFullYear() + 1, currDate.getMonth(), currDate.getDay())
+});
+
+const ruleStr = rule.toString();
 
 beforeAll(async () => {
   await client.query("DELETE from commitments");
@@ -38,7 +49,7 @@ describe("[POST] /api/events/class", () => {
       startTime: "11:45",
       endTime: "11:45",
       timeZone: "America/Los_Angeles",
-      rrule: "FREQ=WEEKLY;BYDAY=SU,MO;INTERVAL=1;UNTIL=20220424",
+      rrule: ruleStr,
       language: "english",
       neverEnding: false,
       backgroundColor: "blue",
@@ -50,7 +61,42 @@ describe("[POST] /api/events/class", () => {
       startTime: "11:45:00.000-08:00",
       endTime: "11:45:00.000-08:00",
       timeZone: "America/Los_Angeles",
-      rrule: "FREQ=WEEKLY;BYDAY=SU,MO;INTERVAL=1;UNTIL=20220424",
+      rrule: ruleStr,
+      language: "english",
+      neverEnding: false,
+      backgroundColor: "blue",
+    };
+
+    await makeEventHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody
+    );
+  });
+
+  it("creates a new class event with different timezone", async () => {
+    const body: CreateClassEvent = {
+      name: "Math 101",
+      startTime: "11:45",
+      endTime: "11:45",
+      timeZone: "America/New_York",
+      rrule: ruleStr,
+      language: "english",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["teacher@gmail.com"],
+    };
+
+    const expectedBody: ClassEvent = {
+      eventInformationId: "",
+      startTime: "11:45:00.000-05:00",
+      endTime: "11:45:00.000-05:00",
+      timeZone: "America/New_York",
+      rrule: ruleStr,
       language: "english",
       neverEnding: false,
       backgroundColor: "blue",
@@ -73,7 +119,7 @@ describe("[POST] /api/events/class", () => {
       startTime: "11:45",
       endTime: "11:45",
       timeZone: "America/Los_Angeles",
-      rrule: "FREQ=WEEKLY;BYDAY=SU,MO;INTERVAL=1;UNTIL=20220424",
+      rrule: ruleStr,
       language: "english",
       neverEnding: false,
       backgroundColor: "blue",
@@ -97,7 +143,7 @@ describe("[POST] /api/events/class", () => {
       startTime: "12:45",
       endTime: 1145,
       timeZone: "America/Los_Angeles",
-      rrule: "FREQ=WEEKLY;BYDAY=SU,MO;INTERVAL=1;UNTIL=20220424",
+      rrule: ruleStr,
       language: "english",
       neverEnding: false,
       backgroundColor: "blue",

@@ -56,7 +56,7 @@ const updateClass = async (
   return getClass(eventInformationId);
 };
 
-// get an id from a class
+// get a class given the id
 const getClass = async (id: string): Promise<Class | null> => {
   const query = {
     text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'class' AND c.event_information_id = $1",

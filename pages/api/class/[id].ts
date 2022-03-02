@@ -28,7 +28,6 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
     }
 
     case "PATCH": {
-      //const patchClass = await getClass(id);
       let newClass: UpdateClass;
       if ((await getClass(id)) == null) {
         return res.status(StatusCodes.NOT_FOUND).json("class not found");

@@ -28,7 +28,7 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
           {classes.map((tempClass) => (
             <ClassCard
               key={tempClass.eventInformationId}
-              name={"event name"}
+              name={tempClass.name}
               minLevel={tempClass.minLevel}
               maxLevel={tempClass.maxLevel}
               rrstring={tempClass.rrstring}

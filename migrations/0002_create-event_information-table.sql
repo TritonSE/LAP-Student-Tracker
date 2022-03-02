@@ -10,4 +10,3 @@ CREATE TABLE event_information (
     type text NOT NULL,
     never_ending boolean NOT NULL
 );
-

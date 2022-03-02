@@ -2,7 +2,7 @@ import { classHandler } from "../pages/api/class";
 import { classIDHandler } from "../pages/api/class/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { UpdateClass, Class } from "../models/class";
+import { UpdateClass, Class, CreateClass } from "../models/class";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
@@ -18,7 +18,7 @@ beforeAll(async () => {
     "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('22', 'class2', 'green', 'class', true)"
   );
   await client.query(
-    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('33', 'class2', 'green', 'class', true)"
+    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('33', 'class3', 'green', 'class', true)"
   );
   await client.query("DELETE from classes");
   await client.query(
@@ -27,13 +27,14 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await client.query("DELETE from event_information");
   await client.query("DELETE from classes");
   await client.end();
 });
 
 describe("[POST] /api/class", () => {
   test("creates a new class", async () => {
-    const body: Class = {
+    const body: CreateClass = {
       eventInformationId: "33",
       minLevel: 3,
       maxLevel: 5,
@@ -43,6 +44,19 @@ describe("[POST] /api/class", () => {
       endTime: "08:34Z",
       language: "english",
     };
+
+    const expected: Class = {
+      name: "class3",
+      eventInformationId: "33",
+      minLevel: 3,
+      maxLevel: 5,
+      rrstring:
+        "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
+      startTime: "07:34Z",
+      endTime: "08:34Z",
+      language: "english",
+    };
+
     await makeHTTPRequest(
       classHandler,
       "/api/class/",
@@ -50,12 +64,12 @@ describe("[POST] /api/class", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expected
     );
   });
 
   test("doesn't create a duplicate class", async () => {
-    const body: Class = {
+    const body: CreateClass = {
       eventInformationId: "11",
       minLevel: 3,
       maxLevel: 5,
@@ -100,6 +114,7 @@ describe("[POST] /api/class", () => {
 describe("[GET] /api/class/[id]", () => {
   test("look for a class that exists", async () => {
     const expected: Class = {
+      name: "class1",
       eventInformationId: "11",
       minLevel: 3,
       maxLevel: 5,
@@ -145,6 +160,7 @@ describe("[GET] /api/class/[id]", () => {
 describe("[PATCH] /api/class/[id]", () => {
   test("editing everything for a class that does exist", async () => {
     const expected: Class = {
+      name: "class1",
       eventInformationId: "11",
       minLevel: 4,
       maxLevel: 6,
@@ -180,6 +196,7 @@ describe("[PATCH] /api/class/[id]", () => {
 
   test("editing few fields for a class that does exist", async () => {
     const expected: Class = {
+      name: "class1",
       eventInformationId: "11",
       minLevel: 4,
       maxLevel: 6,

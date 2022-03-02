@@ -1,5 +1,3 @@
-
-   
 /**
  * This script sets up the commitments table with its properties of
  * user and event.

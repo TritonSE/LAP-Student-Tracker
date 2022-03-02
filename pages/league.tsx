@@ -25,6 +25,7 @@ const League: NextPage = () => {
 
   // start dummy data, delete once api is implemented
   const testClass: Class = {
+    name: "class1",
     eventInformationId: "class_id",
     minLevel: 3,
     maxLevel: 5,

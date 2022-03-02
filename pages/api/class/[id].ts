@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { updateClass } from "../../../lib/database/classes";
-import { UpdateClassSchema } from "../../../models/class";
+import { UpdateClass, UpdateClassSchema } from "../../../models/class";
 import { decode } from "io-ts-promise";
 import { getClass } from "../../../lib/database/classes";
 import { StatusCodes } from "http-status-codes";
@@ -12,11 +12,10 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
 
   const id = req.query.id as string;
   if (!id) {
-    return res.status(400).json("no id specified");
+    return res.status(StatusCodes.BAD_REQUEST).json("no id specified");
   }
-  let newClass;
   switch (req.method) {
-    case "GET":
+    case "GET": {
       try {
         const classes = await getClass(id);
         if (classes == null) {
@@ -26,10 +25,11 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
+    }
 
-    case "PATCH":
+    case "PATCH": {
       //const patchClass = await getClass(id);
-
+      let newClass: UpdateClass;
       if ((await getClass(id)) == null) {
         return res.status(StatusCodes.NOT_FOUND).json("class not found");
       }
@@ -54,9 +54,11 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
+    }
 
-    default:
+    default: {
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
+    }
   }
 };
 

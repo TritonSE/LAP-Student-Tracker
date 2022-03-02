@@ -3,7 +3,7 @@ import { client } from "../lib/db";
 import { makeEventHTTPRequest, makeEventErrorHTTPRequest } from "./__testutils__/testutils.test";
 import { CreateClassEvent, ClassEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
-import RRule, { rrulestr } from "rrule";
+import RRule from "rrule";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
@@ -13,7 +13,7 @@ const rule = new RRule({
   freq: 2,
   interval: 1,
   byweekday: [RRule.MO, RRule.FR],
-  until: new Date(currDate.getFullYear() + 1, currDate.getMonth(), currDate.getDay())
+  until: new Date(currDate.getFullYear() + 1, currDate.getMonth(), currDate.getDay()),
 });
 
 const ruleStr = rule.toString();

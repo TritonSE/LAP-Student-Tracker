@@ -5,7 +5,7 @@ import { createCommitment } from "../../../../lib/database/commitments";
 import { CreateClassEvent, ClassEvent, CreateClassEventSchema } from "../../../../models/events";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import RRule, { rrulestr } from "rrule";
+import { rrulestr } from "rrule";
 import { DateTime } from "luxon";
 
 // handles requests to /api/events/class
@@ -33,7 +33,9 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
         const allDates = newEvent.neverEnding
           ? ruleObj.between(initialDate, yearInAdvanceDate)
           : ruleObj.all();
-        const startTime = DateTime.fromFormat(newEvent.startTime, "HH:mm", { zone: newEvent.timeZone });
+        const startTime = DateTime.fromFormat(newEvent.startTime, "HH:mm", {
+          zone: newEvent.timeZone,
+        });
         const endTime = DateTime.fromFormat(newEvent.endTime, "HH:mm", { zone: newEvent.timeZone });
 
         // Loops through all dates and inserts into calender_information table

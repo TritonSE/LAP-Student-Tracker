@@ -6,7 +6,6 @@ import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";
 
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
-const NON_EXISTING_TEACHERS = "The given teachers do no exist";
 
 let rule: string;
 
@@ -134,7 +133,7 @@ describe("[POST] /api/events/class", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      NON_EXISTING_TEACHERS
+      "The following teachers { random123@gmail.com } do not exist"
     );
   });
 

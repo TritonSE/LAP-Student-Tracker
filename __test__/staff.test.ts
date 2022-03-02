@@ -1,4 +1,4 @@
-import { staffHandler } from "../pages/api/staff";
+import staffHandler from "../pages/api/staff";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { User } from "../models/users";

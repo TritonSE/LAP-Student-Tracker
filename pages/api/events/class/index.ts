@@ -5,7 +5,7 @@ import { createCommitment } from "../../../../lib/database/commitments";
 import { CreateClassEvent, ClassEvent, CreateClassEventSchema } from "../../../../models/events";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import { rrulestr } from "rrule";
+import RRule, { rrulestr } from "rrule";
 import { DateTime } from "luxon";
 
 // handles requests to /api/events/class
@@ -25,6 +25,14 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
           newEvent.backgroundColor,
           newEvent.teachers
         );
+        
+        const rule = new RRule({
+          freq: RRule.WEEKLY,
+          interval: 5,
+          byweekday: [RRule.MO, RRule.FR],
+          dtstart: new Date(Date.now()),
+          until: new Date(Date.UTC(2012, 12, 31))
+        });
 
         const ruleObj = rrulestr(newEvent.rrule);
         const initialDate = ruleObj.all()[0];
@@ -33,13 +41,13 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
         const allDates = newEvent.neverEnding
           ? ruleObj.between(initialDate, yearInAdvanceDate)
           : ruleObj.all();
-        const startTime = DateTime.fromFormat(newEvent.startTime, "HH:mm");
-        const endTime = DateTime.fromFormat(newEvent.endTime, "HH:mm");
+        const startTime = DateTime.fromFormat(newEvent.startTime, "HH:mm", { zone: newEvent.timeZone });
+        const endTime = DateTime.fromFormat(newEvent.endTime, "HH:mm", { zone: newEvent.timeZone });
 
         // Loops through all dates and inserts into calender_information table
         for (const date of allDates) {
           const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-          const dateStart = DateTime.fromJSDate(dateWithoutTime, { zone: newEvent.timeZone }).set({
+          const dateStart = DateTime.fromJSDate(dateWithoutTime).set({
             hour: startTime.hour,
             minute: startTime.minute,
             second: startTime.second,
@@ -80,6 +88,7 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
 
         return res.status(StatusCodes.CREATED).json(responseBody);
       } catch (e) {
+        console.log(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

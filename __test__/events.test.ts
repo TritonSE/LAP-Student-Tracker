@@ -8,6 +8,9 @@ const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
 beforeAll(async () => {
+  await client.query("DELETE from commitments");
+  await client.query("DELETE from calender_information");
+  await client.query("DELETE from event_information");
   await client.query("DELETE from users");
   await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"

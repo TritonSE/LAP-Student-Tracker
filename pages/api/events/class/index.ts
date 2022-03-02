@@ -21,30 +21,31 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
       try {
         const result = await createClassEvent(
           newEvent.name,
-          newEvent.startTime,
-          newEvent.endTime,
-          newEvent.timeZone,
-          newEvent.rrule,
-          newEvent.language,
           newEvent.neverEnding,
           newEvent.backgroundColor,
           newEvent.teachers
         );
 
         const ruleObj = rrulestr(newEvent.rrule);
-        const allDates = newEvent.neverEnding ? ruleObj.all().splice(0, 365) : ruleObj.all();
-        const startTime = DateTime.fromISO(newEvent.startTime);
-        const endTime = DateTime.fromISO(newEvent.endTime);
+        const initialDate = ruleObj.all()[0];
+        const yearInAdvanceDate = ruleObj.all()[0];
+        yearInAdvanceDate.setFullYear(initialDate.getFullYear() + 1);
+        const allDates = newEvent.neverEnding
+          ? ruleObj.between(initialDate, yearInAdvanceDate)
+          : ruleObj.all();
+        const startTime = DateTime.fromFormat(newEvent.startTime, "HH:mm");
+        const endTime = DateTime.fromFormat(newEvent.endTime, "HH:mm");
 
         // Loops through all dates and inserts into calender_information table
         for (const date of allDates) {
-          const dateStart = DateTime.fromJSDate(date, { zone: newEvent.timeZone }).set({
+          const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+          const dateStart = DateTime.fromJSDate(dateWithoutTime, { zone: newEvent.timeZone }).set({
             hour: startTime.hour,
             minute: startTime.minute,
             second: startTime.second,
           });
 
-          const dateEnd = DateTime.fromJSDate(date, { zone: newEvent.timeZone }).set({
+          const dateEnd = DateTime.fromJSDate(dateWithoutTime, { zone: newEvent.timeZone }).set({
             hour: endTime.hour,
             minute: endTime.minute,
             second: endTime.second,
@@ -88,4 +89,4 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
   }
 };
 
-export { eventHandler };
+export default eventHandler;

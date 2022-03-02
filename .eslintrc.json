@@ -28,9 +28,10 @@
   "ignorePatterns": ["*.config.js", ".next/*", "scripts/"],
   "overrides": [
     {
-      "files": ["pages/*.tsx"],
+      "files": ["pages/**"],
       "rules": {
-        "import/no-default-export": "off"
+        "import/no-default-export": "off",
+        "import/prefer-default-export": 2
       }
     }
   ],

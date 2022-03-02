@@ -20,4 +20,4 @@ const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
   }
 };
 
-export { staffHandler };
+export default staffHandler;

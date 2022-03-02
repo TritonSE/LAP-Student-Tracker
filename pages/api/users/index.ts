@@ -35,4 +35,4 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
   }
 };
 
-export { userHandler };
+export default userHandler;

@@ -1,6 +1,11 @@
 import { client } from "../db";
 import { User } from "../../models/users";
 
+interface resultIds {
+  classEventId: string;
+  teacherIds: string[];
+}
+
 // Checks if the given teachers exist in the database and returns them
 const teachersExist = async (teachers: string[]): Promise<User[]> => {
   const query = {
@@ -21,15 +26,10 @@ const teachersExist = async (teachers: string[]): Promise<User[]> => {
 // Create an event in the database with given parameters
 const createClassEvent = async (
   name: string,
-  startTime: string,
-  endTime: string,
-  timeZone: string,
-  rrule: string,
-  language: string,
   neverEnding: boolean,
   backgroundColor: string,
   teachers: string[]
-): Promise<any> => {
+): Promise<resultIds> => {
   const teacherResult: User[] = await teachersExist(teachers);
   if (teacherResult.length != teachers.length) {
     throw Error("Some or all the teachers given do not exist");
@@ -50,7 +50,7 @@ const createClassEvent = async (
 
   return {
     classEventId: res.rows[0].id,
-    teacherIds: teacherIds
+    teacherIds: teacherIds,
   };
 };
 

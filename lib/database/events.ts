@@ -1,10 +1,17 @@
 import { client } from "../db";
 import { User } from "../../models/users";
 
-interface resultIds {
+class NonExistingTeacher extends Error {
+  constructor(msg: string) {
+    super(msg);
+    Object.setPrototypeOf(this, NonExistingTeacher.prototype);
+  }
+}
+
+type resultIds = {
   classEventId: string;
   teacherIds: string[];
-}
+};
 
 // Checks if the given teachers exist in the database and returns them
 const teachersExist = async (teachers: string[]): Promise<User[]> => {
@@ -32,7 +39,14 @@ const createClassEvent = async (
 ): Promise<resultIds> => {
   const teacherResult: User[] = await teachersExist(teachers);
   if (teacherResult.length != teachers.length) {
-    throw Error("Some or all the teachers given do not exist");
+    const teacherEmailIDs = teacherResult.map((user) => user.email);
+    const nonExistingTeachers = teachers
+      .filter((emailId) => !teacherEmailIDs.includes(emailId))
+      .join(" ");
+
+    throw new NonExistingTeacher(
+      "The following teachers { " + nonExistingTeachers + " } do not exist"
+    );
   }
   const teacherIds = teacherResult.map((teacher) => teacher.id);
 
@@ -54,4 +68,4 @@ const createClassEvent = async (
   };
 };
 
-export { createClassEvent };
+export { createClassEvent, NonExistingTeacher };

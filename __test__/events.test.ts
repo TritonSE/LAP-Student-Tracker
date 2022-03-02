@@ -132,8 +132,8 @@ describe("[POST] /api/events/class", () => {
       undefined,
       "POST",
       body,
-      StatusCodes.INTERNAL_SERVER_ERROR,
-      INTERNAL_SERVER_ERROR
+      StatusCodes.BAD_REQUEST,
+      "The following teachers { random123@gmail.com } do not exist"
     );
   });
 

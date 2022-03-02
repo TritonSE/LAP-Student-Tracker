@@ -4,7 +4,7 @@ import { UpdateClassSchema } from "../../../models/class";
 import { decode } from "io-ts-promise";
 import { getClass } from "../../../lib/database/classes";
 import { StatusCodes } from "http-status-codes";
-
+//Handles all requests to /api/class/[id]
 export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
@@ -18,11 +18,11 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
   switch (req.method) {
     case "GET":
       try {
-        const getClasses = await getClass(id);
-        if (getClasses == null) {
+        const classes = await getClass(id);
+        if (classes == null) {
           return res.status(StatusCodes.NOT_FOUND).json("class not found");
         }
-        return res.status(StatusCodes.ACCEPTED).json(getClasses);
+        return res.status(StatusCodes.ACCEPTED).json(classes);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }

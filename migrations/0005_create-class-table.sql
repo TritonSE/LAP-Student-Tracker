@@ -1,6 +1,9 @@
 
 
-
+/**
+ * This script sets up the classes table with its properties of
+ * event, min_level, max_level, rrstring, start_time, end_time, and language
+ **/
 CREATE TABLE classes(
     event_information_id text UNIQUE NOT NULL,
     min_level integer NOT NULL,

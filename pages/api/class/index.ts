@@ -3,6 +3,7 @@ import { createClass } from "../../../lib/database/classes";
 import { Class, ClassSchema } from "../../../models/class";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
+//Handles all requests to /api/class
 
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newClass: Class;

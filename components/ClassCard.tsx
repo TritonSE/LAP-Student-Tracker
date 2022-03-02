@@ -34,8 +34,8 @@ const ClassCard: React.FC<ClassCardProps> = ({
 
   //this takes in the start and end times, converts them to ISO format, then outputs the hour the class starts and ends
   const convertTime = (timeStart: string, timeEnd: string): string => {
-    const startTimeISO = DateTime.fromISO(timeStart).toLocal().toFormat("h");
-    const endTimeISO = DateTime.fromISO(timeEnd).toLocal().toFormat("ha");
+    const startTimeISO = DateTime.fromISO(timeStart).toLocal().toFormat("h:mm");
+    const endTimeISO = DateTime.fromISO(timeEnd).toLocal().toFormat("h:mma");
     const finalTimes = startTimeISO + " - " + endTimeISO;
     return finalTimes + "";
   };

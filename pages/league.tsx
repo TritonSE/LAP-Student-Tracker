@@ -32,8 +32,8 @@ const League: NextPage = () => {
     maxLevel: 5,
     rrstring:
       "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
-    startTime: "08:34:00+00",
-    endTime: "09:34:00+00",
+    startTime: "07:34Z",
+    endTime: "08:34Z",
     language: "java"
   };
   const testStudent: Student = {

@@ -7,8 +7,8 @@ type ClassCardProps = {
   minLevel: number;
   maxLevel: number;
   rrstring: string;
-  timeStart: string;
-  timeEnd: string;
+  startTime: string;
+  endTime: string;
 };
 
 const ClassCard: React.FC<ClassCardProps> = ({
@@ -16,8 +16,8 @@ const ClassCard: React.FC<ClassCardProps> = ({
   minLevel,
   maxLevel,
   rrstring,
-  timeStart,
-  timeEnd,
+  startTime,
+  endTime,
 }) => {
   const weekday: string[] = [
     "Monday",
@@ -33,9 +33,9 @@ const ClassCard: React.FC<ClassCardProps> = ({
   const dates = rule.options.byweekday.map((val) => weekday[val]).join(", ");
 
   //this takes in the start and end times, converts them to ISO format, then outputs the hour the class starts and ends
-  const convertTime = (startTime: string, endTime: string): string => {
-    const startTimeISO = DateTime.fromISO(startTime).toLocal().toFormat("h");
-    const endTimeISO = DateTime.fromISO(endTime).toLocal().toFormat("ha");
+  const convertTime = (timeStart: string, timeEnd: string): string => {
+    const startTimeISO = DateTime.fromISO(timeStart).toLocal().toFormat("h");
+    const endTimeISO = DateTime.fromISO(timeEnd).toLocal().toFormat("ha");
     const finalTimes = startTimeISO + " - " + endTimeISO;
     return finalTimes + "";
   };
@@ -47,7 +47,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
         }`}</p>
       </div>
       <div className={styles.rightText}>
-        {[dates, "•", convertTime(timeStart, timeEnd)].join(" ")}
+        {[dates, "•", convertTime(startTime, endTime)].join(" ")}
       </div>
     </div>
   );

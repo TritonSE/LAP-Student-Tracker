@@ -1,8 +1,10 @@
 import eventFeedHandler from "../pages/api/event-feed";
 import { client } from "../lib/db";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
+import { makeHTTPRequest, convertToPostgresISO } from "./__testutils__/testutils.test";
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
+
+const MISSING_PARAMS_ERROR = "Missing required parameters";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");
@@ -55,7 +57,7 @@ afterAll(async () => {
 });
 
 describe("[GET] /api/event-feed", () => {
-  test("get calendar event feed", async () => {
+  test("get calendar event feed for a user", async () => {
     const body = {
       start: "2022-02-25 21:11:45-08",
       end: "2022-02-28 21:11:45-08",
@@ -66,15 +68,15 @@ describe("[GET] /api/event-feed", () => {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: "2022-02-26 21:11:45-08",
-        endStr: "2022-02-26 21:11:45-08",
+        startStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
+        endStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
       },
       {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: "2022-02-27 21:11:45-08",
-        endStr: "2022-02-27 21:11:45-08",
+        startStr: convertToPostgresISO("2022-02-27 21:11:45-08"),
+        endStr: convertToPostgresISO("2022-02-27 21:11:45-08"),
       },
     ];
     await makeHTTPRequest(
@@ -83,26 +85,80 @@ describe("[GET] /api/event-feed", () => {
       undefined,
       "GET",
       body,
-      StatusCodes.ACCEPTED,
+      StatusCodes.OK,
       expected
     );
   });
-});
-
-/*describe("[GET] /api/staff with no staff", () => {
-  beforeAll(async () => {
-    await client.query("DELETE from users WHERE role = 'Teacher' OR role = 'Admin'");
-  });
-
-  test("Works correctly with 0 users", async () => {
+  test("get calendar event feed without specifying user", async () => {
+    const body = {
+      start: "2022-02-25 21:11:45-08",
+      end: "2022-02-28 21:11:45-08",
+      userId: null,
+    };
+    const expected: CalendarEvent[] = [
+      {
+        id: "id_a",
+        title: "event_a",
+        backgroundColor: "blue",
+        startStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
+        endStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
+      },
+      {
+        id: "id_a",
+        title: "event_a",
+        backgroundColor: "blue",
+        startStr: convertToPostgresISO("2022-02-27 21:11:45-08"),
+        endStr: convertToPostgresISO("2022-02-27 21:11:45-08"),
+      },
+      {
+        id: "id_b",
+        title: "event_b",
+        backgroundColor: "red",
+        startStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
+        endStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
+      },
+    ];
     await makeHTTPRequest(
-      staffHandler,
-      "/api/users/",
+      eventFeedHandler,
+      "/api/event-feed/",
       undefined,
       "GET",
-      undefined,
-      StatusCodes.ACCEPTED,
-      []
+      body,
+      StatusCodes.OK,
+      expected
     );
   });
-});*/
+  test("get calendar event feed with start > end", async () => {
+    const body = {
+      start: "2022-02-28 21:11:45-08",
+      end: "2022-02-25 21:11:45-08",
+      userId: "user_a",
+    };
+    const expected: CalendarEvent[] = [];
+    await makeHTTPRequest(
+      eventFeedHandler,
+      "/api/event-feed/",
+      undefined,
+      "GET",
+      body,
+      StatusCodes.OK,
+      expected
+    );
+  });
+  test("get calendar event feed with missing parameters", async () => {
+    const body = {
+      start: null,
+      end: null,
+      userId: null,
+    };
+    await makeHTTPRequest(
+      eventFeedHandler,
+      "/api/event-feed/",
+      undefined,
+      "GET",
+      body,
+      StatusCodes.BAD_REQUEST,
+      MISSING_PARAMS_ERROR
+    );
+  });
+});

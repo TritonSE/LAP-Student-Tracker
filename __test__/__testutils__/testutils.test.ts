@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
+import { DateTime } from "luxon";
 
 /**
  * Create and test a HTTP Request
@@ -42,4 +43,11 @@ const makeHTTPRequest = async (
   return res;
 };
 
+const convertToPostgresISO = (timestamp: string): string => {
+  return DateTime.fromSQL(timestamp) /*.toUTC()*/
+    .toISO({ suppressMilliseconds: true })
+    .replace("Z", "+00:00");
+};
+
 export { makeHTTPRequest };
+export { convertToPostgresISO };

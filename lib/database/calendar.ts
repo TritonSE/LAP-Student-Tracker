@@ -13,10 +13,12 @@ const getEventFeed = async (
   userId?: string
 ): Promise<CalendarEvent[]> => {
   const query = {
-    text: "SELECT e.id, e.name AS title, e.background_color, TO_CHAR(c.start_str, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSOF:\"00\"') AS start_str, TO_CHAR(c.end_str, 'YYYY-MM-DD\"T\"HH24:MI:SS.MSOF:\"00\"') AS end_str " +
-    "FROM event_information e, calender_information c, commitments cm " +
-    "WHERE e.id=c.event_information_id AND e.id=cm.event_information_id AND " +
-    "c.start_str > $1 AND c.end_str < $2 AND cm.user_id LIKE COALESCE($3, '%')",
+    text:
+      "SELECT e.id, e.name AS title, e.background_color, " +
+      "TO_JSON(c.start_str) AS start_str, TO_JSON(c.end_str) AS end_str " +
+      "FROM event_information e, calender_information c, commitments cm " +
+      "WHERE e.id=c.event_information_id AND e.id=cm.event_information_id AND " +
+      "c.start_str >= $1 AND c.end_str <= $2 AND cm.user_id LIKE COALESCE($3, '%')",
     values: [start, end, userId],
   };
 
@@ -24,10 +26,9 @@ const getEventFeed = async (
   let calendarEventArray: calenderEventArrayType;
 
   try {
-    console.log(res.rows)
+    console.log(res.rows);
     calendarEventArray = await decode(CalendarEventArraySchema, res.rows);
   } catch (e) {
-    console.log(e)
     throw Error("Error getting calendar event feed from database.");
   }
 

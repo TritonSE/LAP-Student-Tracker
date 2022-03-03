@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import RepeatModal from "./RepeatModal";
 import { APIContext } from "../context/APIContext";
 import { CreateClass, Class } from "../models/classes";
@@ -25,12 +25,13 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [minLevel, setMinLevel] = useState(1);
   const [maxLevel, setMaxLevel] = useState(1);
   const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState(new Date().toTimeString());
-  const [endTime, setEndTime] = useState(new Date().toTimeString());
+  const [startTime, setStartTime] = useState("10:00");
+  const [endTime, setEndTime] = useState("11:00");
   const [showRepeatModal, setShowRepeatModal] = useState(false);
   const [rruleText, setRruleText] = useState("No Repeat");
   const [color, setColor] = useState("yellow");
   const [teachers, setTeachers] = useState("");
+  const [valid, setValid] = useState(false);
 
   // saved repeat modal states
   const [repeat, setRepeat] = useState(false);
@@ -41,6 +42,19 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [count, setCount] = useState(1);
 
   const client = useContext(APIContext);
+
+  useEffect(() => {
+    setValid(true);
+    if(!name || !teachers) {
+      setValid(false);
+    }
+    if(!minLevel || (multipleLevels && (!maxLevel || minLevel >= maxLevel))) {
+      setValid(false);
+    }
+    if(!startDate || !startTime || !endTime) {
+      setValid(false);
+    }
+  }, [name, multipleLevels, minLevel, maxLevel, startDate, startTime, endTime, color, teachers]);
 
   // callback for hiding modal on close
   const handleRepeatClose = () => {
@@ -85,8 +99,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       lang = "Python";
     }
 
-    let rruleStr = "";
     let rrule;
+    let rruleStr = "";
     if (repeat) {
       switch (endType) {
         case "never":
@@ -106,6 +120,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
             byweekday: weekDays,
             until: endDate,
           });
+          rruleStr = rrule.toString();
           break;
         case "after":
           rrule = new RRule({
@@ -115,8 +130,16 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
             byweekday: weekDays,
             count: count,
           });
+          rruleStr = rrule.toString();
           break;
       }
+    }
+    else {
+      rrule = new RRule({
+        dtstart: startDate,
+        count: 1,
+      });
+      rruleStr = rrule.toString();
     }
 
     const createEvent: CreateClassEvent = {
@@ -126,11 +149,10 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       timeZone: DateTime.local().zoneName,
       rrule: rruleStr,
       language: lang,
-      neverEnding: endType === "never",
+      neverEnding: repeat && endType === "never",
       backgroundColor: color,
       teachers: teachers.split(","),
     };
-    console.log(createEvent);
 
     try {
       const classEvent = await client.createClassEvent(createEvent);
@@ -143,11 +165,11 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           timeStart: startTime,
           timeEnd: endTime,
         };
-        await client.createClass(classEvent.id, createClass);
-      } catch (err: any) {
+        await client.createClass(classEvent.eventInformationId, createClass);
+      } catch (err) {
         alert(`Error on class creation: ${err.message}`);
       }
-    } catch (err: any) {
+    } catch (err) {
       alert(`Error on class event creation: ${err.message}`);
     }
 
@@ -206,7 +228,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
                   <input
                     className={styles.levelInput}
                     type="number"
-                    min={1}
+                    min={minLevel + 1}
                     value={maxLevel}
                     onChange={(e) => setMaxLevel(e.target.valueAsNumber)}
                   />
@@ -277,7 +299,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
           <hr className={styles.line} />
           <div className={styles.footerContent}>
-            <button onClick={handleSubmit} className={styles.confirmButton}>
+            <button disabled={!valid} onClick={handleSubmit} className={styles.confirmButton}>
               Confirm
             </button>
           </div>

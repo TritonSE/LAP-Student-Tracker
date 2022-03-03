@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/RepeatModal.module.css";
 
 import "react-date-picker/dist/DatePicker.css";
@@ -41,6 +41,22 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
   const [endSelection, setEndSelection] = useState(initEndSelection);
   const [endDate, setEndDate] = useState(initEndDate);
   const [count, setCount] = useState(initCount);
+  const [valid, setValid] = useState(false);
+
+  useEffect(() => {
+    setValid(true);
+    if(repeat) {
+      if(!interval) {
+        setValid(false);
+      }
+      if(endSelection === "on" && !endDate) {
+        setValid(false);
+      }
+      if(endSelection === "after" && !count) {
+        setValid(false);
+      }
+    }
+  }, [repeat, interval, weekDays, endSelection, endDate, count]);
 
   // display strings for week days
   const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
@@ -88,7 +104,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
             value={interval}
             onChange={(e) => setInterval(e.target.valueAsNumber)}
           />
-          <input className={styles.freqField} disabled={!repeat} type="text" value="weekly" />
+          <input className={styles.freqField} disabled={!repeat} value="weekly" readOnly />
         </div>
 
         <p className={styles.smallLabel}>Repeat on</p>
@@ -170,7 +186,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
           <button onClick={handleClose} className={styles.cancelButton}>
             Cancel
           </button>
-          <button onClick={handleSave} className={styles.saveButton}>
+          <button disabled={!valid} onClick={handleSave} className={styles.saveButton}>
             Save
           </button>
         </div>

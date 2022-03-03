@@ -25,16 +25,12 @@ class LeagueAPI {
   }
 
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
-    const res = await this.client.post("event/class", {
-      classEvent,
-    });
+    const res = await this.client.post("api/events/class", classEvent);
     return res.data;
   }
 
   async createClass(id: string, classSchema: CreateClass): Promise<Class> {
-    const res = await this.client.post(`class/${id}`, {
-      classSchema,
-    });
+    const res = await this.client.post(`api/class/${id}`, classSchema);
     return res.data;
   }
 }

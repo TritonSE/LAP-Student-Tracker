@@ -82,6 +82,8 @@ const makeEventHTTPRequest = async (
   return res;
 };
 
+/* HTTP request handler for event feed API that converts Postgres timestamps to
+   local ISO for consistency in testing */
 const makeEventFeedHTTPRequest = async (
   handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
   endpoint: string,
@@ -91,27 +93,31 @@ const makeEventFeedHTTPRequest = async (
   expectedResponseCode: number,
   expectedBody: CalendarEvent[]
 ): Promise<MockResponse<NextApiResponse<any>>> => {
-  expectedBody.map(event => convertToLocalISO(event));
   const res = await makeHTTPRequest(
     handler,
     endpoint,
-    undefined,
+    query,
     method,
     body,
     expectedResponseCode,
     undefined
   );
 
-  const returnedCalendarEvents = (JSON.parse(res._getData()) as CalendarEvent[]).map(event => convertToLocalISO(event));
-  expect(returnedCalendarEvents).toEqual(expectedBody);
+  // Convert dates in actual body to local ISO
+  const returnedCalendarEvents = (JSON.parse(res._getData()) as CalendarEvent[]).map((event) =>
+    convertToLocalISO(event)
+  );
+  // Convert dates in expected body to local ISO and compare
+  expect(returnedCalendarEvents).toEqual(expectedBody.map((event) => convertToLocalISO(event)));
 
   return res;
 };
 
+/* Converts startStr and endStr in CalendarEvent object to local ISO */
 const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
   event.startStr = DateTime.fromJSDate(new Date(event.startStr)).toLocal().toISO();
   event.endStr = DateTime.fromJSDate(new Date(event.endStr)).toLocal().toISO();
-  return event
-}
+  return event;
+};
 
 export { makeHTTPRequest, makeEventHTTPRequest, makeEventFeedHTTPRequest };

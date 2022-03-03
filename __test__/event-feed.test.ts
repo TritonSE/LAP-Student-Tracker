@@ -88,7 +88,6 @@ describe("[GET] /api/event-feed", () => {
       StatusCodes.OK,
       expected
     );
-
   });
   test("get calendar event feed without specifying user", async () => {
     const body = {
@@ -146,12 +145,30 @@ describe("[GET] /api/event-feed", () => {
       expected
     );
   });
+  test("get calendar event feed for nonexistent user", async () => {
+    const body = {
+      start: "2022-02-25 21:11:45-08",
+      end: "2022-02-28 21:11:45-08",
+      userId: "nonexistent",
+    };
+    const expected: CalendarEvent[] = [];
+    await makeEventFeedHTTPRequest(
+      eventFeedHandler,
+      "/api/event-feed/",
+      undefined,
+      "GET",
+      body,
+      StatusCodes.OK,
+      expected
+    );
+  });
   test("get calendar event feed with missing parameters", async () => {
     const body = {
       start: null,
       end: null,
       userId: null,
     };
+    // invoke original HTTP request handler on error case for event feed API
     await makeHTTPRequest(
       eventFeedHandler,
       "/api/event-feed/",

@@ -28,7 +28,7 @@ const createCalendarEvent = async (
 const CalendarEventArraySchema = array(CalendarEventSchema);
 type calenderEventArrayType = TypeOf<typeof CalendarEventArraySchema>;
 
-// Creates a calender event in database
+// Fetches calendar event feed for a particular user from database
 const getEventFeed = async (
   start: string,
   end: string,

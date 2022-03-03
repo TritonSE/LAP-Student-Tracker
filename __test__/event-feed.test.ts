@@ -8,7 +8,7 @@ const MISSING_PARAMS_ERROR = "Missing required parameters";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");
-  await client.query("DELETE from calender_information");
+  await client.query("DELETE from calendar_information");
   await client.query("DELETE from commitments");
   await client.query("DELETE from users");
   await client.query(
@@ -21,22 +21,22 @@ beforeAll(async () => {
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('id_c', 'event_c', 'green', 'Class', false)"
   );
   await client.query(
-    "INSERT INTO calender_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-26 21:11:45-08', '2022-02-26 21:11:45-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-26 21:11:45-08', '2022-02-26 21:11:45-08')"
   );
   await client.query(
-    "INSERT INTO calender_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-27 21:11:45-08', '2022-02-27 21:11:45-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-27 21:11:45-08', '2022-02-27 21:11:45-08')"
   );
   await client.query(
-    "INSERT INTO calender_information(event_information_id, start_str, end_str) VALUES('id_b', '2022-02-24 21:11:45-08', '2022-02-24 21:11:45-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_b', '2022-02-24 21:11:45-08', '2022-02-24 21:11:45-08')"
   );
   await client.query(
-    "INSERT INTO calender_information(event_information_id, start_str, end_str) VALUES('id_b', '2022-02-26 21:11:45-08', '2022-02-26 21:11:45-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_b', '2022-02-26 21:11:45-08', '2022-02-26 21:11:45-08')"
   );
   await client.query(
-    "INSERT INTO calender_information(event_information_id, start_str, end_str) VALUES('id_c', '2022-02-23 21:11:45-08', '2022-02-23 21:11:45-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_c', '2022-02-23 21:11:45-08', '2022-02-23 21:11:45-08')"
   );
   await client.query(
-    "INSERT INTO calender_information(event_information_id, start_str, end_str) VALUES('id_c', '2022-03-01 21:11:45-08', '2022-03-01 21:11:45-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_c', '2022-03-01 21:11:45-08', '2022-03-01 21:11:45-08')"
   );
   await client.query(
     "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address) VALUES('user_a', 'emaila@gmail.com', 'role', 'fname', 'lname', '#', 'addr')"

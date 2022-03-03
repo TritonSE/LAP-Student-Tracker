@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
+import { ClassEvent } from "../../models/events";
 
 /**
  * Create and test a HTTP Request
@@ -42,4 +43,41 @@ const makeHTTPRequest = async (
   return res;
 };
 
-export { makeHTTPRequest };
+const makeEventHTTPRequest = async (
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  endpoint: string,
+  query: Object | undefined,
+  method: RequestMethod,
+  body: Object | undefined,
+  expectedResponseCode: number,
+  expectedBody: ClassEvent
+): Promise<MockResponse<NextApiResponse<any>>> => {
+  const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
+    method: method,
+    url: endpoint,
+    query: query,
+    body: body,
+  });
+
+  await handler(req, res);
+
+  expect(res._getStatusCode()).toBe(expectedResponseCode);
+  expect(JSON.parse(res._getData())).toEqual(
+    expect.objectContaining({
+      eventInformationId: expect.stringMatching(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i // Checks if string matches to UUID format
+      ),
+      startTime: expectedBody.startTime,
+      endTime: expectedBody.endTime,
+      timeZone: expectedBody.timeZone,
+      rrule: expectedBody.rrule,
+      language: expectedBody.language,
+      neverEnding: expectedBody.neverEnding,
+      backgroundColor: expectedBody.backgroundColor,
+    })
+  );
+
+  return res;
+};
+
+export { makeHTTPRequest, makeEventHTTPRequest };

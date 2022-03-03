@@ -1,6 +1,6 @@
 import eventFeedHandler from "../pages/api/event-feed";
 import { client } from "../lib/db";
-import { makeHTTPRequest, convertToPostgresISO } from "./__testutils__/testutils.test";
+import { makeHTTPRequest, makeEventFeedHTTPRequest } from "./__testutils__/testutils.test";
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
 
@@ -68,18 +68,18 @@ describe("[GET] /api/event-feed", () => {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
-        endStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
+        startStr: "2022-02-26 21:11:45-08",
+        endStr: "2022-02-26 21:11:45-08",
       },
       {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: convertToPostgresISO("2022-02-27 21:11:45-08"),
-        endStr: convertToPostgresISO("2022-02-27 21:11:45-08"),
+        startStr: "2022-02-27 21:11:45-08",
+        endStr: "2022-02-27 21:11:45-08",
       },
     ];
-    await makeHTTPRequest(
+    await makeEventFeedHTTPRequest(
       eventFeedHandler,
       "/api/event-feed/",
       undefined,
@@ -88,6 +88,7 @@ describe("[GET] /api/event-feed", () => {
       StatusCodes.OK,
       expected
     );
+
   });
   test("get calendar event feed without specifying user", async () => {
     const body = {
@@ -100,25 +101,25 @@ describe("[GET] /api/event-feed", () => {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
-        endStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
+        startStr: "2022-02-26 21:11:45-08",
+        endStr: "2022-02-26 21:11:45-08",
       },
       {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: convertToPostgresISO("2022-02-27 21:11:45-08"),
-        endStr: convertToPostgresISO("2022-02-27 21:11:45-08"),
+        startStr: "2022-02-27 21:11:45-08",
+        endStr: "2022-02-27 21:11:45-08",
       },
       {
         id: "id_b",
         title: "event_b",
         backgroundColor: "red",
-        startStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
-        endStr: convertToPostgresISO("2022-02-26 21:11:45-08"),
+        startStr: "2022-02-26 21:11:45-08",
+        endStr: "2022-02-26 21:11:45-08",
       },
     ];
-    await makeHTTPRequest(
+    await makeEventFeedHTTPRequest(
       eventFeedHandler,
       "/api/event-feed/",
       undefined,
@@ -135,7 +136,7 @@ describe("[GET] /api/event-feed", () => {
       userId: "user_a",
     };
     const expected: CalendarEvent[] = [];
-    await makeHTTPRequest(
+    await makeEventFeedHTTPRequest(
       eventFeedHandler,
       "/api/event-feed/",
       undefined,

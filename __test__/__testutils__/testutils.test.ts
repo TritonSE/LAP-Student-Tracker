@@ -4,6 +4,7 @@
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
+import { CalendarEvent } from "../../models/events";
 
 /**
  * Create and test a HTTP Request
@@ -26,7 +27,7 @@ const makeHTTPRequest = async (
   method: RequestMethod,
   body: Object | undefined,
   expectedResponseCode: number,
-  expectedBody: Object
+  expectedBody: Object | undefined
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -38,16 +39,43 @@ const makeHTTPRequest = async (
   await handler(req, res);
 
   expect(res._getStatusCode()).toBe(expectedResponseCode);
-  expect(JSON.parse(res._getData())).toEqual(expectedBody);
+  if (expectedBody) {
+    expect(JSON.parse(res._getData())).toEqual(expectedBody);
+  }
+  return res;
+};
+
+const makeEventFeedHTTPRequest = async (
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  endpoint: string,
+  query: Object | undefined,
+  method: RequestMethod,
+  body: Object | undefined,
+  expectedResponseCode: number,
+  expectedBody: CalendarEvent[]
+): Promise<MockResponse<NextApiResponse<any>>> => {
+  expectedBody.map(event => convertToLocalISO(event));
+  const res = await makeHTTPRequest(
+    handler,
+    endpoint,
+    undefined,
+    method,
+    body,
+    expectedResponseCode,
+    undefined
+  );
+
+  const returnedCalendarEvents = (JSON.parse(res._getData()) as CalendarEvent[]).map(event => convertToLocalISO(event));
+  expect(returnedCalendarEvents).toEqual(expectedBody);
 
   return res;
 };
 
-const convertToPostgresISO = (timestamp: string): string => {
-  return DateTime.fromSQL(timestamp) /*.toUTC()*/
-    .toISO({ suppressMilliseconds: true })
-    .replace("Z", "+00:00");
-};
+const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
+  event.startStr = DateTime.fromJSDate(new Date(event.startStr)).toLocal().toISO();
+  event.endStr = DateTime.fromJSDate(new Date(event.endStr)).toLocal().toISO();
+  return event
+ }
 
 export { makeHTTPRequest };
-export { convertToPostgresISO };
+export { makeEventFeedHTTPRequest };

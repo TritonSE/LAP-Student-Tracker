@@ -26,7 +26,6 @@ const getEventFeed = async (
   let calendarEventArray: calenderEventArrayType;
 
   try {
-    console.log(res.rows);
     calendarEventArray = await decode(CalendarEventArraySchema, res.rows);
   } catch (e) {
     throw Error("Error getting calendar event feed from database.");

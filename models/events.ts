@@ -13,7 +13,7 @@ export const CreateClassEventSchema = t.type({
 });
 
 export const ClassEventSchema = t.type({
-  id: t.string,
+  eventInformationId: t.string,
   startTime: t.string,
   endTime: t.string,
   timeZone: t.string,

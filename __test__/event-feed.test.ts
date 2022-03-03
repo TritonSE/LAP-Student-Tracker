@@ -21,7 +21,7 @@ beforeAll(async () => {
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('id_c', 'event_c', 'green', 'Class', false)"
   );
   await client.query(
-    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-26 21:11:45-08', '2022-02-26 21:11:45-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-26 21:00:00-08', '2022-02-26 21:00:00-08')"
   );
   await client.query(
     "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-27 21:11:45-08', '2022-02-27 21:11:45-08')"
@@ -68,8 +68,8 @@ describe("[GET] /api/event-feed", () => {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: "2022-02-26 21:11:45-08",
-        endStr: "2022-02-26 21:11:45-08",
+        startStr: "2022-02-26 21:00:00-08",
+        endStr: "2022-02-26 21:00:00-08",
       },
       {
         id: "id_a",
@@ -100,8 +100,8 @@ describe("[GET] /api/event-feed", () => {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: "2022-02-26 21:11:45-08",
-        endStr: "2022-02-26 21:11:45-08",
+        startStr: "2022-02-26 21:00:00-08",
+        endStr: "2022-02-26 21:00:00-08",
       },
       {
         id: "id_a",

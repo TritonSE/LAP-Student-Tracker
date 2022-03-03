@@ -9,7 +9,7 @@ type AuthState = {
   user: User | null,
   loggedIn: boolean,
   error: Error | null,
-  // login: (email: string, password: string, rememberMe: boolean) => void,
+  login: (email: string, password: string, rememberMe: boolean) => void,
   // logout: () => void,
   signup: (firstName: string, lastName: string, email: string, role: "Teacher" | "Admin", password: string) => void
   // clearError: () => void
@@ -19,7 +19,7 @@ const init: AuthState = {
   user: null,
   loggedIn: false,
   error: null,
-  // login: () => { },
+  login: () => { },
   // logout: () => { },
   signup: () => { },
 }
@@ -71,6 +71,41 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   }, []);
 
+  //do errors
+  const login = (email: string, password: string, rememberMe:boolean): void => {
+    (async() => {
+      try{
+        const { user: fbUser } = await auth.signInWithEmailAndPassword(email, password);
+        if (fbUser === null){
+          setError( new Error("Firebase user does not exist"));
+          setUser(null);
+          return;
+        }
+        const jwt = await fbUser.getIdToken();
+        // api.setToken(jwt);
+
+        const uid = fbUser.uid;
+
+        if (rememberMe){
+          localStorage.setItem('apiToken', jwt);
+          localStorage.setIten('userId', uid);
+        }
+        else{
+          sessionStorage.setItem('apiToken', jwt);
+          sessionStorage.setIten('userId', uid);
+        }
+
+        const user = await api.getUser(uid);
+        setUser(user);
+
+      }
+      catch (e) {
+        setError(e as Error);
+        setUser(null);
+      }
+    })
+  }
+
   const signup = (firstName: string, lastName: string, email: string, role: "Admin" | "Teacher", password: string): void => {
     (async () => {
       try {
@@ -101,7 +136,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   return (<AuthContext.Provider
-    value={{ user, loggedIn, error, signup }}
+    value={{ user, login, loggedIn, error, signup }}
   >
     {children}
   </AuthContext.Provider>);

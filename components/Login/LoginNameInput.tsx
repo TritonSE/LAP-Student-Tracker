@@ -16,20 +16,25 @@ const cssTextField = {
 };
 
 type LoginNameInputProps = {
-    onContentChange: (newFirstName: string, newLastName:string) => void;
+    onFirstNameChange: (newFirstName: string) => void;
+    onLastNameChange: (newLastName: string) => void;
     currFirstName: string;
     currLastName: string;
 };
 
 const LoginNameInput: React.FC<LoginNameInputProps> = 
-({onContentChange, currFirstName, currLastName}) => {
+({onFirstNameChange, onLastNameChange, currFirstName, currLastName}) => {
 
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
 
     useEffect(() =>{
-        onContentChange(firstName, lastName);
-    }, [firstName, lastName]);
+        onFirstNameChange(firstName);
+    }, [firstName]);
+
+    useEffect (() => {
+        onLastNameChange(lastName);
+    }, [lastName]);
 
     // set current values
     useEffect(() => {

@@ -8,7 +8,9 @@ const cssTextField = {
 };
 
 type CreatePasswordProps = {
-    onContentChange: ( newEmail: string, newPassword:string, confirmPassword:string ) => void;
+    onNewEmailChange: ( newEmail: string ) => void;
+    onNewPasswordChange: ( newPassword:string ) => void;
+    onConfirmPasswordChange: ( confirmPassword:string ) => void;
     currNewEmail: string;
     currNewPassword: string;
     currConfirmPassword: string;
@@ -16,15 +18,23 @@ type CreatePasswordProps = {
 
 
 const CreatePassword: React.FC<CreatePasswordProps> = 
-({onContentChange, currNewEmail, currNewPassword, currConfirmPassword}) => {
+({onNewEmailChange, onNewPasswordChange, onConfirmPasswordChange, currNewEmail, currNewPassword, currConfirmPassword}) => {
 
     const [newEmail, setNewEmail] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
 
     useEffect(() =>{
-        onContentChange(newEmail, newPassword, confirmPassword);
-    }, [newEmail, newPassword, confirmPassword]);
+        onNewEmailChange(newEmail);
+    }, [newEmail]);
+
+    useEffect(() =>{
+        onNewPasswordChange(newPassword);
+    }, [newPassword]);
+
+    useEffect(() =>{
+        onConfirmPasswordChange(confirmPassword);
+    }, [confirmPassword]);
 
     // set current values
     useEffect(() => {

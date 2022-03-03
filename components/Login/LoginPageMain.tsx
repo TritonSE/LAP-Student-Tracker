@@ -17,20 +17,25 @@ const cssTextField = {
 type LoginPageMainProps = {
     pageNumber: number;
     changePage: (newPage: number) => void;
-    onContentChange: (newEmail: string, newPassword:string) => void;
+    onEmailChange: (newEmail: string) => void;
+    onPasswordChange: (newPassword: string) => void;
     currEmail: string;
     currPassword: string;
 };
 
 const LoginPageMain: React.FC<LoginPageMainProps> = 
-({pageNumber, changePage, onContentChange, currEmail, currPassword}) => {
+({pageNumber, changePage, onEmailChange, onPasswordChange, currEmail, currPassword}) => {
     
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     useEffect(() =>{
-        onContentChange(email, password);
-    }, [email, password]);
+        onEmailChange(email);
+    }, [email]);
+
+    useEffect(() => {
+        onPasswordChange(password);
+    }, [password]);
 
     // set current values
     useEffect(() => {

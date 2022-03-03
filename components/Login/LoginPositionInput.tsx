@@ -33,9 +33,9 @@ const LoginPositionInput: React.FC <LoginPositionInputProps>=
             <div className={styles.positionContainer}>
                 <h2 className={styles.title}>Select your position:</h2>
                 <form>
-                    <input type="radio" id="admin" name="select-position" value="Admin" onChange={e => setPosition(e.target.value)} className={styles.radioBox}/>
+                    <input type="radio" id="admin" name="select-position" value="Admin" onChange={e => setPosition(e.target.value)} className={styles.radioBox} checked={position=="Admin"}/>
                     <label htmlFor="admin" className={styles.positionText}>Admin</label><br></br>
-                    <input type="radio" id="teacher" name="select-position" value="Teacher" onChange={e => setPosition(e.target.value)} className={styles.radioBox}/>
+                    <input type="radio" id="teacher" name="select-position" value="Teacher" onChange={e => setPosition(e.target.value)} className={styles.radioBox} checked={position=="Teacher"}/>
                     <label htmlFor="teacher" className={styles.positionText}>Teacher</label>
                 </form>
             </div>

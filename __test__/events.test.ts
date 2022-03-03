@@ -11,7 +11,7 @@ let rule: string;
 
 beforeAll(async () => {
   await client.query("DELETE from commitments");
-  await client.query("DELETE from calender_information");
+  await client.query("DELETE from calendar_information");
   await client.query("DELETE from event_information");
   await client.query("DELETE from users");
   await client.query(
@@ -36,7 +36,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await client.query("DELETE from commitments");
-  await client.query("DELETE from calender_information");
+  await client.query("DELETE from calendar_information");
   await client.query("DELETE from event_information");
   await client.query("DELETE from users");
   await client.end();

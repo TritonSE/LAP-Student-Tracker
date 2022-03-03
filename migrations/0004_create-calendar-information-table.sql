@@ -3,7 +3,7 @@
  * user and event.
  **/
 
-CREATE TABLE calender_information (
+CREATE TABLE calendar_information (
     event_information_id text,
     start_str TIMESTAMP WITH TIME ZONE,
     end_str TIMESTAMP WITH TIME ZONE,

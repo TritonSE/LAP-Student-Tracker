@@ -2,13 +2,14 @@ import { client } from "../db";
 import { Any } from "io-ts";
 
 // Creates a calender event in database
-const createCalenderEvent = async (
+const createCalendarEvent = async (
   id: string,
   startString: string,
   endString: string
 ): Promise<Any[]> => {
+  // Return type is Any[] because an empty array should be returned
   const query = {
-    text: "INSERT INTO calender_information(event_information_id, start_str, end_str) VALUES($1, $2, $3)",
+    text: "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES($1, $2, $3)",
     values: [id, startString, endString],
   };
 
@@ -22,4 +23,4 @@ const createCalenderEvent = async (
   return res.rows;
 };
 
-export { createCalenderEvent };
+export { createCalendarEvent };

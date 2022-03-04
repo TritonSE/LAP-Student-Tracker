@@ -6,6 +6,7 @@ import LoginNameInput from "../components/Login/LoginNameInput";
 import LoginPositionInput from "../components/Login/LoginPositionInput";
 import CreatePassword from "../components/Login/CreatePassword";
 import { AuthContext } from "../context/AuthContext";
+import { NextButton, BackButton } from "../components/Login/LoginButtons";
 
 const Login: React.FC = () => {
 
@@ -53,44 +54,23 @@ const Login: React.FC = () => {
         setConfirmPassword(confirmPassword);
     };
 
-
-    const changePage = (newPage: number): void => {
-        
-        let cont: boolean;
-        cont = true;
-        if (newPage < 0 || newPage >= 4){
-            cont = false;
-        }
-        else{
-            switch(newPage){
-                // case 1:
-                //     if (email == "" || password == ""){
-                //         cont = false;
-                //     }
-                //     break;
-                case 2:
-                    console.log(firstName)
-                    if (firstName == "" || lastName == ""){
-                        cont = false;
-                    }
-                    break;
-                case 3:
-                    if (position == ""){
-                        cont = false;
-                    }
-                    break;
-            };
-        }
-        if (cont){
-            setCurrentPage(newPage)
-        }
+    const handlePage = (newPage: number): void => {
+        setCurrentPage(newPage);
     }
+
+    let check: boolean[] = [
+        true,
+        true,
+        //Boolean(email && password), //proceed to name input
+        Boolean(firstName && lastName), //proceed to position
+        Boolean(position), //proceed to create account
+    ];
     const authProvider = useContext(AuthContext)
 
-
+    console.log(check);
 
     const pages = [
-        <LoginPageMain key={0} onEmailChange={handleEmail} onPasswordChange={handlePassword} currEmail={email} currPassword={password} pageNumber={currentPage} changePage={changePage}></LoginPageMain>,
+        <LoginPageMain key={0} onEmailChange={handleEmail} onPasswordChange={handlePassword} currEmail={email} currPassword={password} pageNumber={currentPage} changePage={handlePage}></LoginPageMain>,
         <LoginNameInput key={1} onFirstNameChange={handleFirstName} onLastNameChange={handleLastName} currFirstName={firstName} currLastName={lastName}></LoginNameInput>,
         <LoginPositionInput key={2} onContentChange={handlePosition} currPosition={position}></LoginPositionInput>,
         <CreatePassword key={3} onNewEmailChange={handleNewEmail} onNewPasswordChange={handleNewPassword} onConfirmPasswordChange={handleConfirmPassword} currNewEmail={newEmail} currNewPassword={newPassword} currConfirmPassword={confirmPassword}></CreatePassword>,
@@ -101,8 +81,8 @@ const Login: React.FC = () => {
             {pages[currentPage]}
             {currentPage > 0 &&
                 <div className={styles.buttonContainer}>
-                    <button className={styles.buttonOutline} onClick={() => changePage(currentPage - 1)}>Back</button>
-                    <button className={styles.buttonFilled} onClick={() => changePage(currentPage + 1)}>Next</button>
+                    <BackButton currPage={currentPage} onContentChange={handlePage}></BackButton>
+                    <NextButton check={check} currPage={currentPage} onContentChange={handlePage}></NextButton>
                 </div>
             }
         </div>

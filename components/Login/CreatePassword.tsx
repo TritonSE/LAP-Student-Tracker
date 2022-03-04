@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TextField from '@mui/material/TextField';
-import styles from "../../styles/components/LoginViews.module.css"
+import styles from "../../styles/components/LoginViews.module.css";
 
 const cssTextField = {
     width: 690,

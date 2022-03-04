@@ -43,6 +43,8 @@ const LoginPageMain: React.FC<LoginPageMainProps> =
         setPassword(currPassword);
     }, []);
 
+    console.log(pageNumber)
+
     return (
         <div className={styles.comContainer}>
             <img src="login-logo.png" className={styles.mainPageLogo}></img>
@@ -60,7 +62,7 @@ const LoginPageMain: React.FC<LoginPageMainProps> =
                     </div>
                 </div>
                 <div className={styles.buttonContainer}> 
-                    <button className={styles.buttonOutline} onClick={ () => changePage(pageNumber+1) }>Create Account</button>
+                    <button className={styles.buttonOutline} onClick={ () => changePage(pageNumber + 1) }>Create Account</button>
                     <button className={styles.buttonFilled}>Login</button>
                 </div>
             </div>

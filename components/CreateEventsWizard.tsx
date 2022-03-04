@@ -29,7 +29,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [startTime, setStartTime] = useState("10:00");
   const [endTime, setEndTime] = useState("11:00");
   const [showRepeatModal, setShowRepeatModal] = useState(false);
-  const [rruleText, setRruleText] = useState("No Repeat");
+  const [rruleText, setRruleText] = useState("Never Repeat");
   const [color, setColor] = useState("yellow");
   const [teachers, setTeachers] = useState("");
   const [valid, setValid] = useState(false);
@@ -94,7 +94,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
       setRruleText(rule.toText());
     } else {
-      setRruleText("No Repeat");
+      setRruleText("Never Repeat");
     }
   };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Class } from "../models/classes";
+import { Class } from "../models/class";
 import { ClassCard } from "./ClassCard";
 import styles from "../styles/components/LeagueViews.module.css";
 
@@ -27,13 +27,13 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
         <ul className={styles.scroll}>
           {classes.map((tempClass) => (
             <ClassCard
-              key={tempClass.id}
+              key={tempClass.eventInformationId}
               name={tempClass.name}
               minLevel={tempClass.minLevel}
               maxLevel={tempClass.maxLevel}
               rrstring={tempClass.rrstring}
-              timeStart={tempClass.timeStart}
-              timeEnd={tempClass.timeEnd}
+              startTime={tempClass.startTime}
+              endTime={tempClass.endTime}
             />
           ))}
         </ul>

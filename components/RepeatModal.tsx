@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/extensions */
 import React, { useState, useEffect } from "react";
 import styles from "../styles/RepeatModal.module.css";
 
@@ -45,14 +47,14 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
 
   useEffect(() => {
     setValid(true);
-    if(repeat) {
-      if(!interval) {
+    if (repeat) {
+      if (!interval) {
         setValid(false);
       }
-      if(endSelection === "on" && !endDate) {
+      if (endSelection === "on" && !endDate) {
         setValid(false);
       }
-      if(endSelection === "after" && !count) {
+      if (endSelection === "after" && !count) {
         setValid(false);
       }
     }
@@ -62,7 +64,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
   const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
 
   // adds/removes day from weekDay state
-  const handleDayOfWeekChange = (day: number) => {
+  const handleDayOfWeekChange = (day: number): void => {
     if (weekDays.includes(day)) {
       setWeekDays(weekDays.filter((item) => item !== day));
     } else {
@@ -71,12 +73,12 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
   };
 
   // converts daysOfWeek idx to RRule weekday idx (0 == RRule.MO, ...)
-  const convertDayIdx = (idx: number) => {
+  const convertDayIdx = (idx: number): number => {
     return (((idx - 1) % 7) + 7) % 7;
   };
 
   // passes state values to callback and closes modal on save
-  const handleSave = () => {
+  const handleSave = (): void => {
     handleStates(repeat, interval, weekDays, endSelection, endDate, count);
     handleClose();
   };
@@ -111,6 +113,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
         <div className={styles.dayOfWeekWrapper}>
           {daysOfWeek.map((day, idx) => (
             <div
+              key={idx}
               onClick={() => repeat && handleDayOfWeekChange(convertDayIdx(idx))}
               className={`${styles.circle} ${!repeat && styles.disabledCircle} ${
                 repeat && weekDays.includes(convertDayIdx(idx)) ? styles.activeCircle : null
@@ -195,4 +198,4 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
   );
 };
 
-export default RepeatModal;
+export { RepeatModal };

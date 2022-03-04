@@ -1,8 +1,9 @@
+/* eslint-disable import/extensions */
 import React, { useState, useEffect, useContext } from "react";
-import RepeatModal from "./RepeatModal";
+import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../context/APIContext";
-import { CreateClass, Class } from "../models/classes";
-import { CreateClassEvent, ClassEvent } from "../models/events";
+import { CreateClass } from "../models/classes";
+import { CreateClassEvent } from "../models/events";
 import styles from "../styles/CreateEventsWizard.module.css";
 
 import "react-date-picker/dist/DatePicker.css";
@@ -12,7 +13,7 @@ import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import TimePicker from "react-time-picker/dist/entry.nostyle";
 import { RRule } from "rrule";
-const { DateTime } = require("luxon");
+import { DateTime } from "luxon";
 
 type CreateEventsWizardProps = {
   handleClose: () => void;
@@ -45,19 +46,26 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
   useEffect(() => {
     setValid(true);
-    if(!name || !teachers) {
+    if (!name || !teachers) {
       setValid(false);
     }
-    if(!minLevel || (multipleLevels && (!maxLevel || minLevel >= maxLevel))) {
+    if (!minLevel || (multipleLevels && (!maxLevel || minLevel >= maxLevel))) {
       setValid(false);
     }
-    if(!startDate || !startTime || !endTime) {
+    if (!startDate || !startTime || !endTime) {
       setValid(false);
     }
   }, [name, multipleLevels, minLevel, maxLevel, startDate, startTime, endTime, color, teachers]);
 
+  // force max level to exceed min level
+  useEffect(() => {
+    if (minLevel >= maxLevel) {
+      setMaxLevel(minLevel + 1);
+    }
+  }, [minLevel, maxLevel]);
+
   // callback for hiding modal on close
-  const handleRepeatClose = () => {
+  const handleRepeatClose = (): void => {
     setShowRepeatModal(false);
   };
 
@@ -69,7 +77,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     endType_param: string,
     endDate_param: Date,
     count_param: number
-  ) => {
+  ): void => {
     setRepeat(repeat_param);
     if (repeat_param) {
       setInterval(interval_param);
@@ -91,7 +99,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   };
 
   // handles create wizard submit
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<void> => {
     let lang = "unknown";
     if (name.toLowerCase().includes("java")) {
       lang = "Java";
@@ -133,8 +141,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           rruleStr = rrule.toString();
           break;
       }
-    }
-    else {
+    } else {
       rrule = new RRule({
         dtstart: startDate,
         count: 1,
@@ -168,9 +175,11 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
         await client.createClass(classEvent.eventInformationId, createClass);
       } catch (err) {
         alert(`Error on class creation: ${err.message}`);
+        return;
       }
     } catch (err) {
       alert(`Error on class event creation: ${err.message}`);
+      return;
     }
 
     handleClose();
@@ -309,4 +318,4 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   );
 };
 
-export default CreateEventsWizard;
+export { CreateEventsWizard };

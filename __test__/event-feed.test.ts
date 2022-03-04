@@ -42,13 +42,7 @@ beforeAll(async () => {
     "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address) VALUES('user_a', 'emaila@gmail.com', 'role', 'fname', 'lname', '#', 'addr')"
   );
   await client.query(
-    "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address) VALUES('user_b', 'emailb@gmail.com', 'role', 'fname', 'lname', '#', 'addr')"
-  );
-  await client.query(
     "INSERT INTO commitments(user_id, event_information_id) VALUES('user_a', 'id_a')"
-  );
-  await client.query(
-    "INSERT INTO commitments(user_id, event_information_id) VALUES('user_b', 'id_b')"
   );
 });
 

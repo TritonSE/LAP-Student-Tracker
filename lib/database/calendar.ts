@@ -34,15 +34,28 @@ const getEventFeed = async (
   end: string,
   userId?: string
 ): Promise<CalendarEvent[]> => {
-  const query = {
-    text:
-      "SELECT e.id, e.name AS title, e.background_color, " +
-      "TO_JSON(c.start_str) AS start_str, TO_JSON(c.end_str) AS end_str " +
-      "FROM event_information e, calendar_information c, commitments cm " +
-      "WHERE e.id=c.event_information_id AND e.id=cm.event_information_id AND " +
-      "c.start_str >= $1 AND c.end_str <= $2 AND cm.user_id LIKE COALESCE($3, '%')",
-    values: [start, end, userId],
-  };
+  let query;
+  if (userId) {
+    query = {
+      text:
+        "SELECT e.id, e.name AS title, e.background_color, " +
+        "TO_JSON(c.start_str) AS start_str, TO_JSON(c.end_str) AS end_str " +
+        "FROM event_information e, calendar_information c, commitments cm " +
+        "WHERE e.id=c.event_information_id AND e.id=cm.event_information_id AND " +
+        "c.start_str >= $1 AND c.end_str <= $2 AND cm.user_id=$3",
+      values: [start, end, userId],
+    };
+  } else {
+    query = {
+      text:
+        "SELECT e.id, e.name AS title, e.background_color, " +
+        "TO_JSON(c.start_str) AS start_str, TO_JSON(c.end_str) AS end_str " +
+        "FROM event_information e, calendar_information c " +
+        "WHERE e.id=c.event_information_id AND " +
+        "c.start_str >= $1 AND c.end_str <= $2",
+      values: [start, end],
+    };
+  }
 
   const res = await client.query(query);
   let calendarEventArray: calenderEventArrayType;

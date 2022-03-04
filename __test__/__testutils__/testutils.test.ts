@@ -107,8 +107,10 @@ const makeEventFeedHTTPRequest = async (
   const returnedCalendarEvents = (JSON.parse(res._getData()) as CalendarEvent[]).map((event) =>
     convertToLocalISO(event)
   );
+  const returnedCalendarEventsLocalISO = expectedBody.map((event) => convertToLocalISO(event));
   // Convert dates in expected body to local ISO and compare
-  expect(returnedCalendarEvents).toEqual(expectedBody.map((event) => convertToLocalISO(event)));
+
+  expect(returnedCalendarEvents).toEqual(expect.arrayContaining(returnedCalendarEventsLocalISO));
 
   return res;
 };

@@ -4,7 +4,7 @@ import styles from "../styles/League.module.css";
 import { ClassView } from "../components/ClassView";
 import { StudentView } from "../components/StudentView";
 import { StaffView } from "../components/StaffView";
-import { Class } from "../models/classes";
+import { Class } from "../models/class";
 import { User } from "../models/users";
 import { Student } from "../models/students";
 
@@ -25,14 +25,15 @@ const League: NextPage = () => {
 
   // start dummy data, delete once api is implemented
   const testClass: Class = {
-    id: "class_id",
-    name: "Intro to Java",
+    name: "class1",
+    eventInformationId: "class_id",
     minLevel: 3,
     maxLevel: 5,
     rrstring:
       "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
-    timeStart: "07:34Z",
-    timeEnd: "08:34Z",
+    startTime: "07:34Z",
+    endTime: "08:34Z",
+    language: "java",
   };
   const testStudent: Student = {
     id: "student_id",

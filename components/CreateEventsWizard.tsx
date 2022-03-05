@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../context/APIContext";
-import { CreateClass } from "../models/classes";
+import { CreateClass } from "../models/class";
 import { CreateClassEvent } from "../models/events";
 import styles from "../styles/CreateEventsWizard.module.css";
 
@@ -165,14 +165,15 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       const classEvent = await client.createClassEvent(createEvent);
       try {
         const createClass: CreateClass = {
+          eventInformationId: classEvent.eventInformationId,
           minLevel: minLevel,
           maxLevel: multipleLevels ? maxLevel : minLevel,
-          rrule: rruleStr,
+          rrstring: rruleStr,
           language: lang,
-          timeStart: startTime,
-          timeEnd: endTime,
+          startTime: classEvent.startTime,
+          endTime: classEvent.endTime,
         };
-        await client.createClass(classEvent.eventInformationId, createClass);
+        await client.createClass(createClass);
       } catch (err) {
         alert(`Error on class creation: ${err.message}`);
         return;

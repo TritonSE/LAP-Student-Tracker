@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getEventFeed } from "../../../lib/database/calendar";
+import { getEventFeed } from "../../../lib/database/calendar-events";
 import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/event-feed/
@@ -7,11 +7,19 @@ const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextAp
   switch (req.method) {
     case "GET":
       try {
-        if (!req.body.start || !req.body.end) {
-          return res.status(StatusCodes.BAD_REQUEST).json("Missing required parameters");
+        if (!req.query) {
+          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
         }
 
-        const result = await getEventFeed(req.body.start, req.body.end, req.body.userId);
+        const start = req.query.start as string;
+        const end = req.query.end as string;
+        const userId = req.query.userId as string;
+
+        if (!start || !end) {
+          return res.status(StatusCodes.BAD_REQUEST).json("No start or end date specified");
+        }
+
+        const result = await getEventFeed(start, end, userId);
         res.status(StatusCodes.OK).json(result);
       } catch (e) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

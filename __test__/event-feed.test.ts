@@ -4,7 +4,7 @@ import { makeHTTPRequest, makeEventFeedHTTPRequest } from "./__testutils__/testu
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
 
-const MISSING_PARAMS_ERROR = "Missing required parameters";
+const MISSING_PARAMS_ERROR = "No start or end date specified";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");
@@ -47,12 +47,16 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await client.query("DELETE from event_information");
+  await client.query("DELETE from calendar_information");
+  await client.query("DELETE from commitments");
+  await client.query("DELETE from users");
   await client.end();
 });
 
 describe("[GET] /api/event-feed", () => {
   test("get calendar event feed for a user", async () => {
-    const body = {
+    const queryParams = {
       start: "2022-02-25 21:11:45-08",
       end: "2022-02-28 21:11:45-08",
       userId: "user_a",
@@ -78,16 +82,16 @@ describe("[GET] /api/event-feed", () => {
       "/api/event-feed/",
       undefined,
       "GET",
-      body,
+      queryParams,
       StatusCodes.OK,
       expected
     );
   });
   test("get calendar event feed without specifying user", async () => {
-    const body = {
+    const queryParams = {
       start: "2022-02-25 21:11:45-08",
       end: "2022-02-28 21:11:45-08",
-      userId: null,
+      userId: undefined,
     };
     const expected: CalendarEvent[] = [
       {
@@ -117,13 +121,13 @@ describe("[GET] /api/event-feed", () => {
       "/api/event-feed/",
       undefined,
       "GET",
-      body,
+      queryParams,
       StatusCodes.OK,
       expected
     );
   });
   test("get calendar event feed with start > end", async () => {
-    const body = {
+    const queryParams = {
       start: "2022-02-28 21:11:45-08",
       end: "2022-02-25 21:11:45-08",
       userId: "user_a",
@@ -134,13 +138,13 @@ describe("[GET] /api/event-feed", () => {
       "/api/event-feed/",
       undefined,
       "GET",
-      body,
+      queryParams,
       StatusCodes.OK,
       expected
     );
   });
   test("get calendar event feed for nonexistent user", async () => {
-    const body = {
+    const queryParams = {
       start: "2022-02-25 21:11:45-08",
       end: "2022-02-28 21:11:45-08",
       userId: "nonexistent",
@@ -151,24 +155,19 @@ describe("[GET] /api/event-feed", () => {
       "/api/event-feed/",
       undefined,
       "GET",
-      body,
+      queryParams,
       StatusCodes.OK,
       expected
     );
   });
   test("get calendar event feed with missing parameters", async () => {
-    const body = {
-      start: null,
-      end: null,
-      userId: null,
-    };
     // invoke original HTTP request handler on error case for event feed API
     await makeHTTPRequest(
       eventFeedHandler,
       "/api/event-feed/",
       undefined,
       "GET",
-      body,
+      undefined,
       StatusCodes.BAD_REQUEST,
       MISSING_PARAMS_ERROR
     );

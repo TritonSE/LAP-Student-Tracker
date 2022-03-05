@@ -89,16 +89,18 @@ const makeEventFeedHTTPRequest = async (
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
-  body: Object | undefined,
+  queryParams: { start: string; end: string; userId?: string },
   expectedResponseCode: number,
   expectedBody: CalendarEvent[]
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const res = await makeHTTPRequest(
     handler,
-    endpoint,
+    endpoint +
+      `?start=${queryParams.start}&end=${queryParams.end}` +
+      (queryParams.userId ? `&userId=${queryParams.userId}` : ""),
     query,
     method,
-    body,
+    undefined,
     expectedResponseCode,
     undefined
   );

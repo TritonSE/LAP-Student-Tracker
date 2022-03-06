@@ -113,12 +113,12 @@
 
 .buttonContainer {
   width: 690px;
-  /* //margin:auto; */
+  margin: auto;
   /* margin-left:39%; */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 7rem;
+  margin-top: 5rem;
 }
 
 .buttonOutline {

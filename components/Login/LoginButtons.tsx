@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "../../styles/components/LoginViews.module.css";
-import style2 from "../../styles/Login.module.css";
 
 type LoginPageNavigationProps = {
   completedPages: boolean[];
@@ -25,12 +24,12 @@ const LoginPageNavigation: React.FC<LoginPageNavigationProps> = ({
   };
 
   return (
-    <div className={style2.buttonContainer}>
-      <button className={style2.buttonOutline} onClick={() => onPageChange(currPage - 1)}>
+    <div className={styles.buttonContainer}>
+      <button className={styles.buttonOutline} onClick={() => onPageChange(currPage - 1)}>
         Back
       </button>
       <button
-        className={style2.buttonFilled}
+        className={styles.buttonFilled}
         onClick={() => nextButtonFunction()}
         disabled={!completedPages[currPage]}
       >

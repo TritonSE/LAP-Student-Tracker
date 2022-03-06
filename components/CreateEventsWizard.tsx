@@ -107,47 +107,43 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       lang = "Python";
     }
 
+    // construct rrule object
     let rrule;
-    let rruleStr = "";
     if (repeat) {
-      switch (endType) {
-        case "never":
-          rrule = new RRule({
-            dtstart: startDate,
-            interval: interval,
-            freq: RRule.WEEKLY,
-            byweekday: weekDays,
-          });
-          rruleStr = rrule.toString();
-          break;
-        case "on":
-          rrule = new RRule({
-            dtstart: startDate,
-            interval: interval,
-            freq: RRule.WEEKLY,
-            byweekday: weekDays,
-            until: endDate,
-          });
-          rruleStr = rrule.toString();
-          break;
-        case "after":
-          rrule = new RRule({
-            dtstart: startDate,
-            interval: interval,
-            freq: RRule.WEEKLY,
-            byweekday: weekDays,
-            count: count,
-          });
-          rruleStr = rrule.toString();
-          break;
+      if (endType === "on") {
+        rrule = new RRule({
+          dtstart: startDate,
+          interval: interval,
+          freq: RRule.WEEKLY,
+          byweekday: weekDays,
+          until: endDate,
+        });
       }
+      else if (endType === "after") {
+        rrule = new RRule({
+          dtstart: startDate,
+          interval: interval,
+          freq: RRule.WEEKLY,
+          byweekday: weekDays,
+          count: count,
+        });
+      }
+      else {
+        rrule = new RRule({
+          dtstart: startDate,
+          interval: interval,
+          freq: RRule.WEEKLY,
+          byweekday: weekDays,
+        });
+      }
+
     } else {
       rrule = new RRule({
         dtstart: startDate,
         count: 1,
       });
-      rruleStr = rrule.toString();
     }
+    const rruleStr = rrule.toString();
 
     const createEvent: CreateClassEvent = {
       name: name,

@@ -3,7 +3,7 @@ import "../styles/app.css";
 import "../styles/globals.css";
 import { AppProps } from "next/app";
 import { APIProvider } from "../context/APIContext";
-import { Layout } from "../components/layouts/Layout";
+import { Layout } from "../components/Navbar/NavbarLayout";
 // import { Navbar } from "../components/Navbar";
 import { AuthProvider } from "../context/AuthContext";
 import { AuthGuard } from "../components/Login/RouteGaurd";

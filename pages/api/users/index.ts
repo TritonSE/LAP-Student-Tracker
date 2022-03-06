@@ -5,19 +5,14 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/users/
-<<<<<<< HEAD
-export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log("RAN")
-=======
 const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
->>>>>>> origin/master
   switch (req.method) {
     case "POST": {
       let newUser: User;
       try {
         newUser = await decode(UserSchema, req.body);
       } catch (e) {
-        console.log(req.body)
+        console.log(req.body);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -32,7 +27,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        console.log(e)
+        console.log(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

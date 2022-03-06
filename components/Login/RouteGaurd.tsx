@@ -1,34 +1,31 @@
-import { AuthContext } from "../../context/AuthContext"
-import { useRouter } from "next/router"
-import { useContext, useEffect } from "react"
-import { Loader } from "../util/Loader"
+import React from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
+import { Loader } from "../util/Loader";
 
 const AuthGuard: React.FC = ({ children }) => {
-  const { user, initializing } = useContext(AuthContext)
-  const router = useRouter()
+  const { user, initializing } = useContext(AuthContext);
+  const router = useRouter();
 
   useEffect(() => {
     if (!initializing) {
       //auth is initialized and there is no user
       if (user === null) {
-        router.push("/login")
+        router.push("/login");
       }
     }
-  }, [initializing, router, user])
+  }, [initializing, router, user]);
 
   /* show loading indicator while the auth provider is still initializing */
 
-
   // if auth initialized with a valid user show protected page
   if (!initializing && user !== null) {
-    return <>{children}</>
+    return <>{children}</>;
   }
 
   /* otherwise don't return anything, will do a redirect from useEffect */
-  return (
-    <Loader />
-  )
+  return <Loader />;
+};
 
-}
-
-export { AuthGuard }
+export { AuthGuard };

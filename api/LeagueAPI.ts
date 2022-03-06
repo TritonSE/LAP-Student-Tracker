@@ -23,13 +23,13 @@ class LeagueAPI {
   }
 
   async getUser(id: string): Promise<User> {
-    const res = await this.client.get(`api/users/${id}`)
-    return res.data
+    const res = await this.client.get(`api/users/${id}`);
+    return res.data;
   }
 
-  async createUser(user: User) {
-    const res = await this.client.post("api/users/", user)
-    return res.data
+  async createUser(user: User): Promise<User> {
+    const res = await this.client.post("api/users/", user);
+    return res.data;
   }
 }
 

@@ -8,6 +8,4 @@ const Home: NextApplicationPage = () => {
 
 Home.requireAuth = true;
 
-
-
 export default Home;

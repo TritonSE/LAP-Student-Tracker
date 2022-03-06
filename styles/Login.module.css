@@ -1,44 +1,43 @@
-.buttonContainer{
-    width:690px;
-    margin:auto; 
-    /* margin-left:39%; */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 5rem;
+.buttonContainer {
+  width: 690px;
+  margin: auto;
+  /* margin-left:39%; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5rem;
 }
 
-.buttonOutline{
-    background-color: white;
-    border: 2px solid #1B1C1D;
-    width: 200px;
-    height: 60px;
-    border-radius: 16px;
-    font-size: 18px;
-    line-height: 36px;
-    color: #000000;
-    text-align: center;
-    padding: 10px;
+.buttonOutline {
+  background-color: white;
+  border: 2px solid #1b1c1d;
+  width: 200px;
+  height: 60px;
+  border-radius: 16px;
+  font-size: 18px;
+  line-height: 36px;
+  color: #000000;
+  text-align: center;
+  padding: 10px;
 }
 
-.buttonFilled{
-    background-color: #F37121;;
-    border: none;
-    width: 200px;
-    height: 60px;
-    border-radius: 16px;
-    font-size: 18px;
-    line-height: 36px;
-    color: #000000;
-    text-align: center;
-    padding: 10px;
-
+.buttonFilled {
+  background-color: #f37121;
+  border: none;
+  width: 200px;
+  height: 60px;
+  border-radius: 16px;
+  font-size: 18px;
+  line-height: 36px;
+  color: #000000;
+  text-align: center;
+  padding: 10px;
 }
 
-.buttonOutline:hover{
-    opacity: 0.6;
+.buttonOutline:hover {
+  opacity: 0.6;
 }
 
-.buttonFilled:hover{
-    opacity: 0.8;
+.buttonFilled:hover {
+  opacity: 0.8;
 }

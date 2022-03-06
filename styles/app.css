@@ -15,7 +15,7 @@ a {
   box-sizing: border-box;
 }
 
-button:disabled{
+button:disabled {
   background: rgba(241, 120, 45, 0.562);
 }
 

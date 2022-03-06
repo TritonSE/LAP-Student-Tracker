@@ -1,6 +1,4 @@
-import { NextPage } from "next";
-import React, { useState, useEffect, useContext } from "react";
-import { APIContext } from "../context/APIContext";
+import React, { useState, useEffect } from "react";
 import styles from "../styles/League.module.css";
 import { ClassView } from "../components/LeaguePage/ClassView";
 import { StudentView } from "../components/LeaguePage/StudentView";
@@ -8,15 +6,12 @@ import { StaffView } from "../components/LeaguePage/StaffView";
 import { Class } from "../models/class";
 import { User } from "../models/users";
 import { Student } from "../models/students";
-import useSWR from "swr";
-import axios from "axios";
 import { NextApplicationPage } from "./_app";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
 
 const League: NextApplicationPage = () => {
-  const client = useContext(APIContext);
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
   const [content, setContent] = useState<{
     Classes: Class[];
@@ -83,8 +78,9 @@ const League: NextApplicationPage = () => {
               <div className={styles.tabWrapper} key={tabName}>
                 <button
                   key={tabName}
-                  className={`${styles.tabButton} ${display === tabName ? styles.activeTab : styles.inactiveTab
-                    }`}
+                  className={`${styles.tabButton} ${
+                    display === tabName ? styles.activeTab : styles.inactiveTab
+                  }`}
                   onClick={() => setDisplay(tabName)}
                 >
                   {tabName}

@@ -20,7 +20,7 @@ const createUser = async (
   try {
     await client.query(query);
   } catch (e) {
-    console.log(e)
+    console.log(e);
     throw Error("Error on insert into database");
   }
 

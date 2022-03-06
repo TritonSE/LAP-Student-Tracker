@@ -39,7 +39,7 @@
     "indent": "off",
     "@typescript-eslint/indent": ["error", 2],
     "object-shorthand": "off",
-    "no-unused-vars": [
+    "@typescript-eslint/no-unused-vars": [
       "error",
       {
         "argsIgnorePattern": "^_",

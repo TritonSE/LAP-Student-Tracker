@@ -8,6 +8,7 @@ import LoginPositionInput from "../components/Login/LoginPositionInput";
 import CreatePassword from "../components/Login/CreatePassword";
 import { AuthContext } from "../context/AuthContext";
 import { NextButton, BackButton } from "../components/Login/LoginButtons";
+import { pass } from "fp-ts/lib/Writer";
 
 const Login: React.FC = () => {
 
@@ -53,8 +54,11 @@ const Login: React.FC = () => {
         setCurrentPage(newPage);
     }
 
+    const passwordLengthOk = password.length > 6
+    const passwordsMatch = password === confirmPassword
+
     const namePageDone = firstName != "" && lastName != "";
-    const createAccountPageDone = email != "" && password != "" && confirmPassword != "" && password === confirmPassword;
+    const createAccountPageDone = email != "" && password != "" && confirmPassword != "" && passwordLengthOk && passwordsMatch;
 
     let check: boolean[] = [
         true, //0 (login)
@@ -76,7 +80,7 @@ const Login: React.FC = () => {
         <LoginPageMain key={0} onEmailChange={handleEmail} onPasswordChange={handlePassword} currEmail={email} currPassword={password} pageNumber={currentPage} changePage={handlePage} onLoginClick={onLoginClick}></LoginPageMain>,
         <LoginNameInput key={1} onFirstNameChange={handleFirstName} onLastNameChange={handleLastName} currFirstName={firstName} currLastName={lastName}></LoginNameInput>,
         <LoginPositionInput key={2} onContentChange={handlePosition} currPosition={position}></LoginPositionInput>,
-        <CreatePassword key={3} onNewEmailChange={handleEmail} onNewPasswordChange={handlePassword} onConfirmPasswordChange={handleConfirmPassword} currNewEmail={email} currNewPassword={password} currConfirmPassword={confirmPassword}></CreatePassword>,
+        <CreatePassword key={3} onNewEmailChange={handleEmail} onNewPasswordChange={handlePassword} onConfirmPasswordChange={handleConfirmPassword} currNewEmail={email} currNewPassword={password} currConfirmPassword={confirmPassword} passwordLengthOk={passwordLengthOk} passwordsMatch={passwordsMatch}></CreatePassword>,
     ];
 
     return (

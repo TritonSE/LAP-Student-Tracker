@@ -175,11 +175,11 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
         };
         await client.createClass(createClass);
       } catch (err) {
-        alert(`Error on class creation: ${err.message}`);
+        alert("Error on class creation");
         return;
       }
     } catch (err) {
-      alert(`Error on class event creation: ${err.message}`);
+      alert("Error on class event creation");
       return;
     }
 

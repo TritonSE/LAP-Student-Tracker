@@ -15,6 +15,10 @@ a {
   box-sizing: border-box;
 }
 
+button:disabled{
+  background: rgba(241, 120, 45, 0.562);
+}
+
 :root {
   --orange: #f37121;
   --white: #ffffff;

@@ -155,3 +155,8 @@
 .buttonFilled:hover{
     opacity: 0.8;
 }
+
+.passwordError {
+    composes: labelSmall from "../globals.css";
+    color: red;
+}

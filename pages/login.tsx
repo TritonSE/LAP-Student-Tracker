@@ -53,24 +53,18 @@ const Login: React.FC = () => {
         setCurrentPage(newPage);
     }
 
+    const namePageDone = firstName != "" && lastName != "";
+    const createAccountPageDone = email != "" && password != "" && confirmPassword != "" && password === confirmPassword;
+
     let check: boolean[] = [
         true, //0 (login)
-        true, //1 name input
-        Boolean(firstName && lastName), //2 position
-        Boolean(position), //3 create account
-        Boolean(email && password && confirmPassword), //4 signup
+        namePageDone, //1 name input
+        true, //2 position
+        createAccountPageDone, //3 create account
     ];
 
     const onLoginClick = (): void => {
-        console.log(auth)
         auth.login(email, password, false)
-        // if (!auth.user || auth.error != null) {
-        //     alert(auth.error);
-        // }
-        // else {
-        //     router.push("/home");
-        // }
-
     };
 
     const onSignUpClick = (): void => {

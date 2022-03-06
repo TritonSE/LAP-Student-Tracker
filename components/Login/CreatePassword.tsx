@@ -19,7 +19,7 @@ type CreatePasswordProps = {
 
 const CreatePassword: React.FC<CreatePasswordProps> =
     ({ onNewEmailChange, onNewPasswordChange, onConfirmPasswordChange, currNewEmail, currNewPassword, currConfirmPassword }) => {
-
+        const passwordsMatch = currNewPassword === currConfirmPassword;
         return (
             <div>
                 <div className={styles.headerContainer}>
@@ -34,6 +34,7 @@ const CreatePassword: React.FC<CreatePasswordProps> =
                         <TextField id="outlined-basic" value={currNewEmail} label="Enter email" variant="outlined" color="warning" sx={cssTextField} onChange={e => onNewEmailChange(e.target.value)} />
                         <TextField id="outlined-basic" value={currNewPassword} label="Create password" variant="outlined" color="warning" type="password" sx={cssTextField} onChange={e => onNewPasswordChange(e.target.value)} />
                         <TextField id="outlined-basic" value={currConfirmPassword} label="Confirm password" variant="outlined" color="warning" type="password" sx={cssTextField} onChange={e => onConfirmPasswordChange(e.target.value)} />
+                        {!passwordsMatch && <div className={styles.passwordError}>Passwords do not match</div>}
                     </div>
                 </div>
 

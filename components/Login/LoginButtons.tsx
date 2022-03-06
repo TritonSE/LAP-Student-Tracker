@@ -13,20 +13,20 @@ type BackButtonProps = {
     onContentChange: (newPage: number) => void;
 }
 
-export const NextButton : React.FC<NextButtonProps> = ({ check, currPage, onContentChange, onSignUpClick }) => {
+export const NextButton: React.FC<NextButtonProps> = ({ check, currPage, onContentChange, onSignUpClick }) => {
 
     const changePage = (newPage: number): void => {
 
-        if (newPage < 4 && check[newPage]){
+        if (newPage < 4 && check[currPage]) {
             onContentChange(newPage)
         }
-        else if (newPage == 4){
+        else if (newPage == 4) {
             onSignUpClick();
         }
 
     }
     return (
-        <button className={styles.buttonFilled} onClick={() => changePage(currPage + 1)}>Next</button>
+        <button className={styles.buttonFilled} onClick={() => changePage(currPage + 1)} disabled={!check[currPage]}>Next</button>
     );
 
 };
@@ -36,7 +36,7 @@ export const BackButton: React.FC<BackButtonProps> = ({ currPage, onContentChang
 
     const changePage = (newPage: number): void => {
 
-        if (newPage >= 0){
+        if (newPage >= 0) {
             onContentChange(newPage)
         }
 

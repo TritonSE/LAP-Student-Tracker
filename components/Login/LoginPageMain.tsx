@@ -22,6 +22,7 @@ type LoginPageMainProps = {
   onLoginClick: () => void;
   currEmail: string;
   currPassword: string;
+  error: Error | null;
 };
 
 const LoginPageMain: React.FC<LoginPageMainProps> = ({
@@ -32,6 +33,7 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
   onLoginClick,
   currEmail,
   currPassword,
+  error
 }) => {
   return (
     <div className={styles.comContainer}>
@@ -74,7 +76,8 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
             <a className={styles.forgotPassword}>Forgot Password?</a>
           </div>
         </div>
-        <div className={styles.buttonContainer}>
+        <div className={styles.passwordError}> {error != null ? error.message : ""} </div>
+        <div className={styles.mainButtonContainer}>
           <button className={styles.buttonOutline} onClick={() => changePage(pageNumber + 1)}>
             Create Account
           </button>

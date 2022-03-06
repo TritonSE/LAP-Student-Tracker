@@ -94,6 +94,7 @@ const Login: React.FC = () => {
       pageNumber={currentPage}
       changePage={handlePage}
       onLoginClick={onLoginClick}
+      error={auth.error}
     ></LoginPageMain>,
     <LoginNameInput
       key={1}
@@ -124,14 +125,14 @@ const Login: React.FC = () => {
   return (
     <div>
       {pages[currentPage]}
-      {currentPage > 0 && (
+      {(currentPage > 0) &&
         <LoginPageNavigation
           onPageChange={handlePage}
           onSignUpClick={onSignUpClick}
           currPage={currentPage}
           completedPages={check}
         ></LoginPageNavigation>
-      )}
+      }
     </div>
   );
 };

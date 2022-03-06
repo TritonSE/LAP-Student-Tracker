@@ -1,7 +1,7 @@
 /* Login Page Main */
 .comContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
   margin: auto;
   align-items: center;
@@ -23,6 +23,7 @@
 .contentContainer {
   padding-left: 8rem;
   padding-top: 3rem;
+  width: 690px
 }
 .bottomContainer {
   display: flex;
@@ -60,6 +61,16 @@
   font-size: 17px;
   text-decoration-line: underline;
   color: #494c4e;
+}
+
+.mainButtonContainer {
+  margin: auto;
+  /* margin-left:39%; */
+  display: flex;
+  justify-content: space-between;
+  width: 690px;
+  align-items: center;
+  margin-top: 2rem;
 }
 
 /* Login Name Input */
@@ -112,13 +123,13 @@
 }
 
 .buttonContainer {
-  width: 690px;
   margin: auto;
   /* margin-left:39%; */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 5rem;
+  margin-top: 2rem;
+  width: 690px;
 }
 
 .buttonOutline {
@@ -158,4 +169,5 @@
 .passwordError {
   composes: labelSmall from "../globals.css";
   color: red;
+  height: 5px;
 }

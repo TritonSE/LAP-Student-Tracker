@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../../styles/components/LoginViews.module.css";
 
+
 type LoginPageNavigationProps = {
   completedPages: boolean[];
   currPage: number;
@@ -18,7 +19,6 @@ const LoginPageNavigation: React.FC<LoginPageNavigationProps> = ({
   const nextButtonFunction = (): void => {
     if (currPage === 3) onSignUpClick();
     else {
-      console.log("thigns change");
       onPageChange(currPage + 1);
     }
   };

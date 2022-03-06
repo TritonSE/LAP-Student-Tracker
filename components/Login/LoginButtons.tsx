@@ -1,49 +1,35 @@
 import React, { useState, useEffect } from "react";
 import styles from "../../styles/components/LoginViews.module.css";
+import style2 from "../../styles/Login.module.css";
 
-type NextButtonProps = {
-    check: boolean[],
+type LoginPageNavigationProps = {
+    completedPages: boolean[],
     currPage: number,
-    onContentChange: (newPage: number) => void;
+    onPageChange: (newPage: number) => void;
     onSignUpClick: () => void;
 }
 
-type BackButtonProps = {
-    currPage: number,
-    onContentChange: (newPage: number) => void;
+
+const LoginPageNavigation: React.FC<LoginPageNavigationProps> = ({ completedPages, currPage, onPageChange, onSignUpClick }) => {
+    const nextButtonText = currPage === 3 ? "Sign Up" : "Next";
+    const nextButtonFunction = () => {
+        if (currPage === 3)
+            onSignUpClick();
+        else {
+            console.log("thigns change")
+            onPageChange(currPage + 1);
+        }
+
+    }
+
+    return (
+        <div className={style2.buttonContainer}>
+            <button className={style2.buttonOutline} onClick={() => onPageChange(currPage - 1)}>Back</button>
+            <button className={style2.buttonFilled} onClick={() => nextButtonFunction()} disabled={!completedPages[currPage]}>{nextButtonText}</button>
+        </div>
+    );
 }
 
-export const NextButton: React.FC<NextButtonProps> = ({ check, currPage, onContentChange, onSignUpClick }) => {
 
-    const changePage = (newPage: number): void => {
-
-        if (newPage < 4 && check[currPage]) {
-            onContentChange(newPage)
-        }
-        else if (newPage == 4) {
-            onSignUpClick();
-        }
-
-    }
-    return (
-        <button className={styles.buttonFilled} onClick={() => changePage(currPage + 1)} disabled={!check[currPage]}>Next</button>
-    );
-
-};
-
-export const BackButton: React.FC<BackButtonProps> = ({ currPage, onContentChange }) => {
-
-
-    const changePage = (newPage: number): void => {
-
-        if (newPage >= 0) {
-            onContentChange(newPage)
-        }
-
-    }
-    return (
-        <button className={styles.buttonOutline} onClick={() => changePage(currPage - 1)}>Back</button>
-    );
-
-};
+export { LoginPageNavigation }
 

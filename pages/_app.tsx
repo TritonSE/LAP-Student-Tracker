@@ -2,7 +2,8 @@ import "../styles/app.css";
 import "../styles/globals.css";
 import { AppProps } from "next/app";
 import { APIProvider } from "../context/APIContext";
-import Layout from "../components/layouts/Layout";
+import { Layout } from "../components/layouts/Layout";
+// import { Navbar } from "../components/Navbar";
 import { AuthProvider } from "../context/AuthContext";
 import { AuthGuard } from "../components/Login/RouteGaurd";
 import { NextPage } from "next";
@@ -22,15 +23,15 @@ function MyApp(props: AppProps) {
   return (
     <APIProvider>
       <AuthProvider>
-        {Component.requireAuth ? (
-          <AuthGuard>
-            <Layout>
+        < Layout>
+          {Component.requireAuth ? (
+            <AuthGuard>
               <Component {...pageProps} />
-            </Layout>
-          </AuthGuard>
-        ) : (
-          <Component {...pageProps} />
-        )}
+            </AuthGuard>
+          ) : (
+            <Component {...pageProps} />
+          )}
+        </Layout>
       </AuthProvider>
     </APIProvider>
 

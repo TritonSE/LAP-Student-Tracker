@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import { Navbar } from "../Navbar";
 import React, { FC, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-
 //using Layout to render the Navbar on select pages
 const Layout: React.FC = ({ children }) => {
   const router = useRouter();
@@ -15,4 +13,4 @@ const Layout: React.FC = ({ children }) => {
     </div>
   );
 };
-export default Layout;
+export { Layout };

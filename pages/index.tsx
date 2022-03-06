@@ -3,10 +3,13 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import styles from "../styles/Home.module.css";
 import { AuthContext } from "../context/AuthContext";
+import { NextApplicationPage } from "./_app";
 
 
-const Home: NextPage = () => {
+const Home: NextApplicationPage = () => {
   return <div>Home</div>;
 };
+
+Home.requireAuth = true;
 
 export default Home;

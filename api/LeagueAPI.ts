@@ -29,8 +29,8 @@ class LeagueAPI {
     return res.data;
   }
 
-  async createClass(createClassObj: CreateClass): Promise<Class> {
-    const res = await this.client.post("api/class/", createClassObj);
+  async createClass(classObj: CreateClass): Promise<Class> {
+    const res = await this.client.post("api/class", classObj);
     return res.data;
   }
 }

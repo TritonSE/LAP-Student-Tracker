@@ -17,8 +17,8 @@ export const UserSchema = t.intersection([
     role: possibleRoles,
   }),
   t.partial({
-    phoneNumber: t.string,
-    address: t.string,
+    phoneNumber: t.union([t.string, t.null]),
+    address: t.union([t.string, t.null])
   }),
 ]);
 

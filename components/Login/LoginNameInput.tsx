@@ -22,42 +22,26 @@ type LoginNameInputProps = {
     currLastName: string;
 };
 
-const LoginNameInput: React.FC<LoginNameInputProps> = 
-({onFirstNameChange, onLastNameChange, currFirstName, currLastName}) => {
+const LoginNameInput: React.FC<LoginNameInputProps> =
+    ({ onFirstNameChange, onLastNameChange, currFirstName, currLastName }) => {
 
-    const [firstName, setFirstName] = useState<string>("");
-    const [lastName, setLastName] = useState<string>("");
 
-    useEffect(() =>{
-        onFirstNameChange(firstName);
-    }, [firstName]);
-
-    useEffect (() => {
-        onLastNameChange(lastName);
-    }, [lastName]);
-
-    // set current values
-    useEffect(() => {
-        setFirstName(currFirstName);
-        setLastName(currLastName);
-    }, []);
-
-    return (
-        <div>
-            <div className={styles.headerContainer}>
-                <div className={styles.headerLogo}>
-                    <img src="logo1.png"></img>
-                    <img src="logo2.png"></img>
+        return (
+            <div>
+                <div className={styles.headerContainer}>
+                    <div className={styles.headerLogo}>
+                        <img src="logo1.png"></img>
+                        <img src="logo2.png"></img>
+                    </div>
                 </div>
-            </div>
-            <div className={styles.nameContainer}>
-                <h2 className={styles.title}>What is your name?</h2>
-                <TextField id="filled-basic" value={firstName} label="First" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setFirstName(e.target.value)} />
-                <TextField id="filled-basic" value={lastName} label="Last" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setLastName(e.target.value)} />
-            </div>
+                <div className={styles.nameContainer}>
+                    <h2 className={styles.title}>What is your name?</h2>
+                    <TextField id="filled-basic" value={currFirstName} label="First" variant="filled" type="text" color="warning" InputProps={{ disableUnderline: true }} sx={cssTextField} onChange={e => onFirstNameChange(e.target.value)} />
+                    <TextField id="filled-basic" value={currLastName} label="Last" variant="filled" type="text" color="warning" InputProps={{ disableUnderline: true }} sx={cssTextField} onChange={e => onLastNameChange(e.target.value)} />
+                </div>
 
-        </div>
-    );
-}
+            </div>
+        );
+    }
 
 export default LoginNameInput;

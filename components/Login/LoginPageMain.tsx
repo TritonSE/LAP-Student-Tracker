@@ -24,50 +24,33 @@ type LoginPageMainProps = {
     currPassword: string;
 };
 
-const LoginPageMain: React.FC<LoginPageMainProps> = 
-({pageNumber, changePage, onEmailChange, onPasswordChange, onLoginClick, currEmail, currPassword}) => {
-    
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
+const LoginPageMain: React.FC<LoginPageMainProps> =
+    ({ pageNumber, changePage, onEmailChange, onPasswordChange, onLoginClick, currEmail, currPassword }) => {
 
-    useEffect(() =>{
-        onEmailChange(email);
-    }, [email]);
-
-    useEffect(() => {
-        onPasswordChange(password);
-    }, [password]);
-
-    // set current values
-    useEffect(() => {
-        setEmail(currEmail);
-        setPassword(currPassword);
-    }, []);
-
-    return (
-        <div className={styles.comContainer}>
-            <img src="login-logo.png" className={styles.mainPageLogo}></img>
-            <div className={styles.contentContainer}>
-                <h2 className={styles.title}>Login</h2>
-                <TextField id="filled-basic" value={email} label="Email" variant="filled" type="text" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setEmail(e.target.value)} />
-                <TextField id="filled-basic" value={password} label="Password" variant="filled" type="password" color="warning" InputProps = {{disableUnderline: true}} sx={cssTextField} onChange={e => setPassword(e.target.value)} />
-                <div className={styles.bottomContainer}>
-                    <form>
-                        <input type="checkbox" id="remember-me" name="remember-me" className={styles.checkbox}/>
-                        <label className={styles.chkboxLabel}>Remember Me</label>
-                    </form>
-                    <div>
-                        <a className={styles.forgotPassword}>Forgot Password?</a>
+        return (
+            <div className={styles.comContainer}>
+                <img src="login-logo.png" className={styles.mainPageLogo}></img>
+                <div className={styles.contentContainer}>
+                    <h2 className={styles.title}>Login</h2>
+                    <TextField id="filled-basic" value={currEmail} label="Email" variant="filled" type="text" color="warning" InputProps={{ disableUnderline: true }} sx={cssTextField} onChange={e => onEmailChange(e.target.value)} />
+                    <TextField id="filled-basic" value={currPassword} label="Password" variant="filled" type="password" color="warning" InputProps={{ disableUnderline: true }} sx={cssTextField} onChange={e => onPasswordChange(e.target.value)} />
+                    <div className={styles.bottomContainer}>
+                        <form>
+                            <input type="checkbox" id="remember-me" name="remember-me" className={styles.checkbox} />
+                            <label className={styles.chkboxLabel}>Remember Me</label>
+                        </form>
+                        <div>
+                            <a className={styles.forgotPassword}>Forgot Password?</a>
+                        </div>
+                    </div>
+                    <div className={styles.buttonContainer}>
+                        <button className={styles.buttonOutline} onClick={() => changePage(pageNumber + 1)}>Create Account</button>
+                        <button className={styles.buttonFilled} onClick={onLoginClick}>Login</button>
                     </div>
                 </div>
-                <div className={styles.buttonContainer}> 
-                    <button className={styles.buttonOutline} onClick={ () => changePage(pageNumber + 1) }>Create Account</button>
-                    <button className={styles.buttonFilled} onClick={onLoginClick}>Login</button>
-                </div>
+
             </div>
-            
-        </div>
-    );
-}
+        );
+    }
 
 export default LoginPageMain;

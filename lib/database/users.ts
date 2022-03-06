@@ -8,17 +8,19 @@ const createUser = async (
   lastName: string,
   email: string,
   role: string,
-  address?: string,
-  phone_number?: string
+  address?: string | null,
+  phone_number?: string | null
 ): Promise<User | null> => {
+  console.log(address);
+  console.log(phone_number);
   const query = {
     text: "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7)",
     values: [id, firstName, lastName, email, role, address, phone_number],
   };
-
   try {
     await client.query(query);
-  } catch {
+  } catch (e) {
+    console.log(e)
     throw Error("Error on insert into database");
   }
 
@@ -73,7 +75,7 @@ const getUser = async (id: string): Promise<User | null> => {
   let user: User;
   try {
     user = await decode(UserSchema, res.rows[0]);
-  } catch {
+  } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }
 

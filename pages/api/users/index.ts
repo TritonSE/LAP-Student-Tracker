@@ -6,12 +6,14 @@ import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/users/
 export const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log("RAN")
   switch (req.method) {
     case "POST":
       let newUser: User;
       try {
         newUser = await decode(UserSchema, req.body);
       } catch (e) {
+        console.log(req.body)
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -26,6 +28,7 @@ export const userHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        console.log(e)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
 

@@ -34,7 +34,7 @@ class LeagueAPI {
   }
 
   async createUser(user: User) {
-    const res = await this.client.post(`api/users/`, user)
+    const res = await this.client.post("api/users/", user)
     return res.data
   }
 }

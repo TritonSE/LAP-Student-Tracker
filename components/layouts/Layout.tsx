@@ -9,6 +9,7 @@ const Layout: React.FC = ({ children }) => {
   const auth = useContext(AuthContext)
   //hideNavbar contains urls where the navbar shouldn't be rendered
   // const hideNavbar = ["/login", "/signup"];
+  console.log(auth)
   const showNavbar = !auth.loggedIn ? false : true;
   return (
     <div>

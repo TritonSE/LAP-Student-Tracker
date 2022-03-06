@@ -71,13 +71,15 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   }, []);
 
-  const login = (email: string, password: string, rememberMe:boolean): void => {
-    (async() => {
-      try{
+  const login = (email: string, password: string, rememberMe: boolean): void => {
+    (async () => {
+      try {
+        clearError();
+        console.log("RAN")
         const { user: fbUser } = await auth.signInWithEmailAndPassword(email, password);
-        
-        if (fbUser === null){
-          setError( new Error("Firebase user does not exist"));
+        console.log("RAN2")
+        if (fbUser === null) {
+          setError(new Error("Firebase user does not exist"));
           setUser(null);
           return;
         }
@@ -86,16 +88,17 @@ export const AuthProvider: React.FC = ({ children }) => {
 
         const uid = fbUser.uid;
 
-        if (rememberMe){
+        if (rememberMe) {
           localStorage.setItem('apiToken', jwt);
           localStorage.setIten('userId', uid);
         }
-        else{
+        else {
           sessionStorage.setItem('apiToken', jwt);
           sessionStorage.setIten('userId', uid);
         }
 
         const user = await api.getUser(uid);
+        console.log("RAN3")
         setUser(user);
 
       }
@@ -109,8 +112,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   const logout = (): void => {
     (async () => {
       try {
-        if (!loggedIn){
-          setError( new Error("User is not logged in"));
+        if (!loggedIn) {
+          setError(new Error("User is not logged in"));
           setUser(null);
           return;
         }
@@ -121,7 +124,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         sessionStorage.removeItem('userId');
         sessionStorage.removeItem('apiToken');
         await auth.signOut();
-      } catch(e) {
+      } catch (e) {
         setError(e as Error);
         setUser(null);
       }
@@ -132,6 +135,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   const signup = (firstName: string, lastName: string, email: string, role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student", password: string): void => {
     (async () => {
       try {
+        clearError();
         const { user: fbUser } = await auth.createUserWithEmailAndPassword(email, password);
         if (fbUser === null) {
           setError(new Error('Unknown error creating user'));

@@ -19,12 +19,13 @@ type LoginPageMainProps = {
     changePage: (newPage: number) => void;
     onEmailChange: (newEmail: string) => void;
     onPasswordChange: (newPassword: string) => void;
+    onLoginClick: () => void;
     currEmail: string;
     currPassword: string;
 };
 
 const LoginPageMain: React.FC<LoginPageMainProps> = 
-({pageNumber, changePage, onEmailChange, onPasswordChange, currEmail, currPassword}) => {
+({pageNumber, changePage, onEmailChange, onPasswordChange, onLoginClick, currEmail, currPassword}) => {
     
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -42,8 +43,6 @@ const LoginPageMain: React.FC<LoginPageMainProps> =
         setEmail(currEmail);
         setPassword(currPassword);
     }, []);
-
-    console.log(pageNumber)
 
     return (
         <div className={styles.comContainer}>
@@ -63,7 +62,7 @@ const LoginPageMain: React.FC<LoginPageMainProps> =
                 </div>
                 <div className={styles.buttonContainer}> 
                     <button className={styles.buttonOutline} onClick={ () => changePage(pageNumber + 1) }>Create Account</button>
-                    <button className={styles.buttonFilled}>Login</button>
+                    <button className={styles.buttonFilled} onClick={onLoginClick}>Login</button>
                 </div>
             </div>
             

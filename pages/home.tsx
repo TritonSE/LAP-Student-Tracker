@@ -9,7 +9,6 @@ const Home: NextPage = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true)
 
 
-
   useEffect(() => {
     setIsLoading(true)
     if (!auth.loggedIn) {

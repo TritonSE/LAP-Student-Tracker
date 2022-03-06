@@ -10,8 +10,8 @@ type AuthState = {
   loggedIn: boolean,
   error: Error | null,
   login: (email: string, password: string, rememberMe: boolean) => void,
-  // logout: () => void,
-  signup: (firstName: string, lastName: string, email: string, role: "Teacher" | "Admin", password: string) => void
+  logout: () => void,
+  signup: (firstName: string, lastName: string, email: string, role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student", password: string) => void
   // clearError: () => void
 }
 
@@ -20,7 +20,7 @@ const init: AuthState = {
   loggedIn: false,
   error: null,
   login: () => { },
-  // logout: () => { },
+  logout: () => { },
   signup: () => { },
 }
 
@@ -71,11 +71,11 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   }, []);
 
-  //do errors
   const login = (email: string, password: string, rememberMe:boolean): void => {
     (async() => {
       try{
         const { user: fbUser } = await auth.signInWithEmailAndPassword(email, password);
+        
         if (fbUser === null){
           setError( new Error("Firebase user does not exist"));
           setUser(null);
@@ -103,10 +103,33 @@ export const AuthProvider: React.FC = ({ children }) => {
         setError(e as Error);
         setUser(null);
       }
-    })
+    });
   }
 
-  const signup = (firstName: string, lastName: string, email: string, role: "Admin" | "Teacher", password: string): void => {
+  const logout = (): void => {
+    (async () => {
+      try {
+        if (!loggedIn){
+          setError( new Error("User is not logged in"));
+          setUser(null);
+          return;
+        }
+        setUser(null);
+        setError(null);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('apiToken');
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('apiToken');
+        await auth.signOut();
+      } catch(e) {
+        setError(e as Error);
+        setUser(null);
+      }
+
+    });
+  };
+
+  const signup = (firstName: string, lastName: string, email: string, role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student", password: string): void => {
     (async () => {
       try {
         const { user: fbUser } = await auth.createUserWithEmailAndPassword(email, password);
@@ -136,7 +159,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   return (<AuthContext.Provider
-    value={{ user, login, loggedIn, error, signup }}
+    value={{ user, login, loggedIn, error, signup, logout }}
   >
     {children}
   </AuthContext.Provider>);

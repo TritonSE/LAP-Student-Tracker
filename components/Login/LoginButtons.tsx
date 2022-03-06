@@ -5,6 +5,7 @@ type NextButtonProps = {
     check: boolean[],
     currPage: number,
     onContentChange: (newPage: number) => void;
+    onSignUpClick: () => void;
 }
 
 type BackButtonProps = {
@@ -12,17 +13,20 @@ type BackButtonProps = {
     onContentChange: (newPage: number) => void;
 }
 
-export const NextButton : React.FC<NextButtonProps> = ({ check, currPage, onContentChange }) => {
+export const NextButton : React.FC<NextButtonProps> = ({ check, currPage, onContentChange, onSignUpClick }) => {
 
     const changePage = (newPage: number): void => {
 
         if (newPage < 4 && check[newPage]){
             onContentChange(newPage)
         }
+        else if (newPage == 4){
+            onSignUpClick();
+        }
 
     }
     return (
-        <button className={styles.buttonOutline} onClick={() => changePage(currPage + 1)}>Next</button>
+        <button className={styles.buttonFilled} onClick={() => changePage(currPage + 1)}>Next</button>
     );
 
 };

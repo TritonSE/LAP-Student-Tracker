@@ -64,6 +64,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     }
   }, [minLevel, maxLevel]);
 
+  const colors = ["yellow", "magenta", "mint", "purple", "blue", "red"];
+
   // callback for hiding modal on close
   const handleRepeatClose = (): void => {
     setShowRepeatModal(false);
@@ -118,8 +120,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           byweekday: weekDays,
           until: endDate,
         });
-      }
-      else if (endType === "after") {
+      } else if (endType === "after") {
         rrule = new RRule({
           dtstart: startDate,
           interval: interval,
@@ -127,8 +128,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           byweekday: weekDays,
           count: count,
         });
-      }
-      else {
+      } else {
         rrule = new RRule({
           dtstart: startDate,
           interval: interval,
@@ -136,7 +136,6 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           byweekday: weekDays,
         });
       }
-
     } else {
       rrule = new RRule({
         dtstart: startDate,
@@ -287,10 +286,12 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
               value={color}
               onChange={(e) => setColor(e.target.value)}
             >
-              <option value="yellow">Yellow</option>
-              <option value="blue">Blue</option>
+              {colors.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
             </select>
-
             <div className={styles.row}>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
               <input

@@ -1,7 +1,5 @@
-import type { NextPage } from "next";
+import React from "react";
 import { AuthContext } from "../context/AuthContext";
-import Head from "next/head";
-import Image from "next/image";
 import { useContext } from "react";
 import { NextApplicationPage } from "./_app";
 

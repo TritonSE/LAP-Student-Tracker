@@ -1,14 +1,11 @@
-import { NextPage } from "next";
 import { useRouter } from "next/router";
-import React, { useState, useEffect, useContext } from "react";
-import styles from "../styles/Login.module.css";
+import React, { useState, useContext } from "react";
 import LoginPageMain from "../components/Login/LoginPageMain";
 import LoginNameInput from "../components/Login/LoginNameInput";
 import LoginPositionInput from "../components/Login/LoginPositionInput";
 import CreatePassword from "../components/Login/CreatePassword";
 import { AuthContext } from "../context/AuthContext";
-import { NextButton, BackButton, LoginPageNavigation } from "../components/Login/LoginButtons";
-import { pass } from "fp-ts/lib/Writer";
+import { LoginPageNavigation } from "../components/Login/LoginButtons";
 
 const Login: React.FC = () => {
 
@@ -86,17 +83,11 @@ const Login: React.FC = () => {
         <CreatePassword key={3} onNewEmailChange={handleEmail} onNewPasswordChange={handlePassword} onConfirmPasswordChange={handleConfirmPassword} currNewEmail={email} currNewPassword={password} currConfirmPassword={confirmPassword} passwordLengthOk={passwordLengthOk} passwordsMatch={passwordsMatch} validEmail={validEmail}></CreatePassword>,
     ];
 
-    console.log(currentPage)
-
     return (
         <div>
             {pages[currentPage]}
             {currentPage > 0 &&
                 <LoginPageNavigation onPageChange={handlePage} onSignUpClick={onSignUpClick} currPage={currentPage} completedPages={check} ></LoginPageNavigation>
-                // <div className={styles.buttonContainer}>
-                //     <BackButton currPage={currentPage} onContentChange={handlePage}></BackButton>
-                //     <NextButton check={check} currPage={currentPage} onContentChange={handlePage} onSignUpClick={onSignUpClick}></NextButton>
-                // </div>
             }
         </div>
 

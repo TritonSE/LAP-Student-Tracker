@@ -1,3 +1,4 @@
+import React from "react";
 import type { NextPage } from "next";
 import type { NextApplicationPage } from "./_app";
 import { useRouter } from "next/router";

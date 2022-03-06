@@ -1,8 +1,4 @@
-import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useContext } from "react";
-import styles from "../styles/Home.module.css";
-import { AuthContext } from "../context/AuthContext";
+import React from "react";
 import { NextApplicationPage } from "./_app";
 
 

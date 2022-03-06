@@ -1,6 +1,6 @@
+import React from "react";
 import { useRouter } from "next/router";
 import { Navbar } from "../Navbar";
-import React, { FC, useContext } from "react";
 //using Layout to render the Navbar on select pages
 const Layout: React.FC = ({ children }) => {
   const router = useRouter();

@@ -1,15 +1,12 @@
 import React, { useContext } from "react";
-import { User } from "../models/users";
-import StaffCard from "./StaffCard";
 import styles from "../styles/components/LeagueViews.module.css";
+import { StaffCard } from "./StaffCard";
 import { APIContext } from "../context/APIContext";
-import Loader from "./Loader";
-import Error from "./Error";
+import { Loader } from "./util/Loader";
+import { Error } from "./util/Error";
+import { Empty } from "./util/Empty";
+import { User } from "../models/users";
 import useSWR from "swr";
-
-type StaffViewProp = {
-  staff: User[];
-};
 
 const filters = [
   "Administration",
@@ -26,35 +23,41 @@ const filters = [
   "Level 8",
 ];
 
-const StaffView: React.FC<StaffViewProp> = ({ staff }) => {
+// Renders the list of staff or the corresponding error
+const StaffScroll: React.FC = () => {
   const client = useContext(APIContext);
 
   // Use SWR hook to get the data from the backend
   const { data, error } = useSWR("/api/staff", () => client.getStaff());
 
-  // Dynamically load the data from the backend and render the respective component
-  const staffData: any = (data: User[] | undefined, error: Error) => {
-    if (error) return <Error />;
-    if (!data) return <Loader />;
+  if (error) return <Error />;
+  if (!data) return <Loader />;
+  if (data.length == 0) return <Empty userType="Staff" />;
 
-    // Render the staff
-    return data.map((c: any) => (
-      <StaffCard
-        key={c.id}
-        firstName={c.firstName}
-        lastName={c.lastName}
-        phone_number={c.phoneNumber}
-        email={c.email}
-      />
-    ));
-  };
+  return (
+    <>
+      {data.map((user: User) => (
+        <StaffCard
+          key={user.id}
+          firstName={user.firstName}
+          lastName={user.lastName}
+          phone_number={user.phoneNumber}
+          email={user.email}
+        />
+      ))}
+    </>
+  );
+};
 
+const StaffView: React.FC = () => {
   return (
     <div className={styles.compContainer}>
       <div className={styles.leftContainer}>
         <h1 className={styles.compTitle}>Staff</h1>
         <div className={styles.compList}>
-          <ul className={styles.scroll}>{staffData(data, error)}</ul>
+          <ul className={styles.scroll}>
+            <StaffScroll />
+          </ul>
         </div>
       </div>
       <span className={styles.spacer} />
@@ -74,4 +77,4 @@ const StaffView: React.FC<StaffViewProp> = ({ staff }) => {
   );
 };
 
-export default StaffView;
+export { StaffView, StaffScroll };

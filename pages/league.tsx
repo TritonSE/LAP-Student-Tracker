@@ -2,10 +2,10 @@ import { NextPage } from "next";
 import React, { useState, useEffect, useContext } from "react";
 import { APIContext } from "../context/APIContext";
 import styles from "../styles/League.module.css";
-import ClassView from "../components/ClassView";
-import StudentView from "../components/StudentView";
-import StaffView from "../components/StaffView";
-import { Class } from "../models/classes";
+import { ClassView } from "../components/ClassView";
+import { StudentView } from "../components/StudentView";
+import { StaffView } from "../components/StaffView";
+import { Class } from "../models/class";
 import { User } from "../models/users";
 import { Student } from "../models/students";
 import useSWR from "swr";
@@ -29,24 +29,16 @@ const League: NextApplicationPage = () => {
   });
 
   // start dummy data, delete once api is implemented
-  const testStaff: User = {
-    id: "staff_id",
-    firstName: "Rick",
-    lastName: "Ord",
-    email: "ricko@ucsd.edu",
-    role: "Teacher",
-    phoneNumber: "(123) 456-7890",
-    address: "123",
-  };
   const testClass: Class = {
-    id: "class_id",
-    name: "Intro to Java",
+    name: "class1",
+    eventInformationId: "class_id",
     minLevel: 3,
     maxLevel: 5,
-    recurrence: [1, 2, 3],
-    timeStart: "13:00",
-    timeEnd: "14:00",
-    teachers: [testStaff],
+    rrstring:
+      "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
+    startTime: "07:34Z",
+    endTime: "08:34Z",
+    language: "java",
   };
   const testStudent: Student = {
     id: "student_id",
@@ -59,9 +51,8 @@ const League: NextApplicationPage = () => {
     level: 3,
     classes: ["CSE 123"],
   };
-  const testStaffArray: User[] = Array(1).fill(testStaff);
-  const testClassArray: Class[] = Array(1).fill(testClass);
-  const testStudentArray: Student[] = Array(1).fill(testStudent);
+  const testClassArray: Class[] = Array(25).fill(testClass);
+  const testStudentArray: Student[] = Array(5).fill(testStudent);
   // end dummy data
 
   useEffect(() => {
@@ -76,10 +67,10 @@ const League: NextApplicationPage = () => {
   }, []);
 
   // Renders specific content component based on tab state
-  const renderComponent = (display: String) => {
+  const renderComponent = (display: string): JSX.Element | undefined => {
     if (display == "Classes") return <ClassView classes={content.Classes} />;
     if (display == "Students") return <StudentView students={content.Students} />;
-    if (display == "Staff") return <StaffView staff={content.Staff} />;
+    if (display == "Staff") return <StaffView />;
   };
 
   return (
@@ -89,7 +80,7 @@ const League: NextApplicationPage = () => {
         <div className={styles.tabs}>
           {allTabs.map((tabName, idx) => {
             return (
-              <div className={styles.tabWrapper}>
+              <div className={styles.tabWrapper} key={tabName}>
                 <button
                   key={tabName}
                   className={`${styles.tabButton} ${display === tabName ? styles.activeTab : styles.inactiveTab

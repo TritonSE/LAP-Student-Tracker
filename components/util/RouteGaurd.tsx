@@ -2,8 +2,9 @@ import React from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
-import { Loader } from "../util/Loader";
+import { Loader } from "./Loader";
 
+// functions to redirect users if they have not been logged in
 const AuthGuard: React.FC = ({ children }) => {
   const { user, initializing } = useContext(AuthContext);
   const router = useRouter();
@@ -17,14 +18,13 @@ const AuthGuard: React.FC = ({ children }) => {
     }
   }, [initializing, router, user]);
 
-  /* show loading indicator while the auth provider is still initializing */
 
   // if auth initialized with a valid user show protected page
   if (!initializing && user !== null) {
     return <>{children}</>;
   }
 
-  /* otherwise don't return anything, will do a redirect from useEffect */
+  /* return a loading indicator while things are initializing and redirect has not happened yet */
   return <Loader />;
 };
 

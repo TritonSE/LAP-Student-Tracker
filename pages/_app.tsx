@@ -7,7 +7,7 @@ import { AppProps } from "next/app";
 import { APIProvider } from "../context/APIContext";
 import { Layout } from "../components/Navbar/NavbarLayout";
 import { AuthProvider } from "../context/AuthContext";
-import { AuthGuard } from "../components/Login/RouteGaurd";
+import { AuthGuard } from "../components/util/RouteGaurd";
 import { NextPage } from "next";
 
 export type NextApplicationPage<P = any, IP = P> = NextPage<P, IP> & {

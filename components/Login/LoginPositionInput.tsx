@@ -22,9 +22,9 @@ const LoginPositionInput: React.FC<LoginPositionInputProps> =
                 <div className={styles.positionContainer}>
                     <h2 className={styles.title}>Select your position:</h2>
                     <form>
-                        <input type="radio" id="admin" name="select-position" value="Admin" onChange={e => onContentChange("Admin")} className={styles.radioBox} checked={currPosition == "Admin"} />
+                        <input type="radio" id="admin" name="select-position" value="Admin" onChange={_ => onContentChange("Admin")} className={styles.radioBox} checked={currPosition == "Admin"} />
                         <label htmlFor="admin" className={styles.positionText}>Admin</label><br></br>
-                        <input type="radio" id="teacher" name="select-position" value="Teacher" onChange={e => onContentChange("Teacher")} className={styles.radioBox} checked={currPosition == "Teacher"} />
+                        <input type="radio" id="teacher" name="select-position" value="Teacher" onChange={_ => onContentChange("Teacher")} className={styles.radioBox} checked={currPosition == "Teacher"} />
                         <label htmlFor="teacher" className={styles.positionText}>Teacher</label>
                     </form>
                 </div>

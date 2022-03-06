@@ -50,6 +50,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     (async () => {
+      console.log("jfoagnognowgno")
       const uid = sessionStorage.getItem('userId');
       const token = sessionStorage.getItem('apiToken');
       if (uid && token) {
@@ -62,6 +63,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         const token = localStorage.getItem('apiToken');
 
         if (uid && token) {
+          console.log("useEffectRAn")
           // api.setToken(token);
           const user = await api.getUser(uid);
           setUser(user);
@@ -73,11 +75,10 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const login = (email: string, password: string, rememberMe: boolean): void => {
     (async () => {
+      console.log("MINE")
       try {
         clearError();
-        console.log("RAN")
         const { user: fbUser } = await auth.signInWithEmailAndPassword(email, password);
-        console.log("RAN2")
         if (fbUser === null) {
           setError(new Error("Firebase user does not exist"));
           setUser(null);
@@ -90,15 +91,14 @@ export const AuthProvider: React.FC = ({ children }) => {
 
         if (rememberMe) {
           localStorage.setItem('apiToken', jwt);
-          localStorage.setIten('userId', uid);
+          localStorage.setItem('userId', uid);
         }
         else {
           sessionStorage.setItem('apiToken', jwt);
-          sessionStorage.setIten('userId', uid);
+          sessionStorage.setItem('userId', uid);
         }
 
         const user = await api.getUser(uid);
-        console.log("RAN3")
         setUser(user);
 
       }
@@ -153,8 +153,10 @@ export const AuthProvider: React.FC = ({ children }) => {
           email: email,
           role: role,
         });
-
         setUser(user);
+        sessionStorage.setItem('userId', uid);
+        sessionStorage.setItem('apiToken', jwt);
+
       } catch (e) {
         setError(e as Error);
         setUser(null);

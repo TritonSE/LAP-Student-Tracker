@@ -1,6 +1,7 @@
 import { AuthContext } from "../../context/AuthContext"
 import { useRouter } from "next/router"
 import { useContext, useEffect } from "react"
+import { Loader } from "../util/Loader"
 
 const AuthGuard: React.FC = ({ children }) => {
   const { user, initializing } = useContext(AuthContext)
@@ -24,7 +25,9 @@ const AuthGuard: React.FC = ({ children }) => {
   }
 
   /* otherwise don't return anything, will do a redirect from useEffect */
-  return <h1>Application Loading</h1>
+  return (
+    <Loader />
+  )
 
 }
 

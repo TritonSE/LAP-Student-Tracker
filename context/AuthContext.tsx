@@ -9,6 +9,7 @@ type AuthState = {
   user: User | null,
   loggedIn: boolean,
   error: Error | null,
+  initializing: boolean,
   login: (email: string, password: string, rememberMe: boolean) => void,
   logout: () => void,
   signup: (firstName: string, lastName: string, email: string, role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student", password: string) => void
@@ -19,6 +20,7 @@ const init: AuthState = {
   user: null,
   loggedIn: false,
   error: null,
+  initializing: false,
   login: () => { },
   logout: () => { },
   signup: () => { },
@@ -32,6 +34,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<Error | null>(null);
+  const [initializing, setInitializing] = useState<boolean>(true)
   const loggedIn = user !== null;
   const clearError = (): void => {
     setError(null);
@@ -70,6 +73,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           setError(null);
         }
       }
+      setInitializing(false)
     })();
   }, []);
 
@@ -165,7 +169,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   return (<AuthContext.Provider
-    value={{ user, login, loggedIn, error, signup, logout }}
+    value={{ user, login, loggedIn, error, signup, logout, initializing }}
   >
     {children}
   </AuthContext.Provider>);

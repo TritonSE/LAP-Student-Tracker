@@ -13,18 +13,10 @@ const Login: React.FC = () => {
 
     const auth = useContext(AuthContext);
     const router = useRouter();
-    // useEffect(() => {
-    //     console.log("HELLO")
-    //     console.log(auth)
-    //     if (auth.user != null)
-    //         router.push("/home")
-    // }, [])
 
-    // if (auth.user != null) {
-    //     console.log("hello")
-    //     router.push("/home")
-    // }
-
+    if (auth.user !== null) {
+        router.push("/home")
+    }
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -84,10 +76,7 @@ const Login: React.FC = () => {
     const onSignUpClick = (): void => {
         auth.signup(firstName, lastName, email, position, password);
     };
-    console.log(auth.user)
-    if (auth.user !== null) {
-        router.push("/home")
-    }
+
 
     const pages = [
         <LoginPageMain key={0} onEmailChange={handleEmail} onPasswordChange={handlePassword} currEmail={email} currPassword={password} pageNumber={currentPage} changePage={handlePage} onLoginClick={onLoginClick}></LoginPageMain>,

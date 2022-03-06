@@ -1,55 +1,31 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useRouter } from 'next/router';
+import { AuthContext } from "../../context/AuthContext"
+import { useRouter } from "next/router"
+import { useContext, useEffect } from "react"
 
-import { AuthContext } from '../../context/AuthContext';
+const AuthGuard: React.FC = ({ children }) => {
+  const { user, initializing } = useContext(AuthContext)
+  const router = useRouter()
 
-
-
-const RouteGuard: React.FC = ({ children }) => {
-  const router = useRouter();
-  const [authorized, setAuthorized] = useState(false);
-  const auth = useContext(AuthContext);
   useEffect(() => {
-    // on initial load - run auth check 
-    authCheck(router.asPath);
-
-    // on route change start - hide page content by setting authorized to false  
-    const hideContent = () => setAuthorized(false);
-    router.events.on('routeChangeStart', hideContent);
-
-    // on route change complete - run auth check 
-    router.events.on('routeChangeComplete', authCheck)
-
-    // unsubscribe from events in useEffect return function
-    return () => {
-      router.events.off('routeChangeStart', hideContent);
-      router.events.off('routeChangeComplete', authCheck);
+    if (!initializing) {
+      //auth is initialized and there is no user
+      if (user === null) {
+        router.push("/login")
+      }
     }
+  }, [initializing, router, user])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  /* show loading indicator while the auth provider is still initializing */
 
-  const authCheck = (url: string) => {
-    // redirect to login page if accessing a private page and not logged in 
-    const publicPaths = ['/login'];
-    const path = url.split('?')[0];
-    if (auth.user === null && !publicPaths.includes(path)) {
-      setAuthorized(false);
-      router.push({
-        pathname: '/login',
-        query: { returnUrl: router.asPath }
-      });
-    } else {
-      setAuthorized(true);
-    }
+
+  // if auth initialized with a valid user show protected page
+  if (!initializing && user !== null) {
+    return <>{children}</>
   }
 
-  return (
+  /* otherwise don't return anything, will do a redirect from useEffect */
+  return <h1>Application Loading</h1>
 
-    <div>
-      {authorized && children}
-    </div>
-  );
 }
 
-export { RouteGuard };
+export { AuthGuard }

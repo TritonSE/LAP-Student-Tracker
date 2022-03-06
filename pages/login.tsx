@@ -62,14 +62,14 @@ const Login: React.FC = () => {
     ];
 
     const onLoginClick = (): void => {
-        auth.signup('Anshul', "Birla", email, 'Admin', password);
-        console.log("HELLO")
-        if (!auth.user || auth.error != null) {
-            alert(auth.error);
-        }
-        else {
-            router.push("/home");
-        }
+        console.log(auth)
+        auth.login(email, password, false)
+        // if (!auth.user || auth.error != null) {
+        //     alert(auth.error);
+        // }
+        // else {
+        //     router.push("/home");
+        // }
 
     };
 

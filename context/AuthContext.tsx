@@ -7,7 +7,6 @@ import { APIContext } from "./APIContext";
 
 type AuthState = {
   user: User | null,
-  loggedIn: boolean,
   error: Error | null,
   initializing: boolean,
   login: (email: string, password: string, rememberMe: boolean) => void,
@@ -18,7 +17,6 @@ type AuthState = {
 
 const init: AuthState = {
   user: null,
-  loggedIn: false,
   error: null,
   initializing: false,
   login: () => { },
@@ -35,7 +33,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [initializing, setInitializing] = useState<boolean>(true)
-  const loggedIn = user !== null;
   const clearError = (): void => {
     setError(null);
   }
@@ -53,7 +50,6 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   useEffect(() => {
     (async () => {
-      console.log("jfoagnognowgno")
       const uid = sessionStorage.getItem('userId');
       const token = sessionStorage.getItem('apiToken');
       if (uid && token) {
@@ -66,7 +62,6 @@ export const AuthProvider: React.FC = ({ children }) => {
         const token = localStorage.getItem('apiToken');
 
         if (uid && token) {
-          console.log("useEffectRAn")
           // api.setToken(token);
           const user = await api.getUser(uid);
           setUser(user);
@@ -79,7 +74,6 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const login = (email: string, password: string, rememberMe: boolean): void => {
     (async () => {
-      console.log("MINE")
       try {
         clearError();
         const { user: fbUser } = await auth.signInWithEmailAndPassword(email, password);
@@ -110,13 +104,13 @@ export const AuthProvider: React.FC = ({ children }) => {
         setError(e as Error);
         setUser(null);
       }
-    });
+    })();
   }
 
   const logout = (): void => {
     (async () => {
       try {
-        if (!loggedIn) {
+        if (user === null) {
           setError(new Error("User is not logged in"));
           setUser(null);
           return;
@@ -133,7 +127,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         setUser(null);
       }
 
-    });
+    })();
   };
 
   const signup = (firstName: string, lastName: string, email: string, role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student", password: string): void => {
@@ -169,7 +163,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   return (<AuthContext.Provider
-    value={{ user, login, loggedIn, error, signup, logout, initializing }}
+    value={{ user, login, error, signup, logout, initializing }}
   >
     {children}
   </AuthContext.Provider>);

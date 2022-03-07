@@ -33,7 +33,7 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
   onLoginClick,
   currEmail,
   currPassword,
-  error
+  error,
 }) => {
   return (
     <div className={styles.comContainer}>

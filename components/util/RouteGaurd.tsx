@@ -18,7 +18,6 @@ const AuthGuard: React.FC = ({ children }) => {
     }
   }, [initializing, router, user]);
 
-
   // if auth initialized with a valid user show protected page
   if (!initializing && user !== null) {
     return <>{children}</>;

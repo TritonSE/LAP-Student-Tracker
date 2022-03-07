@@ -3,9 +3,9 @@ import React, { useState, useContext } from "react";
 import { LoginPageMain } from "../components/Login/LoginPageMain";
 import { LoginNameInput } from "../components/Login/LoginNameInput";
 import { LoginPositionInput } from "../components/Login/LoginPositionInput";
-import { CreatePassword } from "../components/Login/CreatePassword";
+import { CreateEmailAndPassword } from "../components/Login/CreateEmailAndPassword";
 import { AuthContext } from "../context/AuthContext";
-import { LoginPageNavigation } from "../components/Login/LoginButtons";
+import { LoginPageNavigation } from "../components/Login/LoginPageNavigation";
 
 const Login: React.FC = () => {
   const auth = useContext(AuthContext);
@@ -50,14 +50,18 @@ const Login: React.FC = () => {
     setConfirmPassword(confirmPassword);
   };
 
+  // handler to change the page being displayed - clear errors on every page change so errors are not propogated to later pages
   const handlePage = (newPage: number): void => {
     auth.clearError();
     setCurrentPage(newPage);
   };
   // need to check if field is empty string so error message does not pop up initially
+
+  // simlpe regex to check if input is a valid email
   const regEx = RegExp(/\S+@\S+\.\S+/);
   const validEmail = email == "" || regEx.test(email);
 
+  // firebase requires passwords to be greater than 6 characters 
   const passwordLengthOk = password == "" || password.length > 6;
   const passwordsMatch = password == "" || password === confirmPassword;
 
@@ -71,9 +75,9 @@ const Login: React.FC = () => {
     validEmail;
 
   const check: boolean[] = [
-    true, //0 (login)
+    true, //0 ( login page is always done)
     namePageDone, //1 name input
-    true, //2 position
+    true, //2 ( position page has a default input so it is always done)
     createAccountPageDone, //3 create account
   ];
 
@@ -111,7 +115,7 @@ const Login: React.FC = () => {
       onContentChange={handlePosition}
       currPosition={position}
     ></LoginPositionInput>,
-    <CreatePassword
+    <CreateEmailAndPassword
       key={3}
       onNewEmailChange={handleEmail}
       onNewPasswordChange={handlePassword}
@@ -123,20 +127,20 @@ const Login: React.FC = () => {
       passwordsMatch={passwordsMatch}
       validEmail={validEmail}
       error={auth.error}
-    ></CreatePassword>,
+    ></CreateEmailAndPassword>,
   ];
 
   return (
     <div>
       {pages[currentPage]}
-      {(currentPage > 0) &&
+      {currentPage > 0 && (
         <LoginPageNavigation
           onPageChange={handlePage}
           onSignUpClick={onSignUpClick}
           currPage={currentPage}
           completedPages={check}
         ></LoginPageNavigation>
-      }
+      )}
     </div>
   );
 };

@@ -21,7 +21,7 @@ button {
 
 button:disabled {
   background: rgba(241, 120, 45, 0.562);
-  cursor:not-allowed;
+  cursor: not-allowed;
 }
 
 :root {

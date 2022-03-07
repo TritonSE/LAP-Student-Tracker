@@ -20,7 +20,7 @@ type LoginNameInputProps = {
   currFirstName: string;
   currLastName: string;
 };
-
+// component that handles entering first and last names of a new user
 const LoginNameInput: React.FC<LoginNameInputProps> = ({
   onFirstNameChange,
   onLastNameChange,

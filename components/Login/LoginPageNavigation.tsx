@@ -1,14 +1,13 @@
 import React from "react";
 import styles from "../../styles/components/LoginViews.module.css";
 
-
 type LoginPageNavigationProps = {
   completedPages: boolean[];
   currPage: number;
   onPageChange: (newPage: number) => void;
   onSignUpClick: () => void;
 };
-
+// handles navigating the create account navigation (login page navigation in LoginPageMain component)
 const LoginPageNavigation: React.FC<LoginPageNavigationProps> = ({
   completedPages,
   currPage,

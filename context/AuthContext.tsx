@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
-import { FirebaseError } from "@firebase/util"
+import { FirebaseError } from "@firebase/util";
 import { User } from "../models/users";
 import { APIContext } from "./APIContext";
 
@@ -18,7 +18,7 @@ type AuthState = {
     role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student",
     password: string
   ) => void;
-  clearError: () => void
+  clearError: () => void;
 };
 
 const init: AuthState = {
@@ -28,11 +28,12 @@ const init: AuthState = {
   login: () => { },
   logout: () => { },
   signup: () => { },
-  clearError: () => { }
+  clearError: () => { },
 };
 
 export const AuthContext = createContext<AuthState>(init);
-
+// provides the current authenticated user and auth status to the entire app
+// TODO: Add support for API calls via a JWT token
 export const AuthProvider: React.FC = ({ children }) => {
   const api = useContext(APIContext);
 
@@ -43,19 +44,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     setError(null);
   };
 
+  // function to handle firebase errors elegantly and display relevent information to the user
   const setFirebaseError = (e: FirebaseError): void => {
-    if (e.code === 'auth/wrong-password')
-      setError(new Error("Password is incorrect"))
-    else if (e.code === 'auth/user-not-found')
-      setError(new Error("User does not exist"))
-    else if (e.code === 'auth/invalid-email')
-      setError(new Error("Invalid email provided"))
-    else if (e.code === 'auth/invalid-password')
-      setError(new Error("Password must be more than 6 characters in length"))
-    else if (e.code === 'auth/email-already-in-use')
-      setError(new Error("This user already has an account. Please log in"))
-    else setError(new Error(e.message))
-  }
+    if (e.code === "auth/wrong-password") setError(new Error("Password is incorrect"));
+    else if (e.code === "auth/user-not-found") setError(new Error("User does not exist"));
+    else if (e.code === "auth/invalid-email") setError(new Error("Invalid email provided"));
+    else if (e.code === "auth/invalid-password")
+      setError(new Error("Password must be more than 6 characters in length"));
+    else if (e.code === "auth/email-already-in-use")
+      setError(new Error("This user already has an account. Please log in"));
+    else setError(new Error(e.message));
+  };
 
   const auth = useMemo(() => {
     const fbConfig = process.env.REACT_APP_FB_CONFIG
@@ -99,7 +98,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   const login = (email: string, password: string, rememberMe: boolean): void => {
     (async () => {
       try {
-        clearError();
         const { user: fbUser } = await auth.signInWithEmailAndPassword(email, password);
         if (fbUser === null) {
           setError(new Error("Firebase user does not exist"));
@@ -123,7 +121,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         setUser(user);
       } catch (e) {
         if (e instanceof FirebaseError) {
-          setFirebaseError(e)
+          setFirebaseError(e);
         } else {
           setError(e as Error);
         }
@@ -163,7 +161,6 @@ export const AuthProvider: React.FC = ({ children }) => {
   ): void => {
     (async () => {
       try {
-        clearError();
         const { user: fbUser } = await auth.createUserWithEmailAndPassword(email, password);
         if (fbUser === null) {
           setError(new Error("Unknown error creating user"));
@@ -186,7 +183,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         sessionStorage.setItem("apiToken", jwt);
       } catch (e) {
         if (e instanceof FirebaseError) {
-          setFirebaseError(e)
+          setFirebaseError(e);
         } else {
           setError(e as Error);
         }

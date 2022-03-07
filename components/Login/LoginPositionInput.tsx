@@ -5,7 +5,7 @@ type LoginPositionInputProps = {
   onContentChange: (newPosition: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student") => void;
   currPosition: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student";
 };
-
+// handles selecting a role for a new user
 const LoginPositionInput: React.FC<LoginPositionInputProps> = ({
   onContentChange,
   currPosition,

@@ -17,10 +17,10 @@ type CreatePasswordProps = {
   passwordLengthOk: boolean;
   passwordsMatch: boolean;
   validEmail: boolean;
-  error: Error | null
+  error: Error | null;
 };
-
-const CreatePassword: React.FC<CreatePasswordProps> = ({
+// component that handles creating the new email and password of a new user
+const CreateEmailAndPassword: React.FC<CreatePasswordProps> = ({
   onNewEmailChange,
   onNewPasswordChange,
   onConfirmPasswordChange,
@@ -30,15 +30,19 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
   passwordsMatch,
   passwordLengthOk,
   validEmail,
-  error
+  error,
 }) => {
-  const errorMessage = error !== null ? error.message : !validEmail
-    ? "Enter a valid email"
-    : !passwordLengthOk
-      ? "Passwords must be greater than 6 characters"
-      : !passwordsMatch
-        ? "Passwords do not match"
-        : null;
+  // handle the displayed error message in a priority order
+  const errorMessage =
+    error !== null
+      ? error.message
+      : !validEmail
+        ? "Enter a valid email"
+        : !passwordLengthOk
+          ? "Passwords must be greater than 6 characters"
+          : !passwordsMatch
+            ? "Passwords do not match"
+            : null;
   return (
     <div>
       <div className={styles.headerContainer}>
@@ -86,4 +90,4 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
   );
 };
 
-export { CreatePassword };
+export { CreateEmailAndPassword };

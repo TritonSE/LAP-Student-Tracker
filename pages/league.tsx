@@ -1,17 +1,17 @@
-import { NextPage } from "next";
 import React, { useState, useEffect } from "react";
 import styles from "../styles/League.module.css";
-import { ClassView } from "../components/ClassView";
-import { StudentView } from "../components/StudentView";
-import { StaffView } from "../components/StaffView";
+import { ClassView } from "../components/LeaguePage/ClassView";
+import { StudentView } from "../components/LeaguePage/StudentView";
+import { StaffView } from "../components/LeaguePage/StaffView";
 import { Class } from "../models/class";
 import { User } from "../models/users";
 import { Student } from "../models/students";
+import { NextApplicationPage } from "./_app";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
 
-const League: NextPage = () => {
+const League: NextApplicationPage = () => {
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
   const [content, setContent] = useState<{
     Classes: Class[];
@@ -97,5 +97,7 @@ const League: NextPage = () => {
     </>
   );
 };
+
+League.requireAuth = true;
 
 export default League;

@@ -17,6 +17,7 @@ const Login: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [rememberMe, setRememberMe] = useState<boolean>(false)
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [position, setPosition] = useState<
@@ -31,6 +32,10 @@ const Login: React.FC = () => {
   const handlePassword = (newPassword: string): void => {
     setPassword(newPassword);
   };
+
+  const handleRememberMe = (): void => {
+    setRememberMe(!rememberMe);
+  }
 
   const handleFirstName = (newFirstName: string): void => {
     setFirstName(newFirstName);
@@ -83,7 +88,7 @@ const Login: React.FC = () => {
 
   const onLoginClick = (): void => {
     auth.clearError();
-    auth.login(email, password, false);
+    auth.login(email, password, rememberMe);
   };
 
   const onSignUpClick = (): void => {
@@ -99,6 +104,8 @@ const Login: React.FC = () => {
       currEmail={email}
       currPassword={password}
       pageNumber={currentPage}
+      currRememberMe={rememberMe}
+      onRememberMeChange={handleRememberMe}
       changePage={handlePage}
       onLoginClick={onLoginClick}
       error={auth.error}

@@ -1,6 +1,7 @@
 import styles from "../../styles/components/LoginViews.module.css";
 import React from "react";
 import TextField from "@mui/material/TextField";
+import { boolean, booleanAlgebra } from "fp-ts";
 
 const cssTextField = {
   color: "black",
@@ -20,6 +21,8 @@ type LoginPageMainProps = {
   onEmailChange: (newEmail: string) => void;
   onPasswordChange: (newPassword: string) => void;
   onLoginClick: () => void;
+  onRememberMeChange: () => void;
+  currRememberMe: boolean;
   currEmail: string;
   currPassword: string;
   error: Error | null;
@@ -31,6 +34,8 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
   onEmailChange,
   onPasswordChange,
   onLoginClick,
+  onRememberMeChange,
+  currRememberMe,
   currEmail,
   currPassword,
   error,
@@ -68,6 +73,8 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
               type="checkbox"
               id="remember-me"
               name="remember-me"
+              defaultChecked={currRememberMe}
+              onChange={() => onRememberMeChange()}
               className={styles.checkbox}
             />
             <label className={styles.chkboxLabel}>Remember Me</label>

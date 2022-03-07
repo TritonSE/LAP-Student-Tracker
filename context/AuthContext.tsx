@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
+import { FirebaseError } from "@firebase/util"
 import { User } from "../models/users";
 import { APIContext } from "./APIContext";
 
@@ -17,16 +18,17 @@ type AuthState = {
     role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student",
     password: string
   ) => void;
-  // clearError: () => void
+  clearError: () => void
 };
 
 const init: AuthState = {
   user: null,
   error: null,
   initializing: false,
-  login: () => {},
-  logout: () => {},
-  signup: () => {},
+  login: () => { },
+  logout: () => { },
+  signup: () => { },
+  clearError: () => { }
 };
 
 export const AuthContext = createContext<AuthState>(init);
@@ -41,20 +43,35 @@ export const AuthProvider: React.FC = ({ children }) => {
     setError(null);
   };
 
+  const setFirebaseError = (e: FirebaseError): void => {
+    if (e.code === 'auth/wrong-password')
+      setError(new Error("Password is incorrect"))
+    else if (e.code === 'auth/user-not-found')
+      setError(new Error("User does not exist"))
+    else if (e.code === 'auth/invalid-email')
+      setError(new Error("Invalid email provided"))
+    else if (e.code === 'auth/invalid-password')
+      setError(new Error("Password must be more than 6 characters in length"))
+    else if (e.code === 'auth/email-already-in-use')
+      setError(new Error("This user already has an account. Please log in"))
+    else setError(new Error(e.message))
+  }
+
   const auth = useMemo(() => {
     const fbConfig = process.env.REACT_APP_FB_CONFIG
       ? JSON.parse(process.env.REACT_APP_FB_CONFIG)
       : {
-          apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
-          authDomain:
-            process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-          projectId: process.env.REACT_APP_FB_PROJECT_ID || "lap-student-tracker-staging",
-          appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
-        };
+        apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
+        authDomain:
+          process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
+        projectId: process.env.REACT_APP_FB_PROJECT_ID || "lap-student-tracker-staging",
+        appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
+      };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
     return app.auth();
   }, []);
 
+  // get user data from local/session storage on every refresh
   useEffect(() => {
     (async () => {
       const uid = sessionStorage.getItem("userId");
@@ -105,7 +122,11 @@ export const AuthProvider: React.FC = ({ children }) => {
         const user = await api.getUser(uid);
         setUser(user);
       } catch (e) {
-        setError(e as Error);
+        if (e instanceof FirebaseError) {
+          setFirebaseError(e)
+        } else {
+          setError(e as Error);
+        }
         setUser(null);
       }
     })();
@@ -164,14 +185,18 @@ export const AuthProvider: React.FC = ({ children }) => {
         sessionStorage.setItem("userId", uid);
         sessionStorage.setItem("apiToken", jwt);
       } catch (e) {
-        setError(e as Error);
+        if (e instanceof FirebaseError) {
+          setFirebaseError(e)
+        } else {
+          setError(e as Error);
+        }
         setUser(null);
       }
     })();
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, error, signup, logout, initializing }}>
+    <AuthContext.Provider value={{ user, login, error, signup, logout, initializing, clearError }}>
       {children}
     </AuthContext.Provider>
   );

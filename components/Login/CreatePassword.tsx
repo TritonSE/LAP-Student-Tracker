@@ -17,6 +17,7 @@ type CreatePasswordProps = {
   passwordLengthOk: boolean;
   passwordsMatch: boolean;
   validEmail: boolean;
+  error: Error | null
 };
 
 const CreatePassword: React.FC<CreatePasswordProps> = ({
@@ -29,14 +30,15 @@ const CreatePassword: React.FC<CreatePasswordProps> = ({
   passwordsMatch,
   passwordLengthOk,
   validEmail,
+  error
 }) => {
-  const errorMessage = !validEmail
+  const errorMessage = error !== null ? error.message : !validEmail
     ? "Enter a valid email"
     : !passwordLengthOk
-    ? "Passwords must be greater than 6 characters"
-    : !passwordsMatch
-    ? "Passwords do not match"
-    : null;
+      ? "Passwords must be greater than 6 characters"
+      : !passwordsMatch
+        ? "Passwords do not match"
+        : null;
   return (
     <div>
       <div className={styles.headerContainer}>

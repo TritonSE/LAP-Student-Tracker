@@ -51,6 +51,7 @@ const Login: React.FC = () => {
   };
 
   const handlePage = (newPage: number): void => {
+    auth.clearError();
     setCurrentPage(newPage);
   };
   // need to check if field is empty string so error message does not pop up initially
@@ -77,10 +78,12 @@ const Login: React.FC = () => {
   ];
 
   const onLoginClick = (): void => {
+    auth.clearError();
     auth.login(email, password, false);
   };
 
   const onSignUpClick = (): void => {
+    auth.clearError();
     auth.signup(firstName, lastName, email, position, password);
   };
 
@@ -119,6 +122,7 @@ const Login: React.FC = () => {
       passwordLengthOk={passwordLengthOk}
       passwordsMatch={passwordsMatch}
       validEmail={validEmail}
+      error={auth.error}
     ></CreatePassword>,
   ];
 

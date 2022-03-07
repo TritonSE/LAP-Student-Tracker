@@ -15,8 +15,13 @@ a {
   box-sizing: border-box;
 }
 
+button {
+  cursor: pointer;
+}
+
 button:disabled {
   background: rgba(241, 120, 45, 0.562);
+  cursor:not-allowed;
 }
 
 :root {

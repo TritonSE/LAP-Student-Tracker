@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [rememberMe, setRememberMe] = useState<boolean>(false)
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [position, setPosition] = useState<
@@ -35,7 +35,7 @@ const Login: React.FC = () => {
 
   const handleRememberMe = (): void => {
     setRememberMe(!rememberMe);
-  }
+  };
 
   const handleFirstName = (newFirstName: string): void => {
     setFirstName(newFirstName);
@@ -66,7 +66,7 @@ const Login: React.FC = () => {
   const regEx = RegExp(/\S+@\S+\.\S+/);
   const validEmail = email == "" || regEx.test(email);
 
-  // firebase requires passwords to be greater than 6 characters 
+  // firebase requires passwords to be greater than 6 characters
   const passwordLengthOk = password == "" || password.length > 6;
   const passwordsMatch = password == "" || password === confirmPassword;
 

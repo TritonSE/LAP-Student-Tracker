@@ -1,7 +1,6 @@
 import styles from "../../styles/components/LoginViews.module.css";
 import React from "react";
 import TextField from "@mui/material/TextField";
-import { boolean, booleanAlgebra } from "fp-ts";
 
 const cssTextField = {
   color: "black",
@@ -81,7 +80,7 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
           </form>
           <div>
             {/* TODO: Add forgot password functionality */}
-            <a className={styles.forgotPassword}>                    </a>
+            <a className={styles.forgotPassword}> </a>
           </div>
         </div>
         <div className={styles.passwordError}> {error != null ? error.message : ""} </div>

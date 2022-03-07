@@ -25,10 +25,10 @@ const init: AuthState = {
   user: null,
   error: null,
   initializing: false,
-  login: () => { },
-  logout: () => { },
-  signup: () => { },
-  clearError: () => { },
+  login: () => {},
+  logout: () => {},
+  signup: () => {},
+  clearError: () => {},
 };
 
 export const AuthContext = createContext<AuthState>(init);
@@ -60,12 +60,12 @@ export const AuthProvider: React.FC = ({ children }) => {
     const fbConfig = process.env.REACT_APP_FB_CONFIG
       ? JSON.parse(process.env.REACT_APP_FB_CONFIG)
       : {
-        apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
-        authDomain:
-          process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-        projectId: process.env.REACT_APP_FB_PROJECT_ID || "lap-student-tracker-staging",
-        appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
-      };
+          apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
+          authDomain:
+            process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
+          projectId: process.env.REACT_APP_FB_PROJECT_ID || "lap-student-tracker-staging",
+          appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
+        };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
     return app.auth();
   }, []);

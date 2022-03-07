@@ -7,7 +7,14 @@ import { NextApplicationPage } from "./_app";
 const Profile: NextApplicationPage = () => {
   const { user } = useContext(AuthContext);
 
-  return <h1>{user?.firstName}</h1>;
+  return (
+    <div>
+      <h1>FIRST NAME: </h1>
+      <div> {user?.firstName} </div>
+      <h2>LAST NAME</h2>
+      <div> {user?.lastName}</div>
+    </div>
+  );
 };
 
 Profile.requireAuth = true;

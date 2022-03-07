@@ -12,7 +12,6 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
       try {
         newUser = await decode(UserSchema, req.body);
       } catch (e) {
-        console.log(req.body);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -27,7 +26,6 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        console.log(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

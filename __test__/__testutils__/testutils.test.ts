@@ -3,7 +3,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
-import { ClassEvent } from "../../models/events";
+import { DateTime } from "luxon";
+import { ClassEvent, CalendarEvent } from "../../models/events";
 
 /**
  * Create and test a HTTP Request
@@ -26,7 +27,7 @@ const makeHTTPRequest = async (
   method: RequestMethod,
   body: Object | undefined,
   expectedResponseCode: number,
-  expectedBody: Object
+  expectedBody: Object | undefined
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -38,8 +39,9 @@ const makeHTTPRequest = async (
   await handler(req, res);
 
   expect(res._getStatusCode()).toBe(expectedResponseCode);
-  expect(JSON.parse(res._getData())).toEqual(expectedBody);
-
+  if (expectedBody) {
+    expect(JSON.parse(res._getData())).toEqual(expectedBody);
+  }
   return res;
 };
 
@@ -80,4 +82,48 @@ const makeEventHTTPRequest = async (
   return res;
 };
 
-export { makeHTTPRequest, makeEventHTTPRequest };
+/* HTTP request handler for event feed API that converts Postgres timestamps to
+   local ISO for consistency in testing */
+const makeEventFeedHTTPRequest = async (
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  endpoint: string,
+  query: Object | undefined,
+  method: RequestMethod,
+  queryParams: { start: string; end: string; userId?: string },
+  expectedResponseCode: number,
+  expectedBody: CalendarEvent[]
+): Promise<MockResponse<NextApiResponse<any>>> => {
+  const res = await makeHTTPRequest(
+    handler,
+    endpoint +
+      `?start=${queryParams.start}&end=${queryParams.end}` +
+      (queryParams.userId ? `&userId=${queryParams.userId}` : ""),
+    query,
+    method,
+    undefined,
+    expectedResponseCode,
+    undefined
+  );
+
+  // Convert dates in actual body to local ISO
+  const returnedCalendarEvents = (JSON.parse(res._getData()) as CalendarEvent[]).map((event) =>
+    convertToLocalISO(event)
+  );
+  // Convert dates in expected body to local ISO
+  const expectedCalendarEvents = expectedBody.map((event) => convertToLocalISO(event));
+
+  // Compare actual and expected array lengths and contents
+  expect(returnedCalendarEvents.length).toBe(expectedCalendarEvents.length);
+  expect(returnedCalendarEvents).toEqual(expect.arrayContaining(expectedCalendarEvents));
+
+  return res;
+};
+
+/* Converts startStr and endStr in CalendarEvent object to local ISO */
+const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
+  event.startStr = DateTime.fromJSDate(new Date(event.startStr)).toLocal().toISO();
+  event.endStr = DateTime.fromJSDate(new Date(event.endStr)).toLocal().toISO();
+  return event;
+};
+
+export { makeHTTPRequest, makeEventHTTPRequest, makeEventFeedHTTPRequest };

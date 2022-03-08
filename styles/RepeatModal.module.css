@@ -225,6 +225,10 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
+.saveButton:disabled {
+  opacity: 0.8;
+}
+
 .cancelButton {
   width: 160px;
   height: 48px;

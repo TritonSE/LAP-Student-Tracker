@@ -45,6 +45,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
   const [count, setCount] = useState(initCount);
   const [valid, setValid] = useState(false);
 
+  // validate modal on field input
   useEffect(() => {
     setValid(true);
     if (repeat) {

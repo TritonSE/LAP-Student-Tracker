@@ -6,12 +6,14 @@ import { CreateClass } from "../models/class";
 import { CreateClassEvent } from "../models/events";
 import styles from "../styles/CreateEventsWizard.module.css";
 
+// Work around for date/time picker library to work with NextJS
+// https://github.com/vercel/next.js/issues/19936
 import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
-
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import TimePicker from "react-time-picker/dist/entry.nostyle";
+
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 
@@ -44,6 +46,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
   const client = useContext(APIContext);
 
+  // validates event wizard on field input
   useEffect(() => {
     setValid(true);
     if (!name || !teachers) {
@@ -63,6 +66,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       setMaxLevel(minLevel + 1);
     }
   }, [minLevel, maxLevel]);
+
+  const colors = ["yellow", "magenta", "mint", "purple", "blue", "red"];
 
   // callback for hiding modal on close
   const handleRepeatClose = (): void => {
@@ -86,12 +91,12 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       setEndDate(endDate_param);
       setCount(count_param);
 
+      // rrule text to display on button
       const rule = new RRule({
         interval: interval_param,
         freq: RRule.WEEKLY,
         byweekday: weekDays_param,
       });
-
       setRruleText(rule.toText());
     } else {
       setRruleText("Never Repeat");
@@ -118,8 +123,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           byweekday: weekDays,
           until: endDate,
         });
-      }
-      else if (endType === "after") {
+      } else if (endType === "after") {
         rrule = new RRule({
           dtstart: startDate,
           interval: interval,
@@ -127,8 +131,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           byweekday: weekDays,
           count: count,
         });
-      }
-      else {
+      } else {
         rrule = new RRule({
           dtstart: startDate,
           interval: interval,
@@ -136,7 +139,6 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           byweekday: weekDays,
         });
       }
-
     } else {
       rrule = new RRule({
         dtstart: startDate,
@@ -158,8 +160,10 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     };
 
     try {
+      // Create class event and calendar information
       const classEvent = await client.createClassEvent(createEvent);
       try {
+        // create class from event id
         const createClass: CreateClass = {
           eventInformationId: classEvent.eventInformationId,
           minLevel: minLevel,
@@ -171,6 +175,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
         };
         await client.createClass(createClass);
       } catch (err) {
+<<<<<<< HEAD
         let e: Error = err as Error;
         alert(`Error on class creation: ${e.message}`);
         return;
@@ -178,6 +183,13 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     } catch (err) {
       let e: Error = err as Error;
       alert(`Error on class event creation: ${e.message}`);
+=======
+        alert("Error on class creation");
+        return;
+      }
+    } catch (err) {
+      alert("Error on class event creation");
+>>>>>>> d4540423b0ad669d9c2968c7a163a538c25fca6b
       return;
     }
 
@@ -288,10 +300,12 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
               value={color}
               onChange={(e) => setColor(e.target.value)}
             >
-              <option value="yellow">Yellow</option>
-              <option value="blue">Blue</option>
+              {colors.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
             </select>
-
             <div className={styles.row}>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
               <input

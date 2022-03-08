@@ -23,5 +23,14 @@ export const ClassEventSchema = t.type({
   backgroundColor: t.string,
 });
 
+export const CalendarEventSchema = t.type({
+  id: t.string,
+  title: t.string,
+  backgroundColor: t.string,
+  startStr: t.string,
+  endStr: t.string,
+});
+
 export type CreateClassEvent = t.TypeOf<typeof CreateClassEventSchema>;
 export type ClassEvent = t.TypeOf<typeof ClassEventSchema>;
+export type CalendarEvent = t.TypeOf<typeof CalendarEventSchema>;

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles/components/LeagueViews.module.css";
+import styles from "../../styles/components/LeagueViews.module.css";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 type ClassCardProps = {

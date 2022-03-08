@@ -52,3 +52,17 @@
 .react-time-picker__wrapper {
   border: none !important;
 }
+.labelMedium {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 16px;
+}
+.labelSmall {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 11px;
+  line-height: 16px;
+}

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
 import React, { useState, useEffect } from "react";
 import styles from "../styles/RepeatModal.module.css";

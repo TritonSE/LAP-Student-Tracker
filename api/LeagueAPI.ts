@@ -24,7 +24,6 @@ class LeagueAPI {
     return res.data;
   }
 
-<<<<<<< HEAD
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
     const res = await this.client.post("api/events/class", classEvent);
     return res.data;
@@ -32,7 +31,9 @@ class LeagueAPI {
 
   async createClass(classObj: CreateClass): Promise<Class> {
     const res = await this.client.post("api/class", classObj);
-=======
+    return res.data;
+  }
+
   async getUser(id: string): Promise<User> {
     const res = await this.client.get(`api/users/${id}`);
     return res.data;
@@ -40,7 +41,6 @@ class LeagueAPI {
 
   async createUser(user: User): Promise<User> {
     const res = await this.client.post("api/users/", user);
->>>>>>> origin/master
     return res.data;
   }
 }

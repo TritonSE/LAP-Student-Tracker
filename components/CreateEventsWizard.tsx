@@ -220,8 +220,9 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
           <div className={styles.scrollableContent}>
             <div
-              className={`${styles.levelsWrapper} ${multipleLevels ? styles.multiLevel : styles.singleLevel
-                }`}
+              className={`${styles.levelsWrapper} ${
+                multipleLevels ? styles.multiLevel : styles.singleLevel
+              }`}
             >
               <p className={styles.label}>Levels</p>
               <input

@@ -171,11 +171,13 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
         };
         await client.createClass(createClass);
       } catch (err) {
-        alert(`Error on class creation: ${err.message}`);
+        let e: Error = err as Error;
+        alert(`Error on class creation: ${e.message}`);
         return;
       }
     } catch (err) {
-      alert(`Error on class event creation: ${err.message}`);
+      let e: Error = err as Error;
+      alert(`Error on class event creation: ${e.message}`);
       return;
     }
 
@@ -216,9 +218,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
           <div className={styles.scrollableContent}>
             <div
-              className={`${styles.levelsWrapper} ${
-                multipleLevels ? styles.multiLevel : styles.singleLevel
-              }`}
+              className={`${styles.levelsWrapper} ${multipleLevels ? styles.multiLevel : styles.singleLevel
+                }`}
             >
               <p className={styles.label}>Levels</p>
               <input

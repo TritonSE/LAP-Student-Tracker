@@ -17,6 +17,7 @@ import TimePicker from "react-time-picker/dist/entry.nostyle";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 import { CirclePicker } from "react-color";
+import ClipLoader from "react-spinners/ClipLoader";
 
 type CreateEventsWizardProps = {
   handleClose: () => void;
@@ -37,6 +38,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [color, setColor] = useState("#ffc702");
   const [teachers, setTeachers] = useState("");
   const [valid, setValid] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
 
   // saved repeat modal states
   const [repeat, setRepeat] = useState(false);
@@ -114,6 +117,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
   // handles create wizard submit
   const handleSubmit = async (): Promise<void> => {
+    setErrMsg("");
+    setLoading(true);
     let lang = "unknown";
     if (name.toLowerCase().includes("java")) {
       lang = "Java";
@@ -184,14 +189,17 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
         };
         await client.createClass(createClass);
       } catch (err) {
-        alert("Error on class creation");
+        setErrMsg("Error on class creation");
+        setLoading(false);
         return;
       }
     } catch (err) {
-      alert("Error on class event creation");
+      setErrMsg("Error on class event creation");
+      setLoading(false);
       return;
     }
 
+    setLoading(false);
     handleClose();
   };
 
@@ -327,9 +335,14 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
           <hr className={styles.line} />
           <div className={styles.footerContent}>
-            <button disabled={!valid} onClick={handleSubmit} className={styles.confirmButton}>
-              Confirm
+            <button
+              disabled={!valid || loading}
+              onClick={handleSubmit}
+              className={styles.confirmButton}
+            >
+              {loading ? <ClipLoader loading={true} size={30} color={"white"} /> : "Confirm"}
             </button>
+            <div className={styles.errorMsg}>{errMsg}</div>
           </div>
         </div>
       </div>

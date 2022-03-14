@@ -43,6 +43,22 @@
   line-height: 20px;
 }
 
+.labelMedium {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.labelSmall {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 11px;
+  line-height: 16px;
+}
+
 /* override default date-picker style */
 .react-date-picker__wrapper {
   border: none !important;
@@ -52,17 +68,31 @@
 .react-time-picker__wrapper {
   border: none !important;
 }
-.labelMedium {
-  font-family: "Inter";
-  font-weight: 500;
-  font-style: normal;
-  font-size: 12px;
-  line-height: 16px;
+
+.react-time-picker__inputGroup__input {
+  appearance: none;
 }
-.labelSmall {
-  font-family: "Inter";
-  font-weight: 500;
-  font-style: normal;
-  font-size: 11px;
-  line-height: 16px;
+
+/* override default color-picker styles */
+.circle-picker {
+  width: 80px !important;
+  height: 136px;
+  background: var(--white);
+  border: 1px solid #85888c;
+  border-radius: 16px;
+  justify-content: center;
+  padding: 8px;
+}
+
+.circle-picker > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 50%;
+}
+
+.circle-picker > span > div {
+  width: 24px !important;
+  height: 24px !important;
+  margin: 0 !important;
 }

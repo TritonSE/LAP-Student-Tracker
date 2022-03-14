@@ -16,6 +16,7 @@ import TimePicker from "react-time-picker/dist/entry.nostyle";
 
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
+import { CirclePicker } from "react-color";
 
 type CreateEventsWizardProps = {
   handleClose: () => void;
@@ -30,9 +31,10 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [startDate, setStartDate] = useState(new Date());
   const [startTime, setStartTime] = useState("10:00");
   const [endTime, setEndTime] = useState("11:00");
+  const [showColorPicker, setShowColorPicker] = useState(false);
   const [showRepeatModal, setShowRepeatModal] = useState(false);
   const [rruleText, setRruleText] = useState("Never Repeat");
-  const [color, setColor] = useState("yellow");
+  const [color, setColor] = useState("#ffc702");
   const [teachers, setTeachers] = useState("");
   const [valid, setValid] = useState(false);
 
@@ -45,6 +47,15 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [count, setCount] = useState(1);
 
   const client = useContext(APIContext);
+
+  const colorMap: { [name: string]: string } = {
+    "#ffc702": "yellow",
+    "#ef5da8": "magenta",
+    "#46d5b3": "mint",
+    "#5d5fef": "purple",
+    "#5ec0f0": "blue",
+    "#ff0202": "red",
+  };
 
   // validates event wizard on field input
   useEffect(() => {
@@ -66,8 +77,6 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       setMaxLevel(minLevel + 1);
     }
   }, [minLevel, maxLevel]);
-
-  const colors = ["yellow", "magenta", "mint", "purple", "blue", "red"];
 
   // callback for hiding modal on close
   const handleRepeatClose = (): void => {
@@ -155,7 +164,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       rrule: rruleStr,
       language: lang,
       neverEnding: repeat && endType === "never",
-      backgroundColor: color,
+      backgroundColor: colorMap[color],
       teachers: teachers.split(","),
     };
 
@@ -259,8 +268,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
                 className={styles.dateInput}
                 onChange={setStartDate}
                 value={startDate}
-                calendarIcon={null}
                 clearIcon={null}
+                openCalendarOnFocus={false}
               />
               <TimePicker
                 className={styles.timeInput}
@@ -286,17 +295,24 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
               </button>
             </div>
 
-            <select
-              className={styles.dropDown}
-              value={color}
-              onChange={(e) => setColor(e.target.value)}
-            >
-              {colors.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
+            <div className={styles.dropDownWrapper}>
+              <div className={styles.dropDown} onClick={() => setShowColorPicker(!showColorPicker)}>
+                <span className={styles.colorCircle} style={{ background: color }} />
+                <span className={styles.arrow} />
+              </div>
+              {showColorPicker ? (
+                <div className={styles.popover}>
+                  <div className={styles.cover} onClick={() => setShowColorPicker(false)} />
+                  <CirclePicker
+                    width={80}
+                    height={136}
+                    colors={Object.keys(colorMap)}
+                    hex={color}
+                    onChange={(c: any) => setColor(c.hex)}
+                  />
+                </div>
+              ) : null}
+            </div>
             <div className={styles.row}>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
               <input

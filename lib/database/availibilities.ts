@@ -5,7 +5,7 @@ import { decode } from "io-ts-promise";
 
 const updateAvailibility = async (id: string, mon: string[][] | null, tue: string[][] | null, wed: string[][] | null, thu: string[][] | null, fri: string[][] | null, sat: string[][] | null): Promise<Availibility | null> => {
   const query = {
-    text: "UPDAE availibilities " +
+    text: "UPDATE availibilities " +
       "SET mon = COALESCE($2, mon), " +
       "SET tue = COALESCE($3, tue), " +
       "SET wed = COALESCE($3, wed), " +

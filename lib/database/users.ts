@@ -6,8 +6,8 @@ const roleSpecificSetup = async (id: string, role: "Admin" | "Teacher" | "Studen
   switch (role) {
     case "Teacher": {
       const query = {
-        text: "INSERT INTO availibilities (user_id) VALUES ($1)",
-        values: [id]
+        text: "INSERT INTO availibilities (user_id, time_zone) VALUES ($1, 	$2)",
+        values: [id, "America/Los_Angeles"]
       }
       try {
         await client.query(query);

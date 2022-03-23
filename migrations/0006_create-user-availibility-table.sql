@@ -5,6 +5,7 @@ CREATE TABLE availibilities(
   wed text[], 
   thu text[], 
   fri text[], 
-  sat text[] ,
+  sat text[],
+  time_zone text,
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );

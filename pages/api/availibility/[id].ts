@@ -38,9 +38,10 @@ export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest,
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered")
       }
       try {
-        const result = await updateAvailibility(id, availibility.mon, availibility.tue, availibility.wed, availibility.thu, availibility.fri, availibility.sat)
+        const result = await updateAvailibility(id, availibility.mon, availibility.tue, availibility.wed, availibility.thu, availibility.fri, availibility.sat, availibility.timeZone)
         return res.status(StatusCodes.CREATED).json(result)
       } catch (e) {
+        console.log(e)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error")
       }
     }
@@ -48,7 +49,6 @@ export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest,
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
     }
   }
-
-
-
 };
+
+export default availibilityIdHandler

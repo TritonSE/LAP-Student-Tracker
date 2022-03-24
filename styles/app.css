@@ -15,9 +15,19 @@ a {
   box-sizing: border-box;
 }
 
+button {
+  outline: none;
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
 :root {
   --orange: #f37121;
   --white: #ffffff;
   --black: #1b1c1d;
   --gray-1: #494c4e;
+  --gray-3: #BFC1C4;
 }

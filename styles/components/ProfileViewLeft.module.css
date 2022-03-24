@@ -1,0 +1,48 @@
+.rightContainer {
+  height: 100%;
+}
+
+.circleContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.circle {
+  height: 240px;
+  width: 240px;
+  background-color: #bbb;
+  border-radius: 50%;
+}
+
+.name {
+  height: 36px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+  text-align: center;
+}
+
+.editButton {
+  margin: auto;
+  width: 87px;
+  height: 39px;
+  border-radius: 8px;
+  background-color: var(--orange);
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.circlePadding{
+  height: 104px;
+}
+.padding {
+  height: 48px;
+}
+.buttonPadding{
+  height: 52px;
+}

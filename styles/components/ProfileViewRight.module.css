@@ -1,0 +1,51 @@
+.leftContainer {
+  height: 100%;
+  width: 540px;
+}
+
+.topTextPadding {
+  height: 142px;
+}
+
+.spacing {
+  height: 40px;
+}
+
+.buttonContainer {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.backButton {
+  width: 88px;
+  height: 40px;
+  background: #C4C4C4;
+  border-radius: 8px; 
+}
+
+.signOutButton {
+  width: 160px;
+  height: 48px;
+  background: #494C4E;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.backText {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.signOutText {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: white;
+}

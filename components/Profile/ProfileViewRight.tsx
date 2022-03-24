@@ -16,10 +16,15 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({ phoneNumber, email,
   return (
     <div className={styles.leftContainer}>
       <div className={styles.topTextPadding} />
-      <div>
+      <div className={styles.inputContainer}>
+        <div className={styles.spacing} />
         <ProfileInput label="Phone Number" defaultValue={phoneNumber} disabled={disabled} />
         <div className={styles.spacing} />
         <ProfileInput label="Email" defaultValue={email} disabled={disabled} />
+        <div className={styles.spacing} />
+        <ProfileInput label="Role" defaultValue={role} disabled={disabled} />
+        <div className={styles.spacing} />
+        <ProfileInput label="Role" defaultValue={role} disabled={disabled} />
         <div className={styles.spacing} />
         <ProfileInput label="Role" defaultValue={role} disabled={disabled} />
       </div>

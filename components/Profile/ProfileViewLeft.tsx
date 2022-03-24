@@ -4,11 +4,14 @@ import styles from "../../styles/components/ProfileViewLeft.module.css"
 type ProfileViewLeftProps = {
   firstName: string,
   lastName: string,
+  editProfileClicked: boolean
   handleEditProfileClicked: () => void
 }
 
-const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({ firstName, lastName, handleEditProfileClicked }) => {
+const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({ firstName, lastName, editProfileClicked, handleEditProfileClicked }) => {
   const onEditProfileClicked = () => handleEditProfileClicked();
+
+  const buttonText = editProfileClicked ? "Save" : "Edit Profile"
 
   return (
     <div className={styles.rightContainer}>
@@ -20,7 +23,7 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({ firstName, lastName, 
       <div className={styles.name}> {firstName + " " + lastName}</div>
       <div className={styles.buttonPadding}></div>
       <div className={styles.center}>
-        <button onClick={() => onEditProfileClicked()} className={styles.editButton}>Edit Profile</button>
+        <button onClick={() => onEditProfileClicked()} className={styles.editButton}>{buttonText}</button>
       </div>
     </div>
 

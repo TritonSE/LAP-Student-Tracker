@@ -30,7 +30,7 @@ const Profile: NextPage = () => {
       <div className={styles.rectangle}>
         <div className={styles.contentContainer}>
           <div className={styles.leftContainer}>
-            <ProfileViewLeft firstName="Anshul" lastName="Birla" handleEditProfileClicked={handleEditProfileClicked}></ProfileViewLeft>
+            <ProfileViewLeft firstName="Anshul" lastName="Birla" editProfileClicked={editProfileClicked} handleEditProfileClicked={handleEditProfileClicked}></ProfileViewLeft>
           </div>
           <div className={styles.rightContainer}>
             <ProfileViewRight email={email} role={role} phoneNumber={phoneNumber} disabled={!editProfileClicked}></ProfileViewRight>

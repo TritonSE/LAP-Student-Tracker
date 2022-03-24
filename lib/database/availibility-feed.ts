@@ -1,11 +1,15 @@
-import { Interval, DateTime, Duration } from "luxon"
+import { Interval, DateTime } from "luxon"
+import { CalendarEvent } from "../../models/events";
 import { getAvailibilityById } from "./availibilities";
 import { getEventFeed } from "./calendar-events";
 import { getUser } from "./users";
+import ColorHash from "color-hash";
 
 const indexToWeekdays = [
   "temp", "mon", "tue", "wed", "thu", "fri", "sat", "sun"
 ]
+
+const hash = new ColorHash();
 
 type Weekdays = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun"
 
@@ -48,7 +52,7 @@ const calculateBetweenIntervals = (start: DateTime, end: DateTime, intervals: In
 // use merge from luxon on unavaibililites and events
 // reverse unavailibilities
 
-const getAvailibilityFeed = async (start: string, end: string, userId: string) => {
+const getAvailibilityFeed = async (start: string, end: string, userId: string): Promise<CalendarEvent[]> => {
   const dates = getDatesInInterval(start, end);
   const user = await getUser(userId)
   if (user == null) {
@@ -90,13 +94,16 @@ const getAvailibilityFeed = async (start: string, end: string, userId: string) =
 
   const finalAvailibility = calculateBetweenIntervals(DateTime.fromISO(start), DateTime.fromISO(end), mergedUnavilibilites);
 
-  return finalAvailibility.map((interval) => {
+  const availibilityCalendarEvents: CalendarEvent[] = finalAvailibility.map((interval) => {
     return {
+      id: user.id,
+      backgroundColor: hash.hex(user.firstName + " " + user.lastName) as string,
       title: user.firstName + " " + user.lastName + " is Available",
-      start: interval.start.toISO(),
-      end: interval.end.toISO()
+      startStr: interval.start.toISO(),
+      endStr: interval.end.toISO()
     }
   })
+  return availibilityCalendarEvents
 }
 
 export { getAvailibilityFeed }

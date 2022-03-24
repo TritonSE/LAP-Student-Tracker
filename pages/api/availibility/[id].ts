@@ -3,8 +3,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { Availibility, AvailibilitySchema } from "../../../models/availibility";
 import { getAvailibilityById, updateAvailibility } from "../../../lib/database/availibilities";
-import { STATUS_CODES } from "http";
-//Handles all requests to /api/class/[id]
+//Handles all requests to /api/availibility/[id]
 export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
@@ -31,7 +30,7 @@ export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest,
       // todo: validate if id exists
       let availibility: Availibility;
       if ((await getAvailibilityById(id)) == null)
-        return res.status(StatusCodes.NOT_FOUND).json("Availibility for User not found")
+        return res.status(StatusCodes.NOT_FOUND).json("Availibility for user not found")
       try {
         availibility = await decode(AvailibilitySchema, req.body)
       } catch (e) {

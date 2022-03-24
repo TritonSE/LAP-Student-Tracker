@@ -1,10 +1,6 @@
 import { client } from "../db";
-import { CalendarEvent, CalendarEventSchema } from "../../models/events";
-import { array, TypeOf } from "io-ts";
+import { CalendarEvent, CalendarEventArraySchema } from "../../models/events";
 import { decode } from "io-ts-promise";
-
-const CalendarEventArraySchema = array(CalendarEventSchema);
-type calenderEventArrayType = TypeOf<typeof CalendarEventArraySchema>;
 
 // Fetches calendar event feed for a particular user from database
 const getEventFeed = async (
@@ -36,7 +32,7 @@ const getEventFeed = async (
   }
 
   const res = await client.query(query);
-  let calendarEventArray: calenderEventArrayType;
+  let calendarEventArray: CalendarEvent[];
 
   try {
     calendarEventArray = await decode(CalendarEventArraySchema, res.rows);

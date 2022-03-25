@@ -5,11 +5,11 @@ type ProfileViewLeftProps = {
   firstName: string,
   lastName: string,
   editProfileClicked: boolean
+  validInput: boolean
   handleEditProfileClicked: () => void
 }
 
-const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({ firstName, lastName, editProfileClicked, handleEditProfileClicked }) => {
-  const onEditProfileClicked = () => handleEditProfileClicked();
+const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({ firstName, lastName, editProfileClicked, validInput, handleEditProfileClicked }) => {
 
   const buttonText = editProfileClicked ? "Save" : "Edit Profile"
 
@@ -23,7 +23,7 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({ firstName, lastName, 
       <div className={styles.name}> {firstName + " " + lastName}</div>
       <div className={styles.buttonPadding}></div>
       <div className={styles.center}>
-        <button onClick={() => onEditProfileClicked()} className={styles.editButton}>{buttonText}</button>
+        <button disabled={!validInput} onClick={() => handleEditProfileClicked()} className={styles.editButton}>{buttonText}</button>
       </div>
     </div>
 

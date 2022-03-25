@@ -8,32 +8,60 @@ import styles from "../styles/Profile.module.css";
 const Profile: NextPage = () => {
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false)
   const [phoneNumber, setPhoneNumber] = useState<string | null>("8584851087");
-  const [email, setEmail] = useState<string>("email");
-  const [role, setRole] = useState<string>("role");
-
-
-  // const toggleProfileEdit = () => {
-  //   setEditProfileClicked(!editProfileClicked);
-  // }
+  const [email, setEmail] = useState<string>("email@ucsd.edu");
+  const [role, _] = useState<string>("role");
+  const [newPassword, setNewPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleEditProfileClicked = () => {
     if (!editProfileClicked) {
       setEditProfileClicked(true);
-    } else setEditProfileClicked(false)
+    } else
+      setEditProfileClicked(false)
+  }
+
+  const handleEmailChange = (newEmail: string) => {
+    setEmail(newEmail);
+  }
+
+  const handlePhoneNumberChange = (newNumber: string) => {
+    setPhoneNumber(newNumber);
+  }
+
+  const handleNewPassword = (newPassword: string) => {
+    setNewPassword(newPassword)
+  }
+
+  const handleConfirmPassword = (confirmPassword: string) => {
+    setConfirmPassword(confirmPassword)
   }
 
 
 
+
+  //^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$
+  const regEx = RegExp(/\S+@\S+\.\S+/);
+  const validEmail = regEx.test(email);
+
+  const phoneRegEx = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)
+  const validPhoneNumber = phoneNumber === null || phoneNumber == "" || phoneRegEx.test(phoneNumber)
+  const validPassword = newPassword === "" || newPassword.length > 6;
+  const validConfirmPassword = newPassword === confirmPassword;
+
+
+  const validToSave = validPhoneNumber && validPassword && validEmail && validConfirmPassword;
+
+  const errorMessage = !validEmail ? "Enter a valid email" : !validPhoneNumber ? "Enter a valid phone number" : !validPassword ? "Passwords must be at least 6 characters" : !validConfirmPassword ? "Passwords do not match" : "";
 
   return (
     <div className={styles.rectangleContainer}>
       <div className={styles.rectangle}>
         <div className={styles.contentContainer}>
           <div className={styles.leftContainer}>
-            <ProfileViewLeft firstName="Anshul" lastName="Birla" editProfileClicked={editProfileClicked} handleEditProfileClicked={handleEditProfileClicked}></ProfileViewLeft>
+            <ProfileViewLeft firstName="Anshul" lastName="Birla" editProfileClicked={editProfileClicked} handleEditProfileClicked={handleEditProfileClicked} validInput={validToSave}></ProfileViewLeft>
           </div>
           <div className={styles.rightContainer}>
-            <ProfileViewRight email={email} role={role} phoneNumber={phoneNumber} disabled={!editProfileClicked}></ProfileViewRight>
+            <ProfileViewRight email={email} role={role} phoneNumber={phoneNumber} disabled={!editProfileClicked} errorMessage={errorMessage} handleEmailChange={handleEmailChange} handleConfirmPasswordChange={handleConfirmPassword} handlePasswordChange={handleNewPassword} handlePhoneNumberChange={handlePhoneNumberChange} ></ProfileViewRight>
           </div>
         </div>
 

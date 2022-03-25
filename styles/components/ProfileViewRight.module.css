@@ -7,12 +7,15 @@
   height: 142px;
 }
 
-.inputContainer {
+.inputContainerDefault {
   height: 273px;
   width: fit-content;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-evenly; */
+  overflow:hidden
+}
+
+.inputContainerWithPassword {
+  height: 273px;
+  width: 1000px;
   overflow:auto;
 }
 

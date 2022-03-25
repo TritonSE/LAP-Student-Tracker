@@ -61,3 +61,13 @@
   line-height: 22px;
   color: white;
 }
+
+.errorMessage {
+  color: red;
+  height: 15px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+}

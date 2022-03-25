@@ -39,16 +39,18 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({ phoneNumber, email,
         }
       </div>
 
-      <div> {errorMessage} </div>
+      <div className={styles.errorMessage}> {errorMessage} </div>
 
-      <div className={styles.buttonContainer}>
-        <button className={styles.backButton}>
-          <div className={styles.backText}>Back</div>
-        </button>
-        <button className={styles.signOutButton}>
-          <div className={styles.signOutText}>Sign Out</div>
-        </button>
-      </div>
+      {!disabled &&
+        <div className={styles.buttonContainer}>
+          <button className={styles.backButton}>
+            <div className={styles.backText}>Back</div>
+          </button>
+          <button className={styles.signOutButton}>
+            <div className={styles.signOutText}>Sign Out</div>
+          </button>
+        </div>
+      }
     </div>
 
 

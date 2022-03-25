@@ -7,7 +7,7 @@ import styles from "../styles/Profile.module.css";
 //This is the page that is rendered when the 'Profile' button from the Navbar is clicked
 const Profile: NextPage = () => {
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false)
-  const [phoneNumber, setPhoneNumber] = useState<string | null>("8584851087");
+  const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
   const [email, setEmail] = useState<string>("email@ucsd.edu");
   const [role, _] = useState<string>("role");
   const [newPassword, setNewPassword] = useState<string>("");
@@ -44,7 +44,7 @@ const Profile: NextPage = () => {
   const validEmail = regEx.test(email);
 
   const phoneRegEx = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/)
-  const validPhoneNumber = phoneNumber === null || phoneNumber == "" || phoneRegEx.test(phoneNumber)
+  const validPhoneNumber = phoneNumber === null || phoneNumber == "" || !/[a-z]/i.test(phoneNumber) && phoneRegEx.test(phoneNumber) && !(phoneNumber.length > 11);
   const validPassword = newPassword === "" || newPassword.length > 6;
   const validConfirmPassword = newPassword === confirmPassword;
 

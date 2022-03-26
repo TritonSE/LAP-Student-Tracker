@@ -6,9 +6,9 @@ type ProfileViewRightProps = {
   phoneNumber: string | null | undefined;
   email: string;
   role: string;
-  currentPassword: string,
-  newPassword: string,
-  confirmPassword: string,
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
   disabled: boolean;
   errorMessage: string;
   handleEmailChange: (newEmail: string) => void;
@@ -35,7 +35,7 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
   handlePhoneNumberChange,
   handleCurrentPasswordChange,
   onBackClick,
-  onSignoutClick
+  onSignoutClick,
 }) => {
   return (
     <div className={styles.leftContainer}>
@@ -60,9 +60,13 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
         {!disabled && (
           <div>
             <div className={styles.spacing} />
-            <ProfileInput label="Password" defaultValue={currentPassword} disabled={disabled}
+            <ProfileInput
+              label="Password"
+              defaultValue={currentPassword}
+              disabled={disabled}
               onContentChange={handleCurrentPasswordChange}
-              password={true} />
+              password={true}
+            />
             <div className={styles.spacing} />
             <ProfileInput
               label="New Password"

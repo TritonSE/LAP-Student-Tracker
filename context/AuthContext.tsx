@@ -19,18 +19,27 @@ type AuthState = {
     password: string
   ) => void;
   clearError: () => void;
-  updateUser: (id: string, currEmail: string, currPassword: string, newEmail: string, newNumber?: string | null, newPassword?: string) => Promise<boolean>;
+  updateUser: (
+    id: string,
+    currEmail: string,
+    currPassword: string,
+    newEmail: string,
+    newNumber?: string | null,
+    newPassword?: string
+  ) => Promise<boolean>;
 };
 
 const init: AuthState = {
   user: null,
   error: null,
   initializing: false,
-  login: () => { },
-  logout: () => { },
-  signup: () => { },
-  clearError: () => { },
-  updateUser: () => { return new Promise<boolean>(() => false) },
+  login: () => {},
+  logout: () => {},
+  signup: () => {},
+  clearError: () => {},
+  updateUser: () => {
+    return new Promise<boolean>(() => false);
+  },
 };
 
 export const AuthContext = createContext<AuthState>(init);
@@ -62,12 +71,12 @@ export const AuthProvider: React.FC = ({ children }) => {
     const fbConfig = process.env.REACT_APP_FB_CONFIG
       ? JSON.parse(process.env.REACT_APP_FB_CONFIG)
       : {
-        apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
-        authDomain:
-          process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-        projectId: process.env.REACT_APP_FB_PROJECT_ID || "lap-student-tracker-staging",
-        appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
-      };
+          apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
+          authDomain:
+            process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
+          projectId: process.env.REACT_APP_FB_PROJECT_ID || "lap-student-tracker-staging",
+          appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
+        };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
     return app.auth();
   }, []);
@@ -194,10 +203,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   };
 
-  const updateUser = async (id: string, currEmail: string, currPassword: string, newEmail: string, newNumber?: string | null, newPassword?: string): Promise<boolean> => {
+  const updateUser = async (
+    id: string,
+    currEmail: string,
+    currPassword: string,
+    newEmail: string,
+    newNumber?: string | null,
+    newPassword?: string
+  ): Promise<boolean> => {
     try {
       if (currPassword === "") {
-        setError(new Error("Password must be specificed to change any values"))
+        setError(new Error("Password must be specificed to change any values"));
         return false;
       }
 
@@ -208,32 +224,34 @@ export const AuthProvider: React.FC = ({ children }) => {
       }
 
       if (newEmail != currEmail) {
-        await fbUser.updateEmail(newEmail)
+        await fbUser.updateEmail(newEmail);
       }
 
       if (newPassword && newPassword != currPassword) {
-        await fbUser.updatePassword(newPassword)
+        await fbUser.updatePassword(newPassword);
       }
 
       const updateUser: UpdateUser = {
         phoneNumber: newNumber,
-        email: newEmail
-      }
+        email: newEmail,
+      };
       const newUser = await api.updateUser(updateUser, id);
-      setUser(newUser)
-      return true
+      setUser(newUser);
+      return true;
     } catch (e) {
       if (e instanceof FirebaseError) {
         setFirebaseError(e);
       } else {
         setError(e as Error);
       }
-      return false
+      return false;
     }
-  }
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, error, signup, logout, initializing, clearError, updateUser }}>
+    <AuthContext.Provider
+      value={{ user, login, error, signup, logout, initializing, clearError, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

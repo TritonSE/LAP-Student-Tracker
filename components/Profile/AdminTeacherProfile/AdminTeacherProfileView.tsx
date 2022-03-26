@@ -3,14 +3,13 @@ import { AuthContext } from "../../../context/AuthContext";
 import { ProfileViewLeft } from "./ProfileViewLeft";
 import { ProfileViewRight } from "./ProfileViewRight";
 import styles from "../../../styles/components/AdminTeacherProfile.module.css";
-import { Error } from '../../util/Error';
+import { Error } from "../../util/Error";
 import { useRouter } from "next/router";
 
 const AdminTeacherProfileView: React.FC = () => {
-
   const { user, error, updateUser, clearError, logout } = useContext(AuthContext);
 
-  if (user == null) return <Error />
+  if (user == null) return <Error />;
 
   const router = useRouter();
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false);
@@ -28,15 +27,19 @@ const AdminTeacherProfileView: React.FC = () => {
     } else {
       clearError();
       setErrorMessage("");
-      const success = await updateUser(user.id, user.email, currentPassword, email, phoneNumber, newPassword)
-      if (success)
-        setEditProfileClicked(false);
-
+      const success = await updateUser(
+        user.id,
+        user.email,
+        currentPassword,
+        email,
+        phoneNumber,
+        newPassword
+      );
+      if (success) setEditProfileClicked(false);
     }
   };
 
-
-  const onBackClick = () => {
+  const onBackClick = (): void => {
     setPhoneNumber(user.phoneNumber);
     setEmail(user.email);
     setCurrentPassword("");
@@ -45,14 +48,12 @@ const AdminTeacherProfileView: React.FC = () => {
     clearError();
     setErrorMessage("");
     setEditProfileClicked(false);
+  };
 
-  }
-
-  const onSignoutClick = () => {
+  const onSignoutClick = (): void => {
     logout();
-    router.push("/login")
-
-  }
+    router.push("/login");
+  };
 
   const handleEmailChange = (newEmail: string): void => {
     setEmail(newEmail);
@@ -63,8 +64,8 @@ const AdminTeacherProfileView: React.FC = () => {
   };
 
   const handleCurrentPasswordChange = (newVal: string): void => {
-    setCurrentPassword(newVal)
-  }
+    setCurrentPassword(newVal);
+  };
 
   const handleNewPassword = (newPassword: string): void => {
     setNewPassword(newPassword);
@@ -74,34 +75,39 @@ const AdminTeacherProfileView: React.FC = () => {
     setConfirmPassword(confirmPassword);
   };
 
-
   const regEx = RegExp(/\S+@\S+\.\S+/);
   const validEmail = regEx.test(email);
   const phoneRegEx = RegExp(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/);
   const validPhoneNumber =
     phoneNumber === null ||
-    phoneNumber === "" || phoneNumber != undefined &&
-    (!/[a-z]/i.test(phoneNumber) && phoneRegEx.test(phoneNumber) && !(phoneNumber.length > 11));
+    phoneNumber === "" ||
+    (phoneNumber != undefined &&
+      !/[a-z]/i.test(phoneNumber) &&
+      phoneRegEx.test(phoneNumber) &&
+      !(phoneNumber.length > 11));
   const validPassword = newPassword === "" || newPassword.length > 6;
   const validConfirmPassword = newPassword === confirmPassword;
   const validToSave = validPhoneNumber && validPassword && validEmail && validConfirmPassword;
 
   useEffect(() => {
-    const tempMessage = error != null ? error.message : !validEmail
-      ? "Enter a valid email"
-      : !validPhoneNumber
+    const tempMessage =
+      error != null
+        ? error.message
+        : !validEmail
+        ? "Enter a valid email"
+        : !validPhoneNumber
         ? "Enter a valid phone number"
         : !validPassword
-          ? "Passwords must be at least 6 characters"
-          : !validConfirmPassword
-            ? "Passwords do not match"
-            : "";
-    setErrorMessage(tempMessage)
-  }, [validEmail, validPassword, validPhoneNumber, validConfirmPassword, error])
+        ? "Passwords must be at least 6 characters"
+        : !validConfirmPassword
+        ? "Passwords do not match"
+        : "";
+    setErrorMessage(tempMessage);
+  }, [validEmail, validPassword, validPhoneNumber, validConfirmPassword, error]);
 
   useEffect(() => {
     clearError();
-  }, [])
+  }, []);
 
   return (
     <div className={styles.rectangleContainer}>
@@ -141,4 +147,4 @@ const AdminTeacherProfileView: React.FC = () => {
   );
 };
 
-export { AdminTeacherProfileView }
+export { AdminTeacherProfileView };

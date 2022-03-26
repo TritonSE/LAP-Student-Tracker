@@ -33,7 +33,7 @@ class LeagueAPI {
   }
 
   async updateUser(user: UpdateUser, id: string): Promise<User> {
-    const res = await this.client.patch(`api/users/${id}`, user)
+    const res = await this.client.patch(`api/users/${id}`, user);
     return res.data;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TextField from "@mui/material/TextField";
 import styles from "../../../styles/components/ProfileInput.module.css";
 type ProfileInputProps = {

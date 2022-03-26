@@ -5,14 +5,16 @@ import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/Profile.module.css";
 import { NextApplicationPage } from "./_app";
 import { Error } from "../components/util/Error";
+import { useRouter } from "next/router";
 
 //This is the page that is rendered when the 'Profile' button from the Navbar is clicked
 const Profile: NextApplicationPage = () => {
 
-  const { user, error, updateUser, clearError } = useContext(AuthContext);
+  const { user, error, updateUser, clearError, logout } = useContext(AuthContext);
 
   if (user == null) return <Error />
 
+  const router = useRouter();
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string | undefined | null>(user.phoneNumber);
   const [email, setEmail] = useState<string>(user.email);
@@ -45,6 +47,12 @@ const Profile: NextApplicationPage = () => {
     clearError();
     setErrorMessage("");
     setEditProfileClicked(false);
+
+  }
+
+  const onSignoutClick = () => {
+    logout();
+    router.push("/login")
 
   }
 
@@ -126,6 +134,7 @@ const Profile: NextApplicationPage = () => {
               handlePasswordChange={handleNewPassword}
               handlePhoneNumberChange={handlePhoneNumberChange}
               onBackClick={onBackClick}
+              onSignoutClick={onSignoutClick}
             ></ProfileViewRight>
           </div>
         </div>

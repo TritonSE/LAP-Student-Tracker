@@ -5,7 +5,7 @@ import { IconButton, InputAdornment } from "@mui/material";
 import { VisibilityOff, Visibility } from "@mui/icons-material"
 type ProfileInputProps = {
   label: string,
-  defaultValue: any
+  defaultValue: string | null;
   disabled: boolean
   password?: boolean
   onContentChange?: (newValue: string) => void;
@@ -54,7 +54,7 @@ const ProfileInput: React.FC<ProfileInputProps> = ({ label, defaultValue, disabl
       }
       }
       type={password == undefined ? "text" : showPassword ? "text" : "password"}
-      defaultValue={defaultValue}
+      defaultValue={defaultValue != null ? defaultValue : ""}
       disabled={disabled}
       onChange={(e) => handleContentChange(e.target.value)}
     />

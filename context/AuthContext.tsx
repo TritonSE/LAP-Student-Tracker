@@ -19,8 +19,7 @@ type AuthState = {
     password: string
   ) => void;
   clearError: () => void;
-  updateUser: (id: string, currEmail: string, currPassword: string, newEmail: string, newNumber?: string | null, newPassword?: string) => void;
-  getError: () => void;
+  updateUser: (id: string, currEmail: string, currPassword: string, newEmail: string, newNumber?: string | null, newPassword?: string) => Promise<boolean>;
 };
 
 const init: AuthState = {
@@ -31,8 +30,7 @@ const init: AuthState = {
   logout: () => { },
   signup: () => { },
   clearError: () => { },
-  updateUser: () => { },
-  getError: () => { }
+  updateUser: () => { return new Promise<boolean>(() => false) },
 };
 
 export const AuthContext = createContext<AuthState>(init);
@@ -196,50 +194,46 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   };
 
-  const updateUser = (id: string, currEmail: string, currPassword: string, newEmail: string, newNumber?: string | null, newPassword?: string): void => {
-    (async () => {
-      try {
-        if (currPassword === "") {
-          setError(new Error("Password must be specificed to change any values"))
-          return;
-        }
-
-        const { user: fbUser } = await auth.signInWithEmailAndPassword(currEmail, currPassword);
-        if (fbUser === null) {
-          setError(new Error("Firebase user does not exist"));
-          return;
-        }
-
-        if (newEmail != currEmail) {
-          await fbUser.updateEmail(newEmail)
-        }
-
-        if (newPassword && newPassword != currPassword) {
-          await fbUser.updatePassword(newPassword)
-        }
-
-        const updateUser: UpdateUser = {
-          phoneNumber: newNumber,
-          email: newEmail
-        }
-        const newUser = await api.updateUser(updateUser, id);
-        setUser(newUser)
-      } catch (e) {
-        if (e instanceof FirebaseError) {
-          setFirebaseError(e);
-        } else {
-          setError(e as Error);
-        }
+  const updateUser = async (id: string, currEmail: string, currPassword: string, newEmail: string, newNumber?: string | null, newPassword?: string): Promise<boolean> => {
+    try {
+      if (currPassword === "") {
+        setError(new Error("Password must be specificed to change any values"))
+        return false;
       }
-    })();
-  }
 
-  const getError = () => {
-    return error
+      const { user: fbUser } = await auth.signInWithEmailAndPassword(currEmail, currPassword);
+      if (fbUser === null) {
+        setError(new Error("Firebase user does not exist"));
+        return false;
+      }
+
+      if (newEmail != currEmail) {
+        await fbUser.updateEmail(newEmail)
+      }
+
+      if (newPassword && newPassword != currPassword) {
+        await fbUser.updatePassword(newPassword)
+      }
+
+      const updateUser: UpdateUser = {
+        phoneNumber: newNumber,
+        email: newEmail
+      }
+      const newUser = await api.updateUser(updateUser, id);
+      setUser(newUser)
+      return true
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        setFirebaseError(e);
+      } else {
+        setError(e as Error);
+      }
+      return false
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, error, signup, logout, initializing, clearError, updateUser, getError }}>
+    <AuthContext.Provider value={{ user, login, error, signup, logout, initializing, clearError, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

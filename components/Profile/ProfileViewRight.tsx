@@ -16,6 +16,7 @@ type ProfileViewRightProps = {
   handleCurrentPasswordChange: (newVal: string) => void;
   handlePasswordChange: (newPassword: string) => void;
   handleConfirmPasswordChange: (confirmPassword: string) => void;
+  onBackClick: () => void;
 };
 
 const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
@@ -26,12 +27,13 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
   newPassword,
   confirmPassword,
   disabled,
+  errorMessage,
   handleEmailChange,
   handlePasswordChange,
   handleConfirmPasswordChange,
   handlePhoneNumberChange,
   handleCurrentPasswordChange,
-  errorMessage,
+  onBackClick
 }) => {
   return (
     <div className={styles.leftContainer}>
@@ -82,7 +84,7 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
 
       {!disabled && (
         <div className={styles.buttonContainer}>
-          <button className={styles.backButton}>
+          <button className={styles.backButton} onClick={() => onBackClick()}>
             <div className={styles.backText}>Back</div>
           </button>
           <button className={styles.signOutButton}>

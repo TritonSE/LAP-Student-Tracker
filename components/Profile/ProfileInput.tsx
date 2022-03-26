@@ -42,7 +42,7 @@ const ProfileInput: React.FC<ProfileInputProps> = ({
         },
       }}
       type={password == undefined ? "text" : "password"}
-      defaultValue={defaultValue != null ? defaultValue : ""}
+      value={defaultValue != null ? defaultValue : ""}
       disabled={disabled}
       onChange={(e) => handleContentChange(e.target.value)}
     />

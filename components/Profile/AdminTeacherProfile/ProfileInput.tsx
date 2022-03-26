@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import TextField from "@mui/material/TextField";
-import styles from "../../styles/components/ProfileInput.module.css";
-import { IconButton, InputAdornment } from "@mui/material";
-import { VisibilityOff, Visibility } from "@mui/icons-material";
+import styles from "../../../styles/components/ProfileInput.module.css";
 type ProfileInputProps = {
   label: string;
   defaultValue: string | null;

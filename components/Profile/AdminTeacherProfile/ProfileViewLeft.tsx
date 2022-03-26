@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/components/ProfileViewLeft.module.css";
+import styles from "../../../styles/components/ProfileViewLeft.module.css";
 
 type ProfileViewLeftProps = {
   firstName: string;

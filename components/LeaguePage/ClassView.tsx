@@ -1,10 +1,10 @@
 import React from "react";
-import { Student } from "../models/students";
-import StudentCard from "./StudentCard";
-import styles from "../styles/components/LeagueViews.module.css";
+import { Class } from "../../models/class";
+import { ClassCard } from "./ClassCard";
+import styles from "../../styles/components/LeagueViews.module.css";
 
-type StudentViewProp = {
-  students: Student[];
+type ClassViewProp = {
+  classes: Class[];
 };
 
 const filters = [
@@ -19,19 +19,21 @@ const filters = [
   "Level 8",
 ];
 
-const StudentView: React.FC<StudentViewProp> = ({ students }) => (
+const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
   <div className={styles.compContainer}>
     <div className={styles.leftContainer}>
-      <h1 className={styles.compTitle}>Students</h1>
+      <h1 className={styles.compTitle}>Classes</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
-          {students.map((c) => (
-            <StudentCard
-              key={c.id}
-              firstName={c.firstName}
-              lastName={c.lastName}
-              level={c.level}
-              classes={c.classes}
+          {classes.map((tempClass) => (
+            <ClassCard
+              key={tempClass.eventInformationId}
+              name={tempClass.name}
+              minLevel={tempClass.minLevel}
+              maxLevel={tempClass.maxLevel}
+              rrstring={tempClass.rrstring}
+              startTime={tempClass.startTime}
+              endTime={tempClass.endTime}
             />
           ))}
         </ul>
@@ -39,7 +41,7 @@ const StudentView: React.FC<StudentViewProp> = ({ students }) => (
     </div>
     <span className={styles.spacer} />
     <div className={styles.rightContainer}>
-      <input type="text" placeholder="Search students" className={styles.searchBar}></input>
+      <input type="text" placeholder="Search classes" className={styles.searchBar}></input>
       <h2 className={styles.orderTitle}>Order By:</h2>
       <div className={styles.orderElem}>
         <p className={styles.listItemText}>Alphabetical</p>
@@ -62,4 +64,4 @@ const StudentView: React.FC<StudentViewProp> = ({ students }) => (
   </div>
 );
 
-export default StudentView;
+export { ClassView };

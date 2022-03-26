@@ -10,13 +10,13 @@
 .inputContainerDefault {
   height: 273px;
   width: fit-content;
-  overflow:hidden
+  overflow: hidden;
 }
 
 .inputContainerWithPassword {
   height: 273px;
   width: 1000px;
-  overflow:auto;
+  overflow: auto;
 }
 
 .spacing {
@@ -33,20 +33,20 @@
 .backButton {
   width: 88px;
   height: 40px;
-  background: #C4C4C4;
-  border-radius: 8px; 
+  background: #c4c4c4;
+  border-radius: 8px;
 }
 
 .signOutButton {
   width: 160px;
   height: 48px;
-  background: #494C4E;
+  background: #494c4e;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
 }
 
 .backText {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
@@ -54,7 +54,7 @@
 }
 
 .signOutText {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -65,7 +65,7 @@
 .errorMessage {
   color: red;
   height: 15px;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 12px;

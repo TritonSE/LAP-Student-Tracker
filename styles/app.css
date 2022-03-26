@@ -22,6 +22,12 @@ button {
 
 button:hover {
   cursor: pointer;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: rgba(241, 120, 45, 0.562);
+  cursor: not-allowed;
 }
 
 :root {
@@ -29,5 +35,5 @@ button:hover {
   --white: #ffffff;
   --black: #1b1c1d;
   --gray-1: #494c4e;
-  --gray-3: #BFC1C4;
+  --gray-3: #bfc1c4;
 }

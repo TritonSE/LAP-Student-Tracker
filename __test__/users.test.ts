@@ -1,5 +1,5 @@
-import { userHandler } from "../pages/api/users";
-import { userIDHandler } from "../pages/api/users/[id]";
+import userHandler from "../pages/api/users";
+import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { UpdateUser, User } from "../models/users";
@@ -23,11 +23,12 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await client.query("DELETE from users");
   await client.end();
 });
 
 describe("[POST] /api/users", () => {
-  it("creates a new user", async () => {
+  test("creates a new user", async () => {
     const body: User = {
       id: "100",
       firstName: "John",
@@ -48,7 +49,7 @@ describe("[POST] /api/users", () => {
     );
   });
 
-  it("doesn't create a duplicate user", async () => {
+  test("doesn't create a duplicate user", async () => {
     const body: User = {
       id: "1",
       firstName: "John",
@@ -70,7 +71,7 @@ describe("[POST] /api/users", () => {
     );
   });
 
-  it("doesn't create a different user with an existing email", async () => {
+  test("doesn't create a different user with an existing email", async () => {
     const body: User = {
       id: "54",
       firstName: "John",
@@ -92,7 +93,7 @@ describe("[POST] /api/users", () => {
     );
   });
 
-  it("creates an Admin user", async () => {
+  test("creates an Admin user", async () => {
     const body: User = {
       id: "50",
       firstName: "Admin",
@@ -113,7 +114,7 @@ describe("[POST] /api/users", () => {
     );
   });
 
-  it("creates an Teacher user", async () => {
+  test("creates an Teacher user", async () => {
     const body: User = {
       id: "45",
       firstName: "Teacher",
@@ -134,7 +135,7 @@ describe("[POST] /api/users", () => {
     );
   });
 
-  it("body does not have a required field", async () => {
+  test("body does not have a required field", async () => {
     const body = {
       firstName: "ABCD",
       lastName: "EFGH",
@@ -156,7 +157,7 @@ describe("[POST] /api/users", () => {
 });
 
 describe("[GET] /api/users/[id]", () => {
-  it("look for a user that exists", async () => {
+  test("look for a user that exists", async () => {
     const expected: User = {
       id: "1",
       firstName: "John",
@@ -182,7 +183,7 @@ describe("[GET] /api/users/[id]", () => {
     );
   });
 
-  it("fails for a user that does not exist", async () => {
+  test("fails for a user that does not exist", async () => {
     const query = {
       id: 101,
     };
@@ -200,7 +201,7 @@ describe("[GET] /api/users/[id]", () => {
 });
 
 describe("[PATCH] /api/users/[id]", () => {
-  it("editing everything for a user that does exist", async () => {
+  test("editing everything for a user that does exist", async () => {
     const expected: User = {
       id: "1",
       firstName: "Bill",
@@ -235,7 +236,7 @@ describe("[PATCH] /api/users/[id]", () => {
     );
   });
 
-  it("editing few fields for a user that does exist", async () => {
+  test("editing few fields for a user that does exist", async () => {
     const expected: User = {
       id: "3",
       firstName: "Admin123",
@@ -268,7 +269,7 @@ describe("[PATCH] /api/users/[id]", () => {
     );
   });
 
-  it("editing a user that does not exist", async () => {
+  test("editing a user that does not exist", async () => {
     const query = {
       id: 101,
     };
@@ -288,7 +289,7 @@ describe("[PATCH] /api/users/[id]", () => {
     );
   });
 
-  it("editing a user that exists with existing email", async () => {
+  test("editing a user that exists with existing email", async () => {
     const query = {
       id: 2,
     };

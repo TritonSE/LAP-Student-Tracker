@@ -1,17 +1,22 @@
-import React from "react"
-import styles from "../../styles/components/ProfileViewLeft.module.css"
+import React from "react";
+import styles from "../../styles/components/ProfileViewLeft.module.css";
 
 type ProfileViewLeftProps = {
-  firstName: string,
-  lastName: string,
-  editProfileClicked: boolean
-  validInput: boolean
-  handleEditProfileClicked: () => void
-}
+  firstName: string;
+  lastName: string;
+  editProfileClicked: boolean;
+  validInput: boolean;
+  handleEditProfileClicked: () => void;
+};
 
-const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({ firstName, lastName, editProfileClicked, validInput, handleEditProfileClicked }) => {
-
-  const buttonText = editProfileClicked ? "Save" : "Edit Profile"
+const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
+  firstName,
+  lastName,
+  editProfileClicked,
+  validInput,
+  handleEditProfileClicked,
+}) => {
+  const buttonText = editProfileClicked ? "Save" : "Edit Profile";
 
   return (
     <div className={styles.rightContainer}>
@@ -23,14 +28,16 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({ firstName, lastName, 
       <div className={styles.name}> {firstName + " " + lastName}</div>
       <div className={styles.buttonPadding}></div>
       <div className={styles.center}>
-        <button disabled={!validInput} onClick={() => handleEditProfileClicked()} className={styles.editButton}>{buttonText}</button>
+        <button
+          disabled={!validInput}
+          onClick={() => handleEditProfileClicked()}
+          className={styles.editButton}
+        >
+          {buttonText}
+        </button>
       </div>
     </div>
+  );
+};
 
-  )
-
-
-
-}
-
-export { ProfileViewLeft }
+export { ProfileViewLeft };

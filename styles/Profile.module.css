@@ -3,24 +3,24 @@
   justify-content: center;
 }
 
-.rectangle{
-  background: #FFFFFF;
+.rectangle {
+  background: #ffffff;
   width: 1200px;
   height: 734px;
-  border: 0.5px solid #BFC1C4;
+  border: 0.5px solid #bfc1c4;
   box-sizing: border-box;
   box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
 }
 
-.contentContainer{
+.contentContainer {
   display: flex;
   justify-content: center;
 }
 
-.leftContainer{
+.leftContainer {
   width: 585px;
 }
-.rightContainer{
+.rightContainer {
   width: 70%;
 }

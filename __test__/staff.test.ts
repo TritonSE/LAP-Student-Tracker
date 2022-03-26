@@ -1,4 +1,4 @@
-import { staffHandler } from "../pages/api/staff";
+import staffHandler from "../pages/api/staff";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { User } from "../models/users";
@@ -22,7 +22,7 @@ afterAll(async () => {
 });
 
 describe("[GET] /api/staff", () => {
-  it("look for all staff", async () => {
+  test("look for all staff", async () => {
     const expected: User[] = [
       {
         id: "2",
@@ -60,7 +60,7 @@ describe("[GET] /api/staff with no staff", () => {
     await client.query("DELETE from users WHERE role = 'Teacher' OR role = 'Admin'");
   });
 
-  it("Works correctly with 0 users", async () => {
+  test("Works correctly with 0 users", async () => {
     await makeHTTPRequest(
       staffHandler,
       "/api/users/",

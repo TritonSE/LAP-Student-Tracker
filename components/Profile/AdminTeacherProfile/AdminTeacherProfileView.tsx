@@ -6,9 +6,11 @@ import styles from "../../../styles/components/AdminTeacherProfile.module.css";
 import { Error } from "../../util/Error";
 import { useRouter } from "next/router";
 
+// component that renders the admin/teacher profile page 
 const AdminTeacherProfileView: React.FC = () => {
   const { user, error, updateUser, clearError, logout } = useContext(AuthContext);
 
+  // user will never be null, because if it is, client is redirected to login page
   if (user == null) return <Error />;
 
   const router = useRouter();
@@ -89,25 +91,26 @@ const AdminTeacherProfileView: React.FC = () => {
   const validConfirmPassword = newPassword === confirmPassword;
   const validToSave = validPhoneNumber && validPassword && validEmail && validConfirmPassword;
 
-  useEffect(() => {
-    const tempMessage =
-      error != null
-        ? error.message
-        : !validEmail
-        ? "Enter a valid email"
-        : !validPhoneNumber
-        ? "Enter a valid phone number"
-        : !validPassword
-        ? "Passwords must be at least 6 characters"
-        : !validConfirmPassword
-        ? "Passwords do not match"
-        : "";
-    setErrorMessage(tempMessage);
-  }, [validEmail, validPassword, validPhoneNumber, validConfirmPassword, error]);
+
 
   useEffect(() => {
     clearError();
   }, []);
+  useEffect(() => {
+    setErrorMessage(error != null
+      ? error.message
+      : !validEmail
+        ? "Enter a valid email"
+        : !validPhoneNumber
+          ? "Enter a valid phone number"
+          : !validPassword
+            ? "Passwords must be at least 6 characters"
+            : !validConfirmPassword
+              ? "Passwords do not match"
+              : "");
+  }, [validEmail, validPassword, validPhoneNumber, validConfirmPassword, error]);
+
+
 
   return (
     <div className={styles.rectangleContainer}>

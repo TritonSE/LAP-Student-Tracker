@@ -9,6 +9,8 @@ type ProfileViewLeftProps = {
   handleEditProfileClicked: () => Promise<void>;
 };
 
+// component for left hand side of the profile view. Display first and last names, as well as edit profile button
+// TODO: setup profile picture upload
 const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
   firstName,
   lastName,

@@ -14,6 +14,7 @@ const cssTextField = {
   height: 80,
 };
 
+// component that handles the textboxes for the admin profile view
 const ProfileInput: React.FC<ProfileInputProps> = ({
   label,
   defaultValue,
@@ -21,6 +22,7 @@ const ProfileInput: React.FC<ProfileInputProps> = ({
   password,
   onContentChange,
 }) => {
+  // on content change not always defined because some fields cannot be changed
   const handleContentChange = (newContent: string): void => {
     if (!onContentChange) return;
     else onContentChange(newContent);

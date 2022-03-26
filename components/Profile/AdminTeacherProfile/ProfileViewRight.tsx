@@ -11,11 +11,14 @@ type ProfileViewRightProps = {
   confirmPassword: string;
   disabled: boolean;
   errorMessage: string;
+  // functions that handle updating states of their respective variables
   handleEmailChange: (newEmail: string) => void;
   handlePhoneNumberChange: (newNumber: string) => void;
   handleCurrentPasswordChange: (newVal: string) => void;
   handlePasswordChange: (newPassword: string) => void;
   handleConfirmPasswordChange: (confirmPassword: string) => void;
+
+  // button onclick handlers
   onBackClick: () => void;
   onSignoutClick: () => void;
 };

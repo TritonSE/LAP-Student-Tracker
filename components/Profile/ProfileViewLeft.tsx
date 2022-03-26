@@ -6,7 +6,7 @@ type ProfileViewLeftProps = {
   lastName: string;
   editProfileClicked: boolean;
   validInput: boolean;
-  handleEditProfileClicked: () => void;
+  handleEditProfileClicked: () => Promise<void>;
 };
 
 const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
@@ -30,7 +30,7 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
       <div className={styles.center}>
         <button
           disabled={!validInput}
-          onClick={() => handleEditProfileClicked()}
+          onClick={async () => await handleEditProfileClicked()}
           className={styles.editButton}
         >
           {buttonText}

@@ -29,12 +29,6 @@ const ProfileInput: React.FC<ProfileInputProps> = ({
     return;
   };
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  const togglePasswordChange = (): void => {
-    setShowPassword(!showPassword);
-  };
-
   return (
     <TextField
       id="filled-basic"
@@ -46,19 +40,8 @@ const ProfileInput: React.FC<ProfileInputProps> = ({
         classes: {
           input: styles.font,
         },
-        endAdornment: password && (
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={() => togglePasswordChange()}
-              edge="end"
-            >
-              {showPassword ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        ),
       }}
-      type={password == undefined ? "text" : showPassword ? "text" : "password"}
+      type={password == undefined ? "text" : "password"}
       defaultValue={defaultValue != null ? defaultValue : ""}
       disabled={disabled}
       onChange={(e) => handleContentChange(e.target.value)}

@@ -1,13 +1,14 @@
-import { string } from "fp-ts";
 import React from "react";
 import styles from "../../styles/components/ProfileViewRight.module.css";
 import { ProfileInput } from "./ProfileInput";
 
 type ProfileViewRightProps = {
-  phoneNumber: string | null;
+  phoneNumber: string | null | undefined;
   email: string;
   role: string;
   currentPassword: string,
+  newPassword: string,
+  confirmPassword: string,
   disabled: boolean;
   errorMessage: string;
   handleEmailChange: (newEmail: string) => void;
@@ -22,6 +23,8 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
   email,
   role,
   currentPassword,
+  newPassword,
+  confirmPassword,
   disabled,
   handleEmailChange,
   handlePasswordChange,
@@ -37,7 +40,7 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
         <div className={styles.spacing} />
         <ProfileInput
           label="Phone Number"
-          defaultValue={phoneNumber}
+          defaultValue={phoneNumber ? phoneNumber : ""}
           disabled={disabled}
           onContentChange={handlePhoneNumberChange}
         />
@@ -59,14 +62,14 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
             <div className={styles.spacing} />
             <ProfileInput
               label="New Password"
-              defaultValue={role}
+              defaultValue={newPassword}
               disabled={disabled}
               password={true}
               onContentChange={handlePasswordChange}
             />
             <ProfileInput
               label="Confirm Password"
-              defaultValue={role}
+              defaultValue={confirmPassword}
               disabled={disabled}
               onContentChange={handleConfirmPasswordChange}
               password={true}

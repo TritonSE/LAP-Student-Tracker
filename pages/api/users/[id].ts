@@ -20,6 +20,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
   switch (req.method) {
     case "GET": {
       try {
+        console.log(id)
         const user = await getUser(id);
         if (user == null) {
           return res.status(StatusCodes.NOT_FOUND).json("user not found");

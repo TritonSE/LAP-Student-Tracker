@@ -31,5 +31,8 @@ export const UpdateUserSchema = t.partial({
   address: t.string,
 });
 
+
+
 export type User = t.TypeOf<typeof UserSchema>;
 export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>;
+export type Roles = t.TypeOf<typeof possibleRoles>

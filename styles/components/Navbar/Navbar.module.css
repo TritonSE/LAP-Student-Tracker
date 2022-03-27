@@ -17,14 +17,14 @@
 }
 
 .navlink {
-  composes: labelLarge from "../globals.css";
+  composes: labelLarge from "../../globals.css";
   bottom: 20px;
   text-decoration: none;
   position: relative;
   bottom: 0px;
 }
 .clicked {
-  composes: labelLarge from "../globals.css";
+  composes: labelLarge from "../../globals.css";
   bottom: 20px;
   text-decoration: none;
   position: relative;

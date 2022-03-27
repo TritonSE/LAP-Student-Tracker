@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/components/LoginViews.module.css";
+import styles from "./LoginViews.module.css";
 
 type LoginPageNavigationProps = {
   completedPages: boolean[];

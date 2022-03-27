@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../../styles/components/ProfileViewRight.module.css";
+import styles from "./ProfileViewRight.module.css";
 import { ProfileInput } from "./ProfileInput";
 
 type ProfileViewRightProps = {

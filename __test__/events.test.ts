@@ -1,6 +1,10 @@
 import eventHandler from "../pages/api/events/class";
 import { client } from "../lib/db";
-import { convertTimeToISO, makeEventHTTPRequest, makeHTTPRequest } from "./__testutils__/testutils.test";
+import {
+  convertTimeToISO,
+  makeEventHTTPRequest,
+  makeHTTPRequest,
+} from "./__testutils__/testutils.test";
 import { CreateClassEvent, ClassEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";

@@ -92,8 +92,8 @@ const makeEventFeedHTTPRequest = async (
   const res = await makeHTTPRequest(
     handler,
     endpoint +
-    `?start=${queryParams.start}&end=${queryParams.end}` +
-    (queryParams.userId ? `&userId=${queryParams.userId}` : ""),
+      `?start=${queryParams.start}&end=${queryParams.end}` +
+      (queryParams.userId ? `&userId=${queryParams.userId}` : ""),
     query,
     method,
     undefined,
@@ -124,6 +124,6 @@ const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
 
 const convertTimeToISO = (time: string, timeZone: string): string => {
   return DateTime.fromFormat(time, "HH:mm", { zone: timeZone }).toISOTime();
-}
+};
 
 export { makeHTTPRequest, makeEventHTTPRequest, makeEventFeedHTTPRequest, convertTimeToISO };

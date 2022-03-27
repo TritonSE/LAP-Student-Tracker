@@ -21,9 +21,7 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const [position, setPosition] = useState<
-    Roles
-  >("Admin");
+  const [position, setPosition] = useState<Roles>("Admin");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleEmail = (newEmail: string): void => {
@@ -46,9 +44,7 @@ const Login: React.FC = () => {
     setLastName(newLastName);
   };
 
-  const handlePosition = (
-    newPosition: Roles
-  ): void => {
+  const handlePosition = (newPosition: Roles): void => {
     setPosition(newPosition);
   };
 

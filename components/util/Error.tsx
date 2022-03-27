@@ -1,4 +1,4 @@
-import styles from "../../styles/components/util/Error.module.css";
+import styles from "./Error.module.css";
 import React from "react";
 
 // Error text

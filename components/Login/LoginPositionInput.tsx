@@ -1,4 +1,4 @@
-import styles from "../../styles/components/LoginViews.module.css";
+import styles from "./LoginViews.module.css";
 import React from "react";
 
 type LoginPositionInputProps = {

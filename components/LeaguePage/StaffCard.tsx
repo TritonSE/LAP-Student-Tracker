@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/components/LeaguePage/LeagueViews.module.css";
+import styles from "./LeagueViews.module.css";
 
 type StaffCardProps = {
   firstName: string;

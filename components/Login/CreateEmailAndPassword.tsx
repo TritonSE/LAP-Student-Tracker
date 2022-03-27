@@ -1,6 +1,6 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
-import styles from "../../styles/components/LoginViews.module.css";
+import styles from "./LoginViews.module.css";
 
 const cssTextField = {
   width: 690,
@@ -37,12 +37,12 @@ const CreateEmailAndPassword: React.FC<CreatePasswordProps> = ({
     error !== null
       ? error.message
       : !validEmail
-      ? "Enter a valid email"
-      : !passwordLengthOk
-      ? "Passwords must be greater than 6 characters"
-      : !passwordsMatch
-      ? "Passwords do not match"
-      : null;
+        ? "Enter a valid email"
+        : !passwordLengthOk
+          ? "Passwords must be greater than 6 characters"
+          : !passwordsMatch
+            ? "Passwords do not match"
+            : null;
   return (
     <div>
       <div className={styles.headerContainer}>

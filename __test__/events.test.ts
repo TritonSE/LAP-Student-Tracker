@@ -1,6 +1,6 @@
 import eventHandler from "../pages/api/events/class";
 import { client } from "../lib/db";
-import { makeEventHTTPRequest, makeHTTPRequest } from "./__testutils__/testutils.test";
+import { convertTimeToISO, makeEventHTTPRequest, makeHTTPRequest } from "./__testutils__/testutils.test";
 import { CreateClassEvent, ClassEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";
@@ -58,8 +58,8 @@ describe("[POST] /api/events/class", () => {
 
     const expectedBody: ClassEvent = {
       eventInformationId: "",
-      startTime: "11:45:00.000-08:00",
-      endTime: "11:45:00.000-08:00",
+      startTime: convertTimeToISO("11:45", "America/Los_Angeles"),
+      endTime: convertTimeToISO("11:45", "America/Los_Angeles"),
       timeZone: "America/Los_Angeles",
       rrule: rule,
       language: "english",
@@ -93,8 +93,8 @@ describe("[POST] /api/events/class", () => {
 
     const expectedBody: ClassEvent = {
       eventInformationId: "",
-      startTime: "11:45:00.000-05:00",
-      endTime: "11:45:00.000-05:00",
+      startTime: convertTimeToISO("11:45", "America/New_York"),
+      endTime: convertTimeToISO("11:45", "America/New_York"),
       timeZone: "America/New_York",
       rrule: rule,
       language: "english",

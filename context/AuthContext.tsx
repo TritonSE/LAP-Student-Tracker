@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useMemo, useEffect } from "
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
 import { FirebaseError } from "@firebase/util";
-import { UpdateUser, User } from "../models/users";
+import { Roles, UpdateUser, User } from "../models/users";
 import { APIContext } from "./APIContext";
 
 type AuthState = {
@@ -15,7 +15,7 @@ type AuthState = {
     firstName: string,
     lastName: string,
     email: string,
-    role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student",
+    role: Roles,
     password: string
   ) => void;
   clearError: () => void;
@@ -167,7 +167,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     firstName: string,
     lastName: string,
     email: string,
-    role: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student",
+    role: Roles,
     password: string
   ): void => {
     (async () => {

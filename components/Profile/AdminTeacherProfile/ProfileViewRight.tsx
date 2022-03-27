@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./ProfileViewRight.module.css";
 import { ProfileInput } from "./ProfileInput";
+import { Roles } from "../../../models/users";
 
 type ProfileViewRightProps = {
   phoneNumber: string | null | undefined;
   email: string;
-  role: string;
+  role: Roles;
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;

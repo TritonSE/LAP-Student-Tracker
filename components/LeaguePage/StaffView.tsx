@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styles from "../../styles/components/LeagueViews.module.css";
+import styles from "../../styles/components/LeaguePage/LeagueViews.module.css";
 import { StaffCard } from "./StaffCard";
 import { APIContext } from "../../context/APIContext";
 import { Loader } from "../util/Loader";

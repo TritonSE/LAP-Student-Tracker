@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/components/LeagueViews.module.css";
+import styles from "../../styles/components/LeaguePage/LeagueViews.module.css";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 type ClassCardProps = {
@@ -42,9 +42,8 @@ const ClassCard: React.FC<ClassCardProps> = ({
   return (
     <div className={styles.listElem}>
       <div>
-        <p className={styles.leftText}>{`${name} ${
-          minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
-        }`}</p>
+        <p className={styles.leftText}>{`${name} ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
+          }`}</p>
       </div>
       <div className={styles.rightText}>
         {[dates, "•", convertTime(startTime, endTime)].join(" ")}

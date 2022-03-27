@@ -9,7 +9,7 @@
 }
 
 .compTitle {
-  composes: headlineLarge from "../globals.css";
+  composes: headlineLarge from "../../globals.css";
   color: var(--black);
   float: left;
   margin-bottom: 32px;
@@ -49,7 +49,7 @@
 }
 
 .orderTitle {
-  composes: headlineSmall from "../globals.css";
+  composes: headlineSmall from "../../globals.css";
   color: var(--black);
   margin-bottom: 8px;
 }
@@ -68,11 +68,11 @@
 }
 
 .listItemText {
-  composes: titleSmall from "../globals.css";
+  composes: titleSmall from "../../globals.css";
 }
 
 .filterTitle {
-  composes: headlineSmall from "../globals.css";
+  composes: headlineSmall from "../../globals.css";
   color: var(--black);
   margin-top: 30px;
   margin-bottom: 8px;
@@ -125,9 +125,9 @@
 }
 
 .leftText {
-  composes: titleMedium from "../globals.css";
+  composes: titleMedium from "../../globals.css";
 }
 
 .rightText {
-  composes: titleSmall from "../globals.css";
+  composes: titleSmall from "../../globals.css";
 }

@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 import React, { useState, useEffect } from "react";
-import styles from "../styles/RepeatModal.module.css";
+import styles from "../../styles/components/RepeatModal.module.css";
 
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
@@ -8,17 +8,8 @@ import DatePicker from "react-date-picker/dist/entry.nostyle";
 
 type RepeatModalProps = {
   handleClose: () => void;
-  handleStates: (
-    repeat: boolean,
-    interval: number,
-    weekDays: number[],
-    endSelection: string,
-    endDate: Date,
-    count: number
-  ) => void;
+  handleStates: (weekDays: number[], endSelection: string, endDate: Date, count: number) => void;
   // props for initial state values
-  initRepeat: boolean;
-  initInterval: number;
   initWeekDays: number[];
   initEndSelection: string;
   initEndDate: Date;
@@ -28,37 +19,32 @@ type RepeatModalProps = {
 const RepeatModal: React.FC<RepeatModalProps> = ({
   handleClose,
   handleStates,
-  initRepeat,
-  initInterval,
   initWeekDays,
   initEndSelection,
   initEndDate,
   initCount,
 }) => {
   // repeat modal states initialized by init props
-  const [repeat, setRepeat] = useState(initRepeat);
-  const [interval, setInterval] = useState(initInterval);
   const [weekDays, setWeekDays] = useState<number[]>(initWeekDays);
   const [endSelection, setEndSelection] = useState(initEndSelection);
   const [endDate, setEndDate] = useState(initEndDate);
   const [count, setCount] = useState(initCount);
   const [valid, setValid] = useState(false);
 
-  // validate modal on field input
+  // validates repeat modal fields on state change
+  const weekDaysValid = weekDays.length > 0;
+  const endSelectionValid =
+    endSelection === "on"
+      ? endDate != null
+      : endSelection === "after"
+      ? !!count
+      : endSelection === "never"
+      ? true
+      : false;
+
   useEffect(() => {
-    setValid(true);
-    if (repeat) {
-      if (!interval) {
-        setValid(false);
-      }
-      if (endSelection === "on" && !endDate) {
-        setValid(false);
-      }
-      if (endSelection === "after" && !count) {
-        setValid(false);
-      }
-    }
-  }, [repeat, interval, weekDays, endSelection, endDate, count]);
+    setValid(weekDaysValid && endSelectionValid);
+  }, [weekDaysValid, endSelectionValid]);
 
   // display strings for week days
   const daysOfWeek = ["S", "M", "T", "W", "T", "F", "S"];
@@ -79,7 +65,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
 
   // passes state values to callback and closes modal on save
   const handleSave = (): void => {
-    handleStates(repeat, interval, weekDays, endSelection, endDate, count);
+    handleStates(weekDays, endSelection, endDate, count);
     handleClose();
   };
 
@@ -88,25 +74,10 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
       <div className={styles.modalContent}>
         <div className={styles.headerWrapper}>
           <p className={styles.title}>Repeat</p>
-          <div>
-            <label className={styles.switch}>
-              <input type="checkbox" checked={repeat} onChange={() => setRepeat(!repeat)} />
-              <span className={`${styles.slider} ${styles.round}`}></span>
-            </label>
-          </div>
         </div>
 
         <div className={styles.row}>
-          <p className={styles.largeLabel}>Repeat every</p>
-          <input
-            className={styles.numberInput}
-            disabled={!repeat}
-            type="number"
-            min={1}
-            value={interval}
-            onChange={(e) => setInterval(e.target.valueAsNumber)}
-          />
-          <input className={styles.freqField} disabled={!repeat} value="weekly" readOnly />
+          <p className={styles.largeLabel}>Repeats weekly</p>
         </div>
 
         <p className={styles.smallLabel}>Repeat on</p>
@@ -114,14 +85,14 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
           {daysOfWeek.map((day, idx) => (
             <div
               key={idx}
-              onClick={() => repeat && handleDayOfWeekChange(convertDayIdx(idx))}
-              className={`${styles.circle} ${!repeat && styles.disabledCircle} ${
-                repeat && weekDays.includes(convertDayIdx(idx)) ? styles.activeCircle : null
+              onClick={() => handleDayOfWeekChange(convertDayIdx(idx))}
+              className={`${styles.circle} ${
+                weekDays.includes(convertDayIdx(idx)) ? styles.activeCircle : null
               }`}
             >
               <p
                 className={`${styles.smallLabel} ${
-                  repeat && weekDays.includes(convertDayIdx(idx)) ? styles.darkLabel : null
+                  weekDays.includes(convertDayIdx(idx)) ? styles.darkLabel : null
                 }`}
               >
                 {day}
@@ -134,7 +105,6 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
         <div className={styles.neverOptionWrapper}>
           <input
             className={styles.radio}
-            disabled={!repeat}
             type="radio"
             name="repeat"
             value="never"
@@ -146,7 +116,6 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
         <div className={styles.radioOptionWrapper}>
           <input
             className={styles.radio}
-            disabled={!repeat}
             type="radio"
             name="repeat"
             value="on"
@@ -155,18 +124,17 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
           />
           <label>On</label>
           <DatePicker
-            disabled={!repeat || endSelection !== "on"}
+            disabled={endSelection !== "on"}
             className={styles.dateInput}
             onChange={setEndDate}
             value={endDate}
-            calendarIcon={null}
             clearIcon={null}
+            openCalendarOnFocus={false}
           />
         </div>
         <div className={styles.radioOptionWrapper}>
           <input
             className={styles.radio}
-            disabled={!repeat}
             type="radio"
             name="repeat"
             value="after"
@@ -175,7 +143,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
           />
           <label>After</label>
           <input
-            disabled={!repeat || endSelection !== "after"}
+            disabled={endSelection !== "after"}
             className={styles.numberInput}
             type="number"
             min={1}

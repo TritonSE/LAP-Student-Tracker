@@ -1,10 +1,10 @@
 /* eslint-disable import/extensions */
 import React, { useState, useEffect, useContext } from "react";
 import { RepeatModal } from "./RepeatModal";
-import { APIContext } from "../context/APIContext";
-import { CreateClass } from "../models/class";
-import { CreateClassEvent } from "../models/events";
-import styles from "../styles/CreateEventsWizard.module.css";
+import { APIContext } from "../../context/APIContext";
+import { CreateClass } from "../../models/class";
+import { CreateClassEvent } from "../../models/events";
+import styles from "../../styles/components/CreateEventsWizard.module.css";
 
 // Work around for date/time picker library to work with NextJS
 // https://github.com/vercel/next.js/issues/19936
@@ -14,9 +14,11 @@ import "react-calendar/dist/Calendar.css";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import TimePicker from "react-time-picker/dist/entry.nostyle";
 
+import axios from "axios";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 import { CirclePicker } from "react-color";
+import { ColorResult } from "react-color/index";
 import ClipLoader from "react-spinners/ClipLoader";
 
 type CreateEventsWizardProps = {
@@ -34,7 +36,6 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [endTime, setEndTime] = useState("11:00");
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showRepeatModal, setShowRepeatModal] = useState(false);
-  const [rruleText, setRruleText] = useState("Never Repeat");
   const [color, setColor] = useState("#ffc702");
   const [teachers, setTeachers] = useState("");
   const [valid, setValid] = useState(false);
@@ -42,12 +43,17 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [errMsg, setErrMsg] = useState("");
 
   // saved repeat modal states
-  const [repeat, setRepeat] = useState(false);
-  const [interval, setInterval] = useState(1);
-  const [weekDays, setWeekDays] = useState<number[]>([]);
+  const [weekDays, setWeekDays] = useState<number[]>([(((new Date().getDay() - 1) % 7) + 7) % 7]);
   const [endType, setEndType] = useState("never");
   const [endDate, setEndDate] = useState(new Date());
   const [count, setCount] = useState(1);
+  const [rruleText, setRruleText] = useState(
+    new RRule({
+      interval: 1,
+      freq: RRule.WEEKLY,
+      byweekday: weekDays,
+    }).toText()
+  );
 
   const client = useContext(APIContext);
 
@@ -60,19 +66,19 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     "#ff0202": "red",
   };
 
-  // validates event wizard on field input
+  // validates event wizard fields on state change
+  const nameValid = name != "";
+  const teachersValid = teachers != "";
+  const levelsValid = !!minLevel && (!multipleLevels || !!maxLevel);
+  const startDateValid = startDate != null;
+  const startTimeValid = startTime != "";
+  const endTimeValid = endTime != "";
+
   useEffect(() => {
-    setValid(true);
-    if (!name || !teachers) {
-      setValid(false);
-    }
-    if (!minLevel || (multipleLevels && (!maxLevel || minLevel >= maxLevel))) {
-      setValid(false);
-    }
-    if (!startDate || !startTime || !endTime) {
-      setValid(false);
-    }
-  }, [name, multipleLevels, minLevel, maxLevel, startDate, startTime, endTime, color, teachers]);
+    setValid(
+      nameValid && teachersValid && levelsValid && startDateValid && startTimeValid && endTimeValid
+    );
+  }, [nameValid, teachersValid, levelsValid, startDateValid, startTimeValid, endTimeValid]);
 
   // force max level to exceed min level
   useEffect(() => {
@@ -88,75 +94,64 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
   // callback for setting repeat modal states on save
   const handleRepeatStates = (
-    repeat_param: boolean,
-    interval_param: number,
-    weekDays_param: number[],
-    endType_param: string,
-    endDate_param: Date,
-    count_param: number
+    weekDaysParam: number[],
+    endTypeParam: string,
+    endDateParam: Date,
+    countParam: number
   ): void => {
-    setRepeat(repeat_param);
-    if (repeat_param) {
-      setInterval(interval_param);
-      setWeekDays(weekDays_param);
-      setEndType(endType_param);
-      setEndDate(endDate_param);
-      setCount(count_param);
+    setWeekDays(weekDaysParam);
+    setEndType(endTypeParam);
+    setEndDate(endDateParam);
+    setCount(countParam);
 
-      // rrule text to display on button
-      const rule = new RRule({
-        interval: interval_param,
-        freq: RRule.WEEKLY,
-        byweekday: weekDays_param,
-      });
-      setRruleText(rule.toText());
-    } else {
-      setRruleText("Never Repeat");
-    }
+    // rrule text to display on button
+    const rule = new RRule({
+      interval: 1,
+      freq: RRule.WEEKLY,
+      byweekday: weekDaysParam,
+    });
+    setRruleText(rule.toText());
   };
 
   // handles create wizard submit
   const handleSubmit = async (): Promise<void> => {
     setErrMsg("");
     setLoading(true);
-    let lang = "unknown";
+    let lang;
     if (name.toLowerCase().includes("java")) {
       lang = "Java";
     } else if (name.toLowerCase().includes("python")) {
       lang = "Python";
+    } else {
+      setErrMsg("Class name must contain a language (Java or Python)");
+      setLoading(false);
+      return;
     }
 
     // construct rrule object
     let rrule;
-    if (repeat) {
-      if (endType === "on") {
-        rrule = new RRule({
-          dtstart: startDate,
-          interval: interval,
-          freq: RRule.WEEKLY,
-          byweekday: weekDays,
-          until: endDate,
-        });
-      } else if (endType === "after") {
-        rrule = new RRule({
-          dtstart: startDate,
-          interval: interval,
-          freq: RRule.WEEKLY,
-          byweekday: weekDays,
-          count: count,
-        });
-      } else {
-        rrule = new RRule({
-          dtstart: startDate,
-          interval: interval,
-          freq: RRule.WEEKLY,
-          byweekday: weekDays,
-        });
-      }
+    if (endType === "on") {
+      rrule = new RRule({
+        dtstart: startDate,
+        interval: 1,
+        freq: RRule.WEEKLY,
+        byweekday: weekDays,
+        until: endDate,
+      });
+    } else if (endType === "after") {
+      rrule = new RRule({
+        dtstart: startDate,
+        interval: 1,
+        freq: RRule.WEEKLY,
+        byweekday: weekDays,
+        count: count,
+      });
     } else {
       rrule = new RRule({
         dtstart: startDate,
-        count: 1,
+        interval: 1,
+        freq: RRule.WEEKLY,
+        byweekday: weekDays,
       });
     }
     const rruleStr = rrule.toString();
@@ -168,9 +163,9 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       timeZone: DateTime.local().zoneName,
       rrule: rruleStr,
       language: lang,
-      neverEnding: repeat && endType === "never",
+      neverEnding: endType === "never",
       backgroundColor: colorMap[color],
-      teachers: teachers.split(","),
+      teachers: teachers.split(",").map((teacher) => teacher.trim()),
     };
 
     try {
@@ -189,12 +184,16 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
         };
         await client.createClass(createClass);
       } catch (err) {
-        setErrMsg("Error on class creation");
+        if (axios.isAxiosError(err) && err.response) setErrMsg(err.response.data);
+        else if (err instanceof Error) setErrMsg(err.message);
+        else setErrMsg("Error");
         setLoading(false);
         return;
       }
     } catch (err) {
-      setErrMsg("Error on class event creation");
+      if (axios.isAxiosError(err) && err.response) setErrMsg(err.response.data);
+      else if (err instanceof Error) setErrMsg(err.message);
+      else setErrMsg("Error");
       setLoading(false);
       return;
     }
@@ -209,8 +208,6 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
         <RepeatModal
           handleClose={handleRepeatClose}
           handleStates={handleRepeatStates}
-          initRepeat={repeat}
-          initInterval={interval}
           initWeekDays={weekDays}
           initEndSelection={endType}
           initEndDate={endDate}
@@ -316,7 +313,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
                     height={136}
                     colors={Object.keys(colorMap)}
                     hex={color}
-                    onChange={(c: any) => setColor(c.hex)}
+                    onChange={(c: ColorResult) => setColor(c.hex)}
                   />
                 </div>
               ) : null}
@@ -326,7 +323,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
               <input
                 className={styles.textInput}
                 type="text"
-                placeholder="Add teachers"
+                placeholder="Comma-separated list of teacher emails"
                 value={teachers}
                 onChange={(e) => setTeachers(e.target.value)}
               />

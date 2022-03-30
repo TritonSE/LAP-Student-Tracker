@@ -64,6 +64,10 @@
   border: none !important;
 }
 
+.react-date-picker__button {
+  background: none !important;
+}
+
 /* override default time-picker style */
 .react-time-picker__wrapper {
   border: none !important;

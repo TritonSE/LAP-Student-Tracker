@@ -12,7 +12,7 @@ type staffArrayType = TypeOf<typeof StaffArraySchema>;
 
 interface StaffMapType {
   id: number;
-  [index:number]:number;
+  [index: number]: number;
 }
 
 // gets all staff in the database
@@ -36,7 +36,7 @@ const getAllStaff = async (): Promise<User[]> => {
 
 const getTeachers = async (): Promise<StaffMapType> => {
   const query = {
-    text: "SELECT id, minLevel, maxLevel FROM users INNER JOIN classes ON users.name = classes.teacher ", 
+    text: "SELECT id, minLevel, maxLevel FROM users INNER JOIN classes ON users.name = classes.teacher ",
   };
 
   const res = await client.query(query);
@@ -49,13 +49,11 @@ const getTeachers = async (): Promise<StaffMapType> => {
       [0]: res.rows[0].minLevel,
       [1]: res.rows[0].maxLevel,
     };
-  }
-  catch(e){
+  } catch (e) {
     throw Error("Fields returned incorrectly from database");
   }
 
   return staffMap;
-
 };
 
 export { getAllStaff, getTeachers };

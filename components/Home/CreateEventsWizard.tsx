@@ -4,7 +4,7 @@ import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../../context/APIContext";
 import { CreateClass } from "../../models/class";
 import { CreateClassEvent } from "../../models/events";
-import styles from "../../styles/components/CreateEventsWizard.module.css";
+import styles from "./CreateEventsWizard.module.css";
 
 // Work around for date/time picker library to work with NextJS
 // https://github.com/vercel/next.js/issues/19936

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { CreateEventsWizard } from "./CreateEventsWizard";
-import styles from "../../styles/components/AdminHomeView.module.css";
+import styles from "./AdminHomeView.module.css";
 
 const AdminHomeView: React.FC = () => {
   const [showWizard, setShowWizard] = useState(false);

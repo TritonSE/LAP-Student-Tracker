@@ -26,7 +26,6 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        console.log(e)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

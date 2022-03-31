@@ -40,7 +40,6 @@ export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest,
         const result = await updateAvailibility(id, availibility.mon, availibility.tue, availibility.wed, availibility.thu, availibility.fri, availibility.sat, availibility.timeZone)
         return res.status(StatusCodes.CREATED).json(result)
       } catch (e) {
-        console.log(e)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error")
       }
     }

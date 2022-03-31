@@ -18,7 +18,6 @@ const updateAvailibility = async (id: string, mon: string[][] | null, tue: strin
   try {
     await client.query(query);
   } catch (e) {
-    console.log(e)
     throw Error("Error on update availibility")
   }
 
@@ -37,8 +36,6 @@ const getAvailibilityById = async (id: string): Promise<Availibility | null> => 
   }
   let availibility: Availibility;
   try { availibility = await decode(AvailibilitySchema, res.rows[0]) } catch (e) {
-    console.log(res.rows[0])
-    console.log(e)
     throw Error("Fields returned incorrectly in database")
   }
   return availibility;

@@ -5,6 +5,7 @@ import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
 import { ClassEvent, CalendarEvent } from "../../models/events";
 
+
 /**
  * Create and test a HTTP Request
  *
@@ -25,7 +26,7 @@ const makeHTTPRequest = async (
   query: Object | undefined,
   method: RequestMethod,
   body: Object | undefined,
-  expectedResponseCode: number,
+  expectedResponseCode: number | undefined,
   expectedBody: Object | undefined
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
@@ -37,7 +38,7 @@ const makeHTTPRequest = async (
 
   await handler(req, res);
 
-  expect(res._getStatusCode()).toBe(expectedResponseCode);
+  if (expectedResponseCode) expect(res._getStatusCode()).toBe(expectedResponseCode);
   if (expectedBody) {
     expect(JSON.parse(res._getData())).toEqual(expectedBody);
   }
@@ -116,6 +117,8 @@ const makeEventFeedHTTPRequest = async (
 
   return res;
 };
+
+
 
 /* Converts startStr and endStr in CalendarEvent object to local ISO */
 const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {

@@ -3,7 +3,7 @@ import { getEventFeed } from "../../../lib/database/calendar-events";
 import { StatusCodes } from "http-status-codes";
 import { getAvailibilityFeed } from "../../../lib/database/availibility-feed";
 
-// handles requests to /api/event-feed/
+// handles requests to /api/availibility-feed/
 const availibilityFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":
@@ -21,16 +21,13 @@ const availibilityFeedHandler: NextApiHandler = async (req: NextApiRequest, res:
         }
 
         const result = await getAvailibilityFeed(start, end, userId);
-        res.status(StatusCodes.OK).json(result);
+        return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        console.log(e)
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
-      break;
 
     default:
-      res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
-      break;
+      return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
   }
 };
 

@@ -39,6 +39,11 @@ const insertDateIntoInterval = (interval: string[], date: Date, timeZone: string
 
 
 const calculateBetweenIntervals = (start: DateTime, end: DateTime, intervals: Interval[]) => {
+
+  if (intervals.length == 0) {
+    return [Interval.fromDateTimes(start, end)]
+  }
+
   const newIntervals = intervals.map((interval, index) => {
     if (index == 0) return Interval.fromDateTimes(start, interval.start);
     return Interval.fromDateTimes(intervals[index - 1].end, interval.start)
@@ -53,6 +58,7 @@ const calculateBetweenIntervals = (start: DateTime, end: DateTime, intervals: In
 // reverse unavailibilities
 
 const getAvailibilityFeed = async (start: string, end: string, userId: string): Promise<CalendarEvent[]> => {
+
   const dates = getDatesInInterval(start, end);
   const user = await getUser(userId)
   if (user == null) {
@@ -70,9 +76,9 @@ const getAvailibilityFeed = async (start: string, end: string, userId: string): 
       return
 
     processedDaysOfWeek.add(weekdayStr);
-    const availibilitiesToProcess = availibility[weekdayStr];
+    let availibilitiesToProcess = availibility[weekdayStr] == null ? [] : availibility[weekdayStr];
     if (availibilitiesToProcess == null)
-      return
+      availibilitiesToProcess = [];
     availibilitiesToProcess.forEach((availibilityInterval) => {
       const availibilityWithDate = insertDateIntoInterval(availibilityInterval, date.toJSDate(), availibility.timeZone)
       availibilityAsIntervals.push(Interval.fromDateTimes(availibilityWithDate[0], availibilityWithDate[1]))
@@ -81,8 +87,6 @@ const getAvailibilityFeed = async (start: string, end: string, userId: string): 
 
 
   const unavaibililites = calculateBetweenIntervals(DateTime.fromISO(start), DateTime.fromISO(end), availibilityAsIntervals);
-
-
   const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
     return Interval.fromDateTimes(DateTime.fromISO(event.startStr), DateTime.fromISO(event.endStr))
   })

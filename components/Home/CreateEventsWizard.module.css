@@ -41,14 +41,6 @@
   color: red;
 }
 
-.dot {
-  height: 25px;
-  width: 25px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
-}
-
 .titleWrapper {
   display: flex;
   justify-content: space-between;

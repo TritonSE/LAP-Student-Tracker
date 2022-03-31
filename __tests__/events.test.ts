@@ -32,7 +32,6 @@ beforeAll(async () => {
     until: new Date(currDate.getFullYear() + 1, currDate.getMonth(), currDate.getDay()),
   });
   rule = ruleObj.toString();
-  console.log(rule)
 });
 
 afterAll(async () => {

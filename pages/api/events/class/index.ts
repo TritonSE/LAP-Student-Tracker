@@ -84,7 +84,6 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
             backgroundColor: newEvent.backgroundColor,
           };
 
-
           return res.status(StatusCodes.CREATED).json(responseBody);
         } catch (e) {
           if (e instanceof NonExistingTeacher)

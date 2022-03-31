@@ -45,6 +45,7 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
           // Loops through all dates and inserts into calender_information table
           for (const date of allDates) {
             const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
             const dateStart = DateTime.fromJSDate(dateWithoutTime).set({
               hour: startTime.hour,
               minute: startTime.minute,

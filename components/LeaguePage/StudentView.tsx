@@ -1,7 +1,7 @@
 import React from "react";
 import { Student } from "../../models/students";
 import { StudentCard } from "./StudentCard";
-import styles from "../../styles/components/LeagueViews.module.css";
+import styles from "./LeagueViews.module.css";
 
 type StudentViewProp = {
   students: Student[];

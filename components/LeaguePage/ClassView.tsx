@@ -1,7 +1,13 @@
-import React from "react";
+import React, { lazy, useContext } from "react";
 import { Class } from "../../models/class";
 import { ClassCard } from "./ClassCard";
 import styles from "../../styles/components/LeagueViews.module.css";
+import useSWR from "swr";
+import { APIContext } from "../../context/APIContext";
+import { Error } from "../util/Error";
+import { Loader } from "../util/Loader";
+import { Empty } from "../util/Empty";
+
 
 type ClassViewProp = {
   classes: Class[];
@@ -19,12 +25,26 @@ const filters = [
   "Level 8",
 ];
 
-const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
-  <div className={styles.compContainer}>
-    <div className={styles.leftContainer}>
-      <h1 className={styles.compTitle}>Classes</h1>
-      <div className={styles.compList}>
-        <ul className={styles.scroll}>
+
+const ClassScroll: React.FC = () => {
+  const client = useContext(APIContext);
+
+  // Use SWR hook to get the data from the backend
+  console.log(useSWR("/api/class", () => client.getAllClasses()));
+  const { data, error } = useSWR("/api/class", () => client.getAllClasses());
+
+  if (error) return <Error />;
+  if (!data) return <Loader />;
+  if (data.length == 0) return <Empty userType="Class" />;
+
+  return (
+    <>
+      {data.map((classs: Class) => (
+        <ClassCard
+          key={classs.eventInformationId}
+          name={classs.name}
+          //eventInformationId={classs.eventInformationId}
+          /*
           {classes.map((tempClass) => (
             <ClassCard
               key={tempClass.eventInformationId}
@@ -36,6 +56,28 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
               endTime={tempClass.endTime}
             />
           ))}
+          */
+          minLevel={classs.minLevel}
+          maxLevel={classs.maxLevel}
+          rrstring={classs.rrstring}
+          startTime={classs.startTime}
+          endTime={classs.endTime}
+        />
+      ))}
+    </>
+  );
+};
+
+
+
+
+const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
+  <div className={styles.compContainer}>
+    <div className={styles.leftContainer}>
+      <h1 className={styles.compTitle}>Classes</h1>
+      <div className={styles.compList}>
+        <ul className={styles.scroll}>
+        <ClassScroll />
         </ul>
       </div>
     </div>

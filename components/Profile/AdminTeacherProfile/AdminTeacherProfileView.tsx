@@ -5,7 +5,6 @@ import { ProfileViewRight } from "./ProfileViewRight";
 import styles from "./AdminTeacherProfile.module.css";
 import { Error } from "../../util/Error";
 import { useRouter } from "next/router";
-import { Roles } from "../../../models/users";
 
 // component that renders the admin/teacher profile page
 const AdminTeacherProfileView: React.FC = () => {
@@ -99,14 +98,14 @@ const AdminTeacherProfileView: React.FC = () => {
       error != null
         ? error.message
         : !validEmail
-          ? "Enter a valid email"
-          : !validPhoneNumber
-            ? "Enter a valid phone number"
-            : !validPassword
-              ? "Passwords must be at least 6 characters"
-              : !validConfirmPassword
-                ? "Passwords do not match"
-                : ""
+        ? "Enter a valid email"
+        : !validPhoneNumber
+        ? "Enter a valid phone number"
+        : !validPassword
+        ? "Passwords must be at least 6 characters"
+        : !validConfirmPassword
+        ? "Passwords do not match"
+        : ""
     );
   }, [validEmail, validPassword, validPhoneNumber, validConfirmPassword, error]);
 

@@ -24,7 +24,6 @@
   color: var(--purple);
 }
 
-
 /* Handle */
 .inputContainerWithPassword::-webkit-scrollbar-thumb {
   width: 8px;

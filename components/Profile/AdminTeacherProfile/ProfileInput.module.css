@@ -1,3 +1,7 @@
 .font {
   composes: titleSmall from "../../../styles/globals.css";
 }
+
+.textBoxPadding {
+  padding-right: 10px;
+}

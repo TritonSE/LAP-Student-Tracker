@@ -18,7 +18,6 @@ const AdminTeacherProfileView: React.FC = () => {
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false);
   const [phoneNumber, setPhoneNumber] = useState<string | undefined | null>(user.phoneNumber);
   const [email, setEmail] = useState<string>(user.email);
-  const [role, _] = useState<Roles>(user.role);
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -100,14 +99,14 @@ const AdminTeacherProfileView: React.FC = () => {
       error != null
         ? error.message
         : !validEmail
-        ? "Enter a valid email"
-        : !validPhoneNumber
-        ? "Enter a valid phone number"
-        : !validPassword
-        ? "Passwords must be at least 6 characters"
-        : !validConfirmPassword
-        ? "Passwords do not match"
-        : ""
+          ? "Enter a valid email"
+          : !validPhoneNumber
+            ? "Enter a valid phone number"
+            : !validPassword
+              ? "Passwords must be at least 6 characters"
+              : !validConfirmPassword
+                ? "Passwords do not match"
+                : ""
     );
   }, [validEmail, validPassword, validPhoneNumber, validConfirmPassword, error]);
 
@@ -117,8 +116,8 @@ const AdminTeacherProfileView: React.FC = () => {
         <div className={styles.contentContainer}>
           <div className={styles.leftContainer}>
             <ProfileViewLeft
-              firstName="Anshul"
-              lastName="Birla"
+              firstName={user.firstName}
+              lastName={user.lastName}
               editProfileClicked={editProfileClicked}
               handleEditProfileClicked={handleEditProfileClicked}
               validInput={validToSave}
@@ -127,7 +126,7 @@ const AdminTeacherProfileView: React.FC = () => {
           <div className={styles.rightContainer}>
             <ProfileViewRight
               email={email}
-              role={role}
+              role={user.role}
               phoneNumber={phoneNumber}
               currentPassword={currentPassword}
               newPassword={newPassword}

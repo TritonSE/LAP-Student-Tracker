@@ -30,22 +30,24 @@ const ProfileInput: React.FC<ProfileInputProps> = ({
   };
 
   return (
-    <TextField
-      id="filled-basic"
-      label={label}
-      variant="filled"
-      color="warning"
-      sx={cssTextField}
-      InputProps={{
-        classes: {
-          input: styles.font,
-        },
-      }}
-      type={password == undefined ? "text" : "password"}
-      value={defaultValue != null ? defaultValue : ""}
-      disabled={disabled}
-      onChange={(e) => handleContentChange(e.target.value)}
-    />
+    <div className={styles.textBoxPadding}>
+      <TextField
+        id="filled-basic"
+        label={label}
+        variant="filled"
+        color="warning"
+        sx={cssTextField}
+        InputProps={{
+          classes: {
+            input: styles.font,
+          },
+        }}
+        type={password == undefined ? "text" : "password"}
+        value={defaultValue != null ? defaultValue : ""}
+        disabled={disabled}
+        onChange={(e) => handleContentChange(e.target.value)}
+      />
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import styles from "../../styles/components/Navbar.module.css";
+import styles from "./Navbar.module.css";
 import React from "react";
 import { useRouter } from "next/router";
 export const Navbar: React.FC = ({ children }) => {

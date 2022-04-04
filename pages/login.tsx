@@ -6,6 +6,7 @@ import { LoginPositionInput } from "../components/Login/LoginPositionInput";
 import { CreateEmailAndPassword } from "../components/Login/CreateEmailAndPassword";
 import { AuthContext } from "../context/AuthContext";
 import { LoginPageNavigation } from "../components/Login/LoginPageNavigation";
+import { Roles } from "../models/users";
 
 const Login: React.FC = () => {
   const auth = useContext(AuthContext);
@@ -20,9 +21,7 @@ const Login: React.FC = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
-  const [position, setPosition] = useState<
-    "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student"
-  >("Admin");
+  const [position, setPosition] = useState<Roles>("Admin");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleEmail = (newEmail: string): void => {
@@ -45,9 +44,7 @@ const Login: React.FC = () => {
     setLastName(newLastName);
   };
 
-  const handlePosition = (
-    newPosition: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student"
-  ): void => {
+  const handlePosition = (newPosition: Roles): void => {
     setPosition(newPosition);
   };
 

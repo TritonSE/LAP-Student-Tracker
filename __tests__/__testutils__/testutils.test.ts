@@ -117,8 +117,8 @@ const makeEventFeedHTTPRequest = async (
 
 /* Converts startStr and endStr in CalendarEvent object to local ISO */
 const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
-  event.startStr = DateTime.fromJSDate(new Date(event.startStr)).toLocal().toISO();
-  event.endStr = DateTime.fromJSDate(new Date(event.endStr)).toLocal().toISO();
+  event.start = DateTime.fromJSDate(new Date(event.start)).toLocal().toISO();
+  event.end = DateTime.fromJSDate(new Date(event.end)).toLocal().toISO();
   return event;
 };
 

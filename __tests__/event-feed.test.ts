@@ -66,15 +66,15 @@ describe("[GET] /api/event-feed", () => {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: "2022-02-26 21:00:00-08",
-        endStr: "2022-02-26 21:00:00-08",
+        start: "2022-02-26 21:00:00-08",
+        end: "2022-02-26 21:00:00-08",
       },
       {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: "2022-02-27 21:11:45-08",
-        endStr: "2022-02-27 21:11:45-08",
+        start: "2022-02-27 21:11:45-08",
+        end: "2022-02-27 21:11:45-08",
       },
     ];
     await makeEventFeedHTTPRequest(
@@ -98,22 +98,22 @@ describe("[GET] /api/event-feed", () => {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: "2022-02-26 21:00:00-08",
-        endStr: "2022-02-26 21:00:00-08",
+        start: "2022-02-26 21:00:00-08",
+        end: "2022-02-26 21:00:00-08",
       },
       {
         id: "id_a",
         title: "event_a",
         backgroundColor: "blue",
-        startStr: "2022-02-27 21:11:45-08",
-        endStr: "2022-02-27 21:11:45-08",
+        start: "2022-02-27 21:11:45-08",
+        end: "2022-02-27 21:11:45-08",
       },
       {
         id: "id_b",
         title: "event_b",
         backgroundColor: "red",
-        startStr: "2022-02-26 21:11:45-08",
-        endStr: "2022-02-26 21:11:45-08",
+        start: "2022-02-26 21:11:45-08",
+        end: "2022-02-26 21:11:45-08",
       },
     ];
     await makeEventFeedHTTPRequest(

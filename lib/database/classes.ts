@@ -98,8 +98,6 @@ const getAllClasses = async (): Promise<Class[]> => {
     throw Error("Fields returned incorrectly in database");
   }
 
-
-
   return classesArray;
 };
 

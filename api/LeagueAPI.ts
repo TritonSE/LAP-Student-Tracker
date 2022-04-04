@@ -32,7 +32,6 @@ class LeagueAPI {
     return res.data;
   }
 
-
   async getUser(id: string): Promise<User> {
     const res = await this.client.get(`api/users/${id}`);
     return res.data;

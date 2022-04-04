@@ -1,4 +1,4 @@
-import React, { lazy, useContext } from "react";
+import React, { useContext } from "react";
 import { Class } from "../../models/class";
 import { ClassCard } from "./ClassCard";
 import styles from "../../styles/components/LeagueViews.module.css";
@@ -7,7 +7,6 @@ import { APIContext } from "../../context/APIContext";
 import { Error } from "../util/Error";
 import { Loader } from "../util/Loader";
 import { Empty } from "../util/Empty";
-
 
 type ClassViewProp = {
   classes: Class[];
@@ -25,12 +24,8 @@ const filters = [
   "Level 8",
 ];
 
-
 const ClassScroll: React.FC = () => {
   const client = useContext(APIContext);
-
-
-  console.log(useSWR("/api/class", () => client.getAllClasses()));
   const { data, error } = useSWR("/api/class", () => client.getAllClasses());
 
   if (error) return <Error />;
@@ -54,16 +49,13 @@ const ClassScroll: React.FC = () => {
   );
 };
 
-
-
-
-const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
+const ClassView: React.FC<ClassViewProp> = () => (
   <div className={styles.compContainer}>
     <div className={styles.leftContainer}>
       <h1 className={styles.compTitle}>Classes</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
-        <ClassScroll />
+          <ClassScroll />
         </ul>
       </div>
     </div>

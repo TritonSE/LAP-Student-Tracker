@@ -30,7 +30,7 @@ const ClassScroll: React.FC = () => {
 
   if (error) return <Error />;
   if (!data) return <Loader />;
-  if (data.length == 0) return <Empty userType="Class" />;
+  if (data.length == 0) return <Empty userType="Classes" />;
 
   return (
     <>

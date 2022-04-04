@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { AdminCalendar } from "../Calendar/AdminCalendar";
 import { CreateEventsWizard } from "../CreateEventsWizard/CreateEventsWizard";
-import styles from "./AdminHomePage.module.css"
+import styles from "./AdminHomePage.module.css";
 
 const AdminHomePage: React.FC<object> = () => {
-
   const [showWizard, setShowWizard] = useState(false);
   const handleClose = (): void => {
     setShowWizard(false);
@@ -22,7 +21,6 @@ const AdminHomePage: React.FC<object> = () => {
       <AdminCalendar />;
     </div>
   );
-
 };
 
 export { AdminHomePage };

@@ -11,11 +11,10 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
     case "GET":
       try {
         const result = await getAllClasses();
-        res.status(StatusCodes.ACCEPTED).json(result);
+        return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
-      break; 
     case "POST":
       try {
         newClass = await decode(CreateClassSchema, req.body);

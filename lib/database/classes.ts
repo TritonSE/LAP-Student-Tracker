@@ -81,22 +81,24 @@ const getClass = async (id: string): Promise<Class | null> => {
 
   return classes;
 };
-const getAllClasses = async (): Promise<Class[] | null> => {
+const getAllClasses = async (): Promise<Class[]> => {
   const query = {
     text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'class'",
   };
 
   const res = await client.query(query);
-  if (res.rows.length == 0) {
-    return null;
-  }
+  // if (res.rows.length == 0) {
+  //   return null;
+  // }
 
   let classesArray: classArrayType;
   try {
-    classesArray = await decode(ClassArraySchema, res.rows[0]);
+    classesArray = await decode(ClassArraySchema, res.rows);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }
+
+
 
   return classesArray;
 };

@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { createClass } from "../../../lib/database/classes";
+import { createClass, getAllClasses } from "../../../lib/database/classes";
 import { CreateClass, CreateClassSchema } from "../../../models/class";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
@@ -8,6 +8,14 @@ import { StatusCodes } from "http-status-codes";
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newClass: CreateClass;
   switch (req.method) {
+    case "GET":
+      try {
+        const result = await getAllClasses();
+        res.status(StatusCodes.ACCEPTED).json(result);
+      } catch (e) {
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+      }
+      break; 
     case "POST":
       try {
         newClass = await decode(CreateClassSchema, req.body);

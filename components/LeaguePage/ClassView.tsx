@@ -29,7 +29,7 @@ const filters = [
 const ClassScroll: React.FC = () => {
   const client = useContext(APIContext);
 
-  // Use SWR hook to get the data from the backend
+
   console.log(useSWR("/api/class", () => client.getAllClasses()));
   const { data, error } = useSWR("/api/class", () => client.getAllClasses());
 
@@ -43,20 +43,6 @@ const ClassScroll: React.FC = () => {
         <ClassCard
           key={classs.eventInformationId}
           name={classs.name}
-          //eventInformationId={classs.eventInformationId}
-          /*
-          {classes.map((tempClass) => (
-            <ClassCard
-              key={tempClass.eventInformationId}
-              name={tempClass.name}
-              minLevel={tempClass.minLevel}
-              maxLevel={tempClass.maxLevel}
-              rrstring={tempClass.rrstring}
-              startTime={tempClass.startTime}
-              endTime={tempClass.endTime}
-            />
-          ))}
-          */
           minLevel={classs.minLevel}
           maxLevel={classs.maxLevel}
           rrstring={classs.rrstring}

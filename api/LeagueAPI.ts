@@ -23,7 +23,7 @@ class LeagueAPI {
     return res.data;
   }
 
-  async getClass(id: string): Promise<Class[]> {
+  async getClass(id: string): Promise<Class> {
     const res = await this.client.get(`api/class/${id}`);
     return res.data;
   }

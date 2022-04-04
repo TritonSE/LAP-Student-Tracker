@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Class } from "../../models/class";
 import { ClassCard } from "./ClassCard";
-import styles from "../../styles/components/LeagueViews.module.css";
+import styles from "./LeagueViews.module.css";
 import useSWR from "swr";
 import { APIContext } from "../../context/APIContext";
 import { Error } from "../util/Error";

@@ -22,7 +22,6 @@ const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextAp
         const result = await getEventFeed(start, end, userId);
         res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        //console.error(e);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
       break;

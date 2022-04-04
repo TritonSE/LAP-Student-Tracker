@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 
+// Transpiles libraries from node-modules to local
 const withTM = require("next-transpile-modules")([
   "@fullcalendar/common",
   "@babel/preset-react",

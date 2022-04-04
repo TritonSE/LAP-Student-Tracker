@@ -27,27 +27,27 @@ type CreateEventsWizardProps = {
 
 const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) => {
   // create wizard states
-  const [name, setName] = useState("");
-  const [multipleLevels, setMultipleLevels] = useState(false);
-  const [minLevel, setMinLevel] = useState(1);
-  const [maxLevel, setMaxLevel] = useState(1);
-  const [startDate, setStartDate] = useState(new Date());
-  const [startTime, setStartTime] = useState("10:00");
-  const [endTime, setEndTime] = useState("11:00");
-  const [showColorPicker, setShowColorPicker] = useState(false);
-  const [showRepeatModal, setShowRepeatModal] = useState(false);
-  const [color, setColor] = useState("#ffc702");
-  const [teachers, setTeachers] = useState("");
-  const [valid, setValid] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [errMsg, setErrMsg] = useState("");
+  const [name, setName] = useState<string>("");
+  const [multipleLevels, setMultipleLevels] = useState<boolean>(false);
+  const [minLevel, setMinLevel] = useState<number>(1);
+  const [maxLevel, setMaxLevel] = useState<number>(1);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [startTime, setStartTime] = useState<string>("10:00");
+  const [endTime, setEndTime] = useState<string>("11:00");
+  const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
+  const [showRepeatModal, setShowRepeatModal] = useState<boolean>(false);
+  const [color, setColor] = useState<string>("#ffc702");
+  const [teachers, setTeachers] = useState<string>("");
+  const [valid, setValid] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [errMsg, setErrMsg] = useState<string>("");
 
   // saved repeat modal states
   const [weekDays, setWeekDays] = useState<number[]>([(((new Date().getDay() - 1) % 7) + 7) % 7]);
-  const [endType, setEndType] = useState("never");
-  const [endDate, setEndDate] = useState(new Date());
-  const [count, setCount] = useState(1);
-  const [rruleText, setRruleText] = useState(
+  const [endType, setEndType] = useState<string>("never");
+  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [count, setCount] = useState<number>(1);
+  const [rruleText, setRruleText] = useState<string>(
     new RRule({
       interval: 1,
       freq: RRule.WEEKLY,
@@ -73,12 +73,43 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const startDateValid = startDate != null;
   const startTimeValid = startTime != "";
   const endTimeValid = endTime != "";
+  const startBeforeEndDate = startDate <= endDate && endType == "on";
 
   useEffect(() => {
     setValid(
-      nameValid && teachersValid && levelsValid && startDateValid && startTimeValid && endTimeValid
+      nameValid &&
+        teachersValid &&
+        levelsValid &&
+        startDateValid &&
+        startTimeValid &&
+        endTimeValid &&
+        startBeforeEndDate
     );
-  }, [nameValid, teachersValid, levelsValid, startDateValid, startTimeValid, endTimeValid]);
+    const errorMessage = !nameValid
+      ? "Please enter a name for the class"
+      : !teachersValid
+      ? "Please enter at least one teacher"
+      : !levelsValid
+      ? "Please ensure that the max level is less than the minimum level"
+      : !startDateValid
+      ? "Please enter a valid start date"
+      : !startTimeValid
+      ? "Please enter a valid start/end time"
+      : !endTimeValid
+      ? "Please enter a valid end time"
+      : !startBeforeEndDate
+      ? "Please ensure that the end date is after the start date"
+      : "";
+    setErrMsg(errorMessage);
+  }, [
+    nameValid,
+    teachersValid,
+    levelsValid,
+    startDateValid,
+    startTimeValid,
+    endTimeValid,
+    startBeforeEndDate,
+  ]);
 
   // force max level to exceed min level
   useEffect(() => {

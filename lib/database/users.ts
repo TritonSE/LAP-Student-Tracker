@@ -32,7 +32,7 @@ const updateUser = async (
   email?: string,
   role?: string,
   address?: string,
-  phone_number?: string
+  phone_number?: string | null
 ): Promise<User | null> => {
   const query = {
     text:

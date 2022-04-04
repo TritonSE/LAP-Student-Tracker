@@ -9,6 +9,10 @@ import { Layout } from "../components/Navbar/NavbarLayout";
 import { AuthProvider } from "../context/AuthContext";
 import { AuthGuard } from "../components/util/RouteGaurd";
 import { NextPage } from "next";
+// Importing full calendar css for use within calendar component
+import "@fullcalendar/common/main.css";
+import "@fullcalendar/daygrid/main.css";
+import "@fullcalendar/timegrid/main.css";
 
 export type NextApplicationPage<P = any, IP = P> = NextPage<P, IP> & {
   requireAuth?: boolean;

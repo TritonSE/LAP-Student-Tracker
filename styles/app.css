@@ -16,6 +16,12 @@ a {
 }
 
 button {
+  outline: none;
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
   cursor: pointer;
 }
 
@@ -38,4 +44,6 @@ button:disabled {
   --purple: #5d5fef;
   --blue: #5ec0f0;
   --red: #ff0202;
+  --gray-3: #bfc1c4;
+  --purple: #5d5fef;
 }

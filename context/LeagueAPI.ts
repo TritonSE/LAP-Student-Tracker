@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
-import { User } from "../models/users";
 import { CreateClass, Class } from "../models/class";
 import { CreateClassEvent, ClassEvent } from "../models/events";
+import { UpdateUser, User } from "../models/users";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -41,6 +41,11 @@ class LeagueAPI {
 
   async createUser(user: User): Promise<User> {
     const res = await this.client.post("api/users/", user);
+    return res.data;
+  }
+
+  async updateUser(user: UpdateUser, id: string): Promise<User> {
+    const res = await this.client.patch(`api/users/${id}`, user);
     return res.data;
   }
 }

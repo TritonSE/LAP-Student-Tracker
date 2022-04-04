@@ -2,7 +2,7 @@ import React from "react";
 import { UserCalendar } from "../Calendar/UserCalendar";
 
 type UserHomeProp = {
-  userId: string | undefined;
+  userId: string;
 };
 
 const UserHomePage: React.FC<UserHomeProp> = ({ userId }) => {

@@ -51,6 +51,7 @@ const teachersExist = async (teachers: string[]): Promise<string[]> => {
   return teacherIds;
 };
 
+// Checks whether teacher's current schedule conflicts with desired intervals
 const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<void> => {
   const query = {
     text:
@@ -61,6 +62,7 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
     values: [teacherId],
   };
 
+  // fetch all calendar start-end times teacher is committed to from db
   let res;
   try {
     res = await client.query(query);
@@ -68,14 +70,38 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
     throw Error("Error on select of database.");
   }
 
-  for (const calendarEvent of res.rows) {
-    const calendarInterval: Interval = Interval.fromDateTimes(
-      calendarEvent.start,
-      calendarEvent.end
-    );
-    for (const interval of intervals) {
-      if (calendarInterval.overlaps(interval))
-        throw new TeacherConflictError("Teacher " + teacherId + " has conflict with class");
+  // helper function for sorting intervals
+  const compareIntervals = (a: Interval, b: Interval): number => {
+    if (a.start > b.start) return 1;
+    else if (a.start < b.start) return -1;
+    return 0;
+  }
+
+  // Convert db results to teacher's current intervals and sort
+  const currentEventIntervals: Interval[] = res.rows.map(event => Interval.fromDateTimes(
+    event.start,
+    event.end
+  )).sort(compareIntervals);
+
+  // Sort new intervals
+  const newIntervals: Interval[] = intervals.sort(compareIntervals);
+
+  var currIntervalPtr = 0;
+  var newIntervalPtr = 0;
+
+  // Check for overlap between current time intervals and new intervals
+  // Can assume currentEventIntervals and newIntervals are non-overlapping
+  while (currIntervalPtr < currentEventIntervals.length && newIntervalPtr < newIntervals.length) {
+    const currInterval: Interval = currentEventIntervals[currIntervalPtr];
+    const newInterval: Interval = newIntervals[newIntervalPtr];
+    if (currInterval.overlaps(newInterval)) {
+      throw new TeacherConflictError("Teacher " + teacherId + " has conflict with class");
+    }
+    if (currInterval.start < newInterval.start) {
+      currIntervalPtr++;
+    }
+    else {
+      newIntervalPtr++;
     }
   }
 };

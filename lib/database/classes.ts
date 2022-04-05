@@ -63,7 +63,7 @@ const updateClass = async (
 // get a class given the id
 const getClass = async (id: string): Promise<Class | null> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'class' AND c.event_information_id = $1",
+    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class' AND c.event_information_id = $1",
     values: [id],
   };
 
@@ -72,24 +72,21 @@ const getClass = async (id: string): Promise<Class | null> => {
     return null;
   }
 
-  let classes: Class;
+  let oneClass: Class;
   try {
-    classes = await decode(ClassSchema, res.rows[0]);
+    oneClass = await decode(ClassSchema, res.rows[0]);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }
 
-  return classes;
+  return oneClass;
 };
 const getAllClasses = async (): Promise<Class[]> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'class'",
+    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class'",
   };
 
   const res = await client.query(query);
-  // if (res.rows.length == 0) {
-  //   return null;
-  // }
 
   let classesArray: classArrayType;
   try {

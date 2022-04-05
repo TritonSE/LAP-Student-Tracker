@@ -8,10 +8,6 @@ import { Error } from "../util/Error";
 import { Loader } from "../util/Loader";
 import { Empty } from "../util/Empty";
 
-type ClassViewProp = {
-  classes: Class[];
-};
-
 const filters = [
   "Level 0",
   "Level 1",
@@ -49,7 +45,7 @@ const ClassScroll: React.FC = () => {
   );
 };
 
-const ClassView: React.FC<ClassViewProp> = () => (
+const ClassView: React.FC = () => (
   <div className={styles.compContainer}>
     <div className={styles.leftContainer}>
       <h1 className={styles.compTitle}>Classes</h1>

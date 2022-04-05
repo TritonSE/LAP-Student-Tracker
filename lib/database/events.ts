@@ -16,11 +16,6 @@ class TeacherConflictError extends Error {
   }
 }
 
-type resultIds = {
-  classEventId: string;
-  teacherIds: string[];
-};
-
 // Checks if the given teacher emails exist in the database and returns their IDs
 const teachersExist = async (teachers: string[]): Promise<string[]> => {
   const query = {
@@ -104,13 +99,12 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
   }
 };
 
-// Create an event in the database with given parameters
+// Create an event in the database with given parameters and return id
 const createClassEvent = async (
   name: string,
   neverEnding: boolean,
-  backgroundColor: string,
-  teacherIds: string[]
-): Promise<resultIds> => {
+  backgroundColor: string
+): Promise<string> => {
   const query = {
     text: "INSERT INTO event_information(name, background_color, type, never_ending) VALUES($1, $2, $3, $4) RETURNING id",
     values: [name, backgroundColor, "Class", neverEnding],
@@ -123,10 +117,7 @@ const createClassEvent = async (
     throw Error("Error on insert into database.");
   }
 
-  return {
-    classEventId: res.rows[0].id,
-    teacherIds: teacherIds,
-  };
+  return res.rows[0].id;
 };
 
 export { createClassEvent, validateTimes, teachersExist, NonExistingTeacher, TeacherConflictError };

@@ -82,18 +82,13 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
           const result = await createClassEvent(
             newEvent.name,
             newEvent.neverEnding,
-            newEvent.backgroundColor,
-            teacherIds
+            newEvent.backgroundColor
           );
 
           // insert all date intervals into calendar_information table
           try {
             for (const interval of intervals) {
-              await createCalendarEvent(
-                result.classEventId,
-                interval.start.toISO(),
-                interval.end.toISO()
-              );
+              await createCalendarEvent(result, interval.start.toISO(), interval.end.toISO());
             }
           } catch (e) {
             return res.status(StatusCodes.BAD_REQUEST).json("Calendar information is incorrect");
@@ -102,14 +97,14 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
           // Loops through teachers and inserts into commitments table
           try {
             for (const teacher of teacherIds) {
-              await createCommitment(teacher, result.classEventId);
+              await createCommitment(teacher, result);
             }
           } catch (e) {
             return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");
           }
 
           const responseBody: ClassEvent = {
-            eventInformationId: result.classEventId,
+            eventInformationId: result,
             startTime: startTime.toISOTime(),
             endTime: endTime.toISOTime(),
             timeZone: newEvent.timeZone,

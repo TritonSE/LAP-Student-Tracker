@@ -56,3 +56,19 @@
   font-size: 11px;
   line-height: 16px;
 }
+
+.buttonOutlined {
+  background-color: white;
+  border: 2px solid #1b1c1d;
+  border-radius: 16px;
+  color: #000000;
+  text-align: center;
+}
+
+.buttonFilled {
+  background-color: #f37121;
+  border: none;
+  border-radius: 16px;
+  color: #000000;
+  text-align: center;
+}

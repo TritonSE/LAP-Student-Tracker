@@ -79,8 +79,7 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
             <label className={styles.chkboxLabel}>Remember Me</label>
           </form>
           <div>
-            {/* TODO: Add forgot password functionality */}
-            <a className={styles.forgotPassword}> </a>
+            <a className={styles.forgotPassword} href="http://localhost:3000/forgotpassword">Forgot Password?</a>
           </div>
         </div>
         <div className={styles.passwordError}> {error != null ? error.message : ""} </div>

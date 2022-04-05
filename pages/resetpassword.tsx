@@ -67,34 +67,42 @@ const ResetPassword: React.FC = () => {
     }
 
     return (
-        <div className={styles.contentContainer}>
-            <h2 className={styles.title}>Reset Password</h2>
-            <TextField
-                id="filled-basic"
-                label="Enter New Password"
-                variant="filled"
-                type="password"
-                color="warning"
-                InputProps={{ disableUnderline: true }}
-                sx={cssTextField}
-                onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <TextField
-                id="filled-basic"
-                label="Confirm New Password"
-                variant="filled"
-                type="password"
-                color="warning"
-                InputProps={{ disableUnderline: true }}
-                sx={cssTextField}
-                onChange={(e) => setConfirmNewPassword(e.target.value)}
-            />
-            <div className={styles.errorMessage}> {error != null ? error : ""} </div>
-            <button className={styles.submitButton} onClick={() => resetPassword()}>
-                    Submit
-            </button>
+        <div>
+            <div className={styles.headerContainer}>
+                <img src="logo1.png"></img>
+                <img src="logo2.png"></img>
+            </div>
+            <div className={styles.contentContainer}>
+                <h2 className={styles.title}>Reset Password</h2>
+                <TextField
+                    id="filled-basic"
+                    label="Enter New Password"
+                    variant="filled"
+                    type="password"
+                    color="warning"
+                    InputProps={{ disableUnderline: true }}
+                    sx={cssTextField}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <TextField
+                    id="filled-basic"
+                    label="Confirm New Password"
+                    variant="filled"
+                    type="password"
+                    color="warning"
+                    InputProps={{ disableUnderline: true }}
+                    sx={cssTextField}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                />
+                <div className={styles.errorMessage}> {error != null ? error : ""} </div>
+                <button className={styles.submitButton} onClick={() => resetPassword()}>
+                        Submit
+                </button>
+            </div>
 
         </div>
+
+        
     );
 
 }

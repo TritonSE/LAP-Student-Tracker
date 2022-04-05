@@ -75,19 +75,18 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
     if (a.start > b.start) return 1;
     else if (a.start < b.start) return -1;
     return 0;
-  }
+  };
 
   // Convert db results to teacher's current intervals and sort
-  const currentEventIntervals: Interval[] = res.rows.map(event => Interval.fromDateTimes(
-    event.start,
-    event.end
-  )).sort(compareIntervals);
+  const currentEventIntervals: Interval[] = res.rows
+    .map((event) => Interval.fromDateTimes(event.start, event.end))
+    .sort(compareIntervals);
 
   // Sort new intervals
   const newIntervals: Interval[] = intervals.sort(compareIntervals);
 
-  var currIntervalPtr = 0;
-  var newIntervalPtr = 0;
+  let currIntervalPtr = 0;
+  let newIntervalPtr = 0;
 
   // Check for overlap between current time intervals and new intervals
   // Can assume currentEventIntervals and newIntervals are non-overlapping
@@ -99,8 +98,7 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
     }
     if (currInterval.start < newInterval.start) {
       currIntervalPtr++;
-    }
-    else {
+    } else {
       newIntervalPtr++;
     }
   }

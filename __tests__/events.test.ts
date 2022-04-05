@@ -39,9 +39,7 @@ beforeAll(async () => {
   await client.query(
     "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('e_1', '2022-01-05 10:00:00-08', '2022-01-05 11:00:00-08')"
   );
-  await client.query(
-    "INSERT INTO commitments(user_id, event_information_id) VALUES('2', 'e_1')"
-  );
+  await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('2', 'e_1')");
 
   const currDate = new Date();
   const ruleObj = new RRule({
@@ -240,16 +238,22 @@ describe("[POST] /api/events/class", () => {
       teachers: ["teacher@gmail.com"],
     };
 
-    const expectedBody: ClassEvent = {
-      eventInformationId: "",
-      startTime: convertTimeToISO("10:45", "America/Los_Angeles"),
-      endTime: convertTimeToISO("11:45", "America/Los_Angeles"),
-      timeZone: "America/Los_Angeles",
-      rrule: rrule.toString(),
-      language: "Java",
-      neverEnding: false,
-      backgroundColor: "blue",
-    };
+    await makeHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "Teacher 2 has conflict with class"
+    );
+
+    body.rrule = new RRule({
+      freq: RRule.DAILY,
+      interval: 2,
+      count: 3,
+      dtstart: new Date(2022, 0, 5),
+    }).toString();
 
     await makeHTTPRequest(
       eventHandler,

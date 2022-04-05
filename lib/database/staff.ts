@@ -36,7 +36,7 @@ const getAllStaff = async (): Promise<User[]> => {
 
 const getTeachers = async (): Promise<StaffMapType> => {
   const query = {
-    text: "SELECT id, minLevel, maxLevel FROM users INNER JOIN classes ON users.name = classes.teacher ",
+    text: "SELECT users FROM ((event_information INNER JOIN classes ON event_information_id) INNER JOIN commitments ON event_information_id) OUTER JOIN users ON user_id"
   };
 
   const res = await client.query(query);

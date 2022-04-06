@@ -22,6 +22,10 @@ const availibilityFeedHandler: NextApiHandler = async (
           return res.status(StatusCodes.BAD_REQUEST).json("No start or end date specified");
         }
 
+        if (!userId) {
+          return res.status(StatusCodes.BAD_REQUEST).json("No user specified");
+        }
+
         const result = await getAvailibilityFeed(start, end, userId);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {

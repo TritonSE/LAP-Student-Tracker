@@ -88,7 +88,7 @@ const getAvailibilityFeed = async (start: string, end: string, userId: string): 
 
   const unavaibililites = calculateBetweenIntervals(DateTime.fromISO(start), DateTime.fromISO(end), availibilityAsIntervals);
   const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
-    return Interval.fromDateTimes(DateTime.fromISO(event.startStr), DateTime.fromISO(event.endStr))
+    return Interval.fromDateTimes(DateTime.fromISO(event.start), DateTime.fromISO(event.end))
   })
 
 
@@ -103,8 +103,8 @@ const getAvailibilityFeed = async (start: string, end: string, userId: string): 
       id: user.id,
       backgroundColor: hash.hex(user.firstName + " " + user.lastName) as string,
       title: user.firstName + " " + user.lastName + " is Available",
-      startStr: interval.start.toISO(),
-      endStr: interval.end.toISO()
+      start: interval.start.toISO(),
+      end: interval.end.toISO()
     }
   })
   return availibilityCalendarEvents

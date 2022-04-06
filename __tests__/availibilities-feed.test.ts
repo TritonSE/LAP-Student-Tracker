@@ -104,15 +104,15 @@ describe('[GET] /api/availibilites-feed/', () => {
       id: 'user_a',
       title: availibilityTitle,
       backgroundColor: teacherColorHash,
-      startStr: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 8, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
-      endStr: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 11, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
+      start: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 8, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+      end: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 11, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
     },
     {
       id: 'user_a',
       title: availibilityTitle,
       backgroundColor: teacherColorHash,
-      startStr: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 13, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
-      endStr: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 15, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+      start: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 13, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
+      end: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 15, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
     }]
 
     await makeHTTPRequest(availibilityFeedHandler, "/api/availibility-feed/", query, "GET", undefined, StatusCodes.OK, expectedBody)
@@ -130,15 +130,15 @@ describe('[GET] /api/availibilites-feed/', () => {
         id: 'user_a',
         title: availibilityTitle,
         backgroundColor: teacherColorHash,
-        startStr: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 6, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
-        endStr: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 10, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        start: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 6, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        end: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 10, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
       },
       {
         id: 'user_a',
         title: availibilityTitle,
         backgroundColor: teacherColorHash,
-        startStr: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 12, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
-        endStr: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 16, minute: 30 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        start: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 12, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        end: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 16, minute: 30 }).setZone('America/Los_Angeles').toLocal().toISO(),
       }
     ]
 
@@ -158,8 +158,8 @@ describe('[GET] /api/availibilites-feed/', () => {
         id: 'user_a',
         title: availibilityTitle,
         backgroundColor: teacherColorHash,
-        startStr: DateTime.fromObject({ year: 2022, month: 2, day: 24, hour: 9, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
-        endStr: DateTime.fromObject({ year: 2022, month: 2, day: 24, hour: 15, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        start: DateTime.fromObject({ year: 2022, month: 2, day: 24, hour: 9, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        end: DateTime.fromObject({ year: 2022, month: 2, day: 24, hour: 15, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
       }
     ]
 
@@ -179,29 +179,29 @@ describe('[GET] /api/availibilites-feed/', () => {
         id: 'user_a',
         title: availibilityTitle,
         backgroundColor: teacherColorHash,
-        startStr: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 6, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
-        endStr: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 8, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 6, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 8, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
       },
       {
         id: 'user_a',
         title: availibilityTitle,
         backgroundColor: teacherColorHash,
-        startStr: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 10, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
-        endStr: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 11, minute: 30 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 10, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 11, minute: 30 }).setZone('America/Los_Angeles').toLocal().toISO(),
       },
       {
         id: 'user_a',
         title: availibilityTitle,
         backgroundColor: teacherColorHash,
-        startStr: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 11, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
-        endStr: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 12, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 11, minute: 45 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 12, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
       },
       {
         id: 'user_a',
         title: availibilityTitle,
         backgroundColor: teacherColorHash,
-        startStr: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 14, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
-        endStr: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 16, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 14, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
+        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 16, minute: 0 }).setZone('America/Los_Angeles').toLocal().toISO(),
       },
     ]
 

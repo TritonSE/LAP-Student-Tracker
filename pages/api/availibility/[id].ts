@@ -19,7 +19,7 @@ export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest,
       try {
         const availibility = await getAvailibilityById(id);
         if (availibility == null)
-          return res.status(StatusCodes.NOT_FOUND).json("Availibility not found")
+          return res.status(StatusCodes.NOT_FOUND).json("Availibility of user not found")
         return res.status(StatusCodes.ACCEPTED).json(availibility);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error")
@@ -30,7 +30,7 @@ export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest,
       // todo: validate if id exists
       let availibility: Availibility;
       if ((await getAvailibilityById(id)) == null)
-        return res.status(StatusCodes.NOT_FOUND).json("Availibility for user not found")
+        return res.status(StatusCodes.NOT_FOUND).json("Availibility of user not found")
       try {
         availibility = await decode(AvailibilitySchema, req.body)
       } catch (e) {

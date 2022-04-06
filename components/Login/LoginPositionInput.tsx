@@ -1,9 +1,10 @@
-import styles from "../../styles/components/LoginViews.module.css";
+import styles from "./LoginViews.module.css";
 import React from "react";
+import { Roles } from "../../models/users";
 
 type LoginPositionInputProps = {
-  onContentChange: (newPosition: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student") => void;
-  currPosition: "Admin" | "Teacher" | "Volunteer" | "Parent" | "Student";
+  onContentChange: (newPosition: Roles) => void;
+  currPosition: Roles;
 };
 // handles selecting a role for a new user
 const LoginPositionInput: React.FC<LoginPositionInputProps> = ({

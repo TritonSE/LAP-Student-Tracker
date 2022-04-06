@@ -63,7 +63,7 @@ describe("[GET] /api/availibility/[id]", () => {
       "GET",
       undefined,
       StatusCodes.NOT_FOUND,
-      "Availibility not found"
+      "Availibility of user not found"
     )
 
   })
@@ -94,7 +94,7 @@ describe("[PATCH] /api/availibilities/[id]", () => {
       "PATCH",
       body,
       StatusCodes.CREATED,
-      "Availibility of user not found"
+      body
     )
   })
 

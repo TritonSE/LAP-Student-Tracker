@@ -18,6 +18,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await client.query("DELETE from users")
   await client.end();
 });
 

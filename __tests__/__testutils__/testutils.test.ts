@@ -66,8 +66,6 @@ const makeEventHTTPRequest = async (
   expect(res._getStatusCode()).toBe(expectedResponseCode);
   expect(JSON.parse(res._getData())).toEqual(
     expect.objectContaining({
-      eventInformationId: expect.stringContaining('-' // Checks if string matches to UUID format
-      ),
       startTime: expectedBody.startTime,
       endTime: expectedBody.endTime,
       timeZone: expectedBody.timeZone,
@@ -122,9 +120,13 @@ const makeEventFeedHTTPRequest = async (
 
 /* Converts startStr and endStr in CalendarEvent object to local ISO */
 const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
-  event.startStr = DateTime.fromJSDate(new Date(event.startStr)).toLocal().toISO();
-  event.endStr = DateTime.fromJSDate(new Date(event.endStr)).toLocal().toISO();
+  event.start = DateTime.fromJSDate(new Date(event.start)).toLocal().toISO();
+  event.end = DateTime.fromJSDate(new Date(event.end)).toLocal().toISO();
   return event;
 };
 
-export { makeHTTPRequest, makeEventHTTPRequest, makeEventFeedHTTPRequest };
+const convertTimeToISO = (time: string, timeZone: string): string => {
+  return DateTime.fromFormat(time, "HH:mm", { zone: timeZone }).toISOTime();
+};
+
+export { makeHTTPRequest, makeEventHTTPRequest, makeEventFeedHTTPRequest, convertTimeToISO };

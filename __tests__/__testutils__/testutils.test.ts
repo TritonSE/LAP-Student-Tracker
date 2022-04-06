@@ -5,7 +5,6 @@ import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
 import { ClassEvent, CalendarEvent } from "../../models/events";
 
-
 /**
  * Create and test a HTTP Request
  *
@@ -93,8 +92,8 @@ const makeEventFeedHTTPRequest = async (
   const res = await makeHTTPRequest(
     handler,
     endpoint +
-    `?start=${queryParams.start}&end=${queryParams.end}` +
-    (queryParams.userId ? `&userId=${queryParams.userId}` : ""),
+      `?start=${queryParams.start}&end=${queryParams.end}` +
+      (queryParams.userId ? `&userId=${queryParams.userId}` : ""),
     query,
     method,
     undefined,
@@ -115,8 +114,6 @@ const makeEventFeedHTTPRequest = async (
 
   return res;
 };
-
-
 
 /* Converts startStr and endStr in CalendarEvent object to local ISO */
 const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {

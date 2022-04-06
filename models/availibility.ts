@@ -6,8 +6,7 @@ export const AvailibilitySchema = t.type({
   thu: t.union([t.array(t.array(t.string)), t.null]),
   fri: t.union([t.array(t.array(t.string)), t.null]),
   sat: t.union([t.array(t.array(t.string)), t.null]),
-  timeZone: t.string
+  timeZone: t.string,
 });
-
 
 export type Availibility = t.TypeOf<typeof AvailibilitySchema>;

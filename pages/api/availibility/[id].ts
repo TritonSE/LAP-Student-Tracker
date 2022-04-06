@@ -4,7 +4,10 @@ import { StatusCodes } from "http-status-codes";
 import { Availibility, AvailibilitySchema } from "../../../models/availibility";
 import { getAvailibilityById, updateAvailibility } from "../../../lib/database/availibilities";
 //Handles all requests to /api/availibility/[id]
-export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const availibilityIdHandler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
@@ -19,28 +22,36 @@ export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest,
       try {
         const availibility = await getAvailibilityById(id);
         if (availibility == null)
-          return res.status(StatusCodes.NOT_FOUND).json("Availibility of user not found")
+          return res.status(StatusCodes.NOT_FOUND).json("Availibility of user not found");
         return res.status(StatusCodes.ACCEPTED).json(availibility);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error")
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
-
     }
     case "PATCH": {
       // todo: validate if id exists
       let availibility: Availibility;
       if ((await getAvailibilityById(id)) == null)
-        return res.status(StatusCodes.NOT_FOUND).json("Availibility of user not found")
+        return res.status(StatusCodes.NOT_FOUND).json("Availibility of user not found");
       try {
-        availibility = await decode(AvailibilitySchema, req.body)
+        availibility = await decode(AvailibilitySchema, req.body);
       } catch (e) {
-        return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered")
+        return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
-        const result = await updateAvailibility(id, availibility.mon, availibility.tue, availibility.wed, availibility.thu, availibility.fri, availibility.sat, availibility.timeZone)
-        return res.status(StatusCodes.CREATED).json(result)
+        const result = await updateAvailibility(
+          id,
+          availibility.mon,
+          availibility.tue,
+          availibility.wed,
+          availibility.thu,
+          availibility.fri,
+          availibility.sat,
+          availibility.timeZone
+        );
+        return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error")
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
     default: {
@@ -49,4 +60,4 @@ export const availibilityIdHandler: NextApiHandler = async (req: NextApiRequest,
   }
 };
 
-export default availibilityIdHandler
+export default availibilityIdHandler;

@@ -1,10 +1,12 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getEventFeed } from "../../../lib/database/calendar-events";
 import { StatusCodes } from "http-status-codes";
 import { getAvailibilityFeed } from "../../../lib/database/availibility-feed";
 
 // handles requests to /api/availibility-feed/
-const availibilityFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const availibilityFeedHandler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   switch (req.method) {
     case "GET":
       try {

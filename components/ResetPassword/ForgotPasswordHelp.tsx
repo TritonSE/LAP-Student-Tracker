@@ -33,6 +33,6 @@ const ForgotPasswordHelp: React.FC<ForgotPasswordMainProps> = ({
 
 };
 
-export default ForgotPasswordHelp;
+export { ForgotPasswordHelp };
 
 

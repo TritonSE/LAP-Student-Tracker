@@ -25,28 +25,30 @@ const ResetPassword: React.FC = () => {
 
     const [ newPassword, setNewPassword ] = useState<string>("");
     const [ confirmNewPassword, setConfirmNewPassword ] = useState<string>("");
-    const [ error, setError ] = useState<string>("");
+    const [ error, setError ] = useState<Error | null>(null);
 
     // firebase requires passwords to be greater than 6 characters
     const passwordLengthOk = newPassword == "" || newPassword.length >= 6;
     const passwordsMatch = newPassword == "" || newPassword === confirmNewPassword;
 
+    const errorMessage =
+    error !== null
+      ? error.message
+      : !passwordLengthOk
+      ? "Passwords must be greater than 6 characters"
+      : !passwordsMatch
+      ? "Passwords do not match"
+      : null;
+
     const handleResetPassword = async():Promise<void> => {
         //retrieve code from url
         const queryParams = new URLSearchParams(window.location.search);
         const code = queryParams.get("oobCode")?.toString();
-        if (!passwordLengthOk){
-            setError("Password length must be atleast six.");
-
-        }
-        else if (!passwordsMatch){
-            setError("Passwords do not match.");
-        }
-        else if (code){
-            setError("");
+        if (passwordLengthOk && passwordsMatch && code){
+            setError(null);
             const success = await auth.resetPassword(code, newPassword);
             if (success) router.push("/login");
-            else setError("Password could not be reset");
+            else setError(new Error("Password could not be reset"));
         }
     }
 
@@ -78,7 +80,7 @@ const ResetPassword: React.FC = () => {
                     sx={cssTextField}
                     onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />
-                <div className={styles.errorMessage}> {error != null ? error : ""} </div>
+                <div className={styles.errorMessage}> {errorMessage != null ? errorMessage : ""} </div>
                 <button className={styles.submitButton} onClick={() => handleResetPassword()}>
                         Submit
                 </button>

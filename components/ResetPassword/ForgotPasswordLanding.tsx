@@ -62,4 +62,4 @@ const ForgotPasswordMain: React.FC<ForgotPasswordMainProps> = ({
 
 };
 
-export default ForgotPasswordMain;
+export { ForgotPasswordMain };

@@ -3,8 +3,8 @@ import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import styles from "../styles/ForgotPassword.module.css";
-import ForgotPasswordMain from "../components/ResetPassword/ForgotPasswordLanding";
-import ForgotPasswordHelp from "../components/ResetPassword/ForgotPasswordHelp";
+import { ForgotPasswordMain }  from "../components/ResetPassword/ForgotPasswordLanding";
+import { ForgotPasswordHelp } from "../components/ResetPassword/ForgotPasswordHelp";
 
 
 const ForgotPassword: React.FC = () => {
@@ -39,22 +39,20 @@ const ForgotPassword: React.FC = () => {
                 <img src="logo2.png"></img>
             </div>
 
-            {displayMain && (
-                <ForgotPasswordMain
+            {displayMain
+                ? <ForgotPasswordMain
                     onEmailChange = {setEmail}
                     onBackButtonClick = {returnToLogin}
                     onNextButtonClick = {sendResetEmail}
                     currEmail = {email}
-                    error = {auth.error}
-                ></ForgotPasswordMain>
-
-            )}
-            {!displayMain && (
-                <ForgotPasswordHelp
+                    error = {auth.error}>
+                    </ForgotPasswordMain>
+                : <ForgotPasswordHelp
                     onBackButtonClick = {returnToMain}
-                    onNextButtonClick = {returnToLogin}
-                ></ForgotPasswordHelp>
-            )}
+                    onNextButtonClick = {returnToLogin}>
+                    </ForgotPasswordHelp>
+
+            }
         </div>
 
     );

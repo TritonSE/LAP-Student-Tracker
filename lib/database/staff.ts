@@ -43,9 +43,9 @@ type staffArrayType = TypeOf<typeof StaffArraySchema>;
 
 const getAllStaff = async (): Promise<Staff[]> => {
   const query = {
-    text: "SELECT users.id, users.role, classes.min_level, classes.max_level, classes.language" 
-    + "FROM (((event_information INNER JOIN classes ON event_information.id = classes.event_information_id)" 
-    + "INNER JOIN commitments ON commitments.event_information_id = event_information.id)" 
+    text: "SELECT users.id, users.role, classes.min_level, classes.max_level, classes.language " 
+    + "FROM (((event_information INNER JOIN classes ON event_information.id = classes.event_information_id) " 
+    + "INNER JOIN commitments ON commitments.event_information_id = event_information.id) " 
     + "FULL OUTER JOIN users ON commitments.user_id = users.id) WHERE role = 'Teacher' or role = 'Staff';",
   };
 
@@ -54,19 +54,10 @@ const getAllStaff = async (): Promise<Staff[]> => {
   console.log(res);
 
   // TODO: parse and structure response into a map with user_id mapped to classes and languages
-  // let staffMap: Map<Int, Int[]>;
+  let staffArray: staffArrayType;
 
   try {
-    if(res.rows[0].role === "Teacher"){    }
-
-    // check if teacher
-    // res.rows.map((row:any) => {
-    //   if (!staffMap.has(row.user_id)) {
-    //     staffMap.set(row.user_id, [row.event_information_id]);
-    //   } else {
-    //     staffMap.set(row.user_id, [...staffMap.get(row.user_id), row.event_information_id]);
-    //   }
-    // });
+    staffArray = await decode(StaffArraySchema, res.rows);
   } catch (e) {
     console.log(e);
     throw Error("Fields returned incorrectly from database");
@@ -75,7 +66,7 @@ const getAllStaff = async (): Promise<Staff[]> => {
   // return staffMap;
 
   // update once data is properly parsed
-  return new Map<Int, Int[]>();
+  return staffArray;
 };
 
 export { getAllStaff };

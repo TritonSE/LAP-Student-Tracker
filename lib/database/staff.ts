@@ -43,7 +43,10 @@ type staffArrayType = TypeOf<typeof StaffArraySchema>;
 
 const getAllStaff = async (): Promise<Staff[]> => {
   const query = {
-    text: "SELECT users.id, users.role, classes.min_level, classes.max_level, classes.language FROM (((event_information INNER JOIN classes ON event_information.id = classes.event_information_id) INNER JOIN commitments ON commitments.event_information_id = event_information.id) FULL OUTER JOIN users ON commitments.user_id = users.id) WHERE role = 'Teacher' or role = 'Staff';",
+    text: "SELECT users.id, users.role, classes.min_level, classes.max_level, classes.language" 
+    + "FROM (((event_information INNER JOIN classes ON event_information.id = classes.event_information_id)" 
+    + "INNER JOIN commitments ON commitments.event_information_id = event_information.id)" 
+    + "FULL OUTER JOIN users ON commitments.user_id = users.id) WHERE role = 'Teacher' or role = 'Staff';",
   };
 
   const res = await client.query(query);

@@ -38,7 +38,7 @@ const ResetPassword: React.FC = () => {
       ? "Passwords do not match"
       : null;
 
-    const handleResetPassword = async():Promise<void> => {
+    const handleResetPassword = async (): Promise<void> => {
         //retrieve code from url
         const queryParams = new URLSearchParams(window.location.search);
         const code = queryParams.get("oobCode")?.toString();
@@ -48,7 +48,7 @@ const ResetPassword: React.FC = () => {
             if (success) router.push("/login");
             else setError(new Error("Password could not be reset"));
         }
-    }
+    };
 
     return (
         <div>
@@ -89,6 +89,6 @@ const ResetPassword: React.FC = () => {
         
     );
 
-}
+};
 
 export default ResetPassword;

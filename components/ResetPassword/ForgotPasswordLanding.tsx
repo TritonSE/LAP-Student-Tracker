@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/ForgotPassword.module.css"
+import styles from "../../styles/ForgotPassword.module.css";
 import TextField from "@mui/material/TextField";
 
 
@@ -21,7 +21,7 @@ type ForgotPasswordMainProps = {
     onBackButtonClick: () => void;
     currEmail: string,
     error: Error | null,
-}
+};
 
 const ForgotPasswordMain: React.FC<ForgotPasswordMainProps> = ({
     onEmailChange,

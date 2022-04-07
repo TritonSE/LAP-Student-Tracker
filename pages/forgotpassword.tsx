@@ -19,16 +19,16 @@ const ForgotPassword: React.FC = () => {
         auth.clearError();
         const success = await auth.forgotPassword(email);
         if (success) setDisplayMain(false);
-    }
+    };
 
     const returnToLogin = (): void => {
         router.push("/home");
-    }
+    };
 
-    const returnToMain = ():void => {
+    const returnToMain = (): void => {
         auth.clearError();
         setDisplayMain(true);
-    }
+    };
 
     return (
 

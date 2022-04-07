@@ -20,7 +20,7 @@ type AuthState = {
   ) => void;
   clearError: () => void;
   forgotPassword: ( email: string ) => Promise<boolean>;
-  resetPassword: (code:string, newPassword:string) => Promise<boolean>;
+  resetPassword: ( code: string, newPassword: string ) => Promise<boolean>;
   updateUser: (
     id: string,
     currEmail: string,
@@ -218,7 +218,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       return true;
     }
     catch(e){
-      setFirebaseError(e)
+      setFirebaseError(e);
       return false;
     }
   };

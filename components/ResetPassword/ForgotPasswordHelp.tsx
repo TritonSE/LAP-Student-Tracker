@@ -4,7 +4,7 @@ import styles from "../../styles/ForgotPassword.module.css";
 type ForgotPasswordMainProps = {
     onNextButtonClick: () => void;
     onBackButtonClick: () => void;
-}
+};
 
 const ForgotPasswordHelp: React.FC<ForgotPasswordMainProps> = ({
     onNextButtonClick,

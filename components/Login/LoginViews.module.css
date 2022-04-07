@@ -33,7 +33,6 @@
 }
 .title {
   color: #1b1c1d;
-  /* font-family: Inter; */
   font-style: normal;
   font-weight: 500;
   font-size: 57px;
@@ -65,7 +64,6 @@
 
 .mainButtonContainer {
   margin: auto;
-  /* margin-left:39%; */
   display: flex;
   justify-content: space-between;
   width: 690px;
@@ -124,7 +122,6 @@
 
 .buttonContainer {
   margin: auto;
-  /* margin-left:39%; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -167,7 +164,7 @@
 }
 
 .passwordError {
-  composes: labelSmall from "../globals.css";
+  composes: labelSmall from "../../styles/globals.css";
   color: red;
   height: 5px;
 }

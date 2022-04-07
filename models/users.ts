@@ -27,9 +27,10 @@ export const UpdateUserSchema = t.partial({
   lastName: t.string,
   email: t.string,
   role: possibleRoles,
-  phoneNumber: t.string,
+  phoneNumber: t.union([t.string, t.null]),
   address: t.string,
 });
 
 export type User = t.TypeOf<typeof UserSchema>;
 export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>;
+export type Roles = t.TypeOf<typeof possibleRoles>;

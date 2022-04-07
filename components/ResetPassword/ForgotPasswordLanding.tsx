@@ -20,7 +20,7 @@ type ForgotPasswordMainProps = {
     onNextButtonClick: () => void;
     onBackButtonClick: () => void;
     currEmail: string,
-    error: string,
+    error: Error | null,
 }
 
 const ForgotPasswordMain: React.FC<ForgotPasswordMainProps> = ({
@@ -46,7 +46,7 @@ const ForgotPasswordMain: React.FC<ForgotPasswordMainProps> = ({
                 sx={cssTextField}
                 onChange={(e) => onEmailChange(e.target.value)}
             />
-            <div className={styles.errorMessage}> {error != null ? error : ""} </div>
+            <div className={styles.errorMessage}> {error != null ? error.message : ""} </div>
             <div className={styles.buttonContainer}>
                 <button className={styles.backButton} onClick={() => onBackButtonClick()}>
                     Back

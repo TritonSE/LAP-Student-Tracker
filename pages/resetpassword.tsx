@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { getAuth, confirmPasswordReset } from "firebase/auth";
 import firebase from "firebase/compat/app";
@@ -20,7 +20,7 @@ const cssTextField = {
 
 const ResetPassword: React.FC = () => {
 
-    const auth = getAuth();
+    const auth = useContext(AuthContext);
     const router = useRouter();
 
     const [ newPassword, setNewPassword ] = useState<string>("");
@@ -28,17 +28,15 @@ const ResetPassword: React.FC = () => {
     const [ error, setError ] = useState<string>("");
 
     // firebase requires passwords to be greater than 6 characters
-    const passwordLengthOk = newPassword == "" || newPassword.length > 6;
+    const passwordLengthOk = newPassword == "" || newPassword.length >= 6;
     const passwordsMatch = newPassword == "" || newPassword === confirmNewPassword;
 
-    const resetPassword = ():void => {
-
+    const handleResetPassword = async():Promise<void> => {
         //retrieve code from url
         const queryParams = new URLSearchParams(window.location.search);
         const code = queryParams.get("oobCode")?.toString();
-
         if (!passwordLengthOk){
-            setError("Password length must be atleast six.")
+            setError("Password length must be atleast six.");
 
         }
         else if (!passwordsMatch){
@@ -46,24 +44,10 @@ const ResetPassword: React.FC = () => {
         }
         else if (code){
             setError("");
-            firebase.auth().verifyPasswordResetCode(code)
-            .then(function(email) {
-                // Display a "new password" form with the user's email address
-            })
-            .catch(function() {
-                setError("Password could not be reset.");
-            })
-
-            firebase.auth().confirmPasswordReset(code, newPassword)
-            .then(function() {
-                router.push("/login");
-            })
-            .catch(function() {
-                setError("Password could not be reset.");
-            })
+            const success = await auth.resetPassword(code, newPassword);
+            if (success) router.push("/login");
+            else setError("Password could not be reset");
         }
-
-
     }
 
     return (
@@ -95,7 +79,7 @@ const ResetPassword: React.FC = () => {
                     onChange={(e) => setConfirmNewPassword(e.target.value)}
                 />
                 <div className={styles.errorMessage}> {error != null ? error : ""} </div>
-                <button className={styles.submitButton} onClick={() => resetPassword()}>
+                <button className={styles.submitButton} onClick={() => handleResetPassword()}>
                         Submit
                 </button>
             </div>

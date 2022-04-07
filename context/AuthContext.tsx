@@ -19,6 +19,8 @@ type AuthState = {
     password: string
   ) => void;
   clearError: () => void;
+  forgotPassword: ( email: string ) => Promise<boolean>;
+  resetPassword: (code:string, newPassword:string) => Promise<boolean>;
 };
 
 const init: AuthState = {
@@ -29,6 +31,12 @@ const init: AuthState = {
   logout: () => {},
   signup: () => {},
   clearError: () => {},
+  forgotPassword: () => {
+    return new Promise<boolean>(() => false);
+  },
+  resetPassword: () => {
+    return new Promise<boolean>(() => false);
+  },
 };
 
 export const AuthContext = createContext<AuthState>(init);
@@ -192,8 +200,33 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   };
 
+  //sends cutom emal for resetting password to user
+  const forgotPassword = async ( email: string ): Promise<boolean> => {
+    try{
+      await auth.sendPasswordResetEmail(email);
+      return true;
+    }
+    catch(e){
+      setFirebaseError(e)
+      return false;
+    }
+  };
+
+  //resets password for user
+  const resetPassword = async ( code: string, newPassword: string ): Promise<boolean> => {
+    try{
+      await firebase.auth().verifyPasswordResetCode(code);
+      await firebase.auth().confirmPasswordReset(code, newPassword);
+      return true;
+    } catch(e){
+      setFirebaseError(e);
+      return false;
+    }
+
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, error, signup, logout, initializing, clearError }}>
+    <AuthContext.Provider value={{ user, login, error, signup, logout, initializing, clearError, forgotPassword, resetPassword }}>
       {children}
     </AuthContext.Provider>
   );

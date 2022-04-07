@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import styles from "../styles/ForgotPassword.module.css";
@@ -9,23 +9,17 @@ import ForgotPasswordHelp from "../components/ResetPassword/ForgotPasswordHelp";
 
 const ForgotPassword: React.FC = () => {
 
-    const auth = getAuth();
+    const auth = useContext(AuthContext);
     const router = useRouter();
 
     const [displayMain, setDisplayMain] = useState<boolean>(true);
     const [email, setEmail] = useState<string>("");
-    const [error, setError] = useState<string>("");
     
 
-    const sendResetEmail = (): void => {
-        sendPasswordResetEmail(auth, email)
-        .then(() => {
-            // Password reset email sent!
-            setDisplayMain(false)
-        })
-        .catch((e) => {
-            setError("No existing account with this email.")
-        });
+    const sendResetEmail = async (): Promise<void> => {
+        auth.clearError();
+        const success = await auth.forgotPassword(email);
+        if (success) setDisplayMain(false);
     }
 
     const returnToLogin = (): void => {
@@ -33,6 +27,7 @@ const ForgotPassword: React.FC = () => {
     }
 
     const returnToMain = ():void => {
+        auth.clearError();
         setDisplayMain(true);
     }
 
@@ -50,7 +45,7 @@ const ForgotPassword: React.FC = () => {
                     onBackButtonClick = {returnToLogin}
                     onNextButtonClick = {sendResetEmail}
                     currEmail = {email}
-                    error = {error}
+                    error = {auth.error}
                 ></ForgotPasswordMain>
 
             )}

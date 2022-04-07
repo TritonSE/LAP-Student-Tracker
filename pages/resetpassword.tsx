@@ -1,8 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { getAuth, confirmPasswordReset } from "firebase/auth";
-import firebase from "firebase/compat/app";
 import styles from "../styles/ForgotPassword.module.css";
 import TextField from "@mui/material/TextField";
 

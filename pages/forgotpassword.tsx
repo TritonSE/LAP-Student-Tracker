@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import styles from "../styles/ForgotPassword.module.css";
 import { ForgotPasswordMain }  from "../components/ResetPassword/ForgotPasswordLanding";
 import { ForgotPasswordHelp } from "../components/ResetPassword/ForgotPasswordHelp";

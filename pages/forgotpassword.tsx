@@ -51,7 +51,6 @@ const ForgotPassword: React.FC = () => {
                     onBackButtonClick = {returnToMain}
                     onNextButtonClick = {returnToLogin}>
                     </ForgotPasswordHelp>
-
             }
         </div>
 

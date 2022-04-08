@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Class } from "../../models/class";
 import { ClassCard } from "./ClassCard";
 import styles from "./LeagueViews.module.css";
-
-type ClassViewProp = {
-  classes: Class[];
-};
+import useSWR from "swr";
+import { APIContext } from "../../context/APIContext";
+import { Error } from "../util/Error";
+import { Loader } from "../util/Loader";
+import { Empty } from "../util/Empty";
 
 const filters = [
   "Level 0",
@@ -19,23 +20,38 @@ const filters = [
   "Level 8",
 ];
 
-const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
+const ClassScroll: React.FC = () => {
+  const client = useContext(APIContext);
+  const { data, error } = useSWR("/api/class", () => client.getAllClasses());
+
+  if (error) return <Error />;
+  if (!data) return <Loader />;
+  if (data.length == 0) return <Empty userType="Classes" />;
+
+  return (
+    <>
+      {data.map((classs: Class) => (
+        <ClassCard
+          key={classs.eventInformationId}
+          name={classs.name}
+          minLevel={classs.minLevel}
+          maxLevel={classs.maxLevel}
+          rrstring={classs.rrstring}
+          startTime={classs.startTime}
+          endTime={classs.endTime}
+        />
+      ))}
+    </>
+  );
+};
+
+const ClassView: React.FC = () => (
   <div className={styles.compContainer}>
     <div className={styles.leftContainer}>
       <h1 className={styles.compTitle}>Classes</h1>
       <div className={styles.compList}>
         <ul className={styles.scroll}>
-          {classes.map((tempClass) => (
-            <ClassCard
-              key={tempClass.eventInformationId}
-              name={tempClass.name}
-              minLevel={tempClass.minLevel}
-              maxLevel={tempClass.maxLevel}
-              rrstring={tempClass.rrstring}
-              startTime={tempClass.startTime}
-              endTime={tempClass.endTime}
-            />
-          ))}
+          <ClassScroll />
         </ul>
       </div>
     </div>

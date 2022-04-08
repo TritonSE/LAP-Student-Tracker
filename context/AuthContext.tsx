@@ -217,7 +217,11 @@ export const AuthProvider: React.FC = ({ children }) => {
       await auth.sendPasswordResetEmail(email);
       return true;
     } catch (e) {
-      setFirebaseError(e);
+      if (e instanceof FirebaseError) {
+        setFirebaseError(e);
+      } else {
+        setError(e as Error);
+      }
       return false;
     }
   };
@@ -229,7 +233,11 @@ export const AuthProvider: React.FC = ({ children }) => {
       await firebase.auth().confirmPasswordReset(code, newPassword);
       return true;
     } catch (e) {
-      setFirebaseError(e);
+      if (e instanceof FirebaseError) {
+        setFirebaseError(e);
+      } else {
+        setError(e as Error);
+      }
       return false;
     }
   };

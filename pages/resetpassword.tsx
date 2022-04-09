@@ -28,6 +28,8 @@ const ResetPassword: React.FC = () => {
   const passwordLengthOk = newPassword == "" || newPassword.length >= 6;
   const passwordsMatch = newPassword == "" || newPassword === confirmNewPassword;
 
+  const notDisabled = passwordLengthOk && passwordsMatch;
+
   const errorMessage =
     error !== null
       ? error.message
@@ -37,11 +39,12 @@ const ResetPassword: React.FC = () => {
       ? "Passwords do not match"
       : null;
 
+
   const handleResetPassword = async (): Promise<void> => {
     //retrieve code from url
     const queryParams = new URLSearchParams(window.location.search);
     const code = queryParams.get("oobCode")?.toString();
-    if (passwordLengthOk && passwordsMatch && code) {
+    if (code) {
       setError(null);
       const success = await auth.resetPassword(code, newPassword);
       if (success) router.push("/login");
@@ -78,7 +81,7 @@ const ResetPassword: React.FC = () => {
           onChange={(e) => setConfirmNewPassword(e.target.value)}
         />
         <div className={styles.errorMessage}> {errorMessage != null ? errorMessage : ""} </div>
-        <button className={styles.submitButton} onClick={() => handleResetPassword()}>
+        <button className={styles.submitButton} onClick={() => handleResetPassword()} disabled={!notDisabled}>
           Submit
         </button>
       </div>

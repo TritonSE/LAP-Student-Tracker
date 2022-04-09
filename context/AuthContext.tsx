@@ -229,8 +229,8 @@ export const AuthProvider: React.FC = ({ children }) => {
   //resets password for user
   const resetPassword = async (code: string, newPassword: string): Promise<boolean> => {
     try {
-      await firebase.auth().verifyPasswordResetCode(code);
-      await firebase.auth().confirmPasswordReset(code, newPassword);
+      await auth.verifyPasswordResetCode(code);
+      await auth.confirmPasswordReset(code, newPassword);
       return true;
     } catch (e) {
       if (e instanceof FirebaseError) {

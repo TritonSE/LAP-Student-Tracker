@@ -39,6 +39,9 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
   currPassword,
   error,
 }) => {
+
+  const url = process.env.REACT_APP_BASE_URL|| 'http://localhost:3000'
+  
   return (
     <div className={styles.comContainer}>
       <img src="login-logo.png" className={styles.mainPageLogo}></img>
@@ -79,7 +82,7 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
             <label className={styles.chkboxLabel}>Remember Me</label>
           </form>
           <div>
-            <a className={styles.forgotPassword} href="http://localhost:3000/forgotpassword">
+            <a className={styles.forgotPassword} href = {url + "/forgotpassword"}>
               Forgot Password?
             </a>
           </div>

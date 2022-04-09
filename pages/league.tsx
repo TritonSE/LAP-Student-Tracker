@@ -24,17 +24,6 @@ const League: NextApplicationPage = () => {
   });
 
   // start dummy data, delete once api is implemented
-  const testClass: Class = {
-    name: "class1",
-    eventInformationId: "class_id",
-    minLevel: 3,
-    maxLevel: 5,
-    rrstring:
-      "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
-    startTime: "07:34Z",
-    endTime: "08:34Z",
-    language: "java",
-  };
   const testStudent: Student = {
     id: "student_id",
     firstName: "Gary",
@@ -46,7 +35,6 @@ const League: NextApplicationPage = () => {
     level: 3,
     classes: ["CSE 123"],
   };
-  const testClassArray: Class[] = Array(25).fill(testClass);
   const testStudentArray: Student[] = Array(5).fill(testStudent);
   // end dummy data
 
@@ -55,7 +43,7 @@ const League: NextApplicationPage = () => {
     // Use dummy data for now
 
     setContent({
-      Classes: testClassArray,
+      Classes: [],
       Students: testStudentArray,
       Staff: [],
     });
@@ -63,7 +51,7 @@ const League: NextApplicationPage = () => {
 
   // Renders specific content component based on tab state
   const renderComponent = (display: string): JSX.Element | undefined => {
-    if (display == "Classes") return <ClassView classes={content.Classes} />;
+    if (display == "Classes") return <ClassView />;
     if (display == "Students") return <StudentView students={content.Students} />;
     if (display == "Staff") return <StaffView />;
   };

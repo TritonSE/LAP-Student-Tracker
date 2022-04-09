@@ -89,6 +89,14 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
     const currInterval: Interval = currentEventIntervals[currIntervalPtr];
     const newInterval: Interval = newIntervals[newIntervalPtr];
     if (currInterval.overlaps(newInterval)) {
+      console.log("CURR")
+      console.log(currInterval.start)
+      console.log(currInterval.end)
+
+      console.log("NEW")
+      console.log(newInterval.start)
+      console.log(newInterval.end)
+
       throw new TeacherConflictError("Teacher " + teacherId + " has conflict with class");
     }
     if (currInterval.start < newInterval.start) {

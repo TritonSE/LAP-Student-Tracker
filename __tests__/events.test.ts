@@ -31,7 +31,7 @@ beforeAll(async () => {
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('e_1', 'Event', 'blue', 'Class', false)"
   );
   await client.query(
-    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('e_1', '2022-01-01 10:00:00-08', '2022-01-01 11:00:00-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('e_1', '2022-01-01 10:00:00-0', '2022-01-01 11:00:00-08')"
   );
   await client.query(
     "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('e_1', '2022-01-03 10:00:00-08', '2022-01-03 11:00:00-08')"
@@ -189,7 +189,7 @@ describe("[POST] /api/events/class", () => {
       name: "Math 101",
       startTime: "10:45",
       endTime: "11:45",
-      timeZone: "America/Los_Angeles",
+      timeZone: "America/New_York",
       rrule: rrule.toString(),
       language: "Java",
       neverEnding: false,
@@ -199,9 +199,9 @@ describe("[POST] /api/events/class", () => {
 
     const expectedBody: ClassEvent = {
       eventInformationId: "",
-      startTime: convertTimeToISO("10:45", "America/Los_Angeles"),
-      endTime: convertTimeToISO("11:45", "America/Los_Angeles"),
-      timeZone: "America/Los_Angeles",
+      startTime: convertTimeToISO("10:45", "America/New_York"),
+      endTime: convertTimeToISO("11:45", "America/New_York"),
+      timeZone: "America/New_York",
       rrule: rrule.toString(),
       language: "Java",
       neverEnding: false,

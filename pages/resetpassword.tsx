@@ -39,7 +39,6 @@ const ResetPassword: React.FC = () => {
       ? "Passwords do not match"
       : null;
 
-
   const handleResetPassword = async (): Promise<void> => {
     //retrieve code from url
     const queryParams = new URLSearchParams(window.location.search);
@@ -81,7 +80,11 @@ const ResetPassword: React.FC = () => {
           onChange={(e) => setConfirmNewPassword(e.target.value)}
         />
         <div className={styles.errorMessage}> {errorMessage != null ? errorMessage : ""} </div>
-        <button className={styles.submitButton} onClick={() => handleResetPassword()} disabled={!notDisabled}>
+        <button
+          className={styles.submitButton}
+          onClick={() => handleResetPassword()}
+          disabled={!notDisabled}
+        >
           Submit
         </button>
       </div>

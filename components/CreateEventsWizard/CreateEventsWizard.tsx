@@ -4,24 +4,27 @@ import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../../context/APIContext";
 import { CreateClass } from "../../models/class";
 import { CreateClassEvent } from "../../models/events";
-import useSWR from "swr";
-import styles from "./CreateEventsWizard.module.css";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-// Work around for date/time picker library to work with NextJS
-// https://github.com/vercel/next.js/issues/19936
-import "react-date-picker/dist/DatePicker.css";
-import "react-time-picker/dist/TimePicker.css";
-import "react-calendar/dist/Calendar.css";
-import DatePicker from "react-date-picker/dist/entry.nostyle";
-import TimePicker from "react-time-picker/dist/entry.nostyle";
-
-import axios from "axios";
+import { Select, SelectChangeEvent, MenuItem } from "@mui/material/";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 import { CirclePicker } from "react-color";
 import { ColorResult } from "react-color/index";
 import ClipLoader from "react-spinners/ClipLoader";
+import axios from "axios";
+import useSWR from "swr";
+
+import DatePicker from "react-date-picker/dist/entry.nostyle";
+import TimePicker from "react-time-picker/dist/entry.nostyle";
+import styles from "./CreateEventsWizard.module.css";
+
+// Work around for date/time picker library to work with NextJS
+// https://github.com/vercel/next.js/issues/19936
+import "react-date-picker/dist/DatePicker.css";
+import "react-time-picker/dist/TimePicker.css";
+import "react-calendar/dist/Calendar.css";
+
+
+
 
 type CreateEventsWizardProps = {
   handleClose: () => void;

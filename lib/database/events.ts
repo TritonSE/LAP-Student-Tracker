@@ -80,21 +80,21 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
   // Sort new intervals
   const newIntervals: Interval[] = intervals.sort(compareIntervals);
 
-  console.log("PRINTING CURRENT INTERVALS");
-  currentEventIntervals.forEach((i) => {
-    if (i.start.day == 1) {
-      console.log(i.start);
-      console.log(i.end);
-      console.log("DONE");
-    }
-  });
+  // console.log("PRINTING CURRENT INTERVALS");
+  // currentEventIntervals.forEach((i) => {
+  //   if (i.start.day == 1) {
+  //     console.log(i.start);
+  //     console.log(i.end);
+  //     console.log("DONE");
+  //   }
+  // });
 
-  console.log("PRINTING NEW INTERVALS");
-  newIntervals.forEach((i) => {
-    console.log(i.start);
-    console.log(i.end);
-    console.log("DONE");
-  });
+  // console.log("PRINTING NEW INTERVALS");
+  // newIntervals.forEach((i) => {
+  //   console.log(i.start);
+  //   console.log(i.end);
+  //   console.log("DONE");
+  // });
 
   let currIntervalPtr = 0;
   let newIntervalPtr = 0;

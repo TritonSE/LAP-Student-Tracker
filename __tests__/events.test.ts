@@ -60,164 +60,164 @@ afterAll(async () => {
 });
 
 describe("[POST] /api/events/class", () => {
-  // test("creates a new class event", async () => {
-  //   const body: CreateClassEvent = {
-  //     name: "Math 101",
-  //     startTime: "11:45",
-  //     endTime: "11:45",
-  //     timeZone: "America/Los_Angeles",
-  //     rrule: rule,
-  //     language: "english",
-  //     neverEnding: false,
-  //     backgroundColor: "blue",
-  //     teachers: ["teacher@gmail.com"],
-  //   };
+  test("creates a new class event", async () => {
+    const body: CreateClassEvent = {
+      name: "Math 101",
+      startTime: "11:45",
+      endTime: "11:45",
+      timeZone: "America/Los_Angeles",
+      rrule: rule,
+      language: "english",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["teacher@gmail.com"],
+    };
 
-  //   const expectedBody: ClassEvent = {
-  //     eventInformationId: "",
-  //     startTime: convertTimeToISO("11:45", "America/Los_Angeles"),
-  //     endTime: convertTimeToISO("11:45", "America/Los_Angeles"),
-  //     timeZone: "America/Los_Angeles",
-  //     rrule: rule,
-  //     language: "english",
-  //     neverEnding: false,
-  //     backgroundColor: "blue",
-  //   };
+    const expectedBody: ClassEvent = {
+      eventInformationId: "",
+      startTime: convertTimeToISO("11:45", "America/Los_Angeles"),
+      endTime: convertTimeToISO("11:45", "America/Los_Angeles"),
+      timeZone: "America/Los_Angeles",
+      rrule: rule,
+      language: "english",
+      neverEnding: false,
+      backgroundColor: "blue",
+    };
 
-  //   await makeEventHTTPRequest(
-  //     eventHandler,
-  //     "/api/events/class",
-  //     undefined,
-  //     "POST",
-  //     body,
-  //     StatusCodes.CREATED,
-  //     expectedBody
-  //   );
-  // });
+    await makeEventHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody
+    );
+  });
 
-  // test("creates a new class event with different timezone", async () => {
-  //   const body: CreateClassEvent = {
-  //     name: "Math 101",
-  //     startTime: "11:45",
-  //     endTime: "11:45",
-  //     timeZone: "America/New_York",
-  //     rrule: rule,
-  //     language: "english",
-  //     neverEnding: false,
-  //     backgroundColor: "blue",
-  //     teachers: ["teacher@gmail.com"],
-  //   };
+  test("creates a new class event with different timezone", async () => {
+    const body: CreateClassEvent = {
+      name: "Math 101",
+      startTime: "11:45",
+      endTime: "11:45",
+      timeZone: "America/New_York",
+      rrule: rule,
+      language: "english",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["teacher@gmail.com"],
+    };
 
-  //   const expectedBody: ClassEvent = {
-  //     eventInformationId: "",
-  //     startTime: convertTimeToISO("11:45", "America/New_York"),
-  //     endTime: convertTimeToISO("11:45", "America/New_York"),
-  //     timeZone: "America/New_York",
-  //     rrule: rule,
-  //     language: "english",
-  //     neverEnding: false,
-  //     backgroundColor: "blue",
-  //   };
+    const expectedBody: ClassEvent = {
+      eventInformationId: "",
+      startTime: convertTimeToISO("11:45", "America/New_York"),
+      endTime: convertTimeToISO("11:45", "America/New_York"),
+      timeZone: "America/New_York",
+      rrule: rule,
+      language: "english",
+      neverEnding: false,
+      backgroundColor: "blue",
+    };
 
-  //   await makeEventHTTPRequest(
-  //     eventHandler,
-  //     "/api/events/class",
-  //     undefined,
-  //     "POST",
-  //     body,
-  //     StatusCodes.CREATED,
-  //     expectedBody
-  //   );
-  // });
+    await makeEventHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody
+    );
+  });
 
-  // test("creates a new class event with non-existing teacher", async () => {
-  //   const body: CreateClassEvent = {
-  //     name: "Math 101",
-  //     startTime: "11:45",
-  //     endTime: "11:45",
-  //     timeZone: "America/Los_Angeles",
-  //     rrule: rule,
-  //     language: "english",
-  //     neverEnding: false,
-  //     backgroundColor: "blue",
-  //     teachers: ["random123@gmail.com"],
-  //   };
+  test("creates a new class event with non-existing teacher", async () => {
+    const body: CreateClassEvent = {
+      name: "Math 101",
+      startTime: "11:45",
+      endTime: "11:45",
+      timeZone: "America/Los_Angeles",
+      rrule: rule,
+      language: "english",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["random123@gmail.com"],
+    };
 
-  //   await makeHTTPRequest(
-  //     eventHandler,
-  //     "/api/events/class",
-  //     undefined,
-  //     "POST",
-  //     body,
-  //     StatusCodes.BAD_REQUEST,
-  //     "The following teachers { random123@gmail.com } do not exist"
-  //   );
-  // });
+    await makeHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "The following teachers { random123@gmail.com } do not exist"
+    );
+  });
 
-  // test("creates a new class event with bad parameters", async () => {
-  //   const body = {
-  //     name: "Math 101",
-  //     startTime: "12:45",
-  //     endTime: 1145,
-  //     timeZone: "America/Los_Angeles",
-  //     rrule: rule,
-  //     language: "english",
-  //     neverEnding: false,
-  //     backgroundColor: "blue",
-  //     teachers: ["teacher@gmail.com"],
-  //   };
+  test("creates a new class event with bad parameters", async () => {
+    const body = {
+      name: "Math 101",
+      startTime: "12:45",
+      endTime: 1145,
+      timeZone: "America/Los_Angeles",
+      rrule: rule,
+      language: "english",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["teacher@gmail.com"],
+    };
 
-  //   await makeHTTPRequest(
-  //     eventHandler,
-  //     "/api/events/class",
-  //     undefined,
-  //     "POST",
-  //     body,
-  //     StatusCodes.BAD_REQUEST,
-  //     FIELDS_NOT_ENTERED_CORRECTLY
-  //   );
-  // });
+    await makeHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      FIELDS_NOT_ENTERED_CORRECTLY
+    );
+  });
 
-  // test("creates a new class event that passes teacher verification", async () => {
-  //   const rrule = new RRule({
-  //     freq: RRule.DAILY,
-  //     interval: 2,
-  //     count: 3,
-  //     dtstart: new Date(2022, 0, 2),
-  //   });
-  //   const body = {
-  //     name: "Math 101",
-  //     startTime: "10:45",
-  //     endTime: "11:45",
-  //     timeZone: "America/New_York",
-  //     rrule: rrule.toString(),
-  //     language: "Java",
-  //     neverEnding: false,
-  //     backgroundColor: "blue",
-  //     teachers: ["teacher@gmail.com"],
-  //   };
+  test("creates a new class event that passes teacher verification", async () => {
+    const rrule = new RRule({
+      freq: RRule.DAILY,
+      interval: 2,
+      count: 3,
+      dtstart: new Date(2022, 0, 2),
+    });
+    const body = {
+      name: "Math 101",
+      startTime: "10:45",
+      endTime: "11:45",
+      timeZone: "America/New_York",
+      rrule: rrule.toString(),
+      language: "Java",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["teacher@gmail.com"],
+    };
 
-  //   const expectedBody: ClassEvent = {
-  //     eventInformationId: "",
-  //     startTime: convertTimeToISO("10:45", "America/New_York"),
-  //     endTime: convertTimeToISO("11:45", "America/New_York"),
-  //     timeZone: "America/New_York",
-  //     rrule: rrule.toString(),
-  //     language: "Java",
-  //     neverEnding: false,
-  //     backgroundColor: "blue",
-  //   };
+    const expectedBody: ClassEvent = {
+      eventInformationId: "",
+      startTime: convertTimeToISO("10:45", "America/New_York"),
+      endTime: convertTimeToISO("11:45", "America/New_York"),
+      timeZone: "America/New_York",
+      rrule: rrule.toString(),
+      language: "Java",
+      neverEnding: false,
+      backgroundColor: "blue",
+    };
 
-  //   await makeEventHTTPRequest(
-  //     eventHandler,
-  //     "/api/events/class",
-  //     undefined,
-  //     "POST",
-  //     body,
-  //     StatusCodes.CREATED,
-  //     expectedBody
-  //   );
-  // });
+    await makeEventHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody
+    );
+  });
 
   test("creates a new class event that fails teacher verification", async () => {
     const rrule = new RRule({

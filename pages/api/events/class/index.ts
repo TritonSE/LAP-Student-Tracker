@@ -38,7 +38,7 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
             ? ruleObj.between(initialDate, yearInAdvanceDate)
             : ruleObj.all();
 
-          allDates.forEach((d) => { console.log(d) })
+          // allDates.forEach((d) => { console.log(d) })
 
           const startTime = DateTime.fromFormat(newEvent.startTime, "HH:mm", {
             zone: newEvent.timeZone,

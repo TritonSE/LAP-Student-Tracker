@@ -23,9 +23,6 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
 
-
-
-
 type CreateEventsWizardProps = {
   handleClose: () => void;
 };
@@ -94,30 +91,30 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   useEffect(() => {
     setValid(
       nameValid &&
-      teachersValid &&
-      levelsValid &&
-      startDateValid &&
-      startTimeValid &&
-      endTimeValid &&
-      startBeforeEndDate
+        teachersValid &&
+        levelsValid &&
+        startDateValid &&
+        startTimeValid &&
+        endTimeValid &&
+        startBeforeEndDate
     );
     const errorMessage = fetchTeacherError
       ? fetchTeacherError.message
       : !nameValid
-        ? "Please enter a name for the class"
-        : !teachersValid
-          ? "Please enter at least one teacher"
-          : !levelsValid
-            ? "Please ensure that the max level is less than the minimum level"
-            : !startDateValid
-              ? "Please enter a valid start date"
-              : !startTimeValid
-                ? "Please enter a valid start/end time"
-                : !endTimeValid
-                  ? "Please enter a valid end time"
-                  : !startBeforeEndDate
-                    ? "Please ensure that the end date is after the start date"
-                    : "";
+      ? "Please enter a name for the class"
+      : !teachersValid
+      ? "Please enter at least one teacher"
+      : !levelsValid
+      ? "Please ensure that the max level is less than the minimum level"
+      : !startDateValid
+      ? "Please enter a valid start date"
+      : !startTimeValid
+      ? "Please enter a valid start/end time"
+      : !endTimeValid
+      ? "Please enter a valid end time"
+      : !startBeforeEndDate
+      ? "Please ensure that the end date is after the start date"
+      : "";
     setErrMsg(errorMessage);
   }, [
     nameValid,
@@ -293,8 +290,9 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
           <div className={styles.scrollableContent}>
             <div
-              className={`${styles.levelsWrapper} ${multipleLevels ? styles.multiLevel : styles.singleLevel
-                }`}
+              className={`${styles.levelsWrapper} ${
+                multipleLevels ? styles.multiLevel : styles.singleLevel
+              }`}
             >
               <p className={styles.label}>Levels</p>
               <input

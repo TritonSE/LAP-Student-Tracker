@@ -53,19 +53,19 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
           for (const date of allDates) {
             const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
-            const dateStart = DateTime.fromJSDate(dateWithoutTime, { zone: newEvent.timeZone }).set(
+            const dateStart = DateTime.fromJSDate(dateWithoutTime).set(
               {
                 hour: startTime.hour,
                 minute: startTime.minute,
                 second: startTime.second,
               }
-            );
+            ).setZone(newEvent.timeZone);
 
-            const dateEnd = DateTime.fromJSDate(dateWithoutTime, { zone: newEvent.timeZone }).set({
+            const dateEnd = DateTime.fromJSDate(dateWithoutTime).set({
               hour: endTime.hour,
               minute: endTime.minute,
               second: endTime.second,
-            });
+            }).setZone(newEvent.timeZone);
 
             intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
           }

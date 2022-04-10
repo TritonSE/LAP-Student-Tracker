@@ -73,8 +73,6 @@ describe("[GET] /api/users/?filter", () => {
 
     expect(expected.length).toBe(returnedUsers.length);
     expect(returnedUsers).toEqual(expect.arrayContaining(returnedUsers));
-
-
   });
 
   test("look for all teachers", async () => {

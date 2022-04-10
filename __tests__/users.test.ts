@@ -59,15 +59,22 @@ describe("[GET] /api/users/?filter", () => {
       },
     ];
 
-    await makeHTTPRequest(
+    const res = await makeHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
       "GET",
       undefined,
       StatusCodes.OK,
-      expected
+      undefined
     );
+
+    const returnedUsers = JSON.parse(res._getData())
+
+    expect(expected.length).toBe(returnedUsers.length);
+    expect(returnedUsers).toEqual(expect.arrayContaining(returnedUsers));
+
+
   });
 
   test("look for all teachers", async () => {

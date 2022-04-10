@@ -89,13 +89,11 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
     }
   });
 
-  console.log("PRINTING CURRENT INTERVALS");
+  console.log("PRINTING NEW INTERVALS");
   newIntervals.forEach((i) => {
-    if (i.start.day == 1) {
-      console.log(i.start);
-      console.log(i.end);
-      console.log("DONE");
-    }
+    console.log(i.start);
+    console.log(i.end);
+    console.log("DONE");
   });
 
   let currIntervalPtr = 0;

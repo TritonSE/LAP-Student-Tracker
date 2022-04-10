@@ -91,7 +91,7 @@ describe("[GET] /api/users/?filter", () => {
     ];
 
     const query = {
-      filter: "Teacher",
+      role: "Teacher",
     };
 
     await makeHTTPRequest(
@@ -119,7 +119,7 @@ describe("[GET] /api/users/?filter", () => {
     ];
 
     const query = {
-      filter: "Student",
+      role: "Student",
     };
 
     await makeHTTPRequest(
@@ -147,7 +147,7 @@ describe("[GET] /api/users/?filter", () => {
     ];
 
     const query = {
-      filter: "Admin",
+      role: "Admin",
     };
 
     await makeHTTPRequest(

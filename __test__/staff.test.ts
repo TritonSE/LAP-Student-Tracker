@@ -24,9 +24,7 @@ beforeAll(async () => {
   await client.query(
     "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('1', '3', '5', 'RR', '2020-01-01', '2020-01-01', 'english')"
   );
-  await client.query(
-    "INSERT INTO commitments(user_id, event_information_id) VALUES('2', '1')"
-  );
+  await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('2', '1')");
 });
 
 afterAll(async () => {
@@ -44,9 +42,9 @@ describe("[GET] /api/staff", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        minLevel: 3, 
+        minLevel: 3,
         maxLevel: 5,
-        language: "english"
+        language: "english",
       },
       {
         id: "3",
@@ -58,7 +56,7 @@ describe("[GET] /api/staff", () => {
         phoneNumber: "1234567890",
         minLevel: null,
         maxLevel: null,
-        language: null
+        language: null,
       },
     ];
     await makeHTTPRequest(

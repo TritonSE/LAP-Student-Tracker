@@ -18,14 +18,11 @@ const getAllStaff = async (): Promise<Staff[]> => {
 
   const res = await client.query(query);
 
-  console.log(res);
-
   let staffArray: staffArrayType;
 
   try {
     staffArray = await decode(StaffArraySchema, res.rows);
   } catch (e) {
-    console.log(e);
     throw Error("Fields returned incorrectly from database");
   }
   return staffArray;

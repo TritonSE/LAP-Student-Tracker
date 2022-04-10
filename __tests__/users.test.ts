@@ -69,7 +69,7 @@ describe("[GET] /api/users/?filter", () => {
       undefined
     );
 
-    const returnedUsers = JSON.parse(res._getData())
+    const returnedUsers = JSON.parse(res._getData());
 
     expect(expected.length).toBe(returnedUsers.length);
     expect(returnedUsers).toEqual(expect.arrayContaining(returnedUsers));

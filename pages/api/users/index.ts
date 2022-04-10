@@ -31,11 +31,11 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
     }
 
     case "GET": {
-      let filter: Roles | undefined = undefined;
-      if (req.query && req.query.filter) filter = req.query.filter as Roles;
+      let role: Roles | undefined = undefined;
+      if (req.query && req.query.role) role = req.query.role as Roles;
       try {
         let result = await getAllUsers();
-        if (filter) result = result.filter((user) => user.role == filter);
+        if (role) result = result.filter((user) => user.role == role);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

@@ -47,8 +47,8 @@ class LeagueAPI {
     return res.data;
   }
 
-  async getAllUsers(filter?: string): Promise<User[]> {
-    const res = await this.client.get("/api/users/", { params: { filter: filter } });
+  async getAllUsers(role?: string): Promise<User[]> {
+    const res = await this.client.get("/api/users/", { params: { role: role } });
     return res.data;
   }
 

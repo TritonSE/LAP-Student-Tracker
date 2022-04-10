@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { createUser } from "../../../lib/database/users";
-import { UserSchema, User } from "../../../models/users";
+import { createUser, getAllUsers } from "../../../lib/database/users";
+import { UserSchema, User, Roles } from "../../../models/users";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
@@ -25,6 +25,18 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
           newUser.phoneNumber
         );
         return res.status(StatusCodes.CREATED).json(result);
+      } catch (e) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+      }
+    }
+
+    case "GET": {
+      let filter: Roles | undefined = undefined;
+      if (req.query && req.query.filter) filter = req.query.filter as Roles;
+      try {
+        let result = await getAllUsers();
+        if (filter) result = result.filter((user) => user.role == filter);
+        return res.status(StatusCodes.OK).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }

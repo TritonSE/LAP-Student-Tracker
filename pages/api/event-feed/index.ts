@@ -20,11 +20,10 @@ const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextAp
         }
 
         const result = await getEventFeed(start, end, userId);
-        res.status(StatusCodes.OK).json(result);
+        return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
-      break;
 
     default:
       res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");

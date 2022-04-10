@@ -47,6 +47,11 @@ class LeagueAPI {
     return res.data;
   }
 
+  async getAllUsers(filter?: string): Promise<User[]> {
+    const res = await this.client.get("/api/users/", { params: { filter: filter } });
+    return res.data;
+  }
+
   async createUser(user: User): Promise<User> {
     const res = await this.client.post("api/users/", user);
     return res.data;

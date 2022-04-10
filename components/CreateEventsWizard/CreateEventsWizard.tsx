@@ -4,8 +4,10 @@ import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../../context/APIContext";
 import { CreateClass } from "../../models/class";
 import { CreateClassEvent } from "../../models/events";
+import useSWR from "swr";
 import styles from "./CreateEventsWizard.module.css";
-
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 // Work around for date/time picker library to work with NextJS
 // https://github.com/vercel/next.js/issues/19936
 import "react-date-picker/dist/DatePicker.css";
@@ -37,7 +39,10 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
   const [showRepeatModal, setShowRepeatModal] = useState<boolean>(false);
   const [color, setColor] = useState<string>("#ffc702");
-  const [teachers, setTeachers] = useState<string>("");
+
+  // selected teachers from dropdown (string of emails)
+  const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
+
   const [valid, setValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [errMsg, setErrMsg] = useState<string>("");
@@ -55,6 +60,14 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     }).toText()
   );
 
+  // get all teachers in order to select them in the dropdown
+  const { data: allTeachers, error: fetchTeacherError } = useSWR("/api/users?filter=Teacher", () =>
+    client.getAllUsers("Teacher")
+  );
+
+  // since all teachers can be undefined, check here and use an empty array if it is
+  const teachers = allTeachers ? allTeachers : [];
+
   const client = useContext(APIContext);
 
   const colorMap: { [name: string]: string } = {
@@ -68,38 +81,40 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
   // validates event wizard fields on state change
   const nameValid = name != "";
-  const teachersValid = teachers != "";
+  const teachersValid = selectedTeachers.length > 0;
   const levelsValid = !!minLevel && (!multipleLevels || !!maxLevel);
   const startDateValid = startDate != null;
   const startTimeValid = startTime != "";
   const endTimeValid = endTime != "";
-  const startBeforeEndDate = startDate <= endDate && endType == "on";
+  const startBeforeEndDate = startDate <= endDate || endType != "on";
 
   useEffect(() => {
     setValid(
       nameValid &&
-        teachersValid &&
-        levelsValid &&
-        startDateValid &&
-        startTimeValid &&
-        endTimeValid &&
-        startBeforeEndDate
+      teachersValid &&
+      levelsValid &&
+      startDateValid &&
+      startTimeValid &&
+      endTimeValid &&
+      startBeforeEndDate
     );
-    const errorMessage = !nameValid
-      ? "Please enter a name for the class"
-      : !teachersValid
-      ? "Please enter at least one teacher"
-      : !levelsValid
-      ? "Please ensure that the max level is less than the minimum level"
-      : !startDateValid
-      ? "Please enter a valid start date"
-      : !startTimeValid
-      ? "Please enter a valid start/end time"
-      : !endTimeValid
-      ? "Please enter a valid end time"
-      : !startBeforeEndDate
-      ? "Please ensure that the end date is after the start date"
-      : "";
+    const errorMessage = fetchTeacherError
+      ? fetchTeacherError.message
+      : !nameValid
+        ? "Please enter a name for the class"
+        : !teachersValid
+          ? "Please enter at least one teacher"
+          : !levelsValid
+            ? "Please ensure that the max level is less than the minimum level"
+            : !startDateValid
+              ? "Please enter a valid start date"
+              : !startTimeValid
+                ? "Please enter a valid start/end time"
+                : !endTimeValid
+                  ? "Please enter a valid end time"
+                  : !startBeforeEndDate
+                    ? "Please ensure that the end date is after the start date"
+                    : "";
     setErrMsg(errorMessage);
   }, [
     nameValid,
@@ -196,7 +211,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       language: lang,
       neverEnding: endType === "never",
       backgroundColor: colorMap[color],
-      teachers: teachers.split(",").map((teacher) => teacher.trim()),
+      teachers: selectedTeachers,
     };
 
     try {
@@ -233,6 +248,16 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     handleClose();
   };
 
+  const handleTeacherChange = (event: SelectChangeEvent<typeof selectedTeachers>): void => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedTeachers(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
   return (
     <>
       {showRepeatModal ? (
@@ -265,9 +290,8 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
           <div className={styles.scrollableContent}>
             <div
-              className={`${styles.levelsWrapper} ${
-                multipleLevels ? styles.multiLevel : styles.singleLevel
-              }`}
+              className={`${styles.levelsWrapper} ${multipleLevels ? styles.multiLevel : styles.singleLevel
+                }`}
             >
               <p className={styles.label}>Levels</p>
               <input
@@ -351,13 +375,23 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
             </div>
             <div className={styles.row}>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
-              <input
-                className={styles.textInput}
-                type="text"
-                placeholder="Comma-separated list of teacher emails"
-                value={teachers}
-                onChange={(e) => setTeachers(e.target.value)}
-              />
+              <div className={styles.spacing} />
+              <Select
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
+                multiple
+                value={selectedTeachers}
+                onChange={handleTeacherChange}
+                sx={{
+                  width: 650,
+                }}
+              >
+                {teachers.map((user) => (
+                  <MenuItem key={user.id} value={user.email}>
+                    {user.firstName}
+                  </MenuItem>
+                ))}
+              </Select>
             </div>
           </div>
 

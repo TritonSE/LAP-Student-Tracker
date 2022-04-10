@@ -27,6 +27,134 @@ afterAll(async () => {
   await client.end();
 });
 
+describe("[GET] /api/users/?filter", () => {
+  test("look for all users", async () => {
+    const expected: User[] = [
+      {
+        id: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "2",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "3",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all teachers", async () => {
+    const expected: User[] = [
+      {
+        id: "2",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    const query = {
+      filter: "Teacher",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all students", async () => {
+    const expected: User[] = [
+      {
+        id: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    const query = {
+      filter: "Student",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all admin", async () => {
+    const expected: User[] = [
+      {
+        id: "3",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    const query = {
+      filter: "Admin",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+});
+
 describe("[POST] /api/users", () => {
   test("creates a new user", async () => {
     const body: User = {

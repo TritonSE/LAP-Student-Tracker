@@ -43,17 +43,17 @@ type staffArrayType = TypeOf<typeof StaffArraySchema>;
 
 const getAllStaff = async (): Promise<Staff[]> => {
   const query = {
-    text: "SELECT users.id, users.role, classes.min_level, classes.max_level, classes.language " 
+    text: "SELECT users.id, users.first_name, users.last_name, users.email, users.role, "
+    + "users.phone_number, users.address, classes.min_level, classes.max_level, classes.language " 
     + "FROM (((event_information INNER JOIN classes ON event_information.id = classes.event_information_id) " 
     + "INNER JOIN commitments ON commitments.event_information_id = event_information.id) " 
-    + "FULL OUTER JOIN users ON commitments.user_id = users.id) WHERE role = 'Teacher' or role = 'Staff';",
+    + "FULL OUTER JOIN users ON commitments.user_id = users.id) WHERE role = 'Teacher' OR role = 'Staff' OR role = 'Admin';",
   };
 
   const res = await client.query(query);
 
   console.log(res);
 
-  // TODO: parse and structure response into a map with user_id mapped to classes and languages
   let staffArray: staffArrayType;
 
   try {
@@ -62,10 +62,6 @@ const getAllStaff = async (): Promise<Staff[]> => {
     console.log(e);
     throw Error("Fields returned incorrectly from database");
   }
-
-  // return staffMap;
-
-  // update once data is properly parsed
   return staffArray;
 };
 

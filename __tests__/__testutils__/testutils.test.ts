@@ -62,10 +62,6 @@ const makeEventHTTPRequest = async (
 
   await handler(req, res);
 
-  if (res._getStatusCode() != expectedResponseCode) {
-    console.log(JSON.parse(res._getData()));
-  }
-
   expect(res._getStatusCode()).toBe(expectedResponseCode);
   expect(JSON.parse(res._getData())).toEqual(
     expect.objectContaining({

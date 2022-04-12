@@ -80,22 +80,6 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
   // Sort new intervals
   const newIntervals: Interval[] = intervals.sort(compareIntervals);
 
-  // console.log("PRINTING CURRENT INTERVALS");
-  // currentEventIntervals.forEach((i) => {
-  //   if (i.start.day == 1) {
-  //     console.log(i.start);
-  //     console.log(i.end);
-  //     console.log("DONE");
-  //   }
-  // });
-
-  // console.log("PRINTING NEW INTERVALS");
-  // newIntervals.forEach((i) => {
-  //   console.log(i.start);
-  //   console.log(i.end);
-  //   console.log("DONE");
-  // });
-
   let currIntervalPtr = 0;
   let newIntervalPtr = 0;
 
@@ -105,14 +89,6 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
     const currInterval: Interval = currentEventIntervals[currIntervalPtr];
     const newInterval: Interval = newIntervals[newIntervalPtr];
     if (currInterval.overlaps(newInterval)) {
-      // console.log("CURR")
-      // console.log(currInterval.start)
-      // console.log(currInterval.end)
-
-      // console.log("NEW")
-      // console.log(newInterval.start)
-      // console.log(newInterval.end)
-
       throw new TeacherConflictError("Teacher " + teacherId + " has conflict with class");
     }
     if (currInterval.start < newInterval.start) {

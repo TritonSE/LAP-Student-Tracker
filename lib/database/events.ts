@@ -16,8 +16,8 @@ class TeacherConflictError extends Error {
   }
 }
 
-// Checks if the given teacher emails exist in the database and returns their IDs
-const teachersExist = async (teachers: string[]): Promise<string[]> => {
+// Checks if the given teacher emails exist in the database and returns the teacher user objects
+const teachersExist = async (teachers: string[]): Promise<User[]> => {
   const query = {
     text: "SELECT * FROM users WHERE email = ANY ($1) AND role = 'Teacher'",
     values: [teachers],
@@ -41,20 +41,19 @@ const teachersExist = async (teachers: string[]): Promise<string[]> => {
       "The following teachers { " + nonExistingTeachers + " } do not exist"
     );
   }
-  const teacherIds = teacherResult.map((teacher) => teacher.id);
 
-  return teacherIds;
+  return teacherResult;
 };
 
 // Checks whether teacher's current schedule conflicts with desired intervals
-const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<void> => {
+const validateTimes = async (teacher: User, intervals: Interval[]): Promise<void> => {
   const query = {
     text:
-      "SELECT c.start_str AS start, c.end_str AS end " +
+      "SELECT e.name, c.start_str AS start, c.end_str AS end " +
       "FROM event_information e, calendar_information c, commitments cm " +
       "WHERE e.id = c.event_information_id AND e.id = cm.event_information_id " +
       "AND cm.user_id = $1",
-    values: [teacherId],
+    values: [teacher.id],
   };
 
   // fetch all calendar start-end times teacher is committed to from db
@@ -66,30 +65,30 @@ const validateTimes = async (teacherId: string, intervals: Interval[]): Promise<
   }
 
   // helper function for sorting intervals
-  const compareIntervals = (a: Interval, b: Interval): number => {
-    if (a.start > b.start) return 1;
-    else if (a.start < b.start) return -1;
+  const compareIntervals = (a: [string, Interval], b: [string, Interval]): number => {
+    if (a[1].start > b[1].start) return 1;
+    else if (a[1].start < b[1].start) return -1;
     return 0;
   };
 
   // Convert db results to teacher's current intervals and sort
-  const currentEventIntervals: Interval[] = res.rows
-    .map((event) => Interval.fromDateTimes(event.start, event.end))
+  const currentEventIntervals: [string, Interval][] = res.rows
+    .map((row) => [row.name, Interval.fromDateTimes(row.start, row.end)] as [string, Interval])
     .sort(compareIntervals);
-
-  // Sort new intervals
-  const newIntervals: Interval[] = intervals.sort(compareIntervals);
 
   let currIntervalPtr = 0;
   let newIntervalPtr = 0;
 
   // Check for overlap between current time intervals and new intervals
   // Can assume currentEventIntervals and newIntervals are non-overlapping
-  while (currIntervalPtr < currentEventIntervals.length && newIntervalPtr < newIntervals.length) {
-    const currInterval: Interval = currentEventIntervals[currIntervalPtr];
-    const newInterval: Interval = newIntervals[newIntervalPtr];
+  while (currIntervalPtr < currentEventIntervals.length && newIntervalPtr < intervals.length) {
+    const currClass = currentEventIntervals[currIntervalPtr][0];
+    const currInterval: Interval = currentEventIntervals[currIntervalPtr][1];
+    const newInterval: Interval = intervals[newIntervalPtr];
     if (currInterval.overlaps(newInterval)) {
-      throw new TeacherConflictError("Teacher " + teacherId + " has conflict with class");
+      throw new TeacherConflictError(
+        `Teacher ${teacher.firstName} ${teacher.lastName} has conflict with class ${currClass}`
+      );
     }
     if (currInterval.start < newInterval.start) {
       currIntervalPtr++;

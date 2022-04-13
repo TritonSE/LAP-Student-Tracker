@@ -22,13 +22,13 @@ beforeAll(async () => {
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Jane', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
   );
   await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('e_1', 'Event', 'blue', 'Class', false)"
+    "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('e_1', 'Java Bear', 'blue', 'Class', false)"
   );
   await client.query(
     "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('e_1', '2022-01-01 10:00:00-0', '2022-01-01 11:00:00-08')"
@@ -245,24 +245,7 @@ describe("[POST] /api/events/class", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher 2 has conflict with class"
+      "Teacher Jane Doe has conflict with class Java Bear"
     );
-
-    // body.rrule = new RRule({
-    //   freq: RRule.DAILY,
-    //   interval: 2,
-    //   count: 3,
-    //   dtstart: new Date(2022, 0, 5),
-    // }).toString();
-
-    // await makeHTTPRequest(
-    //   eventHandler,
-    //   "/api/events/class",
-    //   undefined,
-    //   "POST",
-    //   body,
-    //   StatusCodes.BAD_REQUEST,
-    //   "Teacher 2 has conflict with class"
-    // );
   });
 });

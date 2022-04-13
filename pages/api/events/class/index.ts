@@ -27,7 +27,7 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
         }
         try {
           // verify the teachers exist in the database
-          const teacherIds = await teachersExist(newEvent.teachers);
+          const teachers = await teachersExist(newEvent.teachers);
 
           const ruleObj = rrulestr(newEvent.rrule);
           const initialDate = ruleObj.all()[0];
@@ -74,8 +74,8 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
 
           // verify that each teacher is available during class times
           try {
-            for (const teacherId of teacherIds) {
-              await validateTimes(teacherId, intervals);
+            for (const teacher of teachers) {
+              await validateTimes(teacher, intervals);
             }
           } catch (e) {
             if (e instanceof TeacherConflictError)
@@ -101,8 +101,8 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
 
           // Loops through teachers and inserts into commitments table
           try {
-            for (const teacher of teacherIds) {
-              await createCommitment(teacher, result);
+            for (const teacher of teachers) {
+              await createCommitment(teacher.id, result);
             }
           } catch (e) {
             return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");

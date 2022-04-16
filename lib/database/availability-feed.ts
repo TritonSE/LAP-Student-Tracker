@@ -121,11 +121,13 @@ const getAvailabilityFeed = async (
         return a.start >= b.start ? 1 : -1;
     };
 
+    const mergedAvailibilities = Interval.merge(availabilityAsIntervals);
+
 
     const unavailability = calculateBetweenIntervals(
         DateTime.fromISO(start, {zone: availability.timeZone}),
         DateTime.fromISO(end, {zone: availability.timeZone}),
-        availabilityAsIntervals
+        mergedAvailibilities
     );
     const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
         return Interval.fromDateTimes(DateTime.fromISO(event.start, {zone: availability.timeZone}), DateTime.fromISO(event.end, {zone: availability.timeZone}));

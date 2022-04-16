@@ -2,7 +2,7 @@ import availabilityFeedHandler from "../pages/api/availibility-feed";
 import { client } from "../lib/db";
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
+import {getISOTimeFromExplicitFields, makeHTTPRequest} from "./__testutils__/testutils.test";
 import ColorHash from "color-hash";
 import { DateTime } from "luxon";
 
@@ -163,27 +163,15 @@ describe("[GET] /api/availability-feed/", () => {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 6, minute: 0 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 10, minute: 0 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 22, 6 ,0),
+        end: getISOTimeFromExplicitFields(2022, 2, 22, 10 ,0),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 12, minute: 0 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 16, minute: 30 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 22, 12 ,0),
+        end: getISOTimeFromExplicitFields(2022, 2, 22, 16 ,30)
       },
     ];
 
@@ -210,14 +198,8 @@ describe("[GET] /api/availability-feed/", () => {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 24, hour: 9, minute: 45 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 24, hour: 15, minute: 0 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 24, 9 ,45),
+        end: getISOTimeFromExplicitFields(2022, 2, 24, 15 ,0)
       },
     ];
 
@@ -244,53 +226,29 @@ describe("[GET] /api/availability-feed/", () => {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 6, minute: 0 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 8, minute: 45 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 6 ,0),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 8 ,45)
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 10, minute: 45 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 11, minute: 30 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 10 ,45),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 11 ,30 )
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 11, minute: 45 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 12, minute: 0 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 11 ,45 ),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 12 ,0 )
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 14, minute: 0 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 16, minute: 0 })
-          .setZone("America/Los_Angeles")
-          .toLocal()
-          .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 14 ,0 ),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 16 ,0 )
       },
     ];
 

@@ -2,7 +2,7 @@ import availabilityFeedHandler from "../pages/api/availibility-feed";
 import { client } from "../lib/db";
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
-import {getISOTimeFromExplicitFields, makeHTTPRequest} from "./__testutils__/testutils.test";
+import { getISOTimeFromExplicitFields, makeHTTPRequest } from "./__testutils__/testutils.test";
 import ColorHash from "color-hash";
 import { DateTime } from "luxon";
 
@@ -163,15 +163,15 @@ describe("[GET] /api/availability-feed/", () => {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: getISOTimeFromExplicitFields(2022, 2, 22, 6 ,0),
-        end: getISOTimeFromExplicitFields(2022, 2, 22, 10 ,0),
+        start: getISOTimeFromExplicitFields(2022, 2, 22, 6, 0),
+        end: getISOTimeFromExplicitFields(2022, 2, 22, 10, 0),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: getISOTimeFromExplicitFields(2022, 2, 22, 12 ,0),
-        end: getISOTimeFromExplicitFields(2022, 2, 22, 16 ,30)
+        start: getISOTimeFromExplicitFields(2022, 2, 22, 12, 0),
+        end: getISOTimeFromExplicitFields(2022, 2, 22, 16, 30),
       },
     ];
 
@@ -198,8 +198,8 @@ describe("[GET] /api/availability-feed/", () => {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: getISOTimeFromExplicitFields(2022, 2, 24, 9 ,45),
-        end: getISOTimeFromExplicitFields(2022, 2, 24, 15 ,0)
+        start: getISOTimeFromExplicitFields(2022, 2, 24, 9, 45),
+        end: getISOTimeFromExplicitFields(2022, 2, 24, 15, 0),
       },
     ];
 
@@ -226,29 +226,29 @@ describe("[GET] /api/availability-feed/", () => {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: getISOTimeFromExplicitFields(2022, 2, 25, 6 ,0),
-        end: getISOTimeFromExplicitFields(2022, 2, 25, 8 ,45)
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 6, 0),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 8, 45),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: getISOTimeFromExplicitFields(2022, 2, 25, 10 ,45),
-        end: getISOTimeFromExplicitFields(2022, 2, 25, 11 ,30 )
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 10, 45),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 11, 30),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: getISOTimeFromExplicitFields(2022, 2, 25, 11 ,45 ),
-        end: getISOTimeFromExplicitFields(2022, 2, 25, 12 ,0 )
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 11, 45),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 12, 0),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: getISOTimeFromExplicitFields(2022, 2, 25, 14 ,0 ),
-        end: getISOTimeFromExplicitFields(2022, 2, 25, 16 ,0 )
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 14, 0),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 16, 0),
       },
     ];
 

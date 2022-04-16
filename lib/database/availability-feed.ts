@@ -1,8 +1,8 @@
-import {DateTime, Interval} from "luxon";
-import {CalendarEvent} from "../../models/events";
-import {getAvailabilityById} from "./availability";
-import {getEventFeed} from "./calendar-events";
-import {getUser} from "./users";
+import { DateTime, Interval } from "luxon";
+import { CalendarEvent } from "../../models/events";
+import { getAvailabilityById } from "./availability";
+import { getEventFeed } from "./calendar-events";
+import { getUser } from "./users";
 import ColorHash from "color-hash";
 
 const indexToWeekdays = ["temp", "mon", "tue", "wed", "thu", "fri", "sat", "sun"];
@@ -115,14 +115,18 @@ const getAvailabilityFeed = async (
     });
   });
   // custom comparator for sorting
-  const compare = (a: Interval, b: Interval): number => {return a.start >= b.start ? 1 : -1;}
+  const compare = (a: Interval, b: Interval): number => {
+    return a.start >= b.start ? 1 : -1;
+  };
   // sort intervals in ascending order by start time
-  const sortedAvailabilityAsIntervals = availabilityAsIntervals.sort( (a: Interval, b: Interval) => { return compare(a, b) });
+  const sortedAvailabilityAsIntervals = availabilityAsIntervals.sort((a: Interval, b: Interval) => {
+    return compare(a, b);
+  });
 
   const unavailability = calculateBetweenIntervals(
     DateTime.fromISO(start),
     DateTime.fromISO(end),
-      sortedAvailabilityAsIntervals
+    sortedAvailabilityAsIntervals
   );
   const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
     return Interval.fromDateTimes(DateTime.fromISO(event.start), DateTime.fromISO(event.end));
@@ -132,11 +136,14 @@ const getAvailabilityFeed = async (
 
   const mergedUnavailability = Interval.merge(completeUnavailability);
 
-  const sortedMergedUnavailability = mergedUnavailability.sort( (a: Interval, b: Interval) => { return compare(a, b) });
+  const sortedMergedUnavailability = mergedUnavailability.sort((a: Interval, b: Interval) => {
+    return compare(a, b);
+  });
 
   const finalAvailability = calculateBetweenIntervals(
     DateTime.fromISO(start),
-    DateTime.fromISO(end), sortedMergedUnavailability
+    DateTime.fromISO(end),
+    sortedMergedUnavailability
   );
 
   return finalAvailability.map((interval) => {

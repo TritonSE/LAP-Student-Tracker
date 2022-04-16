@@ -126,11 +126,23 @@ const convertTimeToISO = (time: string, timeZone: string): string => {
   return DateTime.fromFormat(time, "HH:mm", { zone: timeZone }).toISOTime();
 };
 
-const getISOTimeFromExplicitFields = (year:number, month: number, day: number, hour:number, minute:number ): string => {
+const getISOTimeFromExplicitFields = (
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  minute: number
+): string => {
   return DateTime.fromObject({ year: year, month: month, day: day, hour: hour, minute: minute })
-      .setZone("America/Los_Angeles")
-      .toLocal()
-      .toISO();
-}
+    .setZone("America/Los_Angeles")
+    .toLocal()
+    .toISO();
+};
 
-export { makeHTTPRequest, makeEventHTTPRequest, makeEventFeedHTTPRequest, convertTimeToISO, getISOTimeFromExplicitFields };
+export {
+  makeHTTPRequest,
+  makeEventHTTPRequest,
+  makeEventFeedHTTPRequest,
+  convertTimeToISO,
+  getISOTimeFromExplicitFields,
+};

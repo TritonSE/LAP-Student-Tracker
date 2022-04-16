@@ -1,4 +1,4 @@
-CREATE TABLE availibilities(
+CREATE TABLE availabilities(
   user_id text UNIQUE NOT NULL, 
   mon text[], 
   tue text[], 

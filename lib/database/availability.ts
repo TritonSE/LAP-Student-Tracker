@@ -2,7 +2,7 @@ import { Availibility, AvailibilitySchema } from "../../models/availibility";
 import { client } from "../db";
 import { decode } from "io-ts-promise";
 
-const updateAvailibility = async (
+const updateAvailability = async (
   id: string,
   mon: string[][] | null,
   tue: string[][] | null,
@@ -14,7 +14,7 @@ const updateAvailibility = async (
 ): Promise<Availibility | null> => {
   const query = {
     text:
-      "UPDATE availibilities SET " +
+      "UPDATE availabilities SET " +
       "mon = COALESCE($2, mon), " +
       "tue = COALESCE($3, tue), " +
       "wed = COALESCE($4, wed), " +
@@ -28,15 +28,15 @@ const updateAvailibility = async (
   try {
     await client.query(query);
   } catch (e) {
-    throw Error("Error on update availibility");
+    throw Error("Error on update availability");
   }
 
-  return getAvailibilityById(id);
+  return getAvailabilityById(id);
 };
 
-const getAvailibilityById = async (id: string): Promise<Availibility | null> => {
+const getAvailabilityById = async (id: string): Promise<Availibility | null> => {
   const query = {
-    text: "SELECT mon, tue, wed, thu, fri, sat, time_zone FROM availibilities WHERE user_id = $1",
+    text: "SELECT mon, tue, wed, thu, fri, sat, time_zone FROM availabilities WHERE user_id = $1",
     values: [id],
   };
 
@@ -44,13 +44,13 @@ const getAvailibilityById = async (id: string): Promise<Availibility | null> => 
   if (res.rows.length == 0) {
     return null;
   }
-  let availibility: Availibility;
+  let availability: Availibility;
   try {
-    availibility = await decode(AvailibilitySchema, res.rows[0]);
+    availability = await decode(AvailibilitySchema, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }
-  return availibility;
+  return availability;
 };
 
-export { getAvailibilityById, updateAvailibility };
+export { getAvailabilityById, updateAvailability };

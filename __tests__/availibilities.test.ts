@@ -9,12 +9,12 @@ beforeAll(async () => {
   await client.query("DELETE from calendar_information");
   await client.query("DELETE from commitments");
   await client.query("DELETE from users");
-  await client.query("DELETE from availibilities");
+  await client.query("DELETE from availabilities");
   await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO availibilities (user_id, time_zone) VALUES ('2', 	'America/Los_Angeles')"
+    "INSERT INTO availabilities (user_id, time_zone) VALUES ('2', 	'America/Los_Angeles')"
   );
 });
 
@@ -23,12 +23,12 @@ afterAll(async () => {
   await client.query("DELETE from calendar_information");
   await client.query("DELETE from commitments");
   await client.query("DELETE from users");
-  await client.query("DELETE from availibilities");
-  client.end();
+  await client.query("DELETE from availabilities");
+  await client.end();
 });
 
-describe("[GET] /api/availibility/[id]", () => {
-  test("Getting a users availibility", async () => {
+describe("[GET] /api/availability/[id]", () => {
+  test("Getting a users availability", async () => {
     const expected: Availibility = {
       mon: null,
       tue: null,
@@ -44,7 +44,7 @@ describe("[GET] /api/availibility/[id]", () => {
 
     await makeHTTPRequest(
       availibilityIdHandler,
-      "/api/availibility/2",
+      "/api/availability/2",
       query,
       "GET",
       undefined,
@@ -53,24 +53,24 @@ describe("[GET] /api/availibility/[id]", () => {
     );
   });
 
-  test("Get avaiibility of user that does not exist", async () => {
+  test("Get availability of user that does not exist", async () => {
     const query = {
-      id: "non-existant",
+      id: "non-existent",
     };
     await makeHTTPRequest(
       availibilityIdHandler,
-      "/api/availibility/2",
+      "/api/availability/2",
       query,
       "GET",
       undefined,
       StatusCodes.NOT_FOUND,
-      "Availibility of user not found"
+      "Availability of user not found"
     );
   });
 });
 
-describe("[PATCH] /api/availibilities/[id]", () => {
-  test("Editing a users availibility", async () => {
+describe("[PATCH] /api/availabilities/[id]", () => {
+  test("Editing a users availability", async () => {
     const body: Availibility = {
       mon: [
         ["08:00", "10:00"],
@@ -99,7 +99,7 @@ describe("[PATCH] /api/availibilities/[id]", () => {
 
     await makeHTTPRequest(
       availibilityIdHandler,
-      "/api/availibility/2",
+      "/api/availability/2",
       query,
       "PATCH",
       body,
@@ -108,7 +108,7 @@ describe("[PATCH] /api/availibilities/[id]", () => {
     );
   });
 
-  test("Editing availibility of a user that does not exist", async () => {
+  test("Editing availability of a user that does not exist", async () => {
     const body: Availibility = {
       mon: [
         ["08:00", "10:00"],
@@ -136,12 +136,12 @@ describe("[PATCH] /api/availibilities/[id]", () => {
 
     await makeHTTPRequest(
       availibilityIdHandler,
-      "/api/availibility/non-existent",
+      "/api/availability/non-existent",
       query,
       "PATCH",
       body,
       StatusCodes.NOT_FOUND,
-      "Availibility of user not found"
+      "Availability of user not found"
     );
   });
 });

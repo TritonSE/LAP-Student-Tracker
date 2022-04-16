@@ -1,6 +1,6 @@
 import {DateTime, Interval} from "luxon";
 import {CalendarEvent} from "../../models/events";
-import {getAvailibilityById} from "./availibilities";
+import {getAvailabilityById} from "./availability";
 import {getEventFeed} from "./calendar-events";
 import {getUser} from "./users";
 import ColorHash from "color-hash";
@@ -87,7 +87,7 @@ const getAvailabilityFeed = async (
   if (user == null) {
     throw Error("Could not retrieve user from database");
   }
-  const availibility = await getAvailibilityById(userId);
+  const availibility = await getAvailabilityById(userId);
   if (availibility == null) {
     throw Error("Could not fetch availibility for user");
   }

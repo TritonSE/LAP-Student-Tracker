@@ -9,13 +9,13 @@ const roleSpecificSetup = async (
   switch (role) {
     case "Teacher": {
       const query = {
-        text: "INSERT INTO availibilities (user_id, time_zone) VALUES ($1, 	$2)",
+        text: "INSERT INTO availabilities (user_id, time_zone) VALUES ($1, 	$2)",
         values: [id, "America/Los_Angeles"],
       };
       try {
         await client.query(query);
       } catch (e) {
-        throw Error("Error on inserting into availibilities for teachers");
+        throw Error("Error on inserting into availabilities for teachers");
       }
       return;
     }

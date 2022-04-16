@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="26612eff-f76b-42f6-8ac3-f6006532fdc7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/database/availibility-feed.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/availibility-feed.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/availibilities.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/availibilities.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/availibilities.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/availability.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/availibility-feed.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/availability-feed.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/users.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/0006_create-user-availibility-table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/0006_create-user-availibility-table.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/availibility-feed/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/availibility-feed/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/api/availibility/[id].ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/availibility/[id].ts" afterDir="false" />
     </list>
@@ -36,12 +41,33 @@
     "WebServerToolWindowFactoryState": "false",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs.jest.jest_package": "/Users/anshulbirla/TSE/LAP-Student-Tracker/node_modules/jest",
     "nodejs_package_manager_path": "npm",
     "prettierjs.PrettierConfiguration.Package": "/Users/anshulbirla/TSE/LAP-Student-Tracker/node_modules/prettier",
     "ts.external.directory.path": "/Users/anshulbirla/TSE/LAP-Student-Tracker/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="[GET] /api/availability-feed/" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
+      <test-names>
+        <test-name value="[GET] /api/availability-feed/" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Jest.[GET] /api/availability-feed/" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -56,5 +82,16 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

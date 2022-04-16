@@ -1,9 +1,9 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
-import { getAvailabilityFeed } from "../../../lib/database/availibility-feed";
+import { getAvailabilityFeed } from "../../../lib/database/availability-feed";
 
 // handles requests to /api/availibility-feed/
-const availibilityFeedHandler: NextApiHandler = async (
+const availabilityFeedHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
@@ -37,4 +37,4 @@ const availibilityFeedHandler: NextApiHandler = async (
   }
 };
 
-export default availibilityFeedHandler;
+export default availabilityFeedHandler;

@@ -12,14 +12,18 @@ const hash = new ColorHash();
 type Weekdays = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 
 // get all DateTime days between an interval (start < end)
-const getAllDatesBetweenStartAndEnd = (start: string, end: string, timeZone: string): Set<DateTime> => {
+const getAllDatesBetweenStartAndEnd = (start: string, end: string, timeZone: string): DateTime[] => {
   // get the interval corresponding to the start and end strings
   const interval = Interval.fromDateTimes(DateTime.fromISO(start, {setZone: true}).setZone(timeZone), DateTime.fromISO(end, {setZone: true}).setZone(timeZone));
-  const dates: Set<DateTime> = new Set<DateTime>();
+  const seenDates = new Set<number>();
+  const dates: DateTime[] = [];
 
   let cursor = interval.start.startOf("hour");
   while (cursor < interval.end) {
-    if (!dates.has(cursor.startOf("day"))) dates.add(cursor.startOf("day"));
+    if (!seenDates.has(cursor.day)) {
+      dates.push(cursor.startOf("day"));
+      seenDates.add(cursor.day);
+    }
     cursor = cursor.plus({hour: 1});
   }
 
@@ -33,6 +37,10 @@ const getAllDatesBetweenStartAndEnd = (start: string, end: string, timeZone: str
   //   cursor = cursor.plus({ days: 1 });
   // }
   // return dates;
+};
+
+const timeDateZoneToDateTime = (time:string, date:DateTime, timeZone:string): DateTime => {
+  return DateTime.fromFormat(time, "HH:mm").set({year: date.year, month:date.month, day: date.day}).setZone(timeZone, {keepLocalTime: true});
 };
 
 
@@ -76,6 +84,7 @@ const calculateBetweenIntervals = (
     return [Interval.fromDateTimes(start, end)];
   }
 
+
   const newIntervals = intervals.map((interval, index) => {
     if (index == 0) return Interval.fromDateTimes(start, interval.start);
     return Interval.fromDateTimes(intervals[index - 1].end, interval.start);
@@ -110,29 +119,50 @@ const getAvailabilityFeed = async (
   }
 
   const dates = getAllDatesBetweenStartAndEnd(start, end, availability.timeZone);
+  const availabilityIntervals = [];
 
 
   const availabilityAsIntervals: Interval[] = [];
-  const processedDaysOfWeek = new Set<string>();
-  dates.forEach((date) => {
+  dates.forEach( (date) => {
     const weekdayStr = indexToWeekdays[date.weekday] as Weekdays;
-    // only need to return one week worth of data, so do not process any data past one week. Do not process sunday's
-    if (processedDaysOfWeek.has(weekdayStr) || weekdayStr == "sun") return;
 
-    processedDaysOfWeek.add(weekdayStr);
-    let availabilitiesToProcess = availability[weekdayStr] == null ? [] : availability[weekdayStr];
-    if (availabilitiesToProcess == null) availabilitiesToProcess = [];
-    availabilitiesToProcess.forEach((availabilityInterval) => {
-      const availabilityWithDate = insertDateIntoInterval(
-        availabilityInterval,
-        date.setZone(availability.timeZone),
-        availability.timeZone
-      );
-      availabilityAsIntervals.push(
-        Interval.fromDateTimes(availabilityWithDate[0], availabilityWithDate[1])
-      );
-    });
+    if (weekdayStr == "sun") return;
+
+    const  availabilitiesToInsertDateInto = availability[weekdayStr] == null ? [] : availability[weekdayStr] as string[][];
+
+    availabilitiesToInsertDateInto.forEach( (availabilityInterval) => {
+      const availableStartTime = availabilityInterval[0];
+      const availableEndTime = availabilityInterval[1];
+      const availableStartDateTime = timeDateZoneToDateTime(availableStartTime, date, availability.timeZone);
+      const availableEndDateTime = timeDateZoneToDateTime(availableEndTime, date, availability.timeZone);
+      availabilityAsIntervals.push(Interval.fromDateTimes(availableStartDateTime, availableEndDateTime));
+    } );
   });
+
+
+
+
+
+
+  // dates.forEach((date) => {
+  //   const weekdayStr = indexToWeekdays[date.weekday] as Weekdays;
+  //   // only need to return one week worth of data, so do not process any data past one week. Do not process sundays
+  //   if (processedDaysOfWeek.has(weekdayStr) || weekdayStr == "sun") return;
+  //
+  //   processedDaysOfWeek.add(weekdayStr);
+  //   let availabilitiesToProcess = availability[weekdayStr] == null ? [] : availability[weekdayStr];
+  //   if (availabilitiesToProcess == null) availabilitiesToProcess = [];
+  //   availabilitiesToProcess.forEach((availabilityInterval) => {
+  //     const availabilityWithDate = insertDateIntoInterval(
+  //       availabilityInterval,
+  //       date.setZone(availability.timeZone),
+  //       availability.timeZone
+  //     );
+  //     availabilityAsIntervals.push(
+  //       Interval.fromDateTimes(availabilityWithDate[0], availabilityWithDate[1])
+  //     );
+  //   });
+  // });
   // custom comparator for sorting
   const compare = (a: Interval, b: Interval): number => {
     return a.start >= b.start ? 1 : -1;
@@ -145,12 +175,12 @@ const getAvailabilityFeed = async (
   // });
 
   const unavailability = calculateBetweenIntervals(
-    DateTime.fromISO(start, {setZone: true}),
-    DateTime.fromISO(end, {setZone: true}),
+      DateTime.fromISO(start, { zone : availability.timeZone }),
+    DateTime.fromISO(end, { zone : availability.timeZone }),
       availabilityAsIntervals
   );
   const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
-    return Interval.fromDateTimes(DateTime.fromISO(event.start, {setZone: true}), DateTime.fromISO(event.end, {setZone: true}));
+    return Interval.fromDateTimes(DateTime.fromISO(event.start, {zone: availability.timeZone}), DateTime.fromISO(event.end, {zone: availability.timeZone}));
   });
 
   const completeUnavailability = unavailability.concat(userEvents);
@@ -162,8 +192,8 @@ const getAvailabilityFeed = async (
   // });
 
   const finalAvailability = calculateBetweenIntervals(
-    DateTime.fromISO(start, {setZone: true}),
-    DateTime.fromISO(end, {setZone: true}),
+      DateTime.fromISO(start, { zone : availability.timeZone }),
+      DateTime.fromISO(end, { zone : availability.timeZone }),
       mergedUnavailability
   );
 

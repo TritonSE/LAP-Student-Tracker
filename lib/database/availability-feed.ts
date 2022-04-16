@@ -153,8 +153,8 @@ const getAvailabilityFeed = async (
       id: user.id,
       backgroundColor: hash.hex(user.firstName + " " + user.lastName) as string,
       title: user.firstName + " " + user.lastName + " is Available",
-      start: interval.start.toISO(),
-      end: interval.end.toISO(),
+      start: interval.start.toLocal().toISO(),
+      end: interval.end.toLocal().toISO(),
     };
   });
 };

@@ -4,6 +4,7 @@ import {getAvailabilityById} from "./availability";
 import {getEventFeed} from "./calendar-events";
 import {getUser} from "./users";
 import ColorHash from "color-hash";
+import {Int} from "io-ts";
 
 const indexToWeekdays = ["temp", "mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
@@ -58,12 +59,14 @@ const calculateBetweenIntervals = (
         return [Interval.fromDateTimes(start, end)];
     }
 
+    const mergeIntervals = Interval.merge(intervals);
 
-    const newIntervals = intervals.map((interval, index) => {
+
+    const newIntervals = mergeIntervals.map((interval, index) => {
         if (index == 0) return Interval.fromDateTimes(start, interval.start);
-        return Interval.fromDateTimes(intervals[index - 1].end, interval.start);
+        return Interval.fromDateTimes(mergeIntervals[index - 1].end, interval.start);
     });
-    newIntervals.push(Interval.fromDateTimes(intervals[intervals.length - 1].end, end));
+    newIntervals.push(Interval.fromDateTimes(mergeIntervals[mergeIntervals.length - 1].end, end));
     return newIntervals.filter(
         (interval) => interval.length("milliseconds") != 0 && interval.isValid
     );
@@ -121,13 +124,13 @@ const getAvailabilityFeed = async (
         return a.start >= b.start ? 1 : -1;
     };
 
-    const mergedAvailibilities = Interval.merge(availabilityAsIntervals);
+    // const mergedAvailibilities = Interval.merge(availabilityAsIntervals);
 
 
     const unavailability = calculateBetweenIntervals(
         DateTime.fromISO(start, {zone: availability.timeZone}),
         DateTime.fromISO(end, {zone: availability.timeZone}),
-        mergedAvailibilities
+        availabilityAsIntervals
     );
     const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
         return Interval.fromDateTimes(DateTime.fromISO(event.start, {zone: availability.timeZone}), DateTime.fromISO(event.end, {zone: availability.timeZone}));
@@ -135,16 +138,11 @@ const getAvailabilityFeed = async (
 
     const completeUnavailability = unavailability.concat(userEvents);
 
-    const mergedUnavailability = Interval.merge(completeUnavailability);
-
-    // const sortedMergedUnavailability = mergedUnavailability.sort((a: Interval, b: Interval) => {
-    //   return compare(a, b);
-    // });
 
     const finalAvailability = calculateBetweenIntervals(
         DateTime.fromISO(start, {zone: availability.timeZone}),
         DateTime.fromISO(end, {zone: availability.timeZone}),
-        mergedUnavailability
+        completeUnavailability
     );
 
     return finalAvailability.map((interval) => {

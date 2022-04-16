@@ -119,16 +119,16 @@ const getAvailabilityFeed = async (
     return a.start >= b.start ? 1 : -1;
   };
 
-  const mergedAvailibiltyAsIntervals = Interval.merge(availabilityAsIntervals);
-  // sort intervals in ascending order by start time
-  const sortedAvailabilityAsIntervals = mergedAvailibiltyAsIntervals.sort((a: Interval, b: Interval) => {
-    return compare(a, b);
-  });
+  // const mergedAvailibiltyAsIntervals = Interval.merge(availabilityAsIntervals);
+  // // sort intervals in ascending order by start time
+  // const sortedAvailabilityAsIntervals = mergedAvailibiltyAsIntervals.sort((a: Interval, b: Interval) => {
+  //   return compare(a, b);
+  // });
 
   const unavailability = calculateBetweenIntervals(
     DateTime.fromISO(start),
     DateTime.fromISO(end),
-    sortedAvailabilityAsIntervals
+      availabilityAsIntervals
   );
   const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
     return Interval.fromDateTimes(DateTime.fromISO(event.start), DateTime.fromISO(event.end));
@@ -138,14 +138,14 @@ const getAvailabilityFeed = async (
 
   const mergedUnavailability = Interval.merge(completeUnavailability);
 
-  const sortedMergedUnavailability = mergedUnavailability.sort((a: Interval, b: Interval) => {
-    return compare(a, b);
-  });
+  // const sortedMergedUnavailability = mergedUnavailability.sort((a: Interval, b: Interval) => {
+  //   return compare(a, b);
+  // });
 
   const finalAvailability = calculateBetweenIntervals(
     DateTime.fromISO(start),
     DateTime.fromISO(end),
-    sortedMergedUnavailability
+      mergedUnavailability
   );
 
   return finalAvailability.map((interval) => {

@@ -18,6 +18,8 @@ const getAllDatesBetweenStartAndEnd = (start: DateTime, end: DateTime): DateTime
     const seenDates = new Set<number>();
     const dates: DateTime[] = [];
 
+    //iterate from start time till end time by hour
+    //add date to return array if a new date has been encountered
     let cursor = interval.start.startOf("hour");
     while (cursor < interval.end) {
         if (!seenDates.has(cursor.day)) {
@@ -29,7 +31,10 @@ const getAllDatesBetweenStartAndEnd = (start: DateTime, end: DateTime): DateTime
 
     return dates;
 };
-
+/**
+ * Given a time in HH:mm format, a date in DateTime, and a timeZone, this function constructs the
+ * corresponding DateTime
+ */
 const timeDateZoneToDateTime = (time: string, date: DateTime, timeZone: string): DateTime => {
     return DateTime.fromFormat(time, "HH:mm").set({
         year: date.year,
@@ -47,7 +52,6 @@ const timeDateZoneToDateTime = (time: string, date: DateTime, timeZone: string):
  *
  * Think of this as the "not" operator being applied to the passed in intervals (getting the opposite of all intervals)
  *
- * Note: The intervals array MUST be sorted for this to work
  */
 const calculateBetweenIntervals = (
     start: DateTime,
@@ -62,6 +66,7 @@ const calculateBetweenIntervals = (
         return a.start >= b.start ? 1 : -1;
     };
 
+
     const mergeIntervals = Interval.merge(intervals).sort( (a: Interval, b) => {return compare(a,b);});
 
 
@@ -70,6 +75,9 @@ const calculateBetweenIntervals = (
         return Interval.fromDateTimes(mergeIntervals[index - 1].end, interval.start);
     });
     newIntervals.push(Interval.fromDateTimes(mergeIntervals[mergeIntervals.length - 1].end, end));
+
+    // return and filter out all intervals that were of length 0 or were invalid (this is so the app does not break
+    // in case there is a mistake)
     return newIntervals.filter(
         (interval) => interval.length("milliseconds") != 0 && interval.isValid
     );
@@ -77,11 +85,12 @@ const calculateBetweenIntervals = (
 
 /**
  * The function does as follows:
- * Gets availabilities and inserts the correct date into them
+ * Gets the availability of the user
+ * Finds the date for each availability depending on the query being sent
+ * Calculates unavailability from availabilities
  * Gets all commitments the user is assigned to
- * Calculate unavailability from availabilities
  * Merge unavailability with commitments
- * Calculate availability be revering the merged unavailability and commitments and return
+ * Calculate availability be reversing the merged unavailability and commitments
  */
 const getAvailabilityFeed = async (
     start: string,
@@ -121,16 +130,9 @@ const getAvailabilityFeed = async (
         });
     });
 
-
-    // custom comparator for sorting
-
-
-    // const mergedAvailibilities = Interval.merge(availabilityAsIntervals);
-
-
     const unavailability = calculateBetweenIntervals(
-        DateTime.fromISO(start, {zone: availability.timeZone}),
-        DateTime.fromISO(end, {zone: availability.timeZone}),
+        dateTimeStart,
+        dateTimeEnd,
         availabilityAsIntervals
     );
     const userEvents = (await getEventFeed(start, end, userId)).map((event) => {

@@ -2,7 +2,7 @@ import availabilityFeedHandler from "../pages/api/availibility-feed";
 import { client } from "../lib/db";
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
-import {getISOTimeFromExplicitFields, makeHTTPRequest} from "./__testutils__/testutils.test";
+import { getISOTimeFromExplicitFields, makeHTTPRequest } from "./__testutils__/testutils.test";
 import ColorHash from "color-hash";
 
 const hash = new ColorHash();
@@ -17,41 +17,41 @@ beforeAll(async () => {
   await client.query("DELETE from availabilities");
 
   await client.query(
-      "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('id_a', 'event_a', 'blue', 'Class', false)"
+    "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('id_a', 'event_a', 'blue', 'Class', false)"
   );
 
   await client.query(
-      "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address) VALUES('user_a', 'emaila@gmail.com', 'Teacher', 'fname', 'lname', '#', 'addr')"
+    "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address) VALUES('user_a', 'emaila@gmail.com', 'Teacher', 'fname', 'lname', '#', 'addr')"
   );
   await client.query(
-      "INSERT INTO commitments(user_id, event_information_id) VALUES('user_a', 'id_a')"
+    "INSERT INTO commitments(user_id, event_information_id) VALUES('user_a', 'id_a')"
   );
 
   // class on mon
   await client.query(
-      "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-21 11:45:00-08', '2022-02-21 13:45:00-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-21 11:45:00-08', '2022-02-21 13:45:00-08')"
   );
   // class on wednesday
   await client.query(
-      "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-23 11:45:00-08', '2022-02-23 13:45:00-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-23 11:45:00-08', '2022-02-23 13:45:00-08')"
   );
   // class on thurs
   await client.query(
-      "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-24 06:45:00-08', '2022-02-24 09:45:00-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-24 06:45:00-08', '2022-02-24 09:45:00-08')"
   );
 
   // 2 classes on friday
   await client.query(
-      "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-25 08:45:00-08', '2022-02-25 10:45:00-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-25 08:45:00-08', '2022-02-25 10:45:00-08')"
   );
 
   await client.query(
-      "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-25 12:00:00-08', '2022-02-25 14:00:00-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-25 12:00:00-08', '2022-02-25 14:00:00-08')"
   );
 
   //class on saturday
   await client.query(
-      "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-26 08:00:00-08', '2022-02-26 10:30:00-08')"
+    "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_a', '2022-02-26 08:00:00-08', '2022-02-26 10:30:00-08')"
   );
 
   await client.query({
@@ -93,13 +93,13 @@ describe("[GET] /api/availability-feed/", () => {
     const expectedBody: CalendarEvent[] = [];
 
     await makeHTTPRequest(
-        availabilityFeedHandler,
-        "/api/availability-feed/",
-        query,
-        "GET",
-        undefined,
-        StatusCodes.OK,
-        expectedBody
+      availabilityFeedHandler,
+      "/api/availability-feed/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expectedBody
     );
   });
 
@@ -116,25 +116,25 @@ describe("[GET] /api/availability-feed/", () => {
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
         start: getISOTimeFromExplicitFields(2022, 2, 21, 8, 0, "America/Los_Angeles"),
-        end:  getISOTimeFromExplicitFields(2022, 2, 21, 11, 45, "America/Los_Angeles")
+        end: getISOTimeFromExplicitFields(2022, 2, 21, 11, 45, "America/Los_Angeles"),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start:  getISOTimeFromExplicitFields(2022, 2, 21, 13, 45, "America/Los_Angeles"),
-        end:  getISOTimeFromExplicitFields(2022, 2, 21, 15, 0, "America/Los_Angeles")
+        start: getISOTimeFromExplicitFields(2022, 2, 21, 13, 45, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 21, 15, 0, "America/Los_Angeles"),
       },
     ];
 
     await makeHTTPRequest(
-        availabilityFeedHandler,
-        "/api/availability-feed/",
-        query,
-        "GET",
-        undefined,
-        StatusCodes.OK,
-        expectedBody
+      availabilityFeedHandler,
+      "/api/availability-feed/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expectedBody
     );
   });
 
@@ -150,26 +150,26 @@ describe("[GET] /api/availability-feed/", () => {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start:  getISOTimeFromExplicitFields(2022, 2, 22, 6, 0, "America/Los_Angeles"),
-        end: getISOTimeFromExplicitFields(2022, 2, 22, 10, 0, "America/Los_Angeles")
+        start: getISOTimeFromExplicitFields(2022, 2, 22, 6, 0, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 22, 10, 0, "America/Los_Angeles"),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
         start: getISOTimeFromExplicitFields(2022, 2, 22, 12, 0, "America/Los_Angeles"),
-        end: getISOTimeFromExplicitFields(2022, 2, 22, 16, 30, "America/Los_Angeles")
+        end: getISOTimeFromExplicitFields(2022, 2, 22, 16, 30, "America/Los_Angeles"),
       },
     ];
 
     await makeHTTPRequest(
-        availabilityFeedHandler,
-        "/api/availability-feed/",
-        query,
-        "GET",
-        undefined,
-        StatusCodes.OK,
-        expectedBody
+      availabilityFeedHandler,
+      "/api/availability-feed/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expectedBody
     );
   });
 
@@ -191,13 +191,13 @@ describe("[GET] /api/availability-feed/", () => {
     ];
 
     await makeHTTPRequest(
-        availabilityFeedHandler,
-        "/api/availability-feed/",
-        query,
-        "GET",
-        undefined,
-        StatusCodes.OK,
-        expectedBody
+      availabilityFeedHandler,
+      "/api/availability-feed/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expectedBody
     );
   });
 
@@ -214,39 +214,39 @@ describe("[GET] /api/availability-feed/", () => {
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
         start: getISOTimeFromExplicitFields(2022, 2, 25, 6, 0, "America/Los_Angeles"),
-        end: getISOTimeFromExplicitFields(2022, 2, 25, 8, 45, "America/Los_Angeles")
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 8, 45, "America/Los_Angeles"),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
         start: getISOTimeFromExplicitFields(2022, 2, 25, 10, 45, "America/Los_Angeles"),
-        end: getISOTimeFromExplicitFields(2022, 2, 25, 11, 30, "America/Los_Angeles")
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 11, 30, "America/Los_Angeles"),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
         start: getISOTimeFromExplicitFields(2022, 2, 25, 11, 45, "America/Los_Angeles"),
-        end: getISOTimeFromExplicitFields(2022, 2, 25, 12, 0, "America/Los_Angeles")
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 12, 0, "America/Los_Angeles"),
       },
       {
         id: "user_a",
         title: availabilityTitle,
         backgroundColor: teacherColorHash,
         start: getISOTimeFromExplicitFields(2022, 2, 25, 14, 0, "America/Los_Angeles"),
-        end: getISOTimeFromExplicitFields(2022, 2, 25, 16, 0, "America/Los_Angeles")
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 16, 0, "America/Los_Angeles"),
       },
     ];
 
     await makeHTTPRequest(
-        availabilityFeedHandler,
-        "/api/availability-feed/",
-        query,
-        "GET",
-        undefined,
-        StatusCodes.OK,
-        expectedBody
+      availabilityFeedHandler,
+      "/api/availability-feed/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expectedBody
     );
   });
 
@@ -260,13 +260,13 @@ describe("[GET] /api/availability-feed/", () => {
     const expectedBody: CalendarEvent[] = [];
 
     await makeHTTPRequest(
-        availabilityFeedHandler,
-        "/api/availability-feed/",
-        query,
-        "GET",
-        undefined,
-        StatusCodes.OK,
-        expectedBody
+      availabilityFeedHandler,
+      "/api/availability-feed/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expectedBody
     );
   });
 });

@@ -2,8 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="26612eff-f76b-42f6-8ac3-f6006532fdc7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/components/CreateEventsWizard/CreateEventsWizard.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/CreateEventsWizard/CreateEventsWizard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/CreateEventsWizard/RepeatModal.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/CreateEventsWizard/RepeatModal.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/HomePage/AdminHomePage.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ResetPassword/ForgotPasswordHelp.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ResetPassword/ForgotPasswordLanding.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/forgotpassword.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/resetpassword.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/AddIcon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/CloseIcon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/TeacherIcon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/TimeIcon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scripts/addClassData.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/styles/ForgotPassword.module.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/database/availability-feed.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/availability-feed.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/classes.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/classes.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/HomePage/AdminHomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/HomePage/AdminHomePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/LeaguePage/ClassView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/LeaguePage/ClassView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Login/LoginPageMain.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Login/LoginPageMain.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Navbar/NavbarLayout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Navbar/NavbarLayout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/context/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/context/LeagueAPI.ts" beforeDir="false" afterPath="$PROJECT_DIR$/context/LeagueAPI.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/classes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/classes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/modules.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/class/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/class/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/home.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/league.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/league.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/Home.module.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/Home.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/globals.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

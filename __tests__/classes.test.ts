@@ -12,13 +12,13 @@ const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 beforeAll(async () => {
   await client.query("DELETE from event_Information");
   await client.query(
-    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('11', 'class1', 'blue', 'class', false)"
+    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('11', 'class1', 'blue', 'Class', false)"
   );
   await client.query(
-    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('22', 'class2', 'green', 'class', true)"
+    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('22', 'class2', 'green', 'Class', true)"
   );
   await client.query(
-    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('33', 'class3', 'green', 'class', true)"
+    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('33', 'class3', 'green', 'Class', true)"
   );
   await client.query("DELETE from classes");
   await client.query(
@@ -245,6 +245,84 @@ describe("[PATCH] /api/class/[id]", () => {
       body,
       404,
       CLASS_NOT_FOUND_ERROR
+    );
+  });
+});
+describe("[GET] /api/class", () => {
+  beforeAll(async () => {
+    await client.query("DELETE from classes");
+    await client.query(
+      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('11', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'C++')"
+    );
+    await client.query(
+      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('22', 4, 6, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO;INTERVAL=1', '06:34Z', '07:40Z', 'Java')"
+    );
+    await client.query(
+      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('33', 1, 3, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=WE,TH;INTERVAL=1', '01:00Z', '02:00Z', 'Python')"
+    );
+  });
+  test("get all classes", async () => {
+    const expected: Class[] = [
+      {
+        name: "class1",
+        eventInformationId: "11",
+        minLevel: 3,
+        maxLevel: 5,
+        rrstring:
+          "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1",
+        startTime: "07:34Z",
+        endTime: "08:34Z",
+        language: "C++",
+      },
+      {
+        name: "class2",
+        eventInformationId: "22",
+        minLevel: 4,
+        maxLevel: 6,
+        rrstring:
+          "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO;INTERVAL=1",
+        startTime: "06:34Z",
+        endTime: "07:40Z",
+        language: "Java",
+      },
+      {
+        name: "class3",
+        eventInformationId: "33",
+        minLevel: 1,
+        maxLevel: 3,
+        rrstring:
+          "DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=WE,TH;INTERVAL=1",
+        startTime: "01:00Z",
+        endTime: "02:00Z",
+        language: "Python",
+      },
+    ];
+    await makeHTTPRequest(
+      classHandler,
+      "/api/class",
+      undefined,
+      "GET",
+      undefined,
+      StatusCodes.ACCEPTED,
+      expected
+    );
+  });
+});
+
+describe("[GET] /api/class with no classes", () => {
+  beforeAll(async () => {
+    await client.query("DELETE from classes");
+  });
+
+  test("Works with no classes", async () => {
+    await makeHTTPRequest(
+      classHandler,
+      "/api/class/",
+      undefined,
+      "GET",
+      undefined,
+      StatusCodes.ACCEPTED,
+      []
     );
   });
 });

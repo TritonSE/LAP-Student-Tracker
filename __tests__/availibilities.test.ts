@@ -1,4 +1,4 @@
-import availibilityIdHandler from "../pages/api/availibility/[id]";
+import availabilityIdHandler from "../pages/api/availibility/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { StatusCodes } from "http-status-codes";
@@ -14,7 +14,7 @@ beforeAll(async () => {
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO availabilities (user_id, time_zone) VALUES ('2', 	'America/Los_Angeles')"
+    "INSERT INTO availabilities (user_id, time_zone) VALUES ('2', 'America/Los_Angeles')"
   );
 });
 
@@ -27,6 +27,7 @@ afterAll(async () => {
   await client.end();
 });
 
+const AVAILABILITY_NOT_FOUND_ERROR = "Availability of user not found";
 describe("[GET] /api/availability/[id]", () => {
   test("Getting a users availability", async () => {
     const expected: Availibility = {
@@ -43,7 +44,7 @@ describe("[GET] /api/availability/[id]", () => {
     };
 
     await makeHTTPRequest(
-      availibilityIdHandler,
+      availabilityIdHandler,
       "/api/availability/2",
       query,
       "GET",
@@ -58,13 +59,13 @@ describe("[GET] /api/availability/[id]", () => {
       id: "non-existent",
     };
     await makeHTTPRequest(
-      availibilityIdHandler,
+      availabilityIdHandler,
       "/api/availability/2",
       query,
       "GET",
       undefined,
       StatusCodes.NOT_FOUND,
-      "Availability of user not found"
+      AVAILABILITY_NOT_FOUND_ERROR
     );
   });
 });
@@ -98,7 +99,7 @@ describe("[PATCH] /api/availabilities/[id]", () => {
     };
 
     await makeHTTPRequest(
-      availibilityIdHandler,
+      availabilityIdHandler,
       "/api/availability/2",
       query,
       "PATCH",
@@ -135,13 +136,13 @@ describe("[PATCH] /api/availabilities/[id]", () => {
     };
 
     await makeHTTPRequest(
-      availibilityIdHandler,
+      availabilityIdHandler,
       "/api/availability/non-existent",
       query,
       "PATCH",
       body,
       StatusCodes.NOT_FOUND,
-      "Availability of user not found"
+      AVAILABILITY_NOT_FOUND_ERROR
     );
   });
 });

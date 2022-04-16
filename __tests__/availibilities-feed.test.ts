@@ -88,7 +88,7 @@ describe("[GET] /api/availibilites-feed/", () => {
   test("Getting availibility for a period where the user is not available at all", async () => {
     const query = {
       start: "2022-02-23T00:00:00-08:00",
-      end: "2022-02-23T23:59:00-08:00",
+      end: "2022-02-24T00:00:00-08:00",
       userId: "user_a",
     };
     const expectedBody: CalendarEvent[] = [];

@@ -12,26 +12,41 @@ const hash = new ColorHash();
 type Weekdays = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 
 // get all DateTime days between an interval (start < end)
-const getDatesInInterval = (start: string, end: string): DateTime[] => {
-  const interval = Interval.fromDateTimes(DateTime.fromISO(start), DateTime.fromISO(end));
-  const dates = [];
-  let cursor = interval.start.startOf("day");
+const getAllDatesBetweenStartAndEnd = (start: string, end: string, timeZone: string): Set<DateTime> => {
+  // get the interval corresponding to the start and end strings
+  const interval = Interval.fromDateTimes(DateTime.fromISO(start, {setZone: true}).setZone(timeZone), DateTime.fromISO(end, {setZone: true}).setZone(timeZone));
+  const dates: Set<DateTime> = new Set<DateTime>();
+
+  let cursor = interval.start.startOf("hour");
   while (cursor < interval.end) {
-    dates.push(cursor);
-    cursor = cursor.plus({ days: 1 });
+    if (!dates.has(cursor.startOf("day"))) dates.add(cursor.startOf("day"));
+    cursor = cursor.plus({hour: 1});
   }
+
   return dates;
+
+  // const interval = Interval.fromDateTimes(DateTime.fromISO(start, {setZone: true}), DateTime.fromISO(end, {setZone: true}));
+  // const dates = [];
+  // let cursor = interval.start.startOf("day");
+  // while (cursor < interval.end) {
+  //   dates.push(cursor);
+  //   cursor = cursor.plus({ days: 1 });
+  // }
+  // return dates;
 };
 
+
+
 // get DateTime in specified timezone given "HH:mm" time and JS date
-const getDateTime = (time: string, date: Date, timeZone: string): DateTime => {
-  return DateTime.fromFormat(time, "HH:mm")
-    .set({
-      year: date.getFullYear(),
-      month: date.getMonth() + 1,
-      day: date.getDate(),
-    })
-    .setZone(timeZone);
+const getDateTime = (time: string, date: DateTime, timeZone: string): DateTime => {
+  const x =  DateTime.fromFormat(time, "HH:mm").setZone(timeZone, {keepLocalTime: true}).set({
+      year: date.year,
+      month: date.month,
+      day: date.day,
+    });
+
+  return x;
+
 };
 
 /**
@@ -39,7 +54,7 @@ const getDateTime = (time: string, date: Date, timeZone: string): DateTime => {
  * a length 2 array representing the same interval but with datetimes (with the correct date and timezone)
  */
 
-const insertDateIntoInterval = (interval: string[], date: Date, timeZone: string): DateTime[] => {
+const insertDateIntoInterval = (interval: string[], date: DateTime, timeZone: string): DateTime[] => {
   return [getDateTime(interval[0], date, timeZone), getDateTime(interval[1], date, timeZone)];
 };
 
@@ -84,7 +99,7 @@ const getAvailabilityFeed = async (
   end: string,
   userId: string
 ): Promise<CalendarEvent[]> => {
-  const dates = getDatesInInterval(start, end);
+
   const user = await getUser(userId);
   if (user == null) {
     throw Error("Could not retrieve user from database");
@@ -93,6 +108,10 @@ const getAvailabilityFeed = async (
   if (availability == null) {
     throw Error("Could not fetch availability for user");
   }
+
+  const dates = getAllDatesBetweenStartAndEnd(start, end, availability.timeZone);
+
+
   const availabilityAsIntervals: Interval[] = [];
   const processedDaysOfWeek = new Set<string>();
   dates.forEach((date) => {
@@ -106,7 +125,7 @@ const getAvailabilityFeed = async (
     availabilitiesToProcess.forEach((availabilityInterval) => {
       const availabilityWithDate = insertDateIntoInterval(
         availabilityInterval,
-        date.toJSDate(),
+        date.setZone(availability.timeZone),
         availability.timeZone
       );
       availabilityAsIntervals.push(
@@ -126,12 +145,12 @@ const getAvailabilityFeed = async (
   // });
 
   const unavailability = calculateBetweenIntervals(
-    DateTime.fromISO(start),
-    DateTime.fromISO(end),
+    DateTime.fromISO(start, {setZone: true}),
+    DateTime.fromISO(end, {setZone: true}),
       availabilityAsIntervals
   );
   const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
-    return Interval.fromDateTimes(DateTime.fromISO(event.start), DateTime.fromISO(event.end));
+    return Interval.fromDateTimes(DateTime.fromISO(event.start, {setZone: true}), DateTime.fromISO(event.end, {setZone: true}));
   });
 
   const completeUnavailability = unavailability.concat(userEvents);
@@ -143,8 +162,8 @@ const getAvailabilityFeed = async (
   // });
 
   const finalAvailability = calculateBetweenIntervals(
-    DateTime.fromISO(start),
-    DateTime.fromISO(end),
+    DateTime.fromISO(start, {setZone: true}),
+    DateTime.fromISO(end, {setZone: true}),
       mergedUnavailability
   );
 

@@ -49,6 +49,8 @@ const insertDateIntoInterval = (interval: string[], date: Date, timeZone: string
  * the passed in intervals array
  *
  * Think of this as the "not" operator being applied to the passed in intervals (getting the opposite of all intervals)
+ *
+ * Note: The intervals array MUST be sorted for this to work
  */
 const calculateBetweenIntervals = (
   start: DateTime,
@@ -111,11 +113,15 @@ const getAvailabilityFeed = async (
       );
     });
   });
+  // custom comparator for sorting
+  const compare = (a: Interval, b: Interval): number => {return a.start >= b.start ? 1 : -1;}
+  // sort intervals in ascending order by start time
+  const sortedAvailabilityAsIntervals = availabilityAsIntervals.sort( (a: Interval, b: Interval) => { return compare(a, b) });
 
   const unavailability = calculateBetweenIntervals(
     DateTime.fromISO(start),
     DateTime.fromISO(end),
-    availabilityAsIntervals
+      sortedAvailabilityAsIntervals
   );
   const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
     return Interval.fromDateTimes(DateTime.fromISO(event.start), DateTime.fromISO(event.end));
@@ -125,10 +131,11 @@ const getAvailabilityFeed = async (
 
   const mergedUnavailability = Interval.merge(completeUnavailability);
 
+  const sortedMergedUnavailability = mergedUnavailability.sort( (a: Interval, b: Interval) => { return compare(a, b) });
+
   const finalAvailability = calculateBetweenIntervals(
     DateTime.fromISO(start),
-    DateTime.fromISO(end),
-    mergedUnavailability
+    DateTime.fromISO(end), sortedMergedUnavailability
   );
 
   return finalAvailability.map((interval) => {

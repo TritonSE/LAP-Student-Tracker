@@ -4,7 +4,6 @@ import {getAvailabilityById} from "./availability";
 import {getEventFeed} from "./calendar-events";
 import {getUser} from "./users";
 import ColorHash from "color-hash";
-import {Int} from "io-ts";
 
 const indexToWeekdays = ["temp", "mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
@@ -59,7 +58,11 @@ const calculateBetweenIntervals = (
         return [Interval.fromDateTimes(start, end)];
     }
 
-    const mergeIntervals = Interval.merge(intervals);
+    const compare = (a: Interval, b: Interval): number => {
+        return a.start >= b.start ? 1 : -1;
+    };
+
+    const mergeIntervals = Interval.merge(intervals).sort( (a: Interval, b) => {return compare(a,b);});
 
 
     const newIntervals = mergeIntervals.map((interval, index) => {
@@ -120,9 +123,7 @@ const getAvailabilityFeed = async (
 
 
     // custom comparator for sorting
-    const compare = (a: Interval, b: Interval): number => {
-        return a.start >= b.start ? 1 : -1;
-    };
+
 
     // const mergedAvailibilities = Interval.merge(availabilityAsIntervals);
 

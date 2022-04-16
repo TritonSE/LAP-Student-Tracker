@@ -118,8 +118,10 @@ const getAvailabilityFeed = async (
   const compare = (a: Interval, b: Interval): number => {
     return a.start >= b.start ? 1 : -1;
   };
+
+  const mergedAvailibiltyAsIntervals = Interval.merge(availabilityAsIntervals);
   // sort intervals in ascending order by start time
-  const sortedAvailabilityAsIntervals = availabilityAsIntervals.sort((a: Interval, b: Interval) => {
+  const sortedAvailabilityAsIntervals = mergedAvailibiltyAsIntervals.sort((a: Interval, b: Interval) => {
     return compare(a, b);
   });
 

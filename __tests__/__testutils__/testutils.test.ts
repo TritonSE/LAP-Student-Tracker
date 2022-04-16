@@ -134,7 +134,7 @@ const getISOTimeFromExplicitFields = (
   minute: number
 ): string => {
   return DateTime.fromObject({ year: year, month: month, day: day, hour: hour, minute: minute })
-    .setZone("America/Los_Angeles", { keepLocalTime: true})
+    .setZone("America/Los_Angeles")
     .toLocal()
     .toISO();
 };

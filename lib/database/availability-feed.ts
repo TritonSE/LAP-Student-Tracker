@@ -89,24 +89,25 @@ const getAvailabilityFeed = async (
   if (user == null) {
     throw Error("Could not retrieve user from database");
   }
-  const availibility = await getAvailabilityById(userId);
-  if (availibility == null) {
-    throw Error("Could not fetch availibility for user");
+  const availability = await getAvailabilityById(userId);
+  if (availability == null) {
+    throw Error("Could not fetch availability for user");
   }
   const availabilityAsIntervals: Interval[] = [];
   const processedDaysOfWeek = new Set<string>();
   dates.forEach((date) => {
     const weekdayStr = indexToWeekdays[date.weekday] as Weekdays;
+    // only need to return one week worth of data, so do not process any data past one week. Do not process sunday's
     if (processedDaysOfWeek.has(weekdayStr) || weekdayStr == "sun") return;
 
     processedDaysOfWeek.add(weekdayStr);
-    let availabilitiesToProcess = availibility[weekdayStr] == null ? [] : availibility[weekdayStr];
+    let availabilitiesToProcess = availability[weekdayStr] == null ? [] : availability[weekdayStr];
     if (availabilitiesToProcess == null) availabilitiesToProcess = [];
     availabilitiesToProcess.forEach((availabilityInterval) => {
       const availabilityWithDate = insertDateIntoInterval(
         availabilityInterval,
         date.toJSDate(),
-        availibility.timeZone
+        availability.timeZone
       );
       availabilityAsIntervals.push(
         Interval.fromDateTimes(availabilityWithDate[0], availabilityWithDate[1])

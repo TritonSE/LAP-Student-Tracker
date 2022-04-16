@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26612eff-f76b-42f6-8ac3-f6006532fdc7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/lib/database/availability-feed.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/availability-feed.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/__testutils__/testutils.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/__testutils__/testutils.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,21 +46,8 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Jest.[GET] /api/availibilites-feed/">
-    <configuration name="[GET] /api/availibilites-feed/" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
-      <test-names>
-        <test-name value="[GET] /api/availibilites-feed/" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="[GET] /api/availibilites-feed/.Get availibility for a period where no classes interfere" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Jest.[GET] /api/availability-feed/.Getting availabilities when user has 2 classes in a day and multiple overlapping availabilities">
+    <configuration name="[GET] /api/availability-feed/.Get availability for a period where no classes interfere" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -67,12 +56,12 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
       <test-names>
-        <test-name value="[GET] /api/availibilites-feed/" />
-        <test-name value="Get availibility for a period where no classes interfere" />
+        <test-name value="[GET] /api/availability-feed/" />
+        <test-name value="Get availability for a period where no classes interfere" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="[GET] /api/availibilites-feed/.Get availibility when a class overlaps completely with an availibility" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="[GET] /api/availability-feed/.Get availability when a class overlaps completely with an availability" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -81,12 +70,12 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
       <test-names>
-        <test-name value="[GET] /api/availibilites-feed/" />
-        <test-name value="Get availibility when a class overlaps completely with an availibility" />
+        <test-name value="[GET] /api/availability-feed/" />
+        <test-name value="Get availability when a class overlaps completely with an availability" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="[GET] /api/availibilites-feed/.Getting availibilities when a class interferes for the beginning of the availible period" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="[GET] /api/availability-feed/.Getting availabilities when a class interferes for the beginning of the available period" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -95,12 +84,12 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
       <test-names>
-        <test-name value="[GET] /api/availibilites-feed/" />
-        <test-name value="Getting availibilities when a class interferes for the beginning of the availible period" />
+        <test-name value="[GET] /api/availability-feed/" />
+        <test-name value="Getting availabilities when a class interferes for the beginning of the available period" />
       </test-names>
       <method v="2" />
     </configuration>
-    <configuration name="[GET] /api/availibilites-feed/.Getting availibilities when user has 2 classes in a day and multiple overlapping availibilities" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+    <configuration name="[GET] /api/availability-feed/.Getting availabilities when user has 2 classes in a day and multiple overlapping availabilities" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
       <jest-package value="$PROJECT_DIR$/node_modules/jest" />
@@ -109,18 +98,32 @@
       <scope-kind value="TEST" />
       <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
       <test-names>
-        <test-name value="[GET] /api/availibilites-feed/" />
-        <test-name value="Getting availibilities when user has 2 classes in a day and multiple overlapping availibilities" />
+        <test-name value="[GET] /api/availability-feed/" />
+        <test-name value="Getting availabilities when user has 2 classes in a day and multiple overlapping availabilities" />
+      </test-names>
+      <method v="2" />
+    </configuration>
+    <configuration name="[GET] /api/availability-feed/.Getting availability for a period where the user has a class completely within the availability period" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="TEST" />
+      <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
+      <test-names>
+        <test-name value="[GET] /api/availability-feed/" />
+        <test-name value="Getting availability for a period where the user has a class completely within the availability period" />
       </test-names>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Jest.[GET] /api/availibilites-feed/" />
-        <item itemvalue="Jest.[GET] /api/availibilites-feed/.Get availibility when a class overlaps completely with an availibility" />
-        <item itemvalue="Jest.[GET] /api/availibilites-feed/.Getting availibilities when user has 2 classes in a day and multiple overlapping availibilities" />
-        <item itemvalue="Jest.[GET] /api/availibilites-feed/.Getting availibilities when a class interferes for the beginning of the availible period" />
-        <item itemvalue="Jest.[GET] /api/availibilites-feed/.Get availibility for a period where no classes interfere" />
+        <item itemvalue="Jest.[GET] /api/availability-feed/.Getting availabilities when user has 2 classes in a day and multiple overlapping availabilities" />
+        <item itemvalue="Jest.[GET] /api/availability-feed/.Getting availabilities when a class interferes for the beginning of the available period" />
+        <item itemvalue="Jest.[GET] /api/availability-feed/.Get availability for a period where no classes interfere" />
+        <item itemvalue="Jest.[GET] /api/availability-feed/.Getting availability for a period where the user has a class completely within the availability period" />
+        <item itemvalue="Jest.[GET] /api/availability-feed/.Get availability when a class overlaps completely with an availability" />
       </list>
     </recent_temporary>
   </component>

@@ -2,13 +2,12 @@ import availabilityFeedHandler from "../pages/api/availibility-feed";
 import { client } from "../lib/db";
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
+import {getISOTimeFromExplicitFields, makeHTTPRequest} from "./__testutils__/testutils.test";
 import ColorHash from "color-hash";
-import { DateTime } from "luxon";
 
 const hash = new ColorHash();
 const teacherColorHash = hash.hex("fname lname");
-const availibilityTitle = "fname lname is Available";
+const availabilityTitle = "fname lname is Available";
 
 beforeAll(async () => {
   await client.query("DELETE from users");
@@ -84,8 +83,8 @@ afterAll(async () => {
   await client.end();
 });
 
-describe("[GET] /api/availibilites-feed/", () => {
-  test("Getting availibility for a period where the user is not available at all", async () => {
+describe("[GET] /api/availability-feed/", () => {
+  test("Getting availability for a period where the user is not available at all", async () => {
     const query = {
       start: "2022-02-23T00:00:00-08:00",
       end: "2022-02-24T00:00:00-08:00",
@@ -95,7 +94,7 @@ describe("[GET] /api/availibilites-feed/", () => {
 
     await makeHTTPRequest(
         availabilityFeedHandler,
-        "/api/availibility-feed/",
+        "/api/availability-feed/",
         query,
         "GET",
         undefined,
@@ -104,7 +103,7 @@ describe("[GET] /api/availibilites-feed/", () => {
     );
   });
 
-  test("Getting availibility for a period where the user has a class completely within the availibility period", async () => {
+  test("Getting availability for a period where the user has a class completely within the availability period", async () => {
     const query = {
       start: "2022-02-21T00:00:00-05:00",
       end: "2022-02-22T00:00:00-05:00",
@@ -114,31 +113,23 @@ describe("[GET] /api/availibilites-feed/", () => {
     const expectedBody: CalendarEvent[] = [
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 8, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 11, minute: 45 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 21, 8, 0, "America/Los_Angeles"),
+        end:  getISOTimeFromExplicitFields(2022, 2, 21, 11, 45, "America/Los_Angeles")
       },
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 13, minute: 45 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 21, hour: 15, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start:  getISOTimeFromExplicitFields(2022, 2, 21, 13, 45, "America/Los_Angeles"),
+        end:  getISOTimeFromExplicitFields(2022, 2, 21, 15, 0, "America/Los_Angeles")
       },
     ];
 
     await makeHTTPRequest(
         availabilityFeedHandler,
-        "/api/availibility-feed/",
+        "/api/availability-feed/",
         query,
         "GET",
         undefined,
@@ -147,7 +138,7 @@ describe("[GET] /api/availibilites-feed/", () => {
     );
   });
 
-  test("Get availibility for a period where no classes interfere", async () => {
+  test("Get availability for a period where no classes interfere", async () => {
     const query = {
       start: "2022-02-22T00:00:00-05:00",
       end: "2022-02-23T00:00:00-05:00",
@@ -157,31 +148,23 @@ describe("[GET] /api/availibilites-feed/", () => {
     const expectedBody: CalendarEvent[] = [
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 6, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 10, minute: 0 },{zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start:  getISOTimeFromExplicitFields(2022, 2, 22, 6, 0, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 22, 10, 0, "America/Los_Angeles")
       },
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 12, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 22, hour: 16, minute: 30 } ,{zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 22, 12, 0, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 22, 16, 30, "America/Los_Angeles")
       },
     ];
 
     await makeHTTPRequest(
         availabilityFeedHandler,
-        "/api/availibility-feed/",
+        "/api/availability-feed/",
         query,
         "GET",
         undefined,
@@ -190,7 +173,7 @@ describe("[GET] /api/availibilites-feed/", () => {
     );
   });
 
-  test("Getting availibilities when a class interferes for the beginning of the availible period", async () => {
+  test("Getting availabilities when a class interferes for the beginning of the available period", async () => {
     const query = {
       start: "2022-02-24T00:00:00-08:00",
       end: "2022-02-24T23:59:00-08:00",
@@ -200,20 +183,16 @@ describe("[GET] /api/availibilites-feed/", () => {
     const expectedBody: CalendarEvent[] = [
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 24, hour: 9, minute: 45 },{zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 24, hour: 15, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 24, 9, 45, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 24, 15, 0, "America/Los_Angeles"),
       },
     ];
 
     await makeHTTPRequest(
         availabilityFeedHandler,
-        "/api/availibility-feed/",
+        "/api/availability-feed/",
         query,
         "GET",
         undefined,
@@ -222,7 +201,7 @@ describe("[GET] /api/availibilites-feed/", () => {
     );
   });
 
-  test("Getting availibilities when user has 2 classes in a day and multiple overlapping availibilities", async () => {
+  test("Getting availabilities when user has 2 classes in a day and multiple overlapping availabilities", async () => {
     const query = {
       start: "2022-02-25T00:00:00-08:00",
       end: "2022-02-25T23:59:00-08:00",
@@ -232,53 +211,37 @@ describe("[GET] /api/availibilites-feed/", () => {
     const expectedBody: CalendarEvent[] = [
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 6, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 8, minute: 45 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 6, 0, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 8, 45, "America/Los_Angeles")
       },
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 10, minute: 45 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 11, minute: 30 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 10, 45, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 11, 30, "America/Los_Angeles")
       },
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 11, minute: 45 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 12, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 11, 45, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 12, 0, "America/Los_Angeles")
       },
       {
         id: "user_a",
-        title: availibilityTitle,
+        title: availabilityTitle,
         backgroundColor: teacherColorHash,
-        start: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 14, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
-        end: DateTime.fromObject({ year: 2022, month: 2, day: 25, hour: 16, minute: 0 }, {zone: "America/Los_Angeles"})
-            .toLocal()
-            .toISO(),
+        start: getISOTimeFromExplicitFields(2022, 2, 25, 14, 0, "America/Los_Angeles"),
+        end: getISOTimeFromExplicitFields(2022, 2, 25, 16, 0, "America/Los_Angeles")
       },
     ];
 
     await makeHTTPRequest(
         availabilityFeedHandler,
-        "/api/availibility-feed/",
+        "/api/availability-feed/",
         query,
         "GET",
         undefined,
@@ -287,10 +250,10 @@ describe("[GET] /api/availibilites-feed/", () => {
     );
   });
 
-  test("Get availibility when a class overlaps completely with an availibility", async () => {
+  test("Get availability when a class overlaps completely with an availability", async () => {
     const query = {
       start: "2022-02-26T00:00:00-08:00",
-      end: "2022-02-26T23:59:00-08:00",
+      end: "2022-02-27T00:00:00-08:00",
       userId: "user_a",
     };
 
@@ -298,7 +261,7 @@ describe("[GET] /api/availibilites-feed/", () => {
 
     await makeHTTPRequest(
         availabilityFeedHandler,
-        "/api/availibility-feed/",
+        "/api/availability-feed/",
         query,
         "GET",
         undefined,

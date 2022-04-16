@@ -41,5 +41,7 @@ yarn-error.log*
 .eslintcache
 
 *.patch
+
+.idea
  
 

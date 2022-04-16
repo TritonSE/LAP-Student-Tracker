@@ -1,8 +1,8 @@
-import { Interval, DateTime } from "luxon";
-import { CalendarEvent } from "../../models/events";
-import { getAvailibilityById } from "./availibilities";
-import { getEventFeed } from "./calendar-events";
-import { getUser } from "./users";
+import {DateTime, Interval} from "luxon";
+import {CalendarEvent} from "../../models/events";
+import {getAvailibilityById} from "./availibilities";
+import {getEventFeed} from "./calendar-events";
+import {getUser} from "./users";
 import ColorHash from "color-hash";
 
 const indexToWeekdays = ["temp", "mon", "tue", "wed", "thu", "fri", "sat", "sun"];
@@ -11,7 +11,7 @@ const hash = new ColorHash();
 
 type Weekdays = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 
-// get all DateTime days inbetween an interval (start < end)
+// get all DateTime days between an interval (start < end)
 const getDatesInInterval = (start: string, end: string): DateTime[] => {
   const interval = Interval.fromDateTimes(DateTime.fromISO(start), DateTime.fromISO(end));
   const dates = [];
@@ -34,9 +34,11 @@ const getDateTime = (time: string, date: Date, timeZone: string): DateTime => {
     .setZone(timeZone);
 };
 
-/* given interval defined as a length 2 array of times in "HH:mm" format, a JS Date, and a timeZone, return
-   a length 2 array representing the same interval but with datetimes (with the correct date and timezone)
-*/
+/**
+ * given interval defined as a length 2 array of times in "HH:mm" format, a JS Date, and a timeZone, return
+ * a length 2 array representing the same interval but with datetimes (with the correct date and timezone)
+ */
+
 const insertDateIntoInterval = (interval: string[], date: Date, timeZone: string): DateTime[] => {
   return [getDateTime(interval[0], date, timeZone), getDateTime(interval[1], date, timeZone)];
 };
@@ -46,7 +48,7 @@ const insertDateIntoInterval = (interval: string[], date: Date, timeZone: string
  * an array of intervals representing all the times in between start and end that were not in
  * the passed in intervals array
  *
- * Think of this as the "not" operator being applied to the passed in intervals (getting the oppositve of all intervals)
+ * Think of this as the "not" operator being applied to the passed in intervals (getting the opposite of all intervals)
  */
 const calculateBetweenIntervals = (
   start: DateTime,
@@ -67,12 +69,15 @@ const calculateBetweenIntervals = (
   );
 };
 
-// get all intervals with dates
-// calculate unavailibilities
-// use merge from luxon on unavaibililites and events
-// reverse unavailibilities
-
-const getAvailibilityFeed = async (
+/**
+ * The function does as follows:
+ * Gets availabilities and inserts the correct date into them
+ * Gets all commitments the user is assigned to
+ * Calculate unavailability from availabilities
+ * Merge unavailability with commitments
+ * Calculate availability be revering the merged unavailability and commitments and return
+ */
+const getAvailabilityFeed = async (
   start: string,
   end: string,
   userId: string
@@ -86,47 +91,47 @@ const getAvailibilityFeed = async (
   if (availibility == null) {
     throw Error("Could not fetch availibility for user");
   }
-  const availibilityAsIntervals: Interval[] = [];
+  const availabilityAsIntervals: Interval[] = [];
   const processedDaysOfWeek = new Set<string>();
   dates.forEach((date) => {
     const weekdayStr = indexToWeekdays[date.weekday] as Weekdays;
     if (processedDaysOfWeek.has(weekdayStr) || weekdayStr == "sun") return;
 
     processedDaysOfWeek.add(weekdayStr);
-    let availibilitiesToProcess = availibility[weekdayStr] == null ? [] : availibility[weekdayStr];
-    if (availibilitiesToProcess == null) availibilitiesToProcess = [];
-    availibilitiesToProcess.forEach((availibilityInterval) => {
-      const availibilityWithDate = insertDateIntoInterval(
-        availibilityInterval,
+    let availabilitiesToProcess = availibility[weekdayStr] == null ? [] : availibility[weekdayStr];
+    if (availabilitiesToProcess == null) availabilitiesToProcess = [];
+    availabilitiesToProcess.forEach((availabilityInterval) => {
+      const availabilityWithDate = insertDateIntoInterval(
+        availabilityInterval,
         date.toJSDate(),
         availibility.timeZone
       );
-      availibilityAsIntervals.push(
-        Interval.fromDateTimes(availibilityWithDate[0], availibilityWithDate[1])
+      availabilityAsIntervals.push(
+        Interval.fromDateTimes(availabilityWithDate[0], availabilityWithDate[1])
       );
     });
   });
 
-  const unavaibililites = calculateBetweenIntervals(
+  const unavailability = calculateBetweenIntervals(
     DateTime.fromISO(start),
     DateTime.fromISO(end),
-    availibilityAsIntervals
+    availabilityAsIntervals
   );
   const userEvents = (await getEventFeed(start, end, userId)).map((event) => {
     return Interval.fromDateTimes(DateTime.fromISO(event.start), DateTime.fromISO(event.end));
   });
 
-  const completeUnavailibilites = unavaibililites.concat(userEvents);
+  const completeUnavailability = unavailability.concat(userEvents);
 
-  const mergedUnavilibilites = Interval.merge(completeUnavailibilites);
+  const mergedUnavailability = Interval.merge(completeUnavailability);
 
-  const finalAvailibility = calculateBetweenIntervals(
+  const finalAvailability = calculateBetweenIntervals(
     DateTime.fromISO(start),
     DateTime.fromISO(end),
-    mergedUnavilibilites
+    mergedUnavailability
   );
 
-  const availibilityCalendarEvents: CalendarEvent[] = finalAvailibility.map((interval) => {
+  return finalAvailability.map((interval) => {
     return {
       id: user.id,
       backgroundColor: hash.hex(user.firstName + " " + user.lastName) as string,
@@ -135,7 +140,6 @@ const getAvailibilityFeed = async (
       end: interval.end.toISO(),
     };
   });
-  return availibilityCalendarEvents;
 };
 
-export { getAvailibilityFeed };
+export { getAvailabilityFeed };

@@ -29,7 +29,6 @@ export const availibilityIdHandler: NextApiHandler = async (
       }
     }
     case "PATCH": {
-      // todo: validate if id exists
       let availibility: Availibility;
       if ((await getAvailibilityById(id)) == null)
         return res.status(StatusCodes.NOT_FOUND).json("Availibility of user not found");

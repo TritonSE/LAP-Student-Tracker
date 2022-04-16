@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
-import { getAvailibilityFeed } from "../../../lib/database/availibility-feed";
+import { getAvailabilityFeed } from "../../../lib/database/availibility-feed";
 
 // handles requests to /api/availibility-feed/
 const availibilityFeedHandler: NextApiHandler = async (
@@ -26,7 +26,7 @@ const availibilityFeedHandler: NextApiHandler = async (
           return res.status(StatusCodes.BAD_REQUEST).json("No user specified");
         }
 
-        const result = await getAvailibilityFeed(start, end, userId);
+        const result = await getAvailabilityFeed(start, end, userId);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

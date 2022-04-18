@@ -59,6 +59,24 @@
   line-height: 16px;
 }
 
+<<<<<<< HEAD
+=======
+.buttonOutlined {
+  background-color: white;
+  border: 2px solid #1b1c1d;
+  border-radius: 16px;
+  color: #000000;
+  text-align: center;
+}
+
+.buttonFilled {
+  background-color: #f37121;
+  border: none;
+  border-radius: 16px;
+  color: #000000;
+  text-align: center;
+}
+>>>>>>> e058e108e73e37b065fdb80650b6af95e115bf76
 /* override default date-picker style */
 .react-date-picker__wrapper {
   border: none !important;

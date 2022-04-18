@@ -31,6 +31,8 @@ export const CalendarEventSchema = t.type({
   end: t.string,
 });
 
+export const CalendarEventArraySchema = t.array(CalendarEventSchema);
+
 export type CreateClassEvent = t.TypeOf<typeof CreateClassEventSchema>;
 export type ClassEvent = t.TypeOf<typeof ClassEventSchema>;
 export type CalendarEvent = t.TypeOf<typeof CalendarEventSchema>;

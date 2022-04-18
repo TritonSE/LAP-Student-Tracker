@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Class } from "../../models/class";
 import { ClassCard } from "./ClassCard";
 import styles from "./LeagueViews.module.css";
@@ -19,7 +19,13 @@ const filters = [
   "Level 8",
 ];
 
-const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
+const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
+
+  const [searchBox, setSearchBox] = useState("");
+  const [orderBy, setOrderBy] = useState("");
+  const [selectedClassLevels, setSelectedClassLevels] = useState("");
+
+  return (
   <div className={styles.compContainer}>
     <div className={styles.leftContainer}>
       <h1 className={styles.compTitle}>Classes</h1>
@@ -62,6 +68,6 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => (
       </ul>
     </div>
   </div>
-);
+)};
 
 export { ClassView };

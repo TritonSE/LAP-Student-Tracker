@@ -23,7 +23,7 @@ const filters = [
 const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
   const [searchBox, setSearchBox] = useState("");
   const [orderBy, setOrderBy] = useState({alpha: false, level: false});
-  const [selectedClassLevels, setSelectedClassLevels] = useState({});
+  const [selectedClassLevels, setSelectedClassLevels] = useState<Map<string, boolean>>(new Map());
 
   const onSearchInput = (event: any) => {
     setSearchBox(event.target.value);
@@ -44,6 +44,35 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
     setSelectedClassLevels(newSelectedClassLevels);
     console.log(selectedClassLevels);
   };
+
+  const checkIfLevelSelected = (tempClass: Class) => {
+    
+    // check if every element in selectedClassLevels is false
+    let isSelected = false;
+    for (let [key, value] of Object.entries(selectedClassLevels)) {
+      if (value === true) {
+        isSelected = true;
+      }
+    }
+
+    if (!isSelected) {
+      return true;
+    }
+
+    let classLevels: number[] = [];
+
+    for (let i = tempClass.minLevel; i <= tempClass.maxLevel; i++) {
+      classLevels.push(i);
+    }
+    
+    
+    for(let x = 0; x < classLevels.length; x++) {
+      if(selectedClassLevels.get("Level " + classLevels[x])) {
+        return true;
+      }
+    }
+    return false;
+  }
   
   const sortBy = (a: Class, b: Class) => {
     if (orderBy.alpha) {
@@ -78,7 +107,7 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
         <div className={styles.compList}>
           <ul className={styles.scroll}>
             {(classes.filter((tempClass) => 
-              tempClass.name.includes(searchBox)))
+              tempClass.name.includes(searchBox) && checkIfLevelSelected(tempClass)))
               .sort(sortBy)
               .map((tempClass) => 
               <ClassCard

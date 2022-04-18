@@ -45,6 +45,32 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
     console.log(selectedClassLevels);
   };
   
+  const sortBy = (a: Class, b: Class) => {
+    if (orderBy.alpha) {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    else if (orderBy.level) {
+      if (a.minLevel < b.minLevel) {
+        return -1;
+      }
+      if (a.minLevel > b.minLevel) {
+        return 1;
+      }
+      else {
+        return 0;
+      }
+    }
+    return 0;
+  };
+
   return (
     <div className={styles.compContainer}>
       <div className={styles.leftContainer}>
@@ -52,7 +78,9 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
         <div className={styles.compList}>
           <ul className={styles.scroll}>
             {(classes.filter((tempClass) => 
-              tempClass.name.includes(searchBox))).map((tempClass) => 
+              tempClass.name.includes(searchBox)))
+              .sort(sortBy)
+              .map((tempClass) => 
               <ClassCard
                 key={tempClass.eventInformationId}
                 name={tempClass.name}

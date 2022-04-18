@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="26612eff-f76b-42f6-8ac3-f6006532fdc7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__tests__/__testutils__/testutils.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/__testutils__/testutils.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/__tests__/events.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/events.test.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CreateEventsWizard/CreateEventsWizard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CreateEventsWizard/CreateEventsWizard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/database/events.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/database/events.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/api/events/class/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/api/events/class/index.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +51,20 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Jest.[GET] /api/availability-feed/.Getting availabilities when user has 2 classes in a day and multiple overlapping availabilities">
+  <component name="RunManager" selected="Jest.[GET] /api/availability-feed/">
+    <configuration name="[GET] /api/availability-feed/" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
+      <node-interpreter value="project" />
+      <node-options value="" />
+      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
+      <working-dir value="$PROJECT_DIR$" />
+      <envs />
+      <scope-kind value="SUITE" />
+      <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
+      <test-names>
+        <test-name value="[GET] /api/availability-feed/" />
+      </test-names>
+      <method v="2" />
+    </configuration>
     <configuration name="[GET] /api/availability-feed/.Get availability for a period where no classes interfere" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
       <node-interpreter value="project" />
       <node-options value="" />
@@ -58,20 +76,6 @@
       <test-names>
         <test-name value="[GET] /api/availability-feed/" />
         <test-name value="Get availability for a period where no classes interfere" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="[GET] /api/availability-feed/.Get availability when a class overlaps completely with an availability" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/__tests__/availibilities-feed.test.ts" />
-      <test-names>
-        <test-name value="[GET] /api/availability-feed/" />
-        <test-name value="Get availability when a class overlaps completely with an availability" />
       </test-names>
       <method v="2" />
     </configuration>
@@ -119,11 +123,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Jest.[GET] /api/availability-feed/" />
         <item itemvalue="Jest.[GET] /api/availability-feed/.Getting availabilities when user has 2 classes in a day and multiple overlapping availabilities" />
         <item itemvalue="Jest.[GET] /api/availability-feed/.Getting availabilities when a class interferes for the beginning of the available period" />
         <item itemvalue="Jest.[GET] /api/availability-feed/.Get availability for a period where no classes interfere" />
         <item itemvalue="Jest.[GET] /api/availability-feed/.Getting availability for a period where the user has a class completely within the availability period" />
-        <item itemvalue="Jest.[GET] /api/availability-feed/.Get availability when a class overlaps completely with an availability" />
       </list>
     </recent_temporary>
   </component>
@@ -136,6 +140,7 @@
       <option name="presentableId" value="Default" />
       <updated>1650079153315</updated>
       <workItem from="1650079155807" duration="1066000" />
+      <workItem from="1650314134691" duration="93000" />
     </task>
     <servers />
   </component>

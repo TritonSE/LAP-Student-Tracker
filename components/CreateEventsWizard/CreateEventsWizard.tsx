@@ -73,7 +73,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const startDateValid = startDate != null;
   const startTimeValid = startTime != "";
   const endTimeValid = endTime != "";
-  const startBeforeEndDate = startDate <= endDate && endType == "on";
+  const startBeforeEndDate = startDate <= endDate || endType != "on";
 
   useEffect(() => {
     setValid(

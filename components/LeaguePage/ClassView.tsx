@@ -21,26 +21,18 @@ const filters = [
 
 const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
   const [searchBox, setSearchBox] = useState("");
-  const [orderBy, setOrderBy] = useState({alpha: false, level: false});
+  const [orderBy, setOrderBy] = useState({ alpha: false, level: false });
   const [selectedClassLevels, setSelectedClassLevels] = useState<Set<string>>(new Set());
   const [activeClasses, setActiveClasses] = useState<Class[]>(classes);
 
   useEffect(() => {
-    console.log(selectedClassLevels);
-  }, [selectedClassLevels])
+    const tempClass = classes.filter(
+      (tempClass) =>
+        tempClass.name.includes(searchBox) && checkIfLevelSelected(selectedClassLevels, tempClass)
+    );
 
-
-  useEffect(() => {
-    console.log(activeClasses);
-    let tempClass = classes.filter((tempClass) => (
-      tempClass.name.includes(searchBox) 
-      && checkIfLevelSelected(selectedClassLevels,tempClass))
-      );
-
-      setActiveClasses(tempClass);
-
+    setActiveClasses(tempClass);
   }, [selectedClassLevels, searchBox]);
-
 
   const onSearchInput = (event: any) => {
     setSearchBox(event.target.value);
@@ -48,48 +40,42 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
 
   const changeSort = (event: any) => {
     if (event.target.value === "alpha") {
-      setOrderBy({alpha: true, level: false});
+      setOrderBy({ alpha: true, level: false });
     }
     if (event.target.value === "level") {
-      setOrderBy({alpha: false, level: true});
+      setOrderBy({ alpha: false, level: true });
     }
   };
 
   const onFilterCheck = (event: any) => {
-    let tempSelectedClassLevels = new Set(selectedClassLevels);
-    if(event.target.checked) {
-      tempSelectedClassLevels.add(event.target.value)
-    }
-    else if(!event.target.checked) {
-      tempSelectedClassLevels.delete(event.target.value)
+    const tempSelectedClassLevels = new Set(selectedClassLevels);
+    if (event.target.checked) {
+      tempSelectedClassLevels.add(event.target.value);
+    } else if (!event.target.checked) {
+      tempSelectedClassLevels.delete(event.target.value);
     }
     setSelectedClassLevels(tempSelectedClassLevels);
   };
 
   const checkIfLevelSelected = (selectedClassLevels: Set<string>, tempClass: Class) => {
-
-    console.log({classList: tempClass})
-    console.log(selectedClassLevels)
-
-    if(selectedClassLevels.size === 0) {
+    if (selectedClassLevels.size === 0) {
       return true;
     }
 
-    let classLevels: number[] = [];
+    const classLevels: number[] = [];
 
     for (let i = tempClass.minLevel; i <= tempClass.maxLevel; i++) {
       classLevels.push(i);
     }
-    
-    
-    for(let x = 0; x < classLevels.length; x++) {
-      if(selectedClassLevels.has("Level " + classLevels[x])) {
+
+    for (let x = 0; x < classLevels.length; x++) {
+      if (selectedClassLevels.has("Level " + classLevels[x])) {
         return true;
       }
     }
     return false;
-  }
-  
+  };
+
   const sortBy = (a: Class, b: Class) => {
     if (orderBy.alpha) {
       if (a.name < b.name) {
@@ -97,19 +83,16 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
       }
       if (a.name > b.name) {
         return 1;
-      }
-      else {
+      } else {
         return 0;
       }
-    }
-    else if (orderBy.level) {
+    } else if (orderBy.level) {
       if (a.minLevel < b.minLevel) {
         return -1;
       }
       if (a.minLevel > b.minLevel) {
         return 1;
-      }
-      else {
+      } else {
         return 0;
       }
     }
@@ -122,9 +105,7 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
         <h1 className={styles.compTitle}>Classes</h1>
         <div className={styles.compList}>
           <ul className={styles.scroll}>
-            {activeClasses
-              .sort(sortBy)
-              .map((tempClass, index) => 
+            {activeClasses.sort(sortBy).map((tempClass, index) => (
               <ClassCard
                 key={`${tempClass.eventInformationId}-${index}`}
                 name={tempClass.name}
@@ -134,7 +115,7 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
                 startTime={tempClass.startTime}
                 endTime={tempClass.endTime}
               />
-            )}
+            ))}
           </ul>
         </div>
       </div>

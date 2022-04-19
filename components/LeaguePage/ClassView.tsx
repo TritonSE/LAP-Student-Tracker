@@ -1,5 +1,3 @@
-import { Input } from "@mui/material";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 import React, { useState, useEffect } from "react";
 import { Class } from "../../models/class";
 import { ClassCard } from "./ClassCard";

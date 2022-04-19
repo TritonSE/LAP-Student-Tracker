@@ -1,5 +1,6 @@
 import { Input } from "@mui/material";
-import React, { useState } from "react";
+import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
+import React, { useState, useEffect } from "react";
 import { Class } from "../../models/class";
 import { ClassCard } from "./ClassCard";
 import styles from "./LeagueViews.module.css";
@@ -23,7 +24,25 @@ const filters = [
 const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
   const [searchBox, setSearchBox] = useState("");
   const [orderBy, setOrderBy] = useState({alpha: false, level: false});
-  const [selectedClassLevels, setSelectedClassLevels] = useState<Map<string, boolean>>(new Map());
+  const [selectedClassLevels, setSelectedClassLevels] = useState<Set<string>>(new Set());
+  const [activeClasses, setActiveClasses] = useState<Class[]>(classes);
+
+  useEffect(() => {
+    console.log(selectedClassLevels);
+  }, [selectedClassLevels])
+
+
+  useEffect(() => {
+    console.log(activeClasses);
+    let tempClass = classes.filter((tempClass) => (
+      tempClass.name.includes(searchBox) 
+      && checkIfLevelSelected(selectedClassLevels,tempClass))
+      );
+
+      setActiveClasses(tempClass);
+
+  }, [selectedClassLevels, searchBox]);
+
 
   const onSearchInput = (event: any) => {
     setSearchBox(event.target.value);
@@ -39,23 +58,22 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
   };
 
   const onFilterCheck = (event: any) => {
-    const newSelectedClassLevels: any = { ...selectedClassLevels };
-    newSelectedClassLevels[event.target.value] = event.target.checked;
-    setSelectedClassLevels(newSelectedClassLevels);
-    console.log(selectedClassLevels);
+    let tempSelectedClassLevels = new Set(selectedClassLevels);
+    if(event.target.checked) {
+      tempSelectedClassLevels.add(event.target.value)
+    }
+    else if(!event.target.checked) {
+      tempSelectedClassLevels.delete(event.target.value)
+    }
+    setSelectedClassLevels(tempSelectedClassLevels);
   };
 
-  const checkIfLevelSelected = (tempClass: Class) => {
-    
-    // check if every element in selectedClassLevels is false
-    let isSelected = false;
-    for (let [key, value] of Object.entries(selectedClassLevels)) {
-      if (value === true) {
-        isSelected = true;
-      }
-    }
+  const checkIfLevelSelected = (selectedClassLevels: Set<string>, tempClass: Class) => {
 
-    if (!isSelected) {
+    console.log({classList: tempClass})
+    console.log(selectedClassLevels)
+
+    if(selectedClassLevels.size === 0) {
       return true;
     }
 
@@ -67,7 +85,7 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
     
     
     for(let x = 0; x < classLevels.length; x++) {
-      if(selectedClassLevels.get("Level " + classLevels[x])) {
+      if(selectedClassLevels.has("Level " + classLevels[x])) {
         return true;
       }
     }
@@ -106,12 +124,11 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
         <h1 className={styles.compTitle}>Classes</h1>
         <div className={styles.compList}>
           <ul className={styles.scroll}>
-            {(classes.filter((tempClass) => 
-              tempClass.name.includes(searchBox) && checkIfLevelSelected(tempClass)))
+            {activeClasses
               .sort(sortBy)
-              .map((tempClass) => 
+              .map((tempClass, index) => 
               <ClassCard
-                key={tempClass.eventInformationId}
+                key={`${tempClass.eventInformationId}-${index}`}
                 name={tempClass.name}
                 minLevel={tempClass.minLevel}
                 maxLevel={tempClass.maxLevel}
@@ -142,8 +159,8 @@ const ClassView: React.FC<ClassViewProp> = ({ classes }) => {
         </div>
         <h2 className={styles.filterTitle}>Filter By:</h2>
         <ul className={styles.filterList}>
-          {filters.map((l) => (
-            <li key={l}>
+          {filters.map((l, index) => (
+            <li key={`${l}-${index}`}>
               <p className={styles.listItemText}>{l}</p>
               <input type="checkbox" value={l} onClick={onFilterCheck}></input>
             </li>

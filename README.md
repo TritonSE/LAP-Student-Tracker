@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/TritonSE/LAP-Student-Tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/TritonSE/LAP-Student-Tracker/actions/workflows/ci.yml)
 
-Modern web application for the League of Amazing Programmers to act as a central hub for their school. Features include (but are not limited to) taking student attendance, scheduling classes, viewing enrollment information, and supporting calendar views. 
+Modern web application for the League of Amazing Programmers to act as a central hub for their school. Features include (but are not limited to) taking student attendance, scheduling classes, viewing enrollment information, and supporting calendar views.
 
 ## Setup
 

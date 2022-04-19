@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/TritonSE/LAP-Student-Tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/TritonSE/LAP-Student-Tracker/actions/workflows/ci.yml)
 
-Web application for admins, teachers, students, volunteers, and parents to be able to manage the LEAGUE
+Application for the League of Amazing Programmers to act as a central hub for their school. Features inlcude (but are not limited to) taking student attendance, scheduling classes intelligently, viewing enrollment information, and supporting calendar views to keep track of all events hapening around the League. 
 
 ## Setup
 

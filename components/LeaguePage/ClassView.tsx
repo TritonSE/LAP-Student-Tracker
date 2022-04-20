@@ -1,26 +1,26 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Class} from "../../models/class";
-import {ClassCard} from "./ClassCard";
+import React, { useContext, useState } from "react";
+import { Class } from "../../models/class";
+import { ClassCard } from "./ClassCard";
 import styles from "./LeagueViews.module.css";
 import useSWR from "swr";
-import {APIContext} from "../../context/APIContext";
-import {Empty} from "../util/Empty";
-import {Loader} from "../util/Loader";
-import {Error } from "../util/Error";
+import { APIContext } from "../../context/APIContext";
+import { Empty } from "../util/Empty";
+import { Loader } from "../util/Loader";
+import { Error } from "../util/Error";
 
 type ClassViewProp = {
   classes: Class[];
 };
 
 type OrderBy = {
-  alpha: boolean,
-  level: boolean
+  alpha: boolean;
+  level: boolean;
 };
 
 type ClassScrollProp = {
-  searchQuery: string,
-  orderBy: OrderBy,
-  selectedLevels: Set<number>
+  searchQuery: string;
+  orderBy: OrderBy;
+  selectedLevels: Set<number>;
 };
 
 const filters = [
@@ -35,9 +35,9 @@ const filters = [
   "Level 8",
 ];
 
-const ClassScroll: React.FC<ClassScrollProp> = ({searchQuery, orderBy, selectedLevels } ) => {
+const ClassScroll: React.FC<ClassScrollProp> = ({ searchQuery, orderBy, selectedLevels }) => {
   const client = useContext(APIContext);
-  const { data:classes, error } = useSWR("/api/class", () => client.getAllClasses());
+  const { data: classes, error } = useSWR("/api/class", () => client.getAllClasses());
 
   if (error) return <Error />;
   if (!classes) return <Loader />;
@@ -49,9 +49,13 @@ const ClassScroll: React.FC<ClassScrollProp> = ({searchQuery, orderBy, selectedL
 
     let selected = false;
 
-    Array(tempClass.maxLevel - tempClass.minLevel + 1).fill(0).map((_, i) => i + 1).map((val) => val + tempClass.minLevel).forEach((level) => {
-      if(selectedLevels.has(level)) selected = true;
-    });
+    Array(tempClass.maxLevel - tempClass.minLevel + 1)
+      .fill(0)
+      .map((_, i) => i + 1)
+      .map((val) => val + tempClass.minLevel)
+      .forEach((level) => {
+        if (selectedLevels.has(level)) selected = true;
+      });
 
     return selected;
   };
@@ -79,27 +83,31 @@ const ClassScroll: React.FC<ClassScrollProp> = ({searchQuery, orderBy, selectedL
     return 0;
   };
 
-  const filteredClasses = classes.filter(
+  const filteredClasses = classes
+    .filter(
       (currClass) =>
-          currClass.name.includes(searchQuery) && checkIfLevelSelected(selectedLevels, currClass)
-  ).sort((a,b) => { return sortBy(a, b); } );
+        currClass.name.includes(searchQuery) && checkIfLevelSelected(selectedLevels, currClass)
+    )
+    .sort((a, b) => {
+      return sortBy(a, b);
+    });
 
   if (classes.length == 0) return <Empty userType="Classes" />;
 
   return (
-      <>
-        {filteredClasses.map((currClass: Class) => (
-            <ClassCard
-                key={currClass.eventInformationId}
-                name={currClass.name}
-                minLevel={currClass.minLevel}
-                maxLevel={currClass.maxLevel}
-                rrstring={currClass.rrstring}
-                startTime={currClass.startTime}
-                endTime={currClass.endTime}
-            />
-        ))}
-      </>
+    <>
+      {filteredClasses.map((currClass: Class) => (
+        <ClassCard
+          key={currClass.eventInformationId}
+          name={currClass.name}
+          minLevel={currClass.minLevel}
+          maxLevel={currClass.maxLevel}
+          rrstring={currClass.rrstring}
+          startTime={currClass.startTime}
+          endTime={currClass.endTime}
+        />
+      ))}
+    </>
   );
 };
 
@@ -107,7 +115,6 @@ const ClassView: React.FC<ClassViewProp> = () => {
   const [searchBox, setSearchBox] = useState("");
   const [orderBy, setOrderBy] = useState({ alpha: false, level: false });
   const [selectedClassLevels, setSelectedClassLevels] = useState<Set<number>>(new Set());
-
 
   const onSearchInput = (event: any): void => {
     setSearchBox(event.target.value);
@@ -132,17 +139,17 @@ const ClassView: React.FC<ClassViewProp> = () => {
     setSelectedClassLevels(tempSelectedClassLevels);
   };
 
-
-
-
-
   return (
     <div className={styles.compContainer}>
       <div className={styles.leftContainer}>
         <h1 className={styles.compTitle}>Classes</h1>
         <div className={styles.compList}>
           <ul className={styles.scroll}>
-            <ClassScroll searchQuery={searchBox} orderBy={orderBy} selectedLevels={selectedClassLevels}/>
+            <ClassScroll
+              searchQuery={searchBox}
+              orderBy={orderBy}
+              selectedLevels={selectedClassLevels}
+            />
           </ul>
         </div>
       </div>

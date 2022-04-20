@@ -25,7 +25,7 @@ const makeHTTPRequest = async (
   query: Object | undefined,
   method: RequestMethod,
   body: Object | undefined,
-  expectedResponseCode: number,
+  expectedResponseCode: number | undefined,
   expectedBody: Object | undefined
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
@@ -37,7 +37,7 @@ const makeHTTPRequest = async (
 
   await handler(req, res);
 
-  expect(res._getStatusCode()).toBe(expectedResponseCode);
+  if (expectedResponseCode) expect(res._getStatusCode()).toBe(expectedResponseCode);
   if (expectedBody) {
     expect(JSON.parse(res._getData())).toEqual(expectedBody);
   }
@@ -117,8 +117,8 @@ const makeEventFeedHTTPRequest = async (
 
 /* Converts startStr and endStr in CalendarEvent object to local ISO */
 const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
-  event.startStr = DateTime.fromJSDate(new Date(event.startStr)).toLocal().toISO();
-  event.endStr = DateTime.fromJSDate(new Date(event.endStr)).toLocal().toISO();
+  event.start = DateTime.fromJSDate(new Date(event.start)).toLocal().toISO();
+  event.end = DateTime.fromJSDate(new Date(event.end)).toLocal().toISO();
   return event;
 };
 
@@ -126,4 +126,26 @@ const convertTimeToISO = (time: string, timeZone: string): string => {
   return DateTime.fromFormat(time, "HH:mm", { zone: timeZone }).toISOTime();
 };
 
-export { makeHTTPRequest, makeEventHTTPRequest, makeEventFeedHTTPRequest, convertTimeToISO };
+const getISOTimeFromExplicitFields = (
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  minute: number,
+  timeZone: string
+): string => {
+  return DateTime.fromObject(
+    { year: year, month: month, day: day, hour: hour, minute: minute },
+    { zone: timeZone }
+  )
+    .toLocal()
+    .toISO();
+};
+
+export {
+  makeHTTPRequest,
+  makeEventHTTPRequest,
+  makeEventFeedHTTPRequest,
+  convertTimeToISO,
+  getISOTimeFromExplicitFields,
+};

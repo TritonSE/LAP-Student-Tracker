@@ -42,16 +42,18 @@ const ClassScroll: React.FC<ClassScrollProp> = ({ searchQuery, orderBy, selected
   if (error) return <Error />;
   if (!classes) return <Loader />;
 
-  const checkIfLevelSelected = (selectedLevels: Set<number>, tempClass: Class) => {
+  const checkIfLevelSelected = (selectedLevels: Set<number>, tempClass: Class): boolean => {
     if (selectedLevels.size === 0) {
       return true;
     }
 
     let selected = false;
 
+    // construct array of numbers from minLevel to maxLevel (inclusive) and check if one of these levels is a
+    // level the user wants
     Array(tempClass.maxLevel - tempClass.minLevel + 1)
       .fill(0)
-      .map((_, i) => i + 1)
+      .map((_, i) => i)
       .map((val) => val + tempClass.minLevel)
       .forEach((level) => {
         if (selectedLevels.has(level)) selected = true;
@@ -132,9 +134,9 @@ const ClassView: React.FC<ClassViewProp> = () => {
   const onFilterCheck = (event: any): void => {
     const tempSelectedClassLevels = new Set(selectedClassLevels);
     if (event.target.checked) {
-      tempSelectedClassLevels.add(event.target.value);
+      tempSelectedClassLevels.add(Number(event.target.value));
     } else if (!event.target.checked) {
-      tempSelectedClassLevels.delete(event.target.value);
+      tempSelectedClassLevels.delete(Number(event.target.value));
     }
     setSelectedClassLevels(tempSelectedClassLevels);
   };

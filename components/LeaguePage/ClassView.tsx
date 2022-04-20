@@ -29,7 +29,7 @@ const ClassView: React.FC<ClassViewProp> = () => {
   const [orderBy, setOrderBy] = useState({ alpha: false, level: false });
   const [selectedClassLevels, setSelectedClassLevels] = useState<Set<number>>(new Set());
 
-  const onSearchInput = (event: any): void => {
+  const onSearchInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchBox(event.target.value);
   };
 

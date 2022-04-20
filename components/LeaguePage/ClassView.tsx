@@ -42,12 +42,12 @@ const ClassView: React.FC<ClassViewProp> = () => {
     }
   };
 
-  const onFilterCheck = (target: any): void => {
+  const onFilterCheck = (checked: boolean, value: string): void => {
     const tempSelectedClassLevels = new Set(selectedClassLevels);
-    if (target.checked) {
-      tempSelectedClassLevels.add(Number(target.value));
-    } else if (!target.checked) {
-      tempSelectedClassLevels.delete(Number(target.value));
+    if (checked) {
+      tempSelectedClassLevels.add(Number(value));
+    } else if (!checked) {
+      tempSelectedClassLevels.delete(Number(value));
     }
     setSelectedClassLevels(tempSelectedClassLevels);
   };
@@ -81,7 +81,7 @@ const ClassView: React.FC<ClassViewProp> = () => {
             type="radio"
             value="alpha"
             checked={orderBy.alpha}
-            onChange={(e) => changeSort(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeSort(e.target.value)}
           ></input>
         </div>
         <div className={styles.orderElem}>
@@ -90,7 +90,7 @@ const ClassView: React.FC<ClassViewProp> = () => {
             type="radio"
             value="level"
             checked={orderBy.level}
-            onChange={(e) => changeSort(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeSort(e.target.value)}
           ></input>
         </div>
         <h2 className={styles.filterTitle}>Filter By:</h2>
@@ -98,7 +98,13 @@ const ClassView: React.FC<ClassViewProp> = () => {
           {filters.map((l, index) => (
             <li key={`${l}-${index}`}>
               <p className={styles.listItemText}>{l}</p>
-              <input type="checkbox" value={index} onClick={(e) => onFilterCheck(e.target)}></input>
+              <input
+                type="checkbox"
+                value={index}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onFilterCheck(e.target.checked, e.target.value)
+                }
+              ></input>
             </li>
           ))}
         </ul>

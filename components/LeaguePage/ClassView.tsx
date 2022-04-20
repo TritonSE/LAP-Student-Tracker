@@ -1,11 +1,6 @@
 import React, { useState } from "react";
-import { Class } from "../../models/class";
 import styles from "./LeagueViews.module.css";
 import { ClassScroll } from "./ClassScroll";
-
-type ClassViewProp = {
-  classes: Class[];
-};
 
 export type OrderBy = {
   alpha: boolean;
@@ -24,9 +19,9 @@ const filters = [
   "Level 8",
 ];
 
-const ClassView: React.FC<ClassViewProp> = () => {
+const ClassView: React.FC = () => {
   const [searchBox, setSearchBox] = useState("");
-  const [orderBy, setOrderBy] = useState({ alpha: false, level: false });
+  const [orderBy, setOrderBy] = useState<OrderBy>({ alpha: false, level: false });
   const [selectedClassLevels, setSelectedClassLevels] = useState<Set<number>>(new Set());
 
   const onSearchInput = (event: React.ChangeEvent<HTMLInputElement>): void => {

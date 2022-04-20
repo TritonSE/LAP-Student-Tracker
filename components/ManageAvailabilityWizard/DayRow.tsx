@@ -24,8 +24,6 @@ const DayRow: React.FC<DayRowProps> = ({
 }) => {
   const [availabilityTimes, setAvailabilityTimes] = useState(times) // array of times for a single day
 
-  console.log("Day Row: ", day, "times: ", availabilityTimes)
-
   // function to update time state when TimeSlot component changes a time
   const handleTimeChange = (
     idx: number,
@@ -73,7 +71,6 @@ const DayRow: React.FC<DayRowProps> = ({
       </div>
 
       <div className={styles.timeSlotContainer}>
-        {console.log("before rendering", availabilityTimes)}
         {availabilityTimes.map((times, idx) => (
           <TimeSlot 
             initStartTime={times[0]} 

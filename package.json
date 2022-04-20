@@ -42,11 +42,7 @@
     "postgres-migrations": "^5.3.0",
     "react": "17.0.2",
     "react-color": "^2.19.3",
-<<<<<<< HEAD
-    "react-datetime-picker": "^3.5.0",
-=======
     "react-datetime-picker": "^3.4.3",
->>>>>>> e058e108e73e37b065fdb80650b6af95e115bf76
     "react-dom": "17.0.2",
     "react-spinners": "^0.11.0",
     "react-time-picker": "^4.5.0",

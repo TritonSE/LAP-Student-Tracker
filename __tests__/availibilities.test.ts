@@ -1,8 +1,8 @@
-import availabilityIdHandler from "../pages/api/availibility/[id]";
+import availabilityIdHandler from "../pages/api/availability/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { StatusCodes } from "http-status-codes";
-import { Availibility } from "../models/availibility";
+import { Availability } from "../models/availability";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");
@@ -30,7 +30,7 @@ afterAll(async () => {
 const AVAILABILITY_NOT_FOUND_ERROR = "Availability of user not found";
 describe("[GET] /api/availability/[id]", () => {
   test("Getting a users availability", async () => {
-    const expected: Availibility = {
+    const expected: Availability = {
       mon: null,
       tue: null,
       wed: null,
@@ -72,7 +72,7 @@ describe("[GET] /api/availability/[id]", () => {
 
 describe("[PATCH] /api/availabilities/[id]", () => {
   test("Editing a users availability", async () => {
-    const body: Availibility = {
+    const body: Availability = {
       mon: [
         ["08:00", "10:00"],
         ["11:00", "12:00"],
@@ -110,7 +110,7 @@ describe("[PATCH] /api/availabilities/[id]", () => {
   });
 
   test("Editing availability of a user that does not exist", async () => {
-    const body: Availibility = {
+    const body: Availability = {
       mon: [
         ["08:00", "10:00"],
         ["11:00", "12:00"],

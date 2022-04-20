@@ -1,4 +1,4 @@
-import { Availibility, AvailibilitySchema } from "../../models/availibility";
+import { Availability, AvailabilitySchema } from "../../models/availability";
 import { client } from "../db";
 import { decode } from "io-ts-promise";
 
@@ -11,7 +11,7 @@ const updateAvailability = async (
   fri: string[][] | null,
   sat: string[][] | null,
   timeZone: string
-): Promise<Availibility | null> => {
+): Promise<Availability | null> => {
   const query = {
     text:
       "UPDATE availabilities SET " +
@@ -34,7 +34,7 @@ const updateAvailability = async (
   return getAvailabilityById(id);
 };
 
-const getAvailabilityById = async (id: string): Promise<Availibility | null> => {
+const getAvailabilityById = async (id: string): Promise<Availability | null> => {
   const query = {
     text: "SELECT mon, tue, wed, thu, fri, sat, time_zone FROM availabilities WHERE user_id = $1",
     values: [id],
@@ -44,9 +44,9 @@ const getAvailabilityById = async (id: string): Promise<Availibility | null> => 
   if (res.rows.length == 0) {
     return null;
   }
-  let availability: Availibility;
+  let availability: Availability;
   try {
-    availability = await decode(AvailibilitySchema, res.rows[0]);
+    availability = await decode(AvailabilitySchema, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }

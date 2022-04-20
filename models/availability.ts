@@ -1,5 +1,5 @@
 import * as t from "io-ts";
-export const AvailibilitySchema = t.type({
+export const AvailabilitySchema = t.type({
   mon: t.union([t.array(t.array(t.string)), t.null]),
   tue: t.union([t.array(t.array(t.string)), t.null]),
   wed: t.union([t.array(t.array(t.string)), t.null]),
@@ -9,4 +9,4 @@ export const AvailibilitySchema = t.type({
   timeZone: t.string,
 });
 
-export type Availibility = t.TypeOf<typeof AvailibilitySchema>;
+export type Availability = t.TypeOf<typeof AvailabilitySchema>;

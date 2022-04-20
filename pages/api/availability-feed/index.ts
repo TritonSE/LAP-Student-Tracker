@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getAvailabilityFeed } from "../../../lib/database/availability-feed";
 
-// handles requests to /api/availibility-feed/
+// handles requests to /api/availability-feed/
 const availabilityFeedHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse

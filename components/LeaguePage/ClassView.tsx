@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import {Class} from "../../models/class";
+import React, { useState } from "react";
+import { Class } from "../../models/class";
 import styles from "./LeagueViews.module.css";
-import {ClassScroll} from "./ClassScroll";
+import { ClassScroll } from "./ClassScroll";
 
 type ClassViewProp = {
   classes: Class[];
@@ -33,21 +33,21 @@ const ClassView: React.FC<ClassViewProp> = () => {
     setSearchBox(event.target.value);
   };
 
-  const changeSort = (event: any): void => {
-    if (event.target.value === "alpha") {
+  const changeSort = (value: string): void => {
+    if (value === "alpha") {
       setOrderBy({ alpha: true, level: false });
     }
-    if (event.target.value === "level") {
+    if (value === "level") {
       setOrderBy({ alpha: false, level: true });
     }
   };
 
-  const onFilterCheck = (event: any): void => {
+  const onFilterCheck = (target: any): void => {
     const tempSelectedClassLevels = new Set(selectedClassLevels);
-    if (event.target.checked) {
-      tempSelectedClassLevels.add(Number(event.target.value));
-    } else if (!event.target.checked) {
-      tempSelectedClassLevels.delete(Number(event.target.value));
+    if (target.checked) {
+      tempSelectedClassLevels.add(Number(target.value));
+    } else if (!target.checked) {
+      tempSelectedClassLevels.delete(Number(target.value));
     }
     setSelectedClassLevels(tempSelectedClassLevels);
   };
@@ -77,18 +77,28 @@ const ClassView: React.FC<ClassViewProp> = () => {
         <h2 className={styles.orderTitle}>Order By:</h2>
         <div className={styles.orderElem}>
           <p className={styles.listItemText}>Alphabetical</p>
-          <input type="radio" value="alpha" checked={orderBy.alpha} onChange={changeSort}></input>
+          <input
+            type="radio"
+            value="alpha"
+            checked={orderBy.alpha}
+            onChange={(e) => changeSort(e.target.value)}
+          ></input>
         </div>
         <div className={styles.orderElem}>
           <p className={styles.listItemText}>Level</p>
-          <input type="radio" value="level" checked={orderBy.level} onChange={changeSort}></input>
+          <input
+            type="radio"
+            value="level"
+            checked={orderBy.level}
+            onChange={(e) => changeSort(e.target.value)}
+          ></input>
         </div>
         <h2 className={styles.filterTitle}>Filter By:</h2>
         <ul className={styles.filterList}>
           {filters.map((l, index) => (
             <li key={`${l}-${index}`}>
               <p className={styles.listItemText}>{l}</p>
-              <input type="checkbox" value={index} onClick={onFilterCheck}></input>
+              <input type="checkbox" value={index} onClick={(e) => onFilterCheck(e.target)}></input>
             </li>
           ))}
         </ul>

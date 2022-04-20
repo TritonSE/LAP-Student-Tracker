@@ -10,7 +10,6 @@ const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
         const result = await getAllStaff();
         res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        console.log(e);
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
       break;

@@ -26,8 +26,8 @@ const TimeSlot: React.FC<TimeSlotProps> = ({
   index,
 }) => {
   // renders a time slot component
-  const [startTime, setStartTime] = useState(initStartTime)
-  const [endTime, setEndTime] = useState(initEndTime)
+  const [startTime, setStartTime] = useState(initStartTime);
+  const [endTime, setEndTime] = useState(initEndTime);
 
   // calls function to update parent's state
   useEffect(() => {
@@ -39,7 +39,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({
       <TimePicker
         className={styles.timeInput}
         onChange={setStartTime}
-        value={startTime}
+        value={initStartTime}
         clearIcon={null}
         clockIcon={null}
         disableClock={true}
@@ -49,7 +49,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({
       <TimePicker
         className={styles.timeInput}
         onChange={setEndTime}
-        value={endTime}
+        value={initEndTime}
         clearIcon={null}
         clockIcon={null}
         disableClock={true}

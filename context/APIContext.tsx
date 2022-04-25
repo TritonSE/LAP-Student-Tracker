@@ -10,6 +10,5 @@ export const APIContext = createContext<LeagueAPI>(initialState);
 
 // API Provider
 export const APIProvider: React.FC = ({ children }) => {
-  const state = initialState;
-  return <APIContext.Provider value={state}>{children}</APIContext.Provider>;
+  return <APIContext.Provider value={initialState}>{children}</APIContext.Provider>;
 };

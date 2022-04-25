@@ -23,7 +23,6 @@ const filters = [
 const ClassScroll: React.FC = () => {
   const client = useContext(APIContext);
   const { data, error } = useSWR("/api/class", () => client.getAllClasses());
-
   if (error) return <Error />;
   if (!data) return <Loader />;
   if (data.length == 0) return <Empty userType="Classes" />;

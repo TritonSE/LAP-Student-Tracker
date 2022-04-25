@@ -8,6 +8,7 @@ export const ClassSchema = t.type({
   startTime: t.string,
   endTime: t.string,
   language: t.string,
+  teachers: t.array(t.string)
 });
 
 export const CreateClassSchema = t.type({
@@ -18,6 +19,7 @@ export const CreateClassSchema = t.type({
   startTime: t.string,
   endTime: t.string,
   language: t.string,
+  teachers: t.array(t.string)
 });
 
 export const UpdateClassSchema = t.partial({
@@ -27,6 +29,7 @@ export const UpdateClassSchema = t.partial({
   startTime: t.string,
   endTime: t.string,
   language: t.string,
+  teachers: t.array(t.string)
 });
 
 export type Class = t.TypeOf<typeof ClassSchema>;

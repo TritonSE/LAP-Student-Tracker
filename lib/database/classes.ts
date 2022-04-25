@@ -12,11 +12,12 @@ const createClass = async (
   rrstring: string,
   timeStart: string,
   timeEnd: string,
-  language: string
+  language: string,
+  teachers: string[]
 ): Promise<Class | null> => {
   const query = {
-    text: "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES($1, $2, $3, $4, $5, $6, $7)",
-    values: [eventInformationId, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
+    text: "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES($1, $2, $3, $4, $5, $6, $7, $8",
+    values: [eventInformationId, minLevel, maxLevel, rrstring, timeStart, timeEnd, language, teachers],
   };
 
   try {
@@ -36,7 +37,8 @@ const updateClass = async (
   rrstring?: string,
   startTime?: string,
   endTime?: string,
-  language?: string
+  language?: string,
+  teachers?: string[]
 ): Promise<Class | null> => {
   const query = {
     text:
@@ -47,8 +49,9 @@ const updateClass = async (
       "start_time = COALESCE($5, start_time), " +
       "end_time = COALESCE($6, end_time), " +
       "language = COALESCE($7, language) " +
+      "teachers = COALESCE($8, teachers) " +
       "WHERE event_information_id=$1",
-    values: [eventInformationId, minLevel, maxLevel, rrstring, startTime, endTime, language],
+    values: [eventInformationId, minLevel, maxLevel, rrstring, startTime, endTime, language, teachers],
   };
 
   try {
@@ -63,7 +66,7 @@ const updateClass = async (
 // get a class given the id
 const getClass = async (id: string): Promise<Class | null> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class' AND c.event_information_id = $1",
+    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language, c.teachers FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class' AND c.event_information_id = $1",
     values: [id],
   };
 
@@ -83,7 +86,7 @@ const getClass = async (id: string): Promise<Class | null> => {
 };
 const getAllClasses = async (): Promise<Class[]> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class'",
+    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language, c.teachers FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class'",
   };
 
   const res = await client.query(query);

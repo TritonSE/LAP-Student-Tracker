@@ -8,6 +8,8 @@ import TimePicker from "react-time-picker/dist/entry.nostyle";
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import { number } from "fp-ts";
 
+import {ReactComponent as deleteIcon} from '../../public/trash-can-solid.svg'
+
 
 
 type TimeSlotProps = {
@@ -59,7 +61,7 @@ const TimeSlot: React.FC<TimeSlotProps> = ({
         className={styles.deleteIcon}
         onClick={() => {deleteTimeSlot(index)}}
       >
-        Del
+        <img src="trash-can-solid.svg"/>
       </div>
     </div>
     

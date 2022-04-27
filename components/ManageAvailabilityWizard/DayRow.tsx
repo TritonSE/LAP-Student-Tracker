@@ -11,6 +11,7 @@ import {TimeSlot} from "./TimeSlot";
 
 
 
+
 type DayRowProps = {
   times: string[][];
   day: string;

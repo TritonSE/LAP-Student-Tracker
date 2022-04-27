@@ -45,10 +45,29 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
   const [errMsg, setErrMsg] = useState("")
 
   const client = useContext(APIContext);
+
+  const sortTimes = (times: string[][]): string[][] => {
+    times.sort((t1:string[], t2:string[])=>{
+      if (t1[0] == t2[0]){
+        return 0;
+      }
+      return t1[0] < t2[0] ? -1 : 1;
+    })
+
+    return times
+  }
   
-  const areTimesValid = (availability: Availability): boolean => {
+  const areTimesValid = (availability: Availability): [boolean, string, string] => {
     // loops through each day
-    for(const [day, times] of Object.entries(availability)){
+    for(const [day, allTime] of Object.entries(availability)){
+      //makes a deepcopy so we do not change states
+      let times = JSON.parse(JSON.stringify(allTime));
+
+      // checks for overlapping times
+
+      times = sortTimes(times);
+
+
       for(const time of times){
         
         let startTime = time[0];
@@ -64,11 +83,32 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
 
         // check if start time is before the end time
         if (startTime >= endTime) {
-          return false
+          return [false, day, "Start time must be before end time."]
+        }
+
+
+      }
+
+      // check if there is an overlapping time slot
+      for (let i = 1; i < times.length; i++) {
+        let prevEndTime = times[i-1][1]
+        let currStartTime = times[i][0]
+
+        //pad 0 in front of time if before 10am
+        if(currStartTime.length < 5){
+          currStartTime = "0" + currStartTime;
+        }
+        if(prevEndTime.length < 5){
+          prevEndTime = "0" + prevEndTime;
+        }
+
+        if (prevEndTime > currStartTime) {
+          console.log(prevEndTime, currStartTime)
+          return [false, day, "Times cannot overlap."]
         }
       }
     }
-    return true
+    return [true, "", ""]
   }
 
   const updateAvailabilty = (day: string, times: string[][]): void => {
@@ -89,12 +129,12 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
     try {
       // converts empty availabilities to null
       const newAvailability = {
-        "mon": availability["Mon"].length == 0 ? null : availability["Mon"],
-        "tue": availability["Tue"].length == 0 ? null : availability["Tue"],
-        "wed": availability["Wed"].length == 0 ? null : availability["Wed"],
-        "thu": availability["Thu"].length == 0 ? null : availability["Thu"],
-        "fri": availability["Fri"].length == 0 ? null : availability["Fri"],
-        "sat": availability["Sat"].length == 0 ? null : availability["Sat"],
+        "mon": availability["Mon"].length == 0 ? null : sortTimes(availability["Mon"]),
+        "tue": availability["Tue"].length == 0 ? null : sortTimes(availability["Tue"]),
+        "wed": availability["Wed"].length == 0 ? null : sortTimes(availability["Wed"]),
+        "thu": availability["Thu"].length == 0 ? null : sortTimes(availability["Thu"]),
+        "fri": availability["Fri"].length == 0 ? null : sortTimes(availability["Fri"]),
+        "sat": availability["Sat"].length == 0 ? null : sortTimes(availability["Sat"]),
         "timeZone": timezone
       }
       const classEvent = await client.updateAvailabilities(newAvailability, userId);
@@ -117,12 +157,12 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
   // updates the valid state everytime Availabilities change
   useEffect(() => {
     // checks if all time slots are valid
-    let isValid = areTimesValid(availability);
+    let [isValid, day, errorMsg] = areTimesValid(availability);
     setValid(isValid);
 
     if (!isValid){
       // sets error message if timeslot not valid
-      setErrMsg("Make sure start times are before end times!");
+      setErrMsg(errorMsg + " Check your times for " + day);
     } else {
       // otherwise remove error message
       setErrMsg("");

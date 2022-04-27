@@ -33,7 +33,7 @@ const createUser = async (
   role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
   address?: string | null,
   phone_number?: string | null,
-  imgId?: string | null,
+  imgId?: string | null
 ): Promise<User | null> => {
   const query = {
     text: "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
@@ -84,7 +84,7 @@ const updateUser = async (
 // get a user given an id
 const getUser = async (id: string): Promise<User | null> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id FROM users WHERE id = $1",
     values: [id],
   };
 

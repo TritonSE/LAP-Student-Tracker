@@ -1,7 +1,7 @@
 import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
+import { makeHTTPRequest, makeUserHTTPRequest } from "./__testutils__/testutils.test";
 import { UpdateUser, User } from "../models/users";
 import { StatusCodes } from "http-status-codes";
 
@@ -38,7 +38,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
@@ -103,7 +103,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
@@ -124,7 +124,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
@@ -172,7 +172,7 @@ describe("[GET] /api/users/[id]", () => {
       id: 1,
     };
 
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userIDHandler,
       "/api/users/1",
       query,
@@ -225,7 +225,7 @@ describe("[PATCH] /api/users/[id]", () => {
       phoneNumber: "4567890",
     };
 
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userIDHandler,
       "/api/users/1",
       query,
@@ -258,7 +258,7 @@ describe("[PATCH] /api/users/[id]", () => {
       phoneNumber: "4567890",
     };
 
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userIDHandler,
       "/api/users/3",
       query,

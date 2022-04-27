@@ -23,7 +23,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
         if (image == null) {
           return res.status(StatusCodes.NOT_FOUND).json("image not found");
         }
-        res.setHeader('Content-Type', image.mimeType);
+        res.setHeader("Content-Type", image.mimeType);
         return res.status(StatusCodes.ACCEPTED).send(image.img);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
@@ -42,11 +42,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
-        const result = await updateImage(
-          id,
-          newImage.img,
-          newImage.mimeType,
-        );
+        const result = await updateImage(id, newImage.img, newImage.mimeType);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

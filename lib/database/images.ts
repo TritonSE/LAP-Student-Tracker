@@ -15,14 +15,14 @@ const createImage = async (): Promise<string> => {
     throw Error("Error on insert into database");
   }
 
-  return res.rows[0].id;;
+  return res.rows[0].id;
 };
 
 // updates existing images entry by id
 const updateImage = async (
   id: string,
   img?: Uint8Array,
-  mimeType?: string,
+  mimeType?: string
 ): Promise<Image | null> => {
   const query = {
     text:
@@ -31,7 +31,7 @@ const updateImage = async (
       "mime_type = COALESCE($3, mime_type) " +
       "WHERE id=$1",
     values: [id, img, mimeType],
-  };    console.log(mimeType)
+  };
 
   try {
     await client.query(query);
@@ -40,7 +40,6 @@ const updateImage = async (
   }
 
   return getImage(id);
-
 };
 
 // gets an image entry by id

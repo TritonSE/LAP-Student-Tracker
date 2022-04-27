@@ -17,7 +17,16 @@ const createClass = async (
 ): Promise<Class | null> => {
   const query = {
     text: "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
-    values: [eventInformationId, minLevel, maxLevel, rrstring, timeStart, timeEnd, language, teachers],
+    values: [
+      eventInformationId,
+      minLevel,
+      maxLevel,
+      rrstring,
+      timeStart,
+      timeEnd,
+      language,
+      teachers,
+    ],
   };
 
   try {
@@ -51,7 +60,16 @@ const updateClass = async (
       "language = COALESCE($7, language), " +
       "teachers = COALESCE($8, teachers) " +
       "WHERE event_information_id=$1",
-    values: [eventInformationId, minLevel, maxLevel, rrstring, startTime, endTime, language, teachers],
+    values: [
+      eventInformationId,
+      minLevel,
+      maxLevel,
+      rrstring,
+      startTime,
+      endTime,
+      language,
+      teachers,
+    ],
   };
 
   try {

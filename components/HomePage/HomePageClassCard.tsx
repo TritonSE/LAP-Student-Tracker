@@ -1,6 +1,5 @@
- import React from "react";
- import style from "./AdminHomePage.module.css";
- import styles from "../LeaguePage/LeagueViews.module.css"
+import React from "react";
+import style from "./AdminHomePage.module.css";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 type HomePageClassCard = {
@@ -31,9 +30,8 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
     "Saturday",
     "Sunday",
   ];
-  //const rule = RRule.fromString(rrstring);
-  //geting all days of week from the rrule object to output
-  const dates = ["Monday", "Wednesday"];//rule.options.byweekday.map((val) => weekday[val]).join(", ");
+  const rule = RRule.fromString(rrstring);
+  const dates = rule.options.byweekday.map((val) => weekday[val]).join(", ");
 
   //this takes in the start and end times, converts them to ISO format, then outputs the hour the class starts and ends
   const convertTime = (timeStart: string, timeEnd: string): string => {
@@ -43,28 +41,19 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
     return finalTimes + "";
   };
   return (
-    
     <div className={style.card}>
       <div>
         <div className={style.title}>
-        <a href="">
-          {
-        `${name}
-        ${
-          minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
-        }`}
-        </a>
+          <a href="">
+            {`${name}
+        ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel}`}
+          </a>
         </div>
         <div className={style.name}>{teachers.join(", ")}</div>
       </div>
 
-      <div className={style.times}>
-        {[dates, "•", convertTime(startTime, endTime)].join(" ")}
-        
-      </div>
-      
+      <div className={style.times}>{[dates, "•", convertTime(startTime, endTime)].join(" ")}</div>
     </div>
-
   );
 };
 

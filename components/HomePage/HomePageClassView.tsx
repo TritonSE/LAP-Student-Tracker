@@ -6,25 +6,8 @@ import { APIContext } from "../../context/APIContext";
 import { Loader } from "../util/Loader";
 import { Error } from "../util/Error";
 import { Empty } from "../util/Empty";
-import { User } from "../../models/users";
 import useSWR from "swr";
 
-const filters = [
-  "Administration",
-  "Teachers",
-  "Volunteers",
-  "Level 0",
-  "Level 1",
-  "Level 2",
-  "Level 3",
-  "Level 4",
-  "Level 5",
-  "Level 6",
-  "Level 7",
-  "Level 8",
-];
-
-// Renders the list of staff or the corresponding error
 const HomePageClassScroll: React.FC = () => {
   const client = useContext(APIContext);
 
@@ -55,11 +38,10 @@ const HomePageClassScroll: React.FC = () => {
 
 const HomePageClassView: React.FC = () => {
   return (
-      <div>
-          <div className={styles.classtitle}>Classes</div>
-          <HomePageClassScroll />
-      </div>
-    
+    <div>
+      <div className={styles.classtitle}>Classes</div>
+      <HomePageClassScroll />
+    </div>
   );
 };
 

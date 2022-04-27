@@ -14,33 +14,28 @@ const AdminHomePage: React.FC<object> = () => {
 
   return (
     <div>
-      {showManageClasses ? 
-      <button onClick={() => setshowManageClasses(false)}>
-      <img className={styles.backarrow} src="BackArrow.png" />
-    </button>
-      : 
-      <div>
-      <div className={styles.homeWrapper}>
-        <button className={styles.createBtn} onClick={() => setShowWizard(true)}>
-          Create
-          <img className={styles.addIcon} src="AddIcon.png" />
+      {showManageClasses ? (
+        <button onClick={() => setshowManageClasses(false)}>
+          <img className={styles.backarrow} src="BackArrow.png" />
         </button>
-        {showWizard ? <CreateEventsWizard handleClose={handleClose} /> : null}
-      </div>
-      <button className={styles.manageBtn} onClick={() => setshowManageClasses(true)}>
-      {<div style={{color: "white"}}>Manage Classes</div> }
-    </button>
-    </div>
-      }
-        
-        {showWizard ? <CreateEventsWizard handleClose={handleClose} /> : null}
+      ) : (
+        <div>
+          <div className={styles.homeWrapper}>
+            <button className={styles.createBtn} onClick={() => setShowWizard(true)}>
+              Create
+              <img className={styles.addIcon} src="AddIcon.png" />
+            </button>
+            {showWizard ? <CreateEventsWizard handleClose={handleClose} /> : null}
+          </div>
+          <button className={styles.manageBtn} onClick={() => setshowManageClasses(true)}>
+            {<div style={{ color: "white" }}>Manage Classes</div>}
+          </button>
+        </div>
+      )}
 
-      <div>
-      { showManageClasses ? 
-      
-      
-      <HomePageClassView/>: <AdminCalendar />}
-      </div>
+      {showWizard ? <CreateEventsWizard handleClose={handleClose} /> : null}
+
+      <div>{showManageClasses ? <HomePageClassView /> : <AdminCalendar />}</div>
     </div>
   );
 };

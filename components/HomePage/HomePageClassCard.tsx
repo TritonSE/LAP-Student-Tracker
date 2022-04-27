@@ -1,23 +1,26 @@
-import React from "react";
-import styles from "./LeagueViews.module.css";
+ import React from "react";
+ import style from "./AdminHomePage.module.css";
+ import styles from "../LeaguePage/LeagueViews.module.css"
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
-type ClassBubble = {
+type HomePageClassCard = {
   name: string;
   minLevel: number;
   maxLevel: number;
   rrstring: string;
   startTime: string;
   endTime: string;
+  teachers: string[];
 };
 
-const ClassCard: React.FC<ClassBubble> = ({
+const HomePageClassCard: React.FC<HomePageClassCard> = ({
   name,
   minLevel,
   maxLevel,
   rrstring,
   startTime,
   endTime,
+  teachers,
 }) => {
   const weekday: string[] = [
     "Monday",
@@ -28,9 +31,9 @@ const ClassCard: React.FC<ClassBubble> = ({
     "Saturday",
     "Sunday",
   ];
-  const rule = RRule.fromString(rrstring);
+  //const rule = RRule.fromString(rrstring);
   //geting all days of week from the rrule object to output
-  const dates = rule.options.byweekday.map((val) => weekday[val]).join(", ");
+  const dates = ["Monday", "Wednesday"];//rule.options.byweekday.map((val) => weekday[val]).join(", ");
 
   //this takes in the start and end times, converts them to ISO format, then outputs the hour the class starts and ends
   const convertTime = (timeStart: string, timeEnd: string): string => {
@@ -40,17 +43,29 @@ const ClassCard: React.FC<ClassBubble> = ({
     return finalTimes + "";
   };
   return (
-    <div className={styles.listElem}>
+    
+    <div className={style.card}>
       <div>
-        <p className={styles.leftText}>{`${name} ${
+        <div className={style.title}>
+        <a href="">
+          {
+        `${name}
+        ${
           minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
-        }`}</p>
+        }`}
+        </a>
+        </div>
+        <div className={style.name}>{teachers.join(", ")}</div>
       </div>
-      <div className={styles.rightText}>
+
+      <div className={style.times}>
         {[dates, "•", convertTime(startTime, endTime)].join(" ")}
+        
       </div>
+      
     </div>
+
   );
 };
 
-export { ClassBubble };
+export { HomePageClassCard };

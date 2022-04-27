@@ -58,17 +58,29 @@ var addData = function () { return __awaiter(_this, void 0, void 0, function () 
                 return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('3', 'Advanced Java', 'green', 'Class', true)")];
             case 4:
                 _a.sent();
-                return [4 /*yield*/, client.query("DELETE from classes")];
+                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('4', 'Advanced Java', 'green', 'Class', true)")];
             case 5:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('1', 4, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english', '{John, Bill, Carl}')")];
+                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('5', 'Advanced Java', 'green', 'Class', true)")];
             case 6:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('2', 1, 2, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=TU,TH;INTERVAL=1', '06:15Z', '08:15Z', 'english', '{John, Bill, Carl}')")];
+                return [4 /*yield*/, client.query("DELETE from classes")];
             case 7:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('3', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')")];
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('1', 4, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english', '{John, Bill, Carl}')")];
             case 8:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('2', 1, 2, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=TU,TH;INTERVAL=1', '06:15Z', '08:15Z', 'english', '{John, Bill, Carl}')")];
+            case 9:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('3', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')")];
+            case 10:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('4', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')")];
+            case 11:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('5', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')")];
+            case 12:
                 _a.sent();
                 return [2 /*return*/];
         }

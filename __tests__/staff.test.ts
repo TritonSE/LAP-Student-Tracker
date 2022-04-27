@@ -22,7 +22,7 @@ beforeAll(async () => {
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('1', 'Test Event', 'blue', 'class', 'false')"
   );
   await client.query(
-    "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('1', '3', '5', 'RR', '2020-01-01', '2020-01-01', 'english')"
+    "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('1', '3', '5', 'RR', '2020-01-01', '2020-01-01', 'english', '{John, Bill, Carl}')"
   );
   await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('2', '1')");
 });

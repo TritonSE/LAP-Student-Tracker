@@ -4,6 +4,8 @@ import { AuthContext } from "../context/AuthContext";
 import { AdminHomePage } from "../components/HomePage/AdminHomePage";
 import { UserHomePage } from "../components/HomePage/UserHomePage";
 import { Error } from "../components/util/Error";
+import { HomePageClassCard } from "../components/HomePage/HomePageClassCard";
+import { HomePageClassView } from "../components/HomePage/HomePageClassView";
 import styles from "../styles/Home.module.css";
 
 //This is the page that is rendered when the 'Home' button from the Navbar is clicked

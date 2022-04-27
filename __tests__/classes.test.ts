@@ -22,7 +22,7 @@ beforeAll(async () => {
   );
   await client.query("DELETE from classes");
   await client.query(
-    "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('11', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english')"
+    "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('11', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english', '{John, Bill, Carl}')"
   );
 });
 
@@ -43,6 +43,7 @@ describe("[POST] /api/class", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
+      teachers: ["John", "Bill", "Carl"],
     };
 
     const expected: Class = {
@@ -55,6 +56,7 @@ describe("[POST] /api/class", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
+      teachers: ["John", "Bill", "Carl"],
     };
 
     await makeHTTPRequest(
@@ -78,6 +80,7 @@ describe("[POST] /api/class", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
+      teachers: ["John", "Bill", "Carl"],
     };
 
     await makeHTTPRequest(
@@ -123,6 +126,7 @@ describe("[GET] /api/class/[id]", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
+      teachers: ["John", "Bill", "Carl"],
     };
 
     const query = {
@@ -169,6 +173,7 @@ describe("[PATCH] /api/class/[id]", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "Java",
+      teachers: ["John", "Bill", "Carl"],
     };
 
     const query = {
@@ -205,6 +210,7 @@ describe("[PATCH] /api/class/[id]", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "Java",
+      teachers: ["John", "Bill", "Carl"],
     };
 
     const query = {
@@ -252,13 +258,13 @@ describe("[GET] /api/class", () => {
   beforeAll(async () => {
     await client.query("DELETE from classes");
     await client.query(
-      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('11', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'C++')"
+      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('11', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'C++', '{John, Bill, Carl}')"
     );
     await client.query(
-      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('22', 4, 6, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO;INTERVAL=1', '06:34Z', '07:40Z', 'Java')"
+      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('22', 4, 6, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO;INTERVAL=1', '06:34Z', '07:40Z', 'Java', '{John, Bill, Carl}')"
     );
     await client.query(
-      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('33', 1, 3, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=WE,TH;INTERVAL=1', '01:00Z', '02:00Z', 'Python')"
+      "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('33', 1, 3, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=WE,TH;INTERVAL=1', '01:00Z', '02:00Z', 'Python', '{John, Bill, Carl}')"
     );
   });
   test("get all classes", async () => {
@@ -273,6 +279,7 @@ describe("[GET] /api/class", () => {
         startTime: "07:34Z",
         endTime: "08:34Z",
         language: "C++",
+        teachers: ["John", "Bill", "Carl"],
       },
       {
         name: "class2",
@@ -284,6 +291,7 @@ describe("[GET] /api/class", () => {
         startTime: "06:34Z",
         endTime: "07:40Z",
         language: "Java",
+        teachers: ["John", "Bill", "Carl"],
       },
       {
         name: "class3",
@@ -295,6 +303,7 @@ describe("[GET] /api/class", () => {
         startTime: "01:00Z",
         endTime: "02:00Z",
         language: "Python",
+        teachers: ["John", "Bill", "Carl"],
       },
     ];
     await makeHTTPRequest(

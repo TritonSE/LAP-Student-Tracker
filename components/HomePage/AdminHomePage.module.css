@@ -1,5 +1,6 @@
 .homeWrapper {
   margin: 65px 70px;
+  display: inline-block;
 }
 
 .createBtn {
@@ -16,7 +17,19 @@
   cursor: pointer;
   composes: labelLarge from "../../styles/globals.css";
 }
-
+.manageBtn {
+  display: inline-block;
+  align-items: center;
+  justify-content: space-around;
+  width: 185px;
+  height: 44px;
+  border-radius: 32px;
+  background: #5D5FEF;
+  box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.18);
+  border: none;
+  cursor: pointer;
+  composes: labelLarge from "../../styles/globals.css";
+}
 .addIcon {
   width: 20px;
   height: 20px;
@@ -33,5 +46,90 @@
   height: 55px;
   padding: 24px 17px 24px 17px;
 }
+.cardcontainer{
+  display: flex;
+  background-color: black;
+
+}
+.something{
+  margin-top: -280px;
+  margin-left: -30px;
+  padding-bottom: 60px;
+}
+.card{
+  border-radius: 8px;
+  position: relative;
+  width: 380px;
+  height: 240px;
+  display: inline-block;
+  margin-left: 80px;
+  margin-right: 0px;
+
+
+  border: solid;
+  border-width: 1px;
+  margin-top: 100px;
+}
+
+.card:hover{
+  box-shadow: 0 8px 16px; 
+}
+
+.title{
+  border-radius: 8px 8px 0px 0px;
+  font-size: 40px;
+  margin-bottom: 15px;
+  background-color: #F9B890;
+  font-weight: 500;
+  padding-top: 50px;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+.cardbutton{
+  background-color: white;
+}
+.classtitle{
+  display: inline-block;
+  position: absolute;
+  margin-top: -70px;
+  width: 424px;
+  height: 41px;
+  left: 80px;
+  top: 219px;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 41px;
+  border-bottom:1px solid black;
+  padding-right:50px;
+  color: black;
+  border-bottom: 2px solid black;
+  padding-right: 70px;
+  /* identical to box height */
+
+
+  /* The League Colors/League Black */
+
+  color: #1B1C1D;
+}
+.backarrow{
+  margin-left: 75px;
+  position: absolute;
+}
+.name{
+  font-size: 20px;
+  padding-left: 10px;
+}
+.times{
+  font-size: 15px;
+  padding-left: 10px;
+  padding-top: 10px;
+}
+.manage{
+  width: 20px;
+  height: 20px;
+  background-color: #5D5FEF;
+
+}
+
 
 

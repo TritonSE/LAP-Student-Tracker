@@ -212,6 +212,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
           language: lang,
           startTime: classEvent.startTime,
           endTime: classEvent.endTime,
+          teachers: createEvent.teachers
         };
         await client.createClass(createClass);
       } catch (err) {

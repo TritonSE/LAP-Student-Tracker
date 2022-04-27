@@ -19,6 +19,12 @@ const addData = async () => {
   await client.query(
     "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('3', 'Advanced Java', 'green', 'Class', true)"
   );
+  await client.query(
+    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('4', 'Advanced Java', 'green', 'Class', true)"
+  );
+  await client.query(
+    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('5', 'Advanced Java', 'green', 'Class', true)"
+  );
   await client.query("DELETE from classes");
   await client.query(
     "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('1', 4, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english', '{John, Bill, Carl}')"
@@ -28,6 +34,12 @@ const addData = async () => {
   );
   await client.query(
     "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('3', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')"
+  );
+  await client.query(
+    "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('4', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')"
+  );
+  await client.query(
+    "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('5', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')"
   );
 };
 

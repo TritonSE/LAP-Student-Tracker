@@ -6,4 +6,4 @@ CREATE TABLE images(
 
 ALTER TABLE users
 ADD COLUMN picture_id text
-REFERENCES images (id) ON DELETE CASCADE;
+REFERENCES images (id);

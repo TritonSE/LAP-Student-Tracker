@@ -7,12 +7,14 @@ import { Class } from "../models/class";
 import { User } from "../models/users";
 import { Student } from "../models/students";
 import { NextApplicationPage } from "./_app";
+import { IncomingAccountRequests } from "../components/LeaguePage/IncomingAccountRequests";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
 
 const League: NextApplicationPage = () => {
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
+  const [showRequests, setShowRequests] = useState<Boolean>(false);
   const [content, setContent] = useState<{
     Classes: Class[];
     Students: Student[];
@@ -49,13 +51,25 @@ const League: NextApplicationPage = () => {
     });
   }, []);
 
+  // Functionality for income request button on staff view
+  const toggleShowRequests = (): void => {
+    setShowRequests(true);
+  }
+
   // Renders specific content component based on tab state
   const renderComponent = (display: string): JSX.Element | undefined => {
     if (display == "Classes") return <ClassView />;
     if (display == "Students") return <StudentView students={content.Students} />;
-    if (display == "Staff") return <StaffView />;
+    if (display == "Staff") return <StaffView toggleShowRequests={toggleShowRequests}/>;
   };
 
+  if (showRequests) {
+    return (
+      <IncomingAccountRequests />
+    );
+  } else {
+
+  }
   return (
     <>
       <div className={styles.tabsContainer}>

@@ -6,7 +6,12 @@ import { Loader } from "../util/Loader";
 import { Error } from "../util/Error";
 import { Empty } from "../util/Empty";
 import { User } from "../../models/users";
+import { IncomingRequestBtn } from "./IncomingRequestBtn";
 import useSWR from "swr";
+
+type StaffViewProp = {
+  toggleShowRequests: () => void;
+};
 
 const filters = [
   "Administration",
@@ -49,11 +54,12 @@ const StaffScroll: React.FC = () => {
   );
 };
 
-const StaffView: React.FC = () => {
+const StaffView: React.FC<StaffViewProp> = ({ toggleShowRequests }) => {
   return (
     <div className={styles.compContainer}>
       <div className={styles.leftContainer}>
         <h1 className={styles.compTitle}>Staff</h1>
+        <IncomingRequestBtn requests={false} toggleShowRequests={toggleShowRequests} />
         <div className={styles.compList}>
           <ul className={styles.scroll}>
             <StaffScroll />

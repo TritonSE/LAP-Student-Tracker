@@ -15,10 +15,19 @@ beforeAll(async () => {
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"
   );
   await client.query(
+      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', '123 Main Street', '1234567890')"
+  );
+  await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
   );
   await client.query(
+      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+  );
+  await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')"
+  );
+  await client.query(
+      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', '123 Main Street', '1234567890')"
   );
 });
 
@@ -40,6 +49,15 @@ describe("[GET] /api/users/?filter", () => {
         phoneNumber: "1234567890",
       },
       {
+        id: "4",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
         id: "2",
         firstName: "Teacher",
         lastName: "Doe",
@@ -49,10 +67,28 @@ describe("[GET] /api/users/?filter", () => {
         phoneNumber: "1234567890",
       },
       {
+        id: "5",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher2@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
         id: "3",
         firstName: "Admin",
         lastName: "Doe",
         email: "admin@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "6",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin2@gmail.com",
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
@@ -86,6 +122,15 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
+      {
+        id: "5",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher2@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      }
     ];
 
     const query = {
@@ -110,6 +155,15 @@ describe("[GET] /api/users/?filter", () => {
         firstName: "John",
         lastName: "Doe",
         email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "4",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john2@gmail.com",
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
@@ -142,6 +196,15 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
+      {
+        id: "6",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin2@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      }
     ];
 
     const query = {

@@ -15,19 +15,19 @@ beforeAll(async () => {
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"
   );
   await client.query(
-      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', '123 Main Street', '1234567890')"
   );
   await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
   );
   await client.query(
-      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
   );
   await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')"
   );
   await client.query(
-      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', '123 Main Street', '1234567890')"
   );
 });
 
@@ -130,7 +130,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-      }
+      },
     ];
 
     const query = {
@@ -204,7 +204,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-      }
+      },
     ];
 
     const query = {

@@ -1,13 +1,36 @@
 import { client } from "../db";
 import { User, UserArraySchema, UserSchema } from "../../models/users";
 import { decode } from "io-ts-promise";
+
+const roleSpecificSetup = async (
+  id: string,
+  role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer"
+): Promise<void> => {
+  switch (role) {
+    case "Teacher": {
+      const query = {
+        text: "INSERT INTO availabilities (user_id, time_zone) VALUES ($1, 	$2)",
+        values: [id, "America/Los_Angeles"],
+      };
+      try {
+        await client.query(query);
+      } catch (e) {
+        throw Error("Error on inserting into availabilities for teachers");
+      }
+      return;
+    }
+    default:
+      return;
+  }
+};
+
 // create a user in the database with given parameters.
 const createUser = async (
   id: string,
   firstName: string,
   lastName: string,
   email: string,
-  role: string,
+  role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
   address?: string | null,
   phone_number?: string | null
 ): Promise<User | null> => {
@@ -21,6 +44,7 @@ const createUser = async (
     throw Error("Error on insert into database");
   }
 
+  await roleSpecificSetup(id, role);
   return getUser(id);
 };
 

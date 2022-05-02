@@ -28,10 +28,12 @@ class LeagueAPI {
     const res = await this.client.get(`api/class/${id}`);
     return res.data;
   }
+
   async getAllClasses(): Promise<Class[]> {
     const res = await this.client.get("api/class");
     return res.data;
   }
+
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
     const res = await this.client.post("api/events/class", classEvent);
     return res.data;

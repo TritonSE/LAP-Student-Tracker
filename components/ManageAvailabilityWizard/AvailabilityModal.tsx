@@ -21,8 +21,6 @@ type Availability = {
 
 type AvailabilityModalProps = {
   handleClose: () => void;
-  // handleStates: (availability: Availability, timeZone: string) => void;
-  // props for initial state values
   initAvailability: Availability;
   initTimeZone: string;
   userId: string;
@@ -31,7 +29,6 @@ type AvailabilityModalProps = {
 
 const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
   handleClose,
-  // handleStates,
   initAvailability,
   initTimeZone,
   userId,
@@ -57,7 +54,14 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
     return times
   }
   
+  /* 
+  returns a boolean specifyinh whether times are valid, the day in which a conflict
+  occurs if time isn't valid, and an error message specifying type of conflict if 
+  time isn't valid
+  */
   const areTimesValid = (availability: Availability): [boolean, string, string] => {
+    const dummyDate = {year: 2000, month:1, day:2}
+
     // loops through each day
     for(const [day, allTime] of Object.entries(availability)){
       //makes a deepcopy so we do not change states
@@ -73,16 +77,21 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
         let startTime = time[0];
         let endTime = time[1];
 
-        //pad 0 in front of time if before 10am
-        if(startTime.length < 5){
-          startTime = "0" + startTime;
-        }
-        if(endTime.length < 5){
-          endTime = "0" + endTime;
-        }
+        const startDateTime = DateTime.fromObject(
+          {...dummyDate, 
+           hour:parseInt(startTime.split(":")[0]), 
+           minute:parseInt(startTime.split(":")[1])
+          })
+        const endDateTime = DateTime.fromObject(
+          {...dummyDate, 
+            hour:parseInt(endTime.split(":")[0]), 
+            minute:parseInt(endTime.split(":")[1])
+          })
+
+        
 
         // check if start time is before the end time
-        if (startTime >= endTime) {
+        if (startDateTime >= endDateTime) {
           return [false, day, "Start time must be before end time."]
         }
 
@@ -94,16 +103,20 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
         let prevEndTime = times[i-1][1]
         let currStartTime = times[i][0]
 
-        //pad 0 in front of time if before 10am
-        if(currStartTime.length < 5){
-          currStartTime = "0" + currStartTime;
-        }
-        if(prevEndTime.length < 5){
-          prevEndTime = "0" + prevEndTime;
-        }
 
-        if (prevEndTime > currStartTime) {
-          console.log(prevEndTime, currStartTime)
+        const prevEndDateTime = DateTime.fromObject(
+          {...dummyDate, 
+           hour:parseInt(prevEndTime.split(":")[0]), 
+           minute:parseInt(prevEndTime.split(":")[1])
+          })
+        const currStartDateTime = DateTime.fromObject(
+          {...dummyDate, 
+            hour:parseInt(currStartTime.split(":")[0]), 
+            minute:parseInt(currStartTime.split(":")[1])
+          })
+
+
+        if (prevEndDateTime > currStartDateTime) {
           return [false, day, "Times cannot overlap."]
         }
       }
@@ -113,10 +126,12 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
 
   const updateAvailabilty = (day: string, times: string[][]): void => {
     // function to update availability state when child component changes times
-    let newAvailability: Availability = availability;
-    newAvailability[day] = times;
-
-    setAvailability({...newAvailability});
+    setAvailability( (oldAvailability) => {
+      
+      oldAvailability[day] = times
+      console.log("UPDATE: ", oldAvailability)
+      return {...oldAvailability}
+    })
 
   }
 
@@ -137,7 +152,9 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
         "sat": availability["Sat"].length == 0 ? null : sortTimes(availability["Sat"]),
         "timeZone": timezone
       }
-      const classEvent = await client.updateAvailabilities(newAvailability, userId);
+      console.log("SUBMIT",newAvailability)
+      
+      const updateResult = await client.updateAvailabilities(newAvailability, userId);
       // update the cached data from useSWR
       mutate(newAvailability)
       

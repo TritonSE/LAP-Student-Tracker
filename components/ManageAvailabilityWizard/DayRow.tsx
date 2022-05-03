@@ -32,11 +32,12 @@ const DayRow: React.FC<DayRowProps> = ({
     endTime: string
   ): void => {
     // changes the correct index in availabilityTimes
-    let currentAvailability = availabilityTimes
-    currentAvailability[idx][0] = startTime;
-    currentAvailability[idx][1] = endTime;
 
-    setAvailabilityTimes([...currentAvailability])
+    setAvailabilityTimes( (oldAvailability) => {
+      oldAvailability[idx][0] = startTime;
+      oldAvailability[idx][1] = endTime;
+      return [...oldAvailability]
+    })
   }
 
   // function to delete time from time state when TimeSlot component deleted
@@ -44,18 +45,22 @@ const DayRow: React.FC<DayRowProps> = ({
     idx: number,
   ): void => {
     // removed the time array for this day
-    let currentAvailability = availabilityTimes
-    currentAvailability.splice(idx, 1)
-    
-    setAvailabilityTimes([...currentAvailability])
+
+    setAvailabilityTimes( (oldAvailability) => {
+      const newAvailability = oldAvailability.splice(idx,1)
+      const result = [...oldAvailability]
+      console.log(result)
+      return result
+    })
   }
 
   const addTimeSlot = (): void => {
     // creates a new TimeSlot
-    let currentAvailability = availabilityTimes
-    currentAvailability.push(["12:00","13:00"]) // default start and end times?
 
-    setAvailabilityTimes([...currentAvailability])
+    setAvailabilityTimes( (oldAvailability)=>{
+      oldAvailability.push(["12:00","13:00"])
+      return [...oldAvailability]
+    })
   }
 
   // calls function to update parent's state

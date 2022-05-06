@@ -1,7 +1,7 @@
-import React, {useContext, useEffect} from "react";
-import {AuthContext} from "../../context/AuthContext";
-import {useRouter} from "next/router";
-import {Loader} from "./Loader";
+import React, { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { useRouter } from "next/router";
+import { Loader } from "./Loader";
 
 // functions to redirect users if they have not been logged in
 const AuthGuard: React.FC = ({ children }) => {

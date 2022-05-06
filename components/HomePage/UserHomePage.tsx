@@ -1,5 +1,5 @@
 import React from "react";
-import {UserCalendar} from "../Calendar/UserCalendar";
+import { UserCalendar } from "../Calendar/UserCalendar";
 
 type UserHomeProp = {
   userId: string;

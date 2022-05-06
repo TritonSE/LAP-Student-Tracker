@@ -3,12 +3,12 @@
 import React from "react";
 import "../styles/app.css";
 import "../styles/globals.css";
-import {AppProps} from "next/app";
-import {APIProvider} from "../context/APIContext";
-import {Layout} from "../components/Navbar/NavbarLayout";
-import {AuthProvider} from "../context/AuthContext";
-import {AuthGuard} from "../components/util/RouteGaurd";
-import {NextPage} from "next";
+import { AppProps } from "next/app";
+import { APIProvider } from "../context/APIContext";
+import { Layout } from "../components/Navbar/NavbarLayout";
+import { AuthProvider } from "../context/AuthContext";
+import { AuthGuard } from "../components/util/RouteGaurd";
+import { NextPage } from "next";
 // Importing full calendar css for use within calendar component
 import "@fullcalendar/common/main.css";
 import "@fullcalendar/daygrid/main.css";

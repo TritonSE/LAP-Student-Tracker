@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/League.module.css";
-import {ClassView} from "../components/LeaguePage/ClassView";
-import {StudentView} from "../components/LeaguePage/StudentView";
-import {StaffView} from "../components/LeaguePage/StaffView";
-import {Class} from "../models/class";
-import {User} from "../models/users";
-import {Student} from "../models/students";
-import {NextApplicationPage} from "./_app";
+import { ClassView } from "../components/LeaguePage/ClassView";
+import { StudentView } from "../components/LeaguePage/StudentView";
+import { StaffView } from "../components/LeaguePage/StaffView";
+import { Class } from "../models/class";
+import { User } from "../models/users";
+import { Student } from "../models/students";
+import { NextApplicationPage } from "./_app";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];

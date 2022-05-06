@@ -1,12 +1,12 @@
-import React, {useContext} from "react";
-import {APIContext} from "../../context/APIContext";
+import React, { useContext } from "react";
+import { APIContext } from "../../context/APIContext";
 import useSWR from "swr";
-import {Error} from "../util/Error";
-import {Loader} from "../util/Loader";
-import {Class} from "../../models/class";
-import {Empty} from "../util/Empty";
-import {ClassCard} from "./ClassCard";
-import {OrderBy} from "./ClassView";
+import { Error } from "../util/Error";
+import { Loader } from "../util/Loader";
+import { Class } from "../../models/class";
+import { Empty } from "../util/Empty";
+import { ClassCard } from "./ClassCard";
+import { OrderBy } from "./ClassView";
 
 type ClassScrollProp = {
   searchQuery: string;

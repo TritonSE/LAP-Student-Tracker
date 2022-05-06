@@ -1,12 +1,12 @@
-import {useRouter} from "next/router";
-import React, {useContext, useState} from "react";
-import {LoginPageMain} from "../components/Login/LoginPageMain";
-import {LoginNameInput} from "../components/Login/LoginNameInput";
-import {LoginPositionInput} from "../components/Login/LoginPositionInput";
-import {CreateEmailAndPassword} from "../components/Login/CreateEmailAndPassword";
-import {AuthContext} from "../context/AuthContext";
-import {LoginPageNavigation} from "../components/Login/LoginPageNavigation";
-import {Roles} from "../models/users";
+import { useRouter } from "next/router";
+import React, { useContext, useState } from "react";
+import { LoginPageMain } from "../components/Login/LoginPageMain";
+import { LoginNameInput } from "../components/Login/LoginNameInput";
+import { LoginPositionInput } from "../components/Login/LoginPositionInput";
+import { CreateEmailAndPassword } from "../components/Login/CreateEmailAndPassword";
+import { AuthContext } from "../context/AuthContext";
+import { LoginPageNavigation } from "../components/Login/LoginPageNavigation";
+import { Roles } from "../models/users";
 
 const Login: React.FC = () => {
   const auth = useContext(AuthContext);

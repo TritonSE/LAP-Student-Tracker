@@ -1,4 +1,4 @@
-import pg, {Pool} from "pg";
+import pg, { Pool } from "pg";
 import pgCamelCase from "pg-camelcase";
 
 pgCamelCase.inject(pg);

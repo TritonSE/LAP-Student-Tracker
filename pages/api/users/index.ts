@@ -1,9 +1,9 @@
-import {createUser, getAllUsers} from "../../../lib/database/users";
-import {createImage} from "../../../lib/database/images";
-import {Roles, User, UserSchema} from "../../../models/users";
-import {decode} from "io-ts-promise";
-import {StatusCodes} from "http-status-codes";
-import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
+import { createUser, getAllUsers } from "../../../lib/database/users";
+import { createImage } from "../../../lib/database/images";
+import { Roles, User, UserSchema } from "../../../models/users";
+import { decode } from "io-ts-promise";
+import { StatusCodes } from "http-status-codes";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
 // handles requests to /api/users/
 const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

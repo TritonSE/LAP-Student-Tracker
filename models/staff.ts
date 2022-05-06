@@ -1,5 +1,5 @@
 import * as t from "io-ts";
-import {UserSchema} from "./users";
+import { UserSchema } from "./users";
 
 const extraStaffField = t.type({
   minLevel: t.union([t.number, t.null]),

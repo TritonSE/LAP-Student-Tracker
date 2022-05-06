@@ -1,14 +1,14 @@
 /* eslint-disable import/extensions */
-import React, {useContext, useEffect, useState} from "react";
-import {RepeatModal} from "./RepeatModal";
-import {APIContext} from "../../context/APIContext";
-import {CreateClass} from "../../models/class";
-import {CreateClassEvent} from "../../models/events";
-import {MenuItem, Select, SelectChangeEvent} from "@mui/material/";
-import {RRule} from "rrule";
-import {DateTime} from "luxon";
-import {CirclePicker} from "react-color";
-import {ColorResult} from "react-color/index";
+import React, { useContext, useEffect, useState } from "react";
+import { RepeatModal } from "./RepeatModal";
+import { APIContext } from "../../context/APIContext";
+import { CreateClass } from "../../models/class";
+import { CreateClassEvent } from "../../models/events";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material/";
+import { RRule } from "rrule";
+import { DateTime } from "luxon";
+import { CirclePicker } from "react-color";
+import { ColorResult } from "react-color/index";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from "axios";
 import useSWR from "swr";

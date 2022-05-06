@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../../../context/AuthContext";
-import {ProfileViewLeft} from "./ProfileViewLeft";
-import {ProfileViewRight} from "./ProfileViewRight";
+import React, { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../../context/AuthContext";
+import { ProfileViewLeft } from "./ProfileViewLeft";
+import { ProfileViewRight } from "./ProfileViewRight";
 import styles from "./AdminTeacherProfile.module.css";
-import {Error} from "../../util/Error";
-import {useRouter} from "next/router";
+import { Error } from "../../util/Error";
+import { useRouter } from "next/router";
 
 // component that renders the admin/teacher profile page
 const AdminTeacherProfileView: React.FC = () => {

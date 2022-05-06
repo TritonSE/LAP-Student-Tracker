@@ -1,8 +1,8 @@
-import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
-import {UpdateImage, UpdateImageSchema} from "../../../models/images";
-import {decode} from "io-ts-promise";
-import {getImage, updateImage} from "../../../lib/database/images";
-import {StatusCodes} from "http-status-codes";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { UpdateImage, UpdateImageSchema } from "../../../models/images";
+import { decode } from "io-ts-promise";
+import { getImage, updateImage } from "../../../lib/database/images";
+import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/images/[id]
 const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

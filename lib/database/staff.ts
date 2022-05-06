@@ -1,7 +1,7 @@
-import {client} from "../db";
-import {Staff, StaffSchema} from "../../models/staff";
-import {array, TypeOf} from "io-ts";
-import {decode} from "io-ts-promise";
+import { client } from "../db";
+import { Staff, StaffSchema } from "../../models/staff";
+import { array, TypeOf } from "io-ts";
+import { decode } from "io-ts-promise";
 
 const StaffArraySchema = array(StaffSchema);
 type staffArrayType = TypeOf<typeof StaffArraySchema>;

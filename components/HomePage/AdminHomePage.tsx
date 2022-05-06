@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {AdminCalendar} from "../Calendar/AdminCalendar";
-import {CreateEventsWizard} from "../CreateEventsWizard/CreateEventsWizard";
+import React, { useState } from "react";
+import { AdminCalendar } from "../Calendar/AdminCalendar";
+import { CreateEventsWizard } from "../CreateEventsWizard/CreateEventsWizard";
 import styles from "./AdminHomePage.module.css";
 
 const AdminHomePage: React.FC<object> = () => {

@@ -1,8 +1,8 @@
 import availabilityFeedHandler from "../pages/api/availibility-feed";
-import {client} from "../lib/db";
-import {CalendarEvent} from "../models/events";
-import {StatusCodes} from "http-status-codes";
-import {getISOTimeFromExplicitFields, makeHTTPRequest} from "./__testutils__/testutils.test";
+import { client } from "../lib/db";
+import { CalendarEvent } from "../models/events";
+import { StatusCodes } from "http-status-codes";
+import { getISOTimeFromExplicitFields, makeHTTPRequest } from "./__testutils__/testutils.test";
 import ColorHash from "color-hash";
 
 const hash = new ColorHash();

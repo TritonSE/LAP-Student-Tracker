@@ -1,6 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "./LeagueViews.module.css";
-import {ClassScroll} from "./ClassScroll";
+import { ClassScroll } from "./ClassScroll";
 
 export type OrderBy = {
   alpha: boolean;

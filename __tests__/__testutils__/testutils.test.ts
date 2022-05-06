@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
-import {NextApiRequest, NextApiResponse} from "next/types";
-import {createMocks, MockResponse, RequestMethod} from "node-mocks-http";
-import {DateTime} from "luxon";
-import {CalendarEvent, ClassEvent} from "../../models/events";
-import {User} from "../../models/users";
+import { NextApiRequest, NextApiResponse } from "next/types";
+import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
+import { DateTime } from "luxon";
+import { CalendarEvent, ClassEvent } from "../../models/events";
+import { User } from "../../models/users";
 
 /**
  * Create and test a HTTP Request

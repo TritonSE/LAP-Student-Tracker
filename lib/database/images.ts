@@ -1,6 +1,6 @@
-import {client} from "../db";
-import {Image, ImageSchema} from "../../models/images";
-import {decode} from "io-ts-promise";
+import { client } from "../db";
+import { Image, ImageSchema } from "../../models/images";
+import { decode } from "io-ts-promise";
 
 // creates null images entry returning id, called when new user is created
 const createImage = async (): Promise<string> => {

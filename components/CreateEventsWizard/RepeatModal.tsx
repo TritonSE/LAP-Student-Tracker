@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./RepeatModal.module.css";
 
 import "react-date-picker/dist/DatePicker.css";

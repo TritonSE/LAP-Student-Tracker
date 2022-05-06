@@ -1,8 +1,8 @@
-import {DateTime, Interval} from "luxon";
-import {CalendarEvent} from "../../models/events";
-import {getAvailabilityById} from "./availability";
-import {getEventFeed} from "./calendar-events";
-import {getUser} from "./users";
+import { DateTime, Interval } from "luxon";
+import { CalendarEvent } from "../../models/events";
+import { getAvailabilityById } from "./availability";
+import { getEventFeed } from "./calendar-events";
+import { getUser } from "./users";
 import ColorHash from "color-hash";
 
 const indexToWeekdays = ["temp", "mon", "tue", "wed", "thu", "fri", "sat", "sun"];

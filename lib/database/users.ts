@@ -1,6 +1,6 @@
-import {client} from "../db";
-import {User, UserArraySchema, UserSchema} from "../../models/users";
-import {decode} from "io-ts-promise";
+import { client } from "../db";
+import { User, UserArraySchema, UserSchema } from "../../models/users";
+import { decode } from "io-ts-promise";
 
 const roleSpecificSetup = async (
   id: string,

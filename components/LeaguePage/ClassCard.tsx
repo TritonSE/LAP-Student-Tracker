@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./LeagueViews.module.css";
-import {RRule} from "rrule";
-import {DateTime} from "luxon";
+import { RRule } from "rrule";
+import { DateTime } from "luxon";
 
 type ClassCardProps = {
   name: string;

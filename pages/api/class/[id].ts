@@ -1,8 +1,8 @@
-import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
-import {getClass, updateClass} from "../../../lib/database/classes";
-import {UpdateClass, UpdateClassSchema} from "../../../models/class";
-import {decode} from "io-ts-promise";
-import {StatusCodes} from "http-status-codes";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { getClass, updateClass } from "../../../lib/database/classes";
+import { UpdateClass, UpdateClassSchema } from "../../../models/class";
+import { decode } from "io-ts-promise";
+import { StatusCodes } from "http-status-codes";
 //Handles all requests to /api/class/[id]
 export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {

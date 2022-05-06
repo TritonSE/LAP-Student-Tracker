@@ -1,9 +1,9 @@
 import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
-import {client} from "../lib/db";
-import {makeHTTPRequest, makeUserHTTPRequest} from "./__testutils__/testutils.test";
-import {UpdateUser, User} from "../models/users";
-import {StatusCodes} from "http-status-codes";
+import { client } from "../lib/db";
+import { makeHTTPRequest, makeUserHTTPRequest } from "./__testutils__/testutils.test";
+import { UpdateUser, User } from "../models/users";
+import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const USER_NOT_FOUND_ERROR = "user not found";

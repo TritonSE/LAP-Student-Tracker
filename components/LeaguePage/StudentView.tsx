@@ -1,6 +1,6 @@
 import React from "react";
-import {Student} from "../../models/students";
-import {StudentCard} from "./StudentCard";
+import { Student } from "../../models/students";
+import { StudentCard } from "./StudentCard";
 import styles from "./LeagueViews.module.css";
 
 type StudentViewProp = {

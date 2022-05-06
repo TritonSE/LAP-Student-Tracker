@@ -1,6 +1,6 @@
 import styles from "./Navbar.module.css";
 import React from "react";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 export const Navbar: React.FC = ({ children }) => {
   const router = useRouter();

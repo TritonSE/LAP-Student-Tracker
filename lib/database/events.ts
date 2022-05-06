@@ -1,6 +1,6 @@
-import {client} from "../db";
-import {User} from "../../models/users";
-import {Interval} from "luxon";
+import { client } from "../db";
+import { User } from "../../models/users";
+import { Interval } from "luxon";
 
 class NonExistingTeacher extends Error {
   constructor(msg: string) {

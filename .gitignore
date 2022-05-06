@@ -42,7 +42,6 @@ yarn-error.log*
 
 *.patch
 
-./.idea
+/.idea/
 
- 
 

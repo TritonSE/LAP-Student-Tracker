@@ -13,16 +13,6 @@ const AdminHomePage: React.FC<object> = () => {
     setShowManageAvailability(false);
   };
 
-  const availability = {
-    "Mon" : [["7:00","8:15"], ["10:00", "12:00"]],
-    "Tue" : [["8:00","9:15"], ["11:00", "11:15"]],
-    "Wed" : [["9:00","10:15"]],
-    "Thu" : [["10:00","13:45"]],
-    "Fri" : [["11:00","14:45"]],
-    "Sat" : [["12:00","15:45"]],
-
-  }
-
   return (
     <div>
       <div className={styles.homeWrapper}>

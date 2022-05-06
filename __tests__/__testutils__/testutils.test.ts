@@ -3,7 +3,7 @@
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
-import { ClassEvent, CalendarEvent } from "../../models/events";
+import { CalendarEvent, ClassEvent } from "../../models/events";
 import { User } from "../../models/users";
 
 /**

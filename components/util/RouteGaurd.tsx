@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
 import { Loader } from "./Loader";
 
 // functions to redirect users if they have not been logged in

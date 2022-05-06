@@ -15,16 +15,228 @@ beforeAll(async () => {
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"
   );
   await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', '123 Main Street', '1234567890')"
+  );
+  await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
   );
   await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+  );
+  await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')"
+  );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', '123 Main Street', '1234567890')"
   );
 });
 
 afterAll(async () => {
   await client.query("DELETE from users");
   await client.end();
+});
+
+describe("[GET] /api/users/?filter", () => {
+  test("look for all users", async () => {
+    const expected: User[] = [
+      {
+        id: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "4",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "2",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "5",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher2@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "3",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "6",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin2@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    const res = await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      undefined
+    );
+
+    const returnedUsers = JSON.parse(res._getData());
+
+    expect(expected.length).toBe(returnedUsers.length);
+    expect(returnedUsers).toEqual(expect.arrayContaining(returnedUsers));
+  });
+
+  test("look for all teachers", async () => {
+    const expected: User[] = [
+      {
+        id: "2",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "5",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher2@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    const query = {
+      role: "Teacher",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all students", async () => {
+    const expected: User[] = [
+      {
+        id: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "4",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john2@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    const query = {
+      role: "Student",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all admin", async () => {
+    const expected: User[] = [
+      {
+        id: "3",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "6",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin2@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    const query = {
+      role: "Admin",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for a role that does not exist", async () => {
+    const query = {
+      role: "DOES_NOT_EXIST",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.BAD_REQUEST,
+      "Query parameter refers to role that does not exist"
+    );
+  });
 });
 
 describe("[POST] /api/users", () => {

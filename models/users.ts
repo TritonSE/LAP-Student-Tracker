@@ -19,6 +19,7 @@ export const UserSchema = t.intersection([
   t.partial({
     phoneNumber: t.union([t.string, t.null]),
     address: t.union([t.string, t.null]),
+    pictureId: t.union([t.string, t.null]),
   }),
 ]);
 

@@ -1,4 +1,5 @@
 import * as t from "io-ts";
+
 export const AvailibilitySchema = t.type({
   mon: t.union([t.array(t.array(t.string)), t.null]),
   tue: t.union([t.array(t.array(t.string)), t.null]),

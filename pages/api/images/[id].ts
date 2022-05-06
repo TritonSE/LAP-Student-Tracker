@@ -1,11 +1,11 @@
 import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
-import {getUser, updateUser} from "../../../lib/database/users";
-import {UpdateUser, UpdateUserSchema} from "../../../models/users";
+import {UpdateImage, UpdateImageSchema} from "../../../models/images";
 import {decode} from "io-ts-promise";
+import {getImage, updateImage} from "../../../lib/database/images";
 import {StatusCodes} from "http-status-codes";
 
-// handles requests to /api/users/[id]
-const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+// handles requests to /api/images/[id]
+const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
@@ -19,38 +19,30 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
   switch (req.method) {
     case "GET": {
       try {
-        const user = await getUser(id);
-        if (user == null) {
-          return res.status(StatusCodes.NOT_FOUND).json("user not found");
+        const image = await getImage(id);
+        if (image == null) {
+          return res.status(StatusCodes.NOT_FOUND).json("image not found");
         }
-        return res.status(StatusCodes.ACCEPTED).json(user);
+        res.setHeader("Content-Type", image.mimeType);
+        return res.status(StatusCodes.ACCEPTED).send(image.img);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
 
     case "PATCH": {
-      const user = await getUser(id);
-      if (user == null) {
-        return res.status(StatusCodes.NOT_FOUND).json("user not found");
+      const image = await getImage(id);
+      if (image == null) {
+        return res.status(StatusCodes.NOT_FOUND).json("image not found");
       }
-      let newUser: UpdateUser;
+      let newImage: UpdateImage;
       try {
-        newUser = await decode(UpdateUserSchema, req.body);
+        newImage = await decode(UpdateImageSchema, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
-        // call the function that actually inserts the data into the database
-        const result = await updateUser(
-          id,
-          newUser.firstName,
-          newUser.lastName,
-          newUser.email,
-          newUser.role,
-          newUser.address,
-          newUser.phoneNumber
-        );
+        const result = await updateImage(id, newImage.img, newImage.mimeType);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
@@ -63,4 +55,4 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
   }
 };
 
-export default userIDHandler;
+export default imageIDHandler;

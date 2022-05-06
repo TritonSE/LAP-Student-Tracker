@@ -1,6 +1,6 @@
-import { Availibility, AvailibilitySchema } from "../../models/availibility";
-import { client } from "../db";
-import { decode } from "io-ts-promise";
+import {Availibility, AvailibilitySchema} from "../../models/availibility";
+import {client} from "../db";
+import {decode} from "io-ts-promise";
 
 const updateAvailability = async (
   id: string,

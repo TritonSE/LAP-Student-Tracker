@@ -1,5 +1,5 @@
-import { client } from "../db";
-import { Any } from "io-ts";
+import {client} from "../db";
+import {Any} from "io-ts";
 
 // Return type is Any[] because an empty array should be returned
 const createCommitment = async (userId: string, eventInformationId: string): Promise<Any[]> => {

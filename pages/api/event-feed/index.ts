@@ -1,6 +1,6 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getEventFeed } from "../../../lib/database/calendar-events";
-import { StatusCodes } from "http-status-codes";
+import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
+import {getEventFeed} from "../../../lib/database/calendar-events";
+import {StatusCodes} from "http-status-codes";
 
 // handles requests to /api/event-feed/
 const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

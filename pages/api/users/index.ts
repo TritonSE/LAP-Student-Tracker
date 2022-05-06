@@ -1,8 +1,9 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { createUser, getAllUsers } from "../../../lib/database/users";
-import { UserSchema, User, Roles } from "../../../models/users";
-import { decode } from "io-ts-promise";
-import { StatusCodes } from "http-status-codes";
+import {createUser, getAllUsers} from "../../../lib/database/users";
+import {createImage} from "../../../lib/database/images";
+import {Roles, User, UserSchema} from "../../../models/users";
+import {decode} from "io-ts-promise";
+import {StatusCodes} from "http-status-codes";
+import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
 
 // handles requests to /api/users/
 const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,6 +16,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
+        const imgId = await createImage();
         const result = await createUser(
           newUser.id,
           newUser.firstName,
@@ -22,7 +24,8 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
           newUser.email,
           newUser.role,
           newUser.address,
-          newUser.phoneNumber
+          newUser.phoneNumber,
+          imgId
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {

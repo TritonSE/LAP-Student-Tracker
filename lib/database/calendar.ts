@@ -1,5 +1,5 @@
-import { client } from "../db";
-import { Any } from "io-ts";
+import {client} from "../db";
+import {Any} from "io-ts";
 
 // Creates a calender event in database
 const createCalendarEvent = async (

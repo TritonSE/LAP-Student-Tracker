@@ -1,8 +1,8 @@
 import staffHandler from "../pages/api/staff";
-import { client } from "../lib/db";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { Staff } from "../models/staff";
-import { StatusCodes } from "http-status-codes";
+import {client} from "../lib/db";
+import {makeHTTPRequest} from "./__testutils__/testutils.test";
+import {Staff} from "../models/staff";
+import {StatusCodes} from "http-status-codes";
 
 beforeAll(async () => {
   await client.query("DELETE from users");

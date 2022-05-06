@@ -1,9 +1,9 @@
 import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
-import { client } from "../lib/db";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { UpdateUser, User } from "../models/users";
-import { StatusCodes } from "http-status-codes";
+import {client} from "../lib/db";
+import {makeHTTPRequest, makeUserHTTPRequest} from "./__testutils__/testutils.test";
+import {UpdateUser, User} from "../models/users";
+import {StatusCodes} from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 const USER_NOT_FOUND_ERROR = "user not found";
@@ -250,7 +250,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
@@ -315,7 +315,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
@@ -336,7 +336,7 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
@@ -384,7 +384,7 @@ describe("[GET] /api/users/[id]", () => {
       id: 1,
     };
 
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userIDHandler,
       "/api/users/1",
       query,
@@ -437,7 +437,7 @@ describe("[PATCH] /api/users/[id]", () => {
       phoneNumber: "4567890",
     };
 
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userIDHandler,
       "/api/users/1",
       query,
@@ -470,7 +470,7 @@ describe("[PATCH] /api/users/[id]", () => {
       phoneNumber: "4567890",
     };
 
-    await makeHTTPRequest(
+    await makeUserHTTPRequest(
       userIDHandler,
       "/api/users/3",
       query,

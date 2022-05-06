@@ -1,7 +1,7 @@
-import axios, { AxiosInstance } from "axios";
-import { CreateClass, Class } from "../models/class";
-import { CreateClassEvent, ClassEvent } from "../models/events";
-import { UpdateUser, User } from "../models/users";
+import axios, {AxiosInstance} from "axios";
+import {Class, CreateClass} from "../models/class";
+import {ClassEvent, CreateClassEvent} from "../models/events";
+import {UpdateUser, User} from "../models/users";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {

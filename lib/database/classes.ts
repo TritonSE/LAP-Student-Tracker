@@ -1,7 +1,7 @@
-import { client } from "../db";
-import { Class, ClassSchema } from "../../models/class";
-import { decode } from "io-ts-promise";
-import { array, TypeOf } from "io-ts";
+import {client} from "../db";
+import {Class, ClassSchema} from "../../models/class";
+import {decode} from "io-ts-promise";
+import {array, TypeOf} from "io-ts";
 
 const ClassArraySchema = array(ClassSchema);
 type classArrayType = TypeOf<typeof ClassArraySchema>;

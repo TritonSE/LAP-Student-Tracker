@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
-import { NextApiRequest, NextApiResponse } from "next/types";
-import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
-import { DateTime } from "luxon";
-import { ClassEvent, CalendarEvent } from "../../models/events";
+import {NextApiRequest, NextApiResponse} from "next/types";
+import {createMocks, MockResponse, RequestMethod} from "node-mocks-http";
+import {DateTime} from "luxon";
+import {CalendarEvent, ClassEvent} from "../../models/events";
+import {User} from "../../models/users";
 
 /**
  * Create and test a HTTP Request
@@ -78,6 +79,38 @@ const makeEventHTTPRequest = async (
   return res;
 };
 
+/* HTTP request handler for users API that ignores pictureId field
+   when comparing User response data */
+const makeUserHTTPRequest = async (
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  endpoint: string,
+  query: Object | undefined,
+  method: RequestMethod,
+  body: Object | undefined,
+  expectedResponseCode: number,
+  expectedBody: User
+): Promise<MockResponse<NextApiResponse<any>>> => {
+  const res = await makeHTTPRequest(
+    handler,
+    endpoint,
+    query,
+    method,
+    body,
+    expectedResponseCode,
+    undefined
+  );
+  const resObject = JSON.parse(res._getData());
+
+  // Check that pictureId field is there but ignore when comparing objects
+  if (expectedBody) {
+    expect(resObject).toHaveProperty("pictureId");
+    delete resObject["pictureId"];
+    expect(resObject).toEqual(expectedBody);
+  }
+
+  return res;
+};
+
 /* HTTP request handler for event feed API that converts Postgres timestamps to
    local ISO for consistency in testing */
 const makeEventFeedHTTPRequest = async (
@@ -144,6 +177,7 @@ const getISOTimeFromExplicitFields = (
 
 export {
   makeHTTPRequest,
+  makeUserHTTPRequest,
   makeEventHTTPRequest,
   makeEventFeedHTTPRequest,
   convertTimeToISO,

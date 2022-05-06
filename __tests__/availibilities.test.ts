@@ -1,8 +1,8 @@
 import availabilityIdHandler from "../pages/api/availibility/[id]";
-import { client } from "../lib/db";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { StatusCodes } from "http-status-codes";
-import { Availibility } from "../models/availibility";
+import {client} from "../lib/db";
+import {makeHTTPRequest} from "./__testutils__/testutils.test";
+import {StatusCodes} from "http-status-codes";
+import {Availibility} from "../models/availibility";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");

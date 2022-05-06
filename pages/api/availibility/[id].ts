@@ -1,8 +1,8 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { decode } from "io-ts-promise";
-import { StatusCodes } from "http-status-codes";
-import { Availibility, AvailibilitySchema } from "../../../models/availibility";
-import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
+import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
+import {decode} from "io-ts-promise";
+import {StatusCodes} from "http-status-codes";
+import {Availibility, AvailibilitySchema} from "../../../models/availibility";
+import {getAvailabilityById, updateAvailability} from "../../../lib/database/availability";
 //Handles all requests to /api/availibility/[id]
 export const availibilityIdHandler: NextApiHandler = async (
   req: NextApiRequest,

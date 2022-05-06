@@ -1,8 +1,8 @@
 import eventFeedHandler from "../pages/api/event-feed";
-import { client } from "../lib/db";
-import { makeHTTPRequest, makeEventFeedHTTPRequest } from "./__testutils__/testutils.test";
-import { CalendarEvent } from "../models/events";
-import { StatusCodes } from "http-status-codes";
+import {client} from "../lib/db";
+import {makeEventFeedHTTPRequest, makeHTTPRequest} from "./__testutils__/testutils.test";
+import {CalendarEvent} from "../models/events";
+import {StatusCodes} from "http-status-codes";
 
 const MISSING_PARAMS_ERROR = "No start or end date specified";
 

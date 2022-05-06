@@ -1,9 +1,9 @@
-import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
+import React, {createContext, useContext, useEffect, useMemo, useState} from "react";
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
-import { FirebaseError } from "@firebase/util";
-import { Roles, UpdateUser, User } from "../models/users";
-import { APIContext } from "./APIContext";
+import {FirebaseError} from "@firebase/util";
+import {Roles, UpdateUser, User} from "../models/users";
+import {APIContext} from "./APIContext";
 
 type AuthState = {
   user: User | null;

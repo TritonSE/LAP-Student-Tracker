@@ -1,6 +1,6 @@
 import styles from "./LoginViews.module.css";
 import React from "react";
-import { Roles } from "../../models/users";
+import {Roles} from "../../models/users";
 
 type LoginPositionInputProps = {
   onContentChange: (newPosition: Roles) => void;

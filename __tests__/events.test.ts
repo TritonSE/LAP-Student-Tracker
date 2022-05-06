@@ -1,12 +1,8 @@
 import eventHandler from "../pages/api/events/class";
-import { client } from "../lib/db";
-import {
-  convertTimeToISO,
-  makeEventHTTPRequest,
-  makeHTTPRequest,
-} from "./__testutils__/testutils.test";
-import { CreateClassEvent, ClassEvent } from "../models/events";
-import { StatusCodes } from "http-status-codes";
+import {client} from "../lib/db";
+import {convertTimeToISO, makeEventHTTPRequest, makeHTTPRequest,} from "./__testutils__/testutils.test";
+import {ClassEvent, CreateClassEvent} from "../models/events";
+import {StatusCodes} from "http-status-codes";
 import RRule from "rrule";
 
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";

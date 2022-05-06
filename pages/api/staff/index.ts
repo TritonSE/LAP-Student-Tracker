@@ -1,6 +1,6 @@
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getAllStaff } from "../../../lib/database/staff";
-import { StatusCodes } from "http-status-codes";
+import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
+import {getAllStaff} from "../../../lib/database/staff";
+import {StatusCodes} from "http-status-codes";
 
 // handles requests to /api/staff/
 const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

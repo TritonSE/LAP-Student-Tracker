@@ -1,5 +1,5 @@
 import * as t from "io-ts";
-import { UserSchema } from "./users";
+import {UserSchema} from "./users";
 
 const extraStudentField = t.type({
   level: t.number,

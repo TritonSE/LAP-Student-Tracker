@@ -155,6 +155,9 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({
       console.log("SUBMIT",newAvailability)
       
       const updateResult = await client.updateAvailabilities(newAvailability, userId);
+
+      console.log("UPDATED RESULT FROM RETURN");
+      console.log(updateResult);
       // update the cached data from useSWR
       mutate(newAvailability)
       

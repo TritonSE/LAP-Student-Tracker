@@ -1,0 +1,45 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+  }
+  
+  .navmenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: left;
+    list-style-type: none;
+  }
+  
+  .navitem {
+    margin-left: 5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .navlink {
+    composes: labelLarge from "../../styles/globals.css";
+    text-decoration: none;
+    position: relative;
+    bottom: 0px;
+    left: 0px;
+  }
+  .clicked {
+    composes: labelLarge from "../../styles/globals.css";
+    text-decoration: none;
+    position: relative;
+    bottom: 0px;
+    left: -6px;
+    border-left: 4px solid var(--orange);
+  }
+  .navlink:hover::after {
+    content: "";
+    position: absolute;
+    text-decoration: none;
+    height: 100%;
+    left: -6px;
+    bottom: 0px;
+    border-left: 4px solid var(--orange);
+  }
+  

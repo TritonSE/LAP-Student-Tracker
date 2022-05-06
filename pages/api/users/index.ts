@@ -32,7 +32,16 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
 
     case "GET": {
       let role: Roles | undefined = undefined;
-      if (req.query && req.query.role) role = req.query.role as Roles;
+      if (req.query && req.query.role) {
+        if (
+          ["Admin", "Teacher", "Parent", "Volunteer", "Student"].includes(req.query.role as string)
+        )
+          role = req.query.role as Roles;
+        else
+          return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json("Query parameter refers to role that does not exist");
+      }
       try {
         let result = await getAllUsers();
         if (role) result = result.filter((user) => user.role == role);

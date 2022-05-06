@@ -221,6 +221,22 @@ describe("[GET] /api/users/?filter", () => {
       expected
     );
   });
+
+  test("look for a role that does not exist", async () => {
+    const query = {
+      role: "DOES_NOT_EXIST",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.BAD_REQUEST,
+      "Query parameter refers to role that does not exist"
+    );
+  });
 });
 
 describe("[POST] /api/users", () => {

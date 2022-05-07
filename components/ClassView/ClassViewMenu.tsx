@@ -1,6 +1,5 @@
 import React from "react";
 import { useRouter } from "next/router";
-import arrow from "./back_arrow.svg";
 import styles from "./ClassView.module.css";
 
 const BackButton: React.FC = () => {
@@ -10,7 +9,7 @@ const BackButton: React.FC = () => {
     }
     return (
         <>
-            <img src={arrow} onClick={onClick} alt="back" className={styles.backbutton}/>
+            <img src="back_button.png" onClick={onClick} alt="back" className={styles.backbutton}/>
         </>
     )
 }

@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    padding-top:2rem;
+    /* background: rgb(138, 42, 42); */
+}
+
+.title {
+    composes: headlineLarge from "../../styles/globals.css";
+    padding-bottom: 2rem;
+    position: relative;
+    align-self: left;
+    /* background: rgb(45, 162, 200); */
+}
+

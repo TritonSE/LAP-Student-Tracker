@@ -1,25 +1,37 @@
-.backbutton {
-  background-color: #8e1212;
-}
-
 .navbar {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: flex-end;
+    align-items: left;
+    flex-direction: column;
     padding: 1rem 1.5rem;
+    /* background: rgb(59, 179, 153); */
+  }
+
+  .backbutton {
+    width: fit-content;
+    /* background-color: #a337ca; */
   }
   
   .navmenu {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: left;
+    flex-flow: column wrap;
+    justify-content: flex-start;
     list-style-type: none;
+    height:100%;
+  }
+
+  .navtitle {
+    composes: headlineLarge from "../../styles/globals.css";
+    width: 100%;
+    padding-bottom: 2rem;
+    position: relative;
+    /* background: #000; */
   }
   
   .navitem {
-    margin-left: 5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    /* background-color: #8e1212; */
   }
   
   .navlink {
@@ -35,7 +47,7 @@
     position: relative;
     bottom: 0px;
     left: -6px;
-    border-left: 4px solid var(--orange);
+    border-left: 3px solid var(--orange);
   }
   .navlink:hover::after {
     content: "";
@@ -44,6 +56,6 @@
     height: 100%;
     left: -6px;
     bottom: 0px;
-    border-left: 4px solid var(--orange);
+    border-left: 3px solid var(--orange);
   }
   

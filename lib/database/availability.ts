@@ -15,12 +15,12 @@ const updateAvailability = async (
   const query = {
     text:
       "UPDATE availabilities SET " +
-      "mon = COALESCE($2, mon), " +
-      "tue = COALESCE($3, tue), " +
-      "wed = COALESCE($4, wed), " +
-      "thu = COALESCE($5, thu), " +
-      "fri = COALESCE($6, fri), " +
-      "sat = COALESCE($7, sat),  " +
+      "mon = $2, " +
+      "tue = $3, " +
+      "wed = $4, " +
+      "thu = $5, " +
+      "fri = $6, " +
+      "sat = $7,  " +
       "time_zone = COALESCE($8, time_zone) " +
       "WHERE user_id = $1",
     values: [id, mon, tue, wed, thu, fri, sat, timeZone],

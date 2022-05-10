@@ -12,7 +12,6 @@ CREATE TABLE classes(
     start_time text NOT NULL,
     end_time text NOT NULL,
     language text NOT NULL,
-    teachers text[] NOT NULL,
     FOREIGN KEY (event_information_id) REFERENCES event_information (id) ON DELETE CASCADE
     
 );

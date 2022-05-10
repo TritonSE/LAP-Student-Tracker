@@ -5,12 +5,29 @@ import { array, TypeOf } from "io-ts";
 import { string } from "fp-ts";
 import { Any } from "io-ts";
 import { min } from "moment";
+import * as t from "io-ts";
+
+
+const ClassWithUserInformationSchema = t.type({
+  name: t.string,
+  eventInformationId: t.string,
+  minLevel: t.number,
+  maxLevel: t.number,
+  rrstring: t.string,
+  startTime: t.string,
+  endTime: t.string,
+  language: t.string,
+  userId: t.string,
+  firstName: t.string,
+  lastName: t.string
+});
+const ClassWithUserInformationArraySchema = array(ClassWithUserInformationSchema)
+
+type ClassWithUserInformation = TypeOf<typeof ClassWithUserInformationSchema>;
+type ClassWithUserInformationArray = TypeOf<typeof ClassWithUserInformationArraySchema>
 
 const ClassArraySchema = array(ClassSchema);
 type classArrayType = TypeOf<typeof ClassArraySchema>;
-
-const ClassbyTeacherArraySchema = array(ClassbyTeacherSchema);
-type classbyTeacherArrayType = TypeOf<typeof ClassbyTeacherArraySchema>; 
 
 const createClass = async (
   eventInformationId: string,
@@ -52,7 +69,6 @@ const updateClass = async (
   startTime?: string,
   endTime?: string,
   language?: string,
-  teachers?: string[]
 ): Promise<Class | null> => {
   const query = {
     text:
@@ -105,35 +121,26 @@ const getClass = async (id: string): Promise<Class | null> => {
 
   return oneClass;
 };
-const getAllClasses = async (): Promise<Class[]> => {
+const  getAllClasses = async (): Promise<Class[]> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class'",
+    text:  "SELECT e.name, cl.event_information_id, cl.min_level, cl.max_level, cl.rrstring, cl.start_time, cl.end_time, cl.language, u.id as user_id, u.first_name, u.last_name " +
+        "FROM (((event_information e INNER JOIN classes cl ON e.id = cl.event_information_id) " +
+        "INNER JOIN commitments ON commitments.event_information_id = e.id) " +
+        " INNER JOIN users u ON commitments.user_id = u.id) WHERE role = 'Teacher'",
   };
 
   const res = await client.query(query);
 
-  let classesArray: classArrayType;
+  let classesWithUserInformation: ClassWithUserInformation[];
+
   try {
-    classesArray = await decode(ClassArraySchema, res.rows);
+    classesWithUserInformation = await decode(ClassWithUserInformationArraySchema, res.rows);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }
+
 
   return classesArray;
 };
-const getClassesbyTeacher = async (): Promise<ClassbyTeacher[]> => {
-  const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language, t.teacher FROM (event_information e INNER JOIN classes c ON (e.id = c.event_information_id) INNER JOIN commitments v ON (v.event_information_id = c.event_information_id) users t, commitments v WHERE e.type = 'Class' AND v.user_id = t.id AND t.role = 'Teacher'",
-  };
-  const res = await client.query(query);
-  let classesbyTeacher: classbyTeacherArrayType; 
-  try {
-    classesbyTeacher = await decode(ClassbyTeacherArraySchema, res.rows);
-  } catch {
-    throw Error("Fields returned incorrectly in database");
-  }
 
-  return res.rows;
-};
-
-export { createClass, getClass, updateClass, getAllClasses, getClassesbyTeacher };
+export { createClass, getClass, updateClass, getAllClasses };

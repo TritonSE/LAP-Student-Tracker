@@ -10,6 +10,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
   switch (req.method) {
     case "GET":
       try {
+        console.log("RUNNING");
         const result = await getAllClasses();
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {

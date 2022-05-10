@@ -46,8 +46,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
           newClass.rrstring,
           newClass.startTime,
           newClass.endTime,
-          newClass.language,
-          newClass.teachers
+          newClass.language
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {

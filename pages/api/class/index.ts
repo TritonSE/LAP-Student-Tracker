@@ -30,7 +30,6 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
           newClass.startTime,
           newClass.endTime,
           newClass.language,
-          newClass.teachers
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {

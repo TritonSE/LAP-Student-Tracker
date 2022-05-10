@@ -41,6 +41,12 @@ const addData = async () => {
   await client.query(
     "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('5', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')"
   );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('77', 'John', 'Test', 'john@gmail.com', 'Teacher', '123 nowhere lane', '123-456-7890')",
+  );
+  await client.query(
+    "INSERT INTO commitments(user_id, event_information_id) VALUES('77', '5')",
+  );
 };
 
 addData().then(() => process.exit());

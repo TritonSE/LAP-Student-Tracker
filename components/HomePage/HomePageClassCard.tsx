@@ -9,7 +9,7 @@ type HomePageClassCard = {
   rrstring: string;
   startTime: string;
   endTime: string;
-  teachers: string[];
+  teacher: string
 };
 
 const HomePageClassCard: React.FC<HomePageClassCard> = ({
@@ -19,8 +19,11 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
   rrstring,
   startTime,
   endTime,
-  teachers,
+  teacher,
 }) => {
+  const teachers: string[] = [
+    "Teacher1", "Teacher2"
+  ];
   const weekday: string[] = [
     "Monday",
     "Tuesday",
@@ -49,7 +52,7 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
         ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel}`}
           </a>
         </div>
-        <div className={style.name}>{teachers.join(", ")}</div>
+        <div className={style.name}>{teacher}</div>
       </div>
 
       <div className={style.times}>{[dates, "•", convertTime(startTime, endTime)].join(" ")}</div>

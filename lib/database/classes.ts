@@ -1,10 +1,17 @@
 import { client } from "../db";
-import { Class, ClassSchema } from "../../models/class";
+import { Class, ClassbyTeacher, ClassbyTeacherSchema, ClassSchema } from "../../models/class";
 import { decode } from "io-ts-promise";
 import { array, TypeOf } from "io-ts";
+import { string } from "fp-ts";
+import { Any } from "io-ts";
+import { min } from "moment";
 
 const ClassArraySchema = array(ClassSchema);
 type classArrayType = TypeOf<typeof ClassArraySchema>;
+
+const ClassbyTeacherArraySchema = array(ClassbyTeacherSchema);
+type classbyTeacherArrayType = TypeOf<typeof ClassbyTeacherArraySchema>; 
+
 const createClass = async (
   eventInformationId: string,
   minLevel: number,
@@ -13,10 +20,9 @@ const createClass = async (
   timeStart: string,
   timeEnd: string,
   language: string,
-  teachers: string[]
 ): Promise<Class | null> => {
   const query = {
-    text: "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+    text: "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES($1, $2, $3, $4, $5, $6, $7)",
     values: [
       eventInformationId,
       minLevel,
@@ -25,7 +31,6 @@ const createClass = async (
       timeStart,
       timeEnd,
       language,
-      teachers,
     ],
   };
 
@@ -57,8 +62,7 @@ const updateClass = async (
       "rrstring = COALESCE($4, rrstring), " +
       "start_time = COALESCE($5, start_time), " +
       "end_time = COALESCE($6, end_time), " +
-      "language = COALESCE($7, language), " +
-      "teachers = COALESCE($8, teachers) " +
+      "language = COALESCE($7, language) " +
       "WHERE event_information_id=$1",
     values: [
       eventInformationId,
@@ -68,7 +72,6 @@ const updateClass = async (
       startTime,
       endTime,
       language,
-      teachers,
     ],
   };
 
@@ -84,7 +87,7 @@ const updateClass = async (
 // get a class given the id
 const getClass = async (id: string): Promise<Class | null> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language, c.teachers FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class' AND c.event_information_id = $1",
+    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class' AND c.event_information_id = $1",
     values: [id],
   };
 
@@ -104,7 +107,7 @@ const getClass = async (id: string): Promise<Class | null> => {
 };
 const getAllClasses = async (): Promise<Class[]> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language, c.teachers FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class'",
+    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class'",
   };
 
   const res = await client.query(query);
@@ -118,5 +121,19 @@ const getAllClasses = async (): Promise<Class[]> => {
 
   return classesArray;
 };
+const getClassesbyTeacher = async (): Promise<ClassbyTeacher[]> => {
+  const query = {
+    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language, t.teacher FROM (event_information e INNER JOIN classes c ON (e.id = c.event_information_id) INNER JOIN commitments v ON (v.event_information_id = c.event_information_id) users t, commitments v WHERE e.type = 'Class' AND v.user_id = t.id AND t.role = 'Teacher'",
+  };
+  const res = await client.query(query);
+  let classesbyTeacher: classbyTeacherArrayType; 
+  try {
+    classesbyTeacher = await decode(ClassbyTeacherArraySchema, res.rows);
+  } catch {
+    throw Error("Fields returned incorrectly in database");
+  }
 
-export { createClass, getClass, updateClass, getAllClasses };
+  return res.rows;
+};
+
+export { createClass, getClass, updateClass, getAllClasses, getClassesbyTeacher };

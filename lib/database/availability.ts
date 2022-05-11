@@ -26,7 +26,6 @@ const updateAvailability = async (
     values: [id, mon, tue, wed, thu, fri, sat, timeZone],
   };
 
-  console.log("TUESDAY " + tue);
   try {
     await client.query(query);
   } catch (e) {

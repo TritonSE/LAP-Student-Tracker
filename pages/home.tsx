@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import type { NextApplicationPage } from "./_app";
 import { AuthContext } from "../context/AuthContext";
-import { AdminHomePage } from "../components/HomePage/AdminHomePage";
-import { UserHomePage } from "../components/HomePage/UserHomePage";
+import { AdminHomePage } from "../components/Home/AdminHomePage";
+import { UserHomePage } from "../components/Home/UserHomePage";
 import { Error } from "../components/util/Error";
 import styles from "../styles/Home.module.css";
 

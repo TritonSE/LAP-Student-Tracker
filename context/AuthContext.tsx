@@ -95,7 +95,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       const uid = sessionStorage.getItem("userId");
       const token = sessionStorage.getItem("apiToken");
       if (uid && token) {
-        // api.setToken(token);
+        api.setToken(token);
         const user = await api.getUser(uid);
         setUser(user);
         setError(null);
@@ -104,7 +104,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         const token = localStorage.getItem("apiToken");
 
         if (uid && token) {
-          // api.setToken(token);
+          api.setToken(token);
           const user = await api.getUser(uid);
           setUser(user);
           setError(null);
@@ -124,7 +124,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           return;
         }
         const jwt = await fbUser.getIdToken();
-        // api.setToken(jwt);
+        api.setToken(jwt);
 
         const uid = fbUser.uid;
 
@@ -187,7 +187,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           return;
         }
         const jwt = await fbUser.getIdToken();
-        // api.setToken(jwt);
+        api.setToken(jwt);
 
         const uid = fbUser.uid;
         const user = await api.createUser({

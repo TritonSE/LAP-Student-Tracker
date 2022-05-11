@@ -18,6 +18,11 @@ class LeagueAPI {
     });
   }
 
+  setToken(token: string): void {
+    this.token = token;
+    this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }
+
   // Get the staff from the backend
   async getStaff(): Promise<User[]> {
     const res = await this.client.get("api/staff");

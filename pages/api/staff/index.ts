@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getAllStaff } from "../../../lib/database/staff";
 import { StatusCodes } from "http-status-codes";
-
+import { withAuth } from "../../../middleware/withAuth";
 // handles requests to /api/staff/
 const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
@@ -20,4 +20,4 @@ const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
   }
 };
 
-export default staffHandler;
+export default withAuth(staffHandler);

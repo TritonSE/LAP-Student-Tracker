@@ -76,7 +76,7 @@ const updateModule = async (
       "UPDATE modules " +
       "SET name = COALESCE($2, name), " +
       "position = COALESCE($3, position) " +
-      "WHERE module_id=$1",
+      "WHERE module_id = $1",
     values: [moduleId, name, position],
   };
 

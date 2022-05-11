@@ -47,7 +47,6 @@ const makeHTTPRequest = async (
     if (ignoreResKey) {
       expect(resData).toHaveProperty(ignoreResKey);
       delete resData[ignoreResKey];
-      expect(resData).toEqual(expectedBody);
     }
     expect(resData).toEqual(expectedBody);
   }

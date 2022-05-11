@@ -103,6 +103,10 @@ const deleteModule = async (moduleId: string): Promise<Module | null> => {
     throw Error("Error on delete module");
   }
 
+  if (res.rows.length == 0) {
+    return null;
+  }
+
   let deletedModule: Module;
   try {
     deletedModule = await decode(ModuleSchema, res.rows[0]);

@@ -20,7 +20,6 @@ export const createModuleHandler: NextApiHandler = async (req: NextApiRequest, r
           newModule.name,
           newModule.position
         );
-        console.log(result)
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

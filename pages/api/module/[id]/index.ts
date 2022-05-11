@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getModule, updateModule, deleteModule } from "../../../lib/database/modules";
-import { UpdateModule, UpdateModuleSchema } from "../../../models/modules";
+import { getModule, updateModule, deleteModule } from "../../../../lib/database/modules";
+import { UpdateModule, UpdateModuleSchema } from "../../../../models/modules";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 

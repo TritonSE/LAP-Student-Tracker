@@ -5,7 +5,10 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
 // Handles all requests to /api/module
-export const createModuleHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const createModuleHandler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   switch (req.method) {
     case "POST": {
       let newModule: CreateModule;
@@ -15,11 +18,7 @@ export const createModuleHandler: NextApiHandler = async (req: NextApiRequest, r
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
-        const result = await createModule(
-          newModule.classId,
-          newModule.name,
-          newModule.position
-        );
+        const result = await createModule(newModule.classId, newModule.name, newModule.position);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

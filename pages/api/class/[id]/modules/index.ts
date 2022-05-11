@@ -4,7 +4,10 @@ import { getClassModules } from "../../../../../lib/database/modules";
 import { StatusCodes } from "http-status-codes";
 
 // Handles all requests to /api/class/[id]/modules
-export const classModulesHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const classModulesHandler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }

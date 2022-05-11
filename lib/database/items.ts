@@ -42,14 +42,10 @@ const getItem = async (itemId: string): Promise<Item | null> => {
   }
 
   return item;
-}
+};
 
 // create a module item with the given parameters
-const createItem = async (
-  moduleId: string,
-  title: string,
-  link: string,
-): Promise<Item | null> => {
+const createItem = async (moduleId: string, title: string, link: string): Promise<Item | null> => {
   const query = {
     text: "INSERT INTO module_items(module_id, title, link) VALUES($1, $2, $3) RETURNING item_id",
     values: [moduleId, title, link],
@@ -69,7 +65,7 @@ const createItem = async (
 const deleteItem = async (itemId: string): Promise<Item | null> => {
   const query = {
     text: "DELETE FROM module_items WHERE item_id = $1 RETURNING *",
-    values: [itemId]
+    values: [itemId],
   };
 
   let res;

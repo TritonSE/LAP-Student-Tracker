@@ -1,7 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getModule, updateModule, deleteModule } from "../../../../../lib/database/modules";
+import { getModule } from "../../../../../lib/database/modules";
 import { getModuleItems, createItem } from "../../../../../lib/database/items";
-import { UpdateModule, UpdateModuleSchema } from "../../../../../models/modules";
 import { CreateItem, CreateItemSchema } from "../../../../../models/items";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
@@ -44,11 +43,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
-        const result = await createItem(
-          moduleId,
-          newItem.title,
-          newItem.link
-        );
+        const result = await createItem(moduleId, newItem.title, newItem.link);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

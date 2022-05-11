@@ -42,13 +42,13 @@ const getModule = async (moduleId: string): Promise<Module | null> => {
   }
 
   return classModule;
-}
+};
 
 // create a module with the given parameters
 const createModule = async (
   classId: string,
   name: string,
-  position: number,
+  position: number
 ): Promise<Module | null> => {
   const query = {
     text: "INSERT INTO modules(class_id, name, position) VALUES($1, $2, $3) RETURNING module_id",
@@ -69,7 +69,7 @@ const createModule = async (
 const updateModule = async (
   moduleId: string,
   name?: string,
-  position?: number,
+  position?: number
 ): Promise<Module | null> => {
   const query = {
     text:
@@ -93,7 +93,7 @@ const updateModule = async (
 const deleteModule = async (moduleId: string): Promise<Module | null> => {
   const query = {
     text: "DELETE FROM modules WHERE module_id = $1 RETURNING *",
-    values: [moduleId]
+    values: [moduleId],
   };
 
   let res;

@@ -33,11 +33,7 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
-        const result = await updateModule(
-          moduleId,
-          updateModuleObj.name,
-          updateModuleObj.position
-        );
+        const result = await updateModule(moduleId, updateModuleObj.name, updateModuleObj.position);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

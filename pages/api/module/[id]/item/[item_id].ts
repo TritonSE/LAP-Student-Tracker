@@ -4,7 +4,10 @@ import { getItem, deleteItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
 
 // Handles all requests to /api/module/[id]/item/[item_id]
-export const deleteItemHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const deleteItemHandler: NextApiHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }

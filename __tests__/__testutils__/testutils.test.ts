@@ -28,7 +28,7 @@ const makeHTTPRequest = async (
   body: Object | undefined,
   expectedResponseCode: number | undefined,
   expectedBody: Object | undefined,
-  ignoreResKey?: string,
+  ignoreResKey?: string
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,

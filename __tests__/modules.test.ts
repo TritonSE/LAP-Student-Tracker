@@ -31,7 +31,8 @@ beforeAll(async () => {
   );
   await client.query(
     "INSERT INTO modules(module_id, class_id, name, position) VALUES('m_2', 'e_1', 'Week 2', 1)"
-  );  await client.query(
+  );
+  await client.query(
     "INSERT INTO modules(module_id, class_id, name, position) VALUES('m_3', 'e_1', 'Week 3', 2)"
   );
   await client.query(
@@ -53,27 +54,27 @@ describe("[GET] /api/class/[id]/modules", () => {
   test("get all modules for a class", async () => {
     const expected: Module[] = [
       {
-        classId: 'e_1',
-        moduleId: 'm_1',
-        name: 'Week 1',
+        classId: "e_1",
+        moduleId: "m_1",
+        name: "Week 1",
         position: 0,
       },
       {
-        classId: 'e_1',
-        moduleId: 'm_2',
-        name: 'Week 2',
+        classId: "e_1",
+        moduleId: "m_2",
+        name: "Week 2",
         position: 1,
       },
       {
-        classId: 'e_1',
-        moduleId: 'm_3',
-        name: 'Week 3',
+        classId: "e_1",
+        moduleId: "m_3",
+        name: "Week 3",
         position: 2,
       },
     ];
 
     const query = {
-      id: 'e_1',
+      id: "e_1",
     };
 
     await makeHTTPRequest(
@@ -90,21 +91,21 @@ describe("[GET] /api/class/[id]/modules", () => {
   test("get all modules for another class", async () => {
     const expected: Module[] = [
       {
-        classId: 'e_2',
-        moduleId: 'm_4',
-        name: 'Week 1',
+        classId: "e_2",
+        moduleId: "m_4",
+        name: "Week 1",
         position: 0,
       },
       {
-        classId: 'e_2',
-        moduleId: 'm_5',
-        name: 'Week 2',
+        classId: "e_2",
+        moduleId: "m_5",
+        name: "Week 2",
         position: 1,
       },
     ];
 
     const query = {
-      id: 'e_2',
+      id: "e_2",
     };
 
     await makeHTTPRequest(
@@ -122,7 +123,7 @@ describe("[GET] /api/class/[id]/modules", () => {
     const expected = CLASS_NOT_FOUND_ERROR;
 
     const query = {
-      id: 'nonexistent',
+      id: "nonexistent",
     };
 
     await makeHTTPRequest(
@@ -140,8 +141,8 @@ describe("[GET] /api/class/[id]/modules", () => {
 describe("[POST] /api/module", () => {
   test("create a class module", async () => {
     const expected: CreateModule = {
-      classId: 'e_1',
-      name: 'New Class',
+      classId: "e_1",
+      name: "New Class",
       position: 10,
     };
 
@@ -159,8 +160,8 @@ describe("[POST] /api/module", () => {
 
   test("create another class module", async () => {
     const expected: CreateModule = {
-      classId: 'e_2',
-      name: 'Another new class',
+      classId: "e_2",
+      name: "Another new class",
       position: 10,
     };
 
@@ -178,8 +179,8 @@ describe("[POST] /api/module", () => {
 
   test("create class module with invalid body", async () => {
     const expected = {
-      invalid: "invalid value"
-    }
+      invalid: "invalid value",
+    };
 
     await makeHTTPRequest(
       createModuleHandler,
@@ -188,14 +189,14 @@ describe("[POST] /api/module", () => {
       "POST",
       expected,
       StatusCodes.BAD_REQUEST,
-      FIELDS_NOT_ENTERED_CORRECTLY,
+      FIELDS_NOT_ENTERED_CORRECTLY
     );
   });
 
   test("create module for nonexistent class", async () => {
     const expected: CreateModule = {
-      classId: 'nonexistent',
-      name: 'Another new class',
+      classId: "nonexistent",
+      name: "Another new class",
       position: 10,
     };
 
@@ -206,7 +207,7 @@ describe("[POST] /api/module", () => {
       "POST",
       expected,
       StatusCodes.NOT_FOUND,
-      CLASS_NOT_FOUND_ERROR,
+      CLASS_NOT_FOUND_ERROR
     );
   });
 });
@@ -214,20 +215,20 @@ describe("[POST] /api/module", () => {
 describe("[PATCH] /api/module/[id]", () => {
   test("update class module name and position", async () => {
     const expected: Module = {
-      classId: 'e_1',
-      moduleId: 'm_1',
-      name: 'Week 3',
+      classId: "e_1",
+      moduleId: "m_1",
+      name: "Week 3",
       position: 2,
     };
 
     const query = {
-      id: 'm_1',
+      id: "m_1",
     };
 
     const body = {
-      name: 'Week 3',
+      name: "Week 3",
       position: 2,
-    }
+    };
 
     await makeHTTPRequest(
       moduleHandler,
@@ -242,19 +243,19 @@ describe("[PATCH] /api/module/[id]", () => {
 
   test("update just class module name", async () => {
     const expected: Module = {
-      classId: 'e_2',
-      moduleId: 'm_4',
-      name: 'Week 10',
+      classId: "e_2",
+      moduleId: "m_4",
+      name: "Week 10",
       position: 0,
     };
 
     const query = {
-      id: 'm_4',
+      id: "m_4",
     };
 
     const body = {
-      name: 'Week 10',
-    }
+      name: "Week 10",
+    };
 
     await makeHTTPRequest(
       moduleHandler,
@@ -271,12 +272,12 @@ describe("[PATCH] /api/module/[id]", () => {
     const expected = MODULE_NOT_FOUND_ERROR;
 
     const query = {
-      id: 'nonexistent',
+      id: "nonexistent",
     };
 
     const body = {
-      name: 'Week 100',
-    }
+      name: "Week 100",
+    };
 
     await makeHTTPRequest(
       moduleHandler,
@@ -293,12 +294,12 @@ describe("[PATCH] /api/module/[id]", () => {
     const expected = FIELDS_NOT_ENTERED_CORRECTLY;
 
     const query = {
-      id: 'm_1',
+      id: "m_1",
     };
 
     const body = {
-      position: "invalid number"
-    }
+      position: "invalid number",
+    };
 
     await makeHTTPRequest(
       moduleHandler,
@@ -315,14 +316,14 @@ describe("[PATCH] /api/module/[id]", () => {
 describe("[DELETE] /api/module/[id]", () => {
   test("delete a class module", async () => {
     const expected: Module = {
-      classId: 'e_1',
-      moduleId: 'm_3',
-      name: 'Week 3',
+      classId: "e_1",
+      moduleId: "m_3",
+      name: "Week 3",
       position: 2,
     };
 
     const query = {
-      id: 'm_3',
+      id: "m_3",
     };
 
     await makeHTTPRequest(
@@ -340,7 +341,7 @@ describe("[DELETE] /api/module/[id]", () => {
     const expected = MODULE_NOT_FOUND_ERROR;
 
     const query = {
-      id: 'nonexistent',
+      id: "nonexistent",
     };
 
     await makeHTTPRequest(

@@ -26,14 +26,15 @@ const AdminHomePage: React.FC<object> = () => {
           Manage
           <img className={styles.addIcon} src="AddIcon.png" />
         </button>
-        {showManageAvailability ? 
-        <AvailabilityModal 
-          handleClose={handleClose} 
-          initAvailability={availability}
-          initTimeZone={"Los Angeles"}
-        /> : null}
+        {showManageAvailability ? (
+          <AvailabilityModal
+            handleClose={handleClose}
+            initAvailability={availability}
+            initTimeZone={"Los Angeles"}
+          />
+        ) : null}
       </div>
-      <AdminCalendar/>;
+      <AdminCalendar />;
     </div>
   );
 };

@@ -5,12 +5,6 @@ import styles from "./TimeSlot.module.css";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import TimePicker from "react-time-picker/dist/entry.nostyle";
-import DatePicker from "react-date-picker/dist/entry.nostyle";
-import { number } from "fp-ts";
-
-import {ReactComponent as deleteIcon} from '../../public/trash-can-solid.svg'
-
-
 
 type TimeSlotProps = {
   initStartTime: string;
@@ -33,8 +27,8 @@ const TimeSlot: React.FC<TimeSlotProps> = ({
 
   // calls function to update parent's state
   useEffect(() => {
-    changeTime(index, startTime, endTime)
-  }, [startTime, endTime])
+    changeTime(index, startTime, endTime);
+  }, [startTime, endTime]);
 
   return (
     <div className={styles.timeContainer}>
@@ -57,14 +51,15 @@ const TimeSlot: React.FC<TimeSlotProps> = ({
         disableClock={true}
         format="h:mma"
       />
-      <div 
+      <div
         className={styles.deleteIcon}
-        onClick={() => {deleteTimeSlot(index)}}
+        onClick={() => {
+          deleteTimeSlot(index);
+        }}
       >
-        <img src="trash-can-solid.svg"/>
+        <img src="trash-can-solid.svg" />
       </div>
     </div>
-    
   );
 };
 

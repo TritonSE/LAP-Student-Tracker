@@ -31,14 +31,14 @@
 }
 
 .timeContainer {
-  display:inline-flex;
-  gap:20px;
-  width:240px;
+  display: inline-flex;
+  gap: 20px;
+  width: 240px;
   align-items: center;
-  margin:0px 25px;
+  margin: 0px 25px;
 }
 
 .deleteIcon {
-  cursor:pointer;
-  width:20px;
+  cursor: pointer;
+  width: 20px;
 }

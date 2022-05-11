@@ -100,7 +100,6 @@ time isn't valid
   }
 
   const sortTimes = (times: string[][]): string[][] => {
-    console.log("TIMES", times)
     times.sort((t1:string[], t2:string[])=>{
       if (t1[0] == t2[0]){
         return 0;
@@ -128,7 +127,6 @@ time isn't valid
 
   if (error) return <Error />;
   if (!data) return <Loader />;
-  console.log("LOADED DATA", data)
 
   
 
@@ -148,15 +146,6 @@ time isn't valid
   // convert timeZones if current timezone different from the one in database
   const currTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  console.log("timezone in db: ", timezone)
-  console.log("current timezone: ", currTimeZone)
-
-  if (currTimeZone != timezone){
-    setAvailability( (oldAvailabiliy)=> {
-      return convertToTimeZone(oldAvailabiliy, currTimeZone, timezone)
-    })
-  }
-
 
 
   const convertToTimeZone = (availability: Availability, currTimeZone:string, timeZone:string): Availability => {
@@ -173,11 +162,10 @@ time isn't valid
     }
     //loops through each time in availabilities
     for(const [key, value] of Object.entries(availability)){
-      let day: string;
-      let times;
-      if (daysOfWeek.includes(key)){
-        day = key
-        times = value
+      let day = key;
+      let times = value;
+      if (!daysOfWeek.includes(key) || !times){
+        continue
       }
       //loops through each time interval for the day
       for(const time of times){
@@ -261,14 +249,11 @@ time isn't valid
         "thu": !availability["thu"] || availability["thu"].length == 0 ? null : sortTimes(availability["thu"]),
         "fri": !availability["fri"] || availability["fri"].length == 0 ? null : sortTimes(availability["fri"]),
         "sat": !availability["sat"] || availability["sat"].length == 0 ? null : sortTimes(availability["sat"]),
-        "timeZone": timezone
+        "timeZone": currTimeZone
       }
-      console.log("SUBMIT",newAvailability)
       
       const updateResult = await client.updateAvailabilities(newAvailability, userId);
 
-      console.log("UPDATED RESULT FROM RETURN");
-      console.log(updateResult);
       // update the cached data from useSWR
       await mutate(newAvailability);
       
@@ -286,7 +271,9 @@ time isn't valid
 
 
 
-
+  if (currTimeZone != timezone){
+    availabilityFromDB = convertToTimeZone(availabilityFromDB, currTimeZone, timezone)
+  }
 
 
 

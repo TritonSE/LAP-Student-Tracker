@@ -15,13 +15,21 @@ export const UserSchema = t.intersection([
     lastName: t.string,
     email: t.string,
     role: possibleRoles,
+    pictureId: t.string,
   }),
   t.partial({
     phoneNumber: t.union([t.string, t.null]),
     address: t.union([t.string, t.null]),
-    pictureId: t.union([t.string, t.null]),
   }),
 ]);
+
+export const CreateUserSchema = t.type({
+  id: t.string,
+  firstName: t.string,
+  lastName: t.string,
+  email: t.string,
+  role: possibleRoles
+});
 
 export const UpdateUserSchema = t.partial({
   firstName: t.string,
@@ -35,5 +43,6 @@ export const UpdateUserSchema = t.partial({
 export const UserArraySchema = t.array(UserSchema);
 
 export type User = t.TypeOf<typeof UserSchema>;
+export type CreateUser = t.TypeOf<typeof CreateUserSchema>
 export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>;
 export type Roles = t.TypeOf<typeof possibleRoles>;

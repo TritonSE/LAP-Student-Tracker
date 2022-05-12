@@ -5,10 +5,13 @@ import { ProfileViewRight } from "./ProfileViewRight";
 import styles from "./AdminTeacherProfile.module.css";
 import { Error } from "../../util/Error";
 import { useRouter } from "next/router";
+import {APIContext} from "../../../context/APIContext";
+import {UpdateImage} from "../../../models/images";
 
 // component that renders the admin/teacher profile page
 const AdminTeacherProfileView: React.FC = () => {
   const { user, error, updateUser, clearError, logout } = useContext(AuthContext);
+  const  api= useContext(APIContext);
 
   // user will never be null, because if it is, client is redirected to login page
   if (user == null) return <Error />;
@@ -21,14 +24,36 @@ const AdminTeacherProfileView: React.FC = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [image, setImage] = useState<File | null>(null);
+  const [imageChanged, setImageChanged] = useState<boolean>(false);
 
+  useEffect( () => {
+    (async () => {
+      const image = await api.getImage(user.pictureId);
+      if (image == null) setImage(null);
+      else {
+        const f = new File([image], '');
+        setImage(f);
+        console.log(f);
+        console.log("has image been changed");
+      }
+    })();
+    console.log("use effect running");
+  }, []);
+
+  useEffect( () => {
+    console.log("IMAGE CHANGED")
+    console.log(image);
+
+  }, [image]);
   const handleEditProfileClicked = async (): Promise<void> => {
     if (!editProfileClicked) {
       setEditProfileClicked(true);
     } else {
       clearError();
       setErrorMessage("");
-      const success = await updateUser(
+
+      const userSuccess = await updateUser(
         user.id,
         user.email,
         currentPassword,
@@ -36,7 +61,20 @@ const AdminTeacherProfileView: React.FC = () => {
         phoneNumber,
         newPassword
       );
-      if (success) setEditProfileClicked(false);
+      let imageSuccess = true;
+      if (imageChanged && image != null) {
+        const imageType = image.type;
+        const imageData = await image.arrayBuffer();
+        console.log("IMAGE UPLOADED ARRAY");
+        console.log(imageData);
+        const updatedImage: UpdateImage = {
+          mimeType: imageType,
+          img: new Uint8Array(imageData)
+        };
+        const updatedImageFromDB = api.updateImage(user.pictureId, updatedImage);
+        if (!updatedImageFromDB) imageSuccess = false;
+      }
+      if (userSuccess && imageSuccess) setEditProfileClicked(false);
     }
   };
 
@@ -75,6 +113,13 @@ const AdminTeacherProfileView: React.FC = () => {
   const handleConfirmPassword = (confirmPassword: string): void => {
     setConfirmPassword(confirmPassword);
   };
+
+  const handleImageChange = (newImage: File): void => {
+    setImageChanged(true);
+    setImage(newImage);
+    console.log("IMAGE THAT IS UPLOADED")
+    console.log(newImage);
+  }
 
   const regEx = RegExp(/\S+@\S+\.\S+/);
   const validEmail = regEx.test(email);
@@ -120,6 +165,8 @@ const AdminTeacherProfileView: React.FC = () => {
               editProfileClicked={editProfileClicked}
               handleEditProfileClicked={handleEditProfileClicked}
               validInput={validToSave}
+              image={image}
+              onImageChange={handleImageChange}
             ></ProfileViewLeft>
           </div>
           <div className={styles.rightContainer}>

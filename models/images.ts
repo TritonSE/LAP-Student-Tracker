@@ -10,12 +10,12 @@ const uint8array = new t.Type<Uint8Array, Uint8Array, unknown>(
 export const ImageSchema = t.type({
   id: t.string,
   img: t.union([uint8array, t.null]),
-  mimeType: t.string,
+  mimeType: t.union([t.string, t.null]),
 });
 
 export const UpdateImageSchema = t.partial({
-  id: t.string,
-  img: uint8array,
+  // img: uint8array,
+  img: t.unknown,
   mimeType: t.string,
 });
 

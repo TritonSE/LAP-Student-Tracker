@@ -1,7 +1,8 @@
-import axios, { AxiosInstance } from "axios";
+import axios, {AxiosInstance, AxiosRequestConfig} from "axios";
 import { Class, CreateClass } from "../models/class";
 import { ClassEvent, CreateClassEvent } from "../models/events";
 import { UpdateUser, User } from "../models/users";
+import {Image, UpdateImage} from "../models/images";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -52,6 +53,26 @@ class LeagueAPI {
   async getUser(id: string): Promise<User> {
     const res = await this.client.get(`api/users/${id}`);
     return res.data;
+  }
+
+  async getImage(id: string): Promise<Uint8Array | null> {
+    const res = await this.client.get(`api/images/${id}`, {responseType: "blob"});
+    return res.data;
+  }
+
+  async updateImage(id: string, updatedImage: UpdateImage): Promise<Image> {
+    const headers = {
+      'Content-Type': "arraybuffer",
+      'Authorization': `Bearer ${this.token}`
+    };
+    const requestConifg: AxiosRequestConfig = {
+      headers: headers
+    };
+
+    console.log("LENGTH OF UPDATED IMAGE: " + updatedImage.img.length)
+   const res = await this.client.patch(`api/images/${id}`, updatedImage.img, requestConifg
+   );
+   return res.data;
   }
 
   async getAllUsers(role?: string): Promise<User[]> {

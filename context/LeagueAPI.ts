@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { CreateClass, Class, ClassbyTeacher } from "../models/class";
+import { CreateClass, Class } from "../models/class";
 import { CreateClassEvent, ClassEvent } from "../models/events";
 import { UpdateUser, User } from "../models/users";
 import { Any } from "io-ts";
@@ -30,10 +30,6 @@ class LeagueAPI {
   }
 
   async getAllClasses(): Promise<Class[]> {
-    const res = await this.client.get("api/class");
-    return res.data;
-  }
-  async getClassesbyTeacher(): Promise<ClassbyTeacher[]> {
     const res = await this.client.get("api/class");
     return res.data;
   }

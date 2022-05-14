@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { Class, ClassbyTeacher, ClassbyTeacherSchema, ClassSchema } from "../../models/class";
+import { Class, ClassSchema } from "../../models/class";
 import { decode } from "io-ts-promise";
 import { array, TypeOf } from "io-ts";
 import { string } from "fp-ts";
@@ -131,16 +131,16 @@ const  getAllClasses = async (): Promise<Class[]> => {
 
   const res = await client.query(query);
 
-  let classesWithUserInformation: ClassWithUserInformation[];
+  let classesWithUserInformation: Class[];
 
   try {
-    classesWithUserInformation = await decode(ClassWithUserInformationArraySchema, res.rows);
+    classesWithUserInformation = await decode(ClassArraySchema, res.rows);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }
 
 
-  return classesArray;
+  return classesWithUserInformation;
 };
 
 export { createClass, getClass, updateClass, getAllClasses };

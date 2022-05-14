@@ -15,6 +15,7 @@ export const UserSchema = t.intersection([
     lastName: t.string,
     email: t.string,
     role: possibleRoles,
+    approved: t.boolean
   }),
   t.partial({
     phoneNumber: t.union([t.string, t.null]),
@@ -29,6 +30,7 @@ export const UpdateUserSchema = t.partial({
   role: possibleRoles,
   phoneNumber: t.union([t.string, t.null]),
   address: t.string,
+  approved: t.boolean
 });
 
 export type User = t.TypeOf<typeof UserSchema>;

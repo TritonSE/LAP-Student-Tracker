@@ -32,11 +32,35 @@ const createUser = async (
   email: string,
   role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
   address?: string | null,
-  phone_number?: string | null
+  phone_number?: string | null,
 ): Promise<User | null> => {
   const query = {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7)",
-    values: [id, firstName, lastName, email, role, address, phone_number],
+    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+    values: [id, firstName, lastName, email, role, true, address, phone_number],
+  };
+  try {
+    await client.query(query);
+  } catch (e) {
+    throw Error("Error on insert into database");
+  }
+
+  await roleSpecificSetup(id, role);
+  return getUser(id);
+};
+
+// create a staff user in the database with given parameters.
+const createStaffUser = async (
+  id: string,
+  firstName: string,
+  lastName: string,
+  email: string,
+  role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
+  address?: string | null,
+  phone_number?: string | null,
+): Promise<User | null> => {
+  const query = {
+    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+    values: [id, firstName, lastName, email, role, false, address, phone_number],
   };
   try {
     await client.query(query);
@@ -55,6 +79,7 @@ const updateUser = async (
   lastName?: string,
   email?: string,
   role?: string,
+  approved?: boolean,
   address?: string,
   phone_number?: string | null
 ): Promise<User | null> => {
@@ -65,10 +90,11 @@ const updateUser = async (
       "last_name = COALESCE($3, last_name), " +
       "email = COALESCE($4, email), " +
       "role = COALESCE($5, role), " +
-      "address = COALESCE($6, address), " +
-      "phone_number = COALESCE($7, phone_number) " +
+      "approved = COALESCE($6, approved)" +
+      "address = COALESCE($7, address), " +
+      "phone_number = COALESCE($8, phone_number) " +
       "WHERE id=$1",
-    values: [id, firstName, lastName, email, role, address, phone_number],
+    values: [id, firstName, lastName, email, role, approved, address, phone_number],
   };
 
   try {
@@ -103,4 +129,4 @@ const getUser = async (id: string): Promise<User | null> => {
   return user;
 };
 
-export { createUser, getUser, updateUser };
+export { createUser, createStaffUser, getUser, updateUser };

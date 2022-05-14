@@ -19,6 +19,7 @@ export const UserSchema = t.intersection([
   t.partial({
     phoneNumber: t.union([t.string, t.null]),
     address: t.union([t.string, t.null]),
+    pictureId: t.union([t.string, t.null]),
   }),
 ]);
 
@@ -30,6 +31,8 @@ export const UpdateUserSchema = t.partial({
   phoneNumber: t.union([t.string, t.null]),
   address: t.string,
 });
+
+export const UserArraySchema = t.array(UserSchema);
 
 export type User = t.TypeOf<typeof UserSchema>;
 export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>;

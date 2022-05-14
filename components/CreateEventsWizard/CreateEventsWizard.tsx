@@ -1,9 +1,20 @@
 /* eslint-disable import/extensions */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../../context/APIContext";
 import { CreateClass } from "../../models/class";
 import { CreateClassEvent } from "../../models/events";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material/";
+import { RRule } from "rrule";
+import { DateTime } from "luxon";
+import { CirclePicker } from "react-color";
+import { ColorResult } from "react-color/index";
+import ClipLoader from "react-spinners/ClipLoader";
+import axios from "axios";
+import useSWR from "swr";
+
+import DatePicker from "react-date-picker/dist/entry.nostyle";
+import TimePicker from "react-time-picker/dist/entry.nostyle";
 import styles from "./CreateEventsWizard.module.css";
 
 // Work around for date/time picker library to work with NextJS
@@ -11,15 +22,6 @@ import styles from "./CreateEventsWizard.module.css";
 import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
-import DatePicker from "react-date-picker/dist/entry.nostyle";
-import TimePicker from "react-time-picker/dist/entry.nostyle";
-
-import axios from "axios";
-import { RRule } from "rrule";
-import { DateTime } from "luxon";
-import { CirclePicker } from "react-color";
-import { ColorResult } from "react-color/index";
-import ClipLoader from "react-spinners/ClipLoader";
 
 type CreateEventsWizardProps = {
   handleClose: () => void;
@@ -37,7 +39,10 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
   const [showRepeatModal, setShowRepeatModal] = useState<boolean>(false);
   const [color, setColor] = useState<string>("#ffc702");
-  const [teachers, setTeachers] = useState<string>("");
+
+  // selected teachers from dropdown (string of emails)
+  const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
+
   const [valid, setValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [errMsg, setErrMsg] = useState<string>("");
@@ -55,6 +60,14 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
     }).toText()
   );
 
+  // get all teachers in order to select them in the dropdown
+  const { data: allTeachers, error: fetchTeacherError } = useSWR("/api/users?filter=Teacher", () =>
+    client.getAllUsers("Teacher")
+  );
+
+  // since all teachers can be undefined, check here and use an empty array if it is
+  const teachers = allTeachers ? allTeachers : [];
+
   const client = useContext(APIContext);
 
   const colorMap: { [name: string]: string } = {
@@ -68,7 +81,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
   // validates event wizard fields on state change
   const nameValid = name != "";
-  const teachersValid = teachers != "";
+  const teachersValid = selectedTeachers.length > 0;
   const levelsValid = !!minLevel && (!multipleLevels || !!maxLevel);
   const startDateValid = startDate != null;
   const startTimeValid = startTime != "";
@@ -85,7 +98,9 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
         endTimeValid &&
         startBeforeEndDate
     );
-    const errorMessage = !nameValid
+    const errorMessage = fetchTeacherError
+      ? fetchTeacherError.message
+      : !nameValid
       ? "Please enter a name for the class"
       : !teachersValid
       ? "Please enter at least one teacher"
@@ -196,7 +211,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       language: lang,
       neverEnding: endType === "never",
       backgroundColor: colorMap[color],
-      teachers: teachers.split(",").map((teacher) => teacher.trim()),
+      teachers: selectedTeachers,
     };
 
     try {
@@ -232,6 +247,16 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
     setLoading(false);
     handleClose();
+  };
+
+  const handleTeacherChange = (event: SelectChangeEvent<typeof selectedTeachers>): void => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedTeachers(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
   };
 
   return (
@@ -352,13 +377,23 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
             </div>
             <div className={styles.row}>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
-              <input
-                className={styles.textInput}
-                type="text"
-                placeholder="Comma-separated list of teacher emails"
-                value={teachers}
-                onChange={(e) => setTeachers(e.target.value)}
-              />
+              <div className={styles.spacing} />
+              <Select
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
+                multiple
+                value={selectedTeachers}
+                onChange={handleTeacherChange}
+                sx={{
+                  width: 650,
+                }}
+              >
+                {teachers.map((user) => (
+                  <MenuItem key={user.id} value={user.email}>
+                    {user.firstName}
+                  </MenuItem>
+                ))}
+              </Select>
             </div>
           </div>
 

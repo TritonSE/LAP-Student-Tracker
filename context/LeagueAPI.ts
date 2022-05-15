@@ -8,7 +8,6 @@ import firebase from "firebase/compat/app";
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
   client: AxiosInstance;
-  auth?: firebase.auth.Auth;
   token?: string;
   getNewRefreshToken?: () => Promise<string | null>;
 
@@ -22,7 +21,7 @@ class LeagueAPI {
     });
 
     // intercept all responses that return a 401 and supply the correct authentication header
-    // only retry once 0
+    // only retry once
     this.client.interceptors.response.use((response) => {
       return response;
     }, async (error) => {
@@ -41,7 +40,7 @@ class LeagueAPI {
       }
       return Promise.reject(error);
     }
-  )};
+  );};
 
   setToken(token: string): void {
     this.token = token;
@@ -50,11 +49,6 @@ class LeagueAPI {
 
   setRefreshTokenFunction( func: () => Promise<string | null> ): void {
     this.getNewRefreshToken = func;
-  }
-
-
-  setAuth(auth: firebase.auth.Auth): void {
-    this.auth = auth;
   }
 
   async refreshToken(): Promise<string | null> {

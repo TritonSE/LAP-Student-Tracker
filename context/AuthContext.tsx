@@ -92,11 +92,10 @@ export const AuthProvider: React.FC = ({ children }) => {
           appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
         };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
-    const auth = app.auth();
-    api.setAuth(auth);
     return app.auth();
   }, []);
 
+  // get a new token and place it in the appropriate place
   const  getNewRefreshToken = async (): Promise<string| null> => {
     if (auth == null) return null;
     if (auth.currentUser == null) return null;
@@ -107,8 +106,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       sessionStorage.setItem("apiToken", newToken);
     }
     api.setToken(newToken);
-
-
     return newToken;
   };
 

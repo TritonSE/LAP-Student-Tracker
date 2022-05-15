@@ -4,7 +4,6 @@ import firebase from "firebase/compat/app";
 import { FirebaseError } from "@firebase/util";
 import { Roles, UpdateUser, User } from "../models/users";
 import { APIContext } from "./APIContext";
-import {browserSessionPersistence} from "@firebase/auth";
 
 type AuthState = {
   user: User | null;
@@ -49,7 +48,7 @@ const init: AuthState = {
   },
   updateUser: () => {
     return new Promise<boolean>(() => false);
-  }
+  },
   // getNewRefreshToken: () => {
   //   return new Promise<string | null>( () => null);
   // }
@@ -81,7 +80,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     else setError(new Error(e.message));
   };
 
-  const auth = useMemo( () => {
+  const auth = useMemo(() => {
     const fbConfig = process.env.REACT_APP_FB_CONFIG
       ? JSON.parse(process.env.REACT_APP_FB_CONFIG)
       : {
@@ -96,11 +95,11 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   // get a new token and place it in the appropriate place
-  const  getNewRefreshToken = async (): Promise<string| null> => {
+  const getNewRefreshToken = async (): Promise<string | null> => {
     if (auth == null) return null;
     if (auth.currentUser == null) return null;
     const newToken = await auth.currentUser.getIdToken(false);
-    if (locality == 'Local') {
+    if (locality == "Local") {
       localStorage.setItem("apiToken", newToken);
     } else {
       sessionStorage.setItem("apiToken", newToken);
@@ -108,9 +107,6 @@ export const AuthProvider: React.FC = ({ children }) => {
     api.setToken(newToken);
     return newToken;
   };
-
-
-
 
   // get user data from local/session storage on every refresh
   useEffect(() => {
@@ -120,7 +116,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       const token = sessionStorage.getItem("apiToken");
       if (uid && token) {
         await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
-        setLocality("Session")
+        setLocality("Session");
         api.setToken(token);
         const user = await api.getUser(uid);
         setUser(user);

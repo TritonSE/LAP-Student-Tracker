@@ -24,8 +24,6 @@ const updateImage = async (
   b64img: string | null,
   mimeType: string
 ): Promise<Image | null> => {
-
-
   const query = {
     text:
       "UPDATE images " +
@@ -53,14 +51,13 @@ const getImage = async (id: string): Promise<Image | null> => {
 
   const res = await client.query(query);
 
-
   if (res.rows.length == 0) {
     return null;
   }
 
-  let image:Image;
+  let image: Image;
   try {
-    image = await decode(ImageSchema, res.rows[0])
+    image = await decode(ImageSchema, res.rows[0]);
   } catch {
     throw Error("Fields returned incorrectly from database");
   }

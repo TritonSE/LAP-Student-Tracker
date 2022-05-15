@@ -13,7 +13,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
-import {withAuth} from "../../../../middleware/withAuth";
+import { withAuth } from "../../../../middleware/withAuth";
 
 // handles requests to /api/events/class
 const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

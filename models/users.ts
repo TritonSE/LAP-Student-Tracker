@@ -9,23 +9,22 @@ const possibleRoles = t.keyof({
 });
 
 export const UserSchema = t.type({
-    id: t.string,
-    firstName: t.string,
-    lastName: t.string,
-    email: t.string,
-    role: possibleRoles,
-    pictureId: t.string,
-    phoneNumber: t.union([t.string, t.null]),
-    address: t.union([t.string, t.null])
+  id: t.string,
+  firstName: t.string,
+  lastName: t.string,
+  email: t.string,
+  role: possibleRoles,
+  pictureId: t.string,
+  phoneNumber: t.union([t.string, t.null]),
+  address: t.union([t.string, t.null]),
 });
-
 
 export const CreateUserSchema = t.type({
   id: t.string,
   firstName: t.string,
   lastName: t.string,
   email: t.string,
-  role: possibleRoles
+  role: possibleRoles,
 });
 
 export const UpdateUserSchema = t.partial({

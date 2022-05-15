@@ -2,7 +2,7 @@ import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest, makeUserHTTPRequest } from "./__testutils__/testutils.test";
-import {CreateUser, UpdateUser, User} from "../models/users";
+import { CreateUser, UpdateUser, User } from "../models/users";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
@@ -53,7 +53,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '1'
+        pictureId: "1",
       },
       {
         id: "4",
@@ -63,7 +63,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '1'
+        pictureId: "1",
       },
       {
         id: "2",
@@ -73,7 +73,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '2'
+        pictureId: "2",
       },
       {
         id: "5",
@@ -83,7 +83,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '2'
+        pictureId: "2",
       },
       {
         id: "3",
@@ -93,7 +93,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '3'
+        pictureId: "3",
       },
       {
         id: "6",
@@ -103,7 +103,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '3'
+        pictureId: "3",
       },
     ];
 
@@ -133,7 +133,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '2'
+        pictureId: "2",
       },
       {
         id: "5",
@@ -143,7 +143,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '2'
+        pictureId: "2",
       },
     ];
 
@@ -172,7 +172,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '1'
+        pictureId: "1",
       },
       {
         id: "4",
@@ -182,7 +182,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '1'
+        pictureId: "1",
       },
     ];
 
@@ -211,7 +211,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '3'
+        pictureId: "3",
       },
       {
         id: "6",
@@ -221,7 +221,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: '3'
+        pictureId: "3",
       },
     ];
 
@@ -265,7 +265,9 @@ describe("[POST] /api/users", () => {
       lastName: "Doe",
       email: "mynaME@gmail.com",
       role: "Student",
-      pictureId: "", address: null, phoneNumber: null
+      pictureId: "",
+      address: null,
+      phoneNumber: null,
     };
     await makeUserHTTPRequest(
       userHandler,
@@ -306,7 +308,8 @@ describe("[POST] /api/users", () => {
       email: "john@gmail.com",
       role: "Student",
       pictureId: "",
-      address: null, phoneNumber: null
+      address: null,
+      phoneNumber: null,
     };
 
     await makeHTTPRequest(
@@ -328,7 +331,8 @@ describe("[POST] /api/users", () => {
       email: "newAdmin@gmail.com",
       role: "Admin",
       pictureId: "",
-      address: null, phoneNumber: null
+      address: null,
+      phoneNumber: null,
     };
     await makeUserHTTPRequest(
       userHandler,
@@ -348,7 +352,9 @@ describe("[POST] /api/users", () => {
       lastName: "Doe",
       email: "newTeacher@gmail.com",
       role: "Admin",
-      pictureId: "", address: null, phoneNumber: null
+      pictureId: "",
+      address: null,
+      phoneNumber: null,
     };
     await makeUserHTTPRequest(
       userHandler,
@@ -392,7 +398,7 @@ describe("[GET] /api/users/[id]", () => {
       role: "Student",
       phoneNumber: "1234567890",
       address: "123 Main Street",
-      pictureId: "1"
+      pictureId: "1",
     };
 
     const query = {
@@ -437,7 +443,7 @@ describe("[PATCH] /api/users/[id]", () => {
       role: "Admin",
       pictureId: "1",
       address: "456 Main Street",
-      phoneNumber: "4567890"
+      phoneNumber: "4567890",
     };
 
     const query = {
@@ -473,7 +479,7 @@ describe("[PATCH] /api/users/[id]", () => {
       role: "Admin",
       pictureId: "3",
       address: "456 Main Street",
-      phoneNumber: "4567890"
+      phoneNumber: "4567890",
     };
 
     const query = {

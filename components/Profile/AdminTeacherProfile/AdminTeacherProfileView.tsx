@@ -5,14 +5,14 @@ import { ProfileViewRight } from "./ProfileViewRight";
 import styles from "./AdminTeacherProfile.module.css";
 import { Error } from "../../util/Error";
 import { useRouter } from "next/router";
-import {APIContext} from "../../../context/APIContext";
-import {UpdateImage} from "../../../models/images";
-import {fromByteArray} from "base64-js";
+import { APIContext } from "../../../context/APIContext";
+import { UpdateImage } from "../../../models/images";
+import { fromByteArray } from "base64-js";
 
 // component that renders the admin/teacher profile page
 const AdminTeacherProfileView: React.FC = () => {
   const { user, error, updateUser, clearError, logout } = useContext(AuthContext);
-  const  api = useContext(APIContext);
+  const api = useContext(APIContext);
 
   // user will never be null, because if it is, client is redirected to login page
   if (user == null) return <Error />;
@@ -29,7 +29,7 @@ const AdminTeacherProfileView: React.FC = () => {
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [imageChanged, setImageChanged] = useState<boolean>(false);
 
-  useEffect( () => {
+  useEffect(() => {
     (async () => {
       await resetImage();
     })();
@@ -40,11 +40,10 @@ const AdminTeacherProfileView: React.FC = () => {
     const image = await api.getImage(user.pictureId);
     if (image.img == null) {
       setImage(null);
-    }
-    else {
-      const buf = Buffer.from(image.img, 'base64');
+    } else {
+      const buf = Buffer.from(image.img, "base64");
       const fileBits = new Uint8Array(buf);
-      const f = new File([fileBits], '');
+      const f = new File([fileBits], "");
       setImage(f);
     }
     setImageLoading(false);
@@ -73,7 +72,7 @@ const AdminTeacherProfileView: React.FC = () => {
         const b64img = fromByteArray(imageDataBits);
         const updatedImage: UpdateImage = {
           mimeType: imageType,
-          img: b64img
+          img: b64img,
         };
         const updatedImageFromDB = api.updateImage(user.pictureId, updatedImage);
         if (!updatedImageFromDB) imageSuccess = false;
@@ -125,7 +124,7 @@ const AdminTeacherProfileView: React.FC = () => {
   const handleImageChange = (newImage: File): void => {
     setImageChanged(true);
     setImage(newImage);
-  }
+  };
 
   const regEx = RegExp(/\S+@\S+\.\S+/);
   const validEmail = regEx.test(email);

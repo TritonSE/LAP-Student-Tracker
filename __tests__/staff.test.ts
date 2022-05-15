@@ -48,7 +48,7 @@ describe("[GET] /api/staff", () => {
         minLevel: 3,
         maxLevel: 5,
         language: "english",
-        pictureId: '1'
+        pictureId: "1",
       },
       {
         id: "3",
@@ -61,7 +61,7 @@ describe("[GET] /api/staff", () => {
         minLevel: null,
         maxLevel: null,
         language: null,
-        pictureId: '1'
+        pictureId: "1",
       },
     ];
     await makeHTTPRequest(

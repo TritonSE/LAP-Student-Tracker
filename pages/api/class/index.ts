@@ -3,7 +3,7 @@ import { createClass, getAllClasses } from "../../../lib/database/classes";
 import { CreateClass, CreateClassSchema } from "../../../models/class";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import {withAuth} from "../../../middleware/withAuth";
+import { withAuth } from "../../../middleware/withAuth";
 //Handles all requests to /api/class
 
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

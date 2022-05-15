@@ -1,6 +1,6 @@
 import { createUser, getAllUsers } from "../../../lib/database/users";
 import { createImage } from "../../../lib/database/images";
-import {CreateUser, CreateUserSchema, Roles, User, UserSchema} from "../../../models/users";
+import { CreateUser, CreateUserSchema, Roles } from "../../../models/users";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";

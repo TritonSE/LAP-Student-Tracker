@@ -1,9 +1,8 @@
-import axios, {AxiosInstance} from "axios";
-import {Class, CreateClass} from "../models/class";
-import {ClassEvent, CreateClassEvent} from "../models/events";
-import {CreateUser, UpdateUser, User} from "../models/users";
-import {Image, UpdateImage} from "../models/images";
-import firebase from "firebase/compat/app";
+import axios, { AxiosInstance } from "axios";
+import { Class, CreateClass } from "../models/class";
+import { ClassEvent, CreateClassEvent } from "../models/events";
+import { CreateUser, UpdateUser, User } from "../models/users";
+import { Image, UpdateImage } from "../models/images";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -22,32 +21,35 @@ class LeagueAPI {
 
     // intercept all responses that return a 401 and supply the correct authentication header
     // only retry once
-    this.client.interceptors.response.use((response) => {
-      return response;
-    }, async (error) => {
-      const HEADER_NAME = 'Authorization';
-      const originalRequestConfig = error.config;
-      if (error.response) {
-        if (error.response.status == 401 && !originalRequestConfig._retry) {
-          const newTokenCreated = await this.refreshToken();
-          if (!newTokenCreated) return Promise.reject(error);
-          this.token = newTokenCreated;
-          originalRequestConfig._retry = true;
-          delete originalRequestConfig.headers[HEADER_NAME];
-          originalRequestConfig.headers[HEADER_NAME] = `Bearer ${this.token}`;
-          return this.client.request(originalRequestConfig);
+    this.client.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      async (error) => {
+        const HEADER_NAME = "Authorization";
+        const originalRequestConfig = error.config;
+        if (error.response) {
+          if (error.response.status == 401 && !originalRequestConfig._retry) {
+            const newTokenCreated = await this.refreshToken();
+            if (!newTokenCreated) return Promise.reject(error);
+            this.token = newTokenCreated;
+            originalRequestConfig._retry = true;
+            delete originalRequestConfig.headers[HEADER_NAME];
+            originalRequestConfig.headers[HEADER_NAME] = `Bearer ${this.token}`;
+            return this.client.request(originalRequestConfig);
+          }
         }
+        return Promise.reject(error);
       }
-      return Promise.reject(error);
-    }
-  );};
+    );
+  }
 
   setToken(token: string): void {
     this.token = token;
-    this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    this.client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
 
-  setRefreshTokenFunction( func: () => Promise<string | null> ): void {
+  setRefreshTokenFunction(func: () => Promise<string | null>): void {
     this.getNewRefreshToken = func;
   }
 
@@ -95,8 +97,8 @@ class LeagueAPI {
   }
 
   async updateImage(id: string, updatedImage: UpdateImage): Promise<Image> {
-   const res = await this.client.patch(`api/images/${id}`, updatedImage);
-   return res.data;
+    const res = await this.client.patch(`api/images/${id}`, updatedImage);
+    return res.data;
   }
 
   async getAllUsers(role?: string): Promise<User[]> {
@@ -113,8 +115,6 @@ class LeagueAPI {
     const res = await this.client.patch(`api/users/${id}`, user);
     return res.data;
   }
-
-
 }
 
 export { LeagueAPI };

@@ -17,9 +17,7 @@ beforeAll(async () => {
   await client.query("DELETE from availabilities");
   await client.query("DELETE from images");
 
-  await client.query(
-      "INSERT into images (id) VALUES('1')"
-  );
+  await client.query("INSERT into images (id) VALUES('1')");
 
   await client.query(
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('id_a', 'event_a', 'blue', 'Class', false)"

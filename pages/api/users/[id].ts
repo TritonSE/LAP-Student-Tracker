@@ -64,4 +64,4 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
   }
 };
 
-export default userIDHandler;
+export default withAuth(userIDHandler);

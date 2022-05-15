@@ -34,6 +34,7 @@ const League: NextApplicationPage = () => {
     address: "123",
     level: 3,
     classes: ["CSE 123"],
+    pictureId: "1"
   };
   const testStudentArray: Student[] = Array(5).fill(testStudent);
   // end dummy data

@@ -265,7 +265,7 @@ describe("[POST] /api/users", () => {
       lastName: "Doe",
       email: "mynaME@gmail.com",
       role: "Student",
-      pictureId: ""
+      pictureId: "", address: null, phoneNumber: null
     };
     await makeUserHTTPRequest(
       userHandler,
@@ -305,7 +305,8 @@ describe("[POST] /api/users", () => {
       lastName: "John",
       email: "john@gmail.com",
       role: "Student",
-      pictureId: ""
+      pictureId: "",
+      address: null, phoneNumber: null
     };
 
     await makeHTTPRequest(
@@ -326,7 +327,8 @@ describe("[POST] /api/users", () => {
       lastName: "Doe",
       email: "newAdmin@gmail.com",
       role: "Admin",
-      pictureId: ""
+      pictureId: "",
+      address: null, phoneNumber: null
     };
     await makeUserHTTPRequest(
       userHandler,

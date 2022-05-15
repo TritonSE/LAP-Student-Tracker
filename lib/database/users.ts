@@ -40,7 +40,6 @@ const createUser = async (
   try {
     await client.query(query);
   } catch (e) {
-    console.log(e);
     throw Error("Error on insert into database");
   }
 
@@ -114,8 +113,6 @@ const getAllUsers = async (): Promise<User[]> => {
   try {
     allUsers = await decode(UserArraySchema, res.rows);
   } catch (e) {
-    console.log(e);
-    console.log(res.rows);
     throw Error("Fields returned incorrectly in database");
   }
 

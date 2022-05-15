@@ -4,6 +4,7 @@ import firebase from "firebase/compat/app";
 import { FirebaseError } from "@firebase/util";
 import { Roles, UpdateUser, User } from "../models/users";
 import { APIContext } from "./APIContext";
+import {browserSessionPersistence} from "@firebase/auth";
 
 type AuthState = {
   user: User | null;
@@ -29,6 +30,7 @@ type AuthState = {
     newNumber?: string | null,
     newPassword?: string
   ) => Promise<boolean>;
+  // getNewRefreshToken: () => Promise<string | null>;
 };
 
 const init: AuthState = {
@@ -47,7 +49,10 @@ const init: AuthState = {
   },
   updateUser: () => {
     return new Promise<boolean>(() => false);
-  },
+  }
+  // getNewRefreshToken: () => {
+  //   return new Promise<string | null>( () => null);
+  // }
 };
 
 export const AuthContext = createContext<AuthState>(init);
@@ -55,6 +60,7 @@ export const AuthContext = createContext<AuthState>(init);
 // TODO: Add support for API calls via a JWT token
 export const AuthProvider: React.FC = ({ children }) => {
   const api = useContext(APIContext);
+  const [locality, setLocality] = useState<string>("Session");
 
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -75,7 +81,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     else setError(new Error(e.message));
   };
 
-  const auth = useMemo(() => {
+  const auth = useMemo( () => {
     const fbConfig = process.env.REACT_APP_FB_CONFIG
       ? JSON.parse(process.env.REACT_APP_FB_CONFIG)
       : {
@@ -86,15 +92,38 @@ export const AuthProvider: React.FC = ({ children }) => {
           appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
         };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
+    const auth = app.auth();
+    api.setAuth(auth);
     return app.auth();
   }, []);
+
+  const  getNewRefreshToken = async (): Promise<string| null> => {
+    if (auth == null) return null;
+    if (auth.currentUser == null) return null;
+    const newToken = await auth.currentUser.getIdToken(false);
+    if (locality == 'Local') {
+      localStorage.setItem("apiToken", newToken);
+    } else {
+      sessionStorage.setItem("apiToken", newToken);
+    }
+    api.setToken(newToken);
+
+
+    return newToken;
+  };
+
+
+
 
   // get user data from local/session storage on every refresh
   useEffect(() => {
     (async () => {
+      api.setRefreshTokenFunction(getNewRefreshToken);
       const uid = sessionStorage.getItem("userId");
       const token = sessionStorage.getItem("apiToken");
       if (uid && token) {
+        await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+        setLocality("Session")
         api.setToken(token);
         const user = await api.getUser(uid);
         setUser(user);
@@ -104,6 +133,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         const token = localStorage.getItem("apiToken");
 
         if (uid && token) {
+          setLocality("Local");
+          await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
           api.setToken(token);
           const user = await api.getUser(uid);
           setUser(user);
@@ -131,6 +162,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         if (rememberMe) {
           localStorage.setItem("apiToken", jwt);
           localStorage.setItem("userId", uid);
+          setLocality("Local");
         } else {
           sessionStorage.setItem("apiToken", jwt);
           sessionStorage.setItem("userId", uid);
@@ -211,7 +243,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   };
 
-  //sends cutom emal for resetting password to user
+  //sends cutom email for resetting password to user
   const forgotPassword = async (email: string): Promise<boolean> => {
     try {
       await auth.sendPasswordResetEmail(email);

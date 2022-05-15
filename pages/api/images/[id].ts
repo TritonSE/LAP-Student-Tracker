@@ -22,16 +22,10 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
     case "GET": {
       try {
         const image = await getImage(id);
-        console.log("MIME TYPE OF GET" + image?.mimeType);
-        // console.log("IMAGE LENGTH" )
-        // console.log(image.img.length);
         if (image == null) {
           return res.status(StatusCodes.NOT_FOUND).json("image not found");
         }
-        res.setHeader("Content-Type", "image/jpeg");
-        console.log(res.getHeaders());
-        console.log("LENGTH OF IMAGE IN API HANDLER: " + image.img.length);
-        return res.status(StatusCodes.ACCEPTED).send(image.img);
+        return res.status(StatusCodes.ACCEPTED).json(image);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
@@ -42,39 +36,19 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
       if (image == null) {
         return res.status(StatusCodes.NOT_FOUND).json("image not found");
       }
-      console.log(req.headers);
-      const buff = await buffer(req, {limit:'5mb', encoding:'binary'});
-      console.log(buff);
-      if (typeof buff == 'string') return res.status(StatusCodes.NOT_FOUND).json("image not found");;
-
-      // const buff = new Uint8Array(req);
-      // const buff = Buffer.from(req.body as Uint8Array, "binary")
-      const uin8arr  = new Uint8Array(buff);
-      console.log(uin8arr.length);
-      // console.log("PATCH REQ LENGHT " + req.body.length)
-      const updatedImage:UpdateImage = {
-        img: req.body as Uint8Array, mimeType: "image/jpeg"
-      };
-
-      // console.log("UPDATED IMAGE LENGTH")
-      // console.log(updatedImage.img.length);
-      // try {
-      //   newImage = await decode(UpdateImageSchema, req.body);
-      // } catch (e) {
-      //   console.log(e);
-      //   return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
-      // }
+      let newImage: UpdateImage;
       try {
-        const result = await updateImage(id, updatedImage.img, updatedImage.mimeType);
+        newImage = await decode(UpdateImageSchema, req.body);
+      } catch (e) {
+        return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
+      }
+      try {
+        const result = await updateImage(id, newImage.img || null, newImage.mimeType || "");
         if (result == null) {
           return res.status(StatusCodes.NOT_FOUND).json("image not found");
         }
-        req.pipe()
-        res.setHeader("Content-Type", "image/jpeg");
-        console.log("LENGTH OF IMAGE IN PATCH API HANDLER: " + result.img.length);
-        return res.status(StatusCodes.ACCEPTED).send(result.img);
+        return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        console.log(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
@@ -84,11 +58,5 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
     }
   }
 };
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
 
 export default withAuth(imageIDHandler);

@@ -7,11 +7,12 @@ import { Error } from "../../util/Error";
 import { useRouter } from "next/router";
 import {APIContext} from "../../../context/APIContext";
 import {UpdateImage} from "../../../models/images";
+import {fromByteArray} from "base64-js";
 
 // component that renders the admin/teacher profile page
 const AdminTeacherProfileView: React.FC = () => {
   const { user, error, updateUser, clearError, logout } = useContext(AuthContext);
-  const  api= useContext(APIContext);
+  const  api = useContext(APIContext);
 
   // user will never be null, because if it is, client is redirected to login page
   if (user == null) return <Error />;
@@ -25,27 +26,30 @@ const AdminTeacherProfileView: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
+  const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [imageChanged, setImageChanged] = useState<boolean>(false);
 
   useEffect( () => {
     (async () => {
-      const image = await api.getImage(user.pictureId);
-      if (image == null) setImage(null);
-      else {
-        const f = new File([image], '');
-        setImage(f);
-        console.log(f);
-        console.log("has image been changed");
-      }
+      await resetImage();
     })();
-    console.log("use effect running");
   }, []);
 
-  useEffect( () => {
-    console.log("IMAGE CHANGED")
-    console.log(image);
+  const resetImage = async (): Promise<void> => {
+    setImageLoading(true);
+    const image = await api.getImage(user.pictureId);
+    if (image.img == null) {
+      setImage(null);
+    }
+    else {
+      const buf = Buffer.from(image.img, 'base64');
+      const fileBits = new Uint8Array(buf);
+      const f = new File([fileBits], '');
+      setImage(f);
+    }
+    setImageLoading(false);
+  };
 
-  }, [image]);
   const handleEditProfileClicked = async (): Promise<void> => {
     if (!editProfileClicked) {
       setEditProfileClicked(true);
@@ -62,23 +66,26 @@ const AdminTeacherProfileView: React.FC = () => {
         newPassword
       );
       let imageSuccess = true;
-      if (imageChanged && image != null) {
+      if (imageChanged && image != null && userSuccess) {
         const imageType = image.type;
         const imageData = await image.arrayBuffer();
-        console.log("IMAGE UPLOADED ARRAY");
-        console.log(imageData);
+        const imageDataBits = new Uint8Array(imageData);
+        const b64img = fromByteArray(imageDataBits);
         const updatedImage: UpdateImage = {
           mimeType: imageType,
-          img: new Uint8Array(imageData)
+          img: b64img
         };
         const updatedImageFromDB = api.updateImage(user.pictureId, updatedImage);
         if (!updatedImageFromDB) imageSuccess = false;
       }
-      if (userSuccess && imageSuccess) setEditProfileClicked(false);
+      if (userSuccess && imageSuccess) {
+        setEditProfileClicked(false);
+        setImageChanged(false);
+      }
     }
   };
 
-  const onBackClick = (): void => {
+  const onBackClick = async (): Promise<void> => {
     setPhoneNumber(user.phoneNumber);
     setEmail(user.email);
     setCurrentPassword("");
@@ -87,6 +94,7 @@ const AdminTeacherProfileView: React.FC = () => {
     clearError();
     setErrorMessage("");
     setEditProfileClicked(false);
+    await resetImage();
   };
 
   const onSignoutClick = (): void => {
@@ -117,8 +125,6 @@ const AdminTeacherProfileView: React.FC = () => {
   const handleImageChange = (newImage: File): void => {
     setImageChanged(true);
     setImage(newImage);
-    console.log("IMAGE THAT IS UPLOADED")
-    console.log(newImage);
   }
 
   const regEx = RegExp(/\S+@\S+\.\S+/);
@@ -166,6 +172,7 @@ const AdminTeacherProfileView: React.FC = () => {
               handleEditProfileClicked={handleEditProfileClicked}
               validInput={validToSave}
               image={image}
+              imageLoading={imageLoading}
               onImageChange={handleImageChange}
             ></ProfileViewLeft>
           </div>

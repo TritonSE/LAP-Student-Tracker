@@ -8,15 +8,14 @@ const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
     case "GET":
       try {
         const result = await getAllStaff();
-        res.status(StatusCodes.ACCEPTED).json(result);
+        return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        console.log(e);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
-      break;
 
     default:
-      res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
-      break;
+      return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
   }
 };
 

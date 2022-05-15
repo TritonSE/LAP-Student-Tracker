@@ -105,7 +105,7 @@ const getUser = async (id: string): Promise<User | null> => {
 
 const getAllUsers = async (): Promise<User[]> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, picture_id, address FROM users",
   };
 
   const res = await client.query(query);
@@ -114,6 +114,8 @@ const getAllUsers = async (): Promise<User[]> => {
   try {
     allUsers = await decode(UserArraySchema, res.rows);
   } catch (e) {
+    console.log(e);
+    console.log(res.rows);
     throw Error("Fields returned incorrectly in database");
   }
 

@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { APIContext } from "../../../context/APIContext";
 import { UpdateImage } from "../../../models/images";
 import { fromByteArray } from "base64-js";
+import imageCompression from 'browser-image-compression';
 
 // component that renders the admin/teacher profile page
 const AdminTeacherProfileView: React.FC = () => {
@@ -55,6 +56,20 @@ const AdminTeacherProfileView: React.FC = () => {
     } else {
       clearError();
       setErrorMessage("");
+
+      if (imageChanged && image != null) {
+        const imageFile = image;
+        const options = {
+          maxSizeMB: 3,
+          useWebWorker: true
+        };
+        try {
+          const compressedFile = await imageCompression(imageFile, options);
+          setImage(compressedFile);
+        } catch {
+          setErrorMessage("Something went wrong with file upload. Try another file...");
+        }
+      }
 
       const userSuccess = await updateUser(
         user.id,

@@ -42,7 +42,6 @@ jobs:
           AUTH_URI: ${{ secrets.AUTH_URI }}
           TOKEN_URI: ${{ secrets.TOKEN_URI }}
           AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.AUTH_PROVIDER_X509_CERT_URL}}
-          CLIENT
           CLIENT_x509_CERT_URL: ${{ secrets.CLIENT_x509_CERT_URL }}
           NO_AUTH: "true"
       - name: Lint

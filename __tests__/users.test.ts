@@ -2,7 +2,7 @@ import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest, makeUserHTTPRequest } from "./__testutils__/testutils.test";
-import { UpdateUser, User } from "../models/users";
+import {CreateUser, UpdateUser, User} from "../models/users";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
@@ -53,6 +53,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '1'
       },
       {
         id: "4",
@@ -62,6 +63,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '1'
       },
       {
         id: "2",
@@ -71,6 +73,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '2'
       },
       {
         id: "5",
@@ -80,6 +83,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '2'
       },
       {
         id: "3",
@@ -89,6 +93,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '3'
       },
       {
         id: "6",
@@ -98,6 +103,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '3'
       },
     ];
 
@@ -127,6 +133,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '2'
       },
       {
         id: "5",
@@ -136,6 +143,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '2'
       },
     ];
 
@@ -164,6 +172,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '1'
       },
       {
         id: "4",
@@ -173,6 +182,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Student",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '1'
       },
     ];
 
@@ -201,6 +211,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '3'
       },
       {
         id: "6",
@@ -210,6 +221,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Admin",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: '3'
       },
     ];
 
@@ -253,8 +265,7 @@ describe("[POST] /api/users", () => {
       lastName: "Doe",
       email: "mynaME@gmail.com",
       role: "Student",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
+      pictureId: ""
     };
     await makeUserHTTPRequest(
       userHandler,
@@ -268,14 +279,12 @@ describe("[POST] /api/users", () => {
   });
 
   test("doesn't create a duplicate user", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "1",
       firstName: "John",
       lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
     };
 
     await makeHTTPRequest(
@@ -296,8 +305,7 @@ describe("[POST] /api/users", () => {
       lastName: "John",
       email: "john@gmail.com",
       role: "Student",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
+      pictureId: ""
     };
 
     await makeHTTPRequest(
@@ -318,8 +326,7 @@ describe("[POST] /api/users", () => {
       lastName: "Doe",
       email: "newAdmin@gmail.com",
       role: "Admin",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
+      pictureId: ""
     };
     await makeUserHTTPRequest(
       userHandler,
@@ -332,15 +339,14 @@ describe("[POST] /api/users", () => {
     );
   });
 
-  test("creates an Teacher user", async () => {
+  test("creates a teacher user", async () => {
     const body: User = {
       id: "45",
       firstName: "Teacher",
       lastName: "Doe",
       email: "newTeacher@gmail.com",
       role: "Admin",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
+      pictureId: "", address: null, phoneNumber: null
     };
     await makeUserHTTPRequest(
       userHandler,
@@ -382,15 +388,16 @@ describe("[GET] /api/users/[id]", () => {
       lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
-      address: "123 Main Street",
       phoneNumber: "1234567890",
+      address: "123 Main Street",
+      pictureId: "1"
     };
 
     const query = {
       id: 1,
     };
 
-    await makeUserHTTPRequest(
+    await makeHTTPRequest(
       userIDHandler,
       "/api/users/1",
       query,
@@ -426,8 +433,9 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
+      pictureId: "1",
       address: "456 Main Street",
-      phoneNumber: "4567890",
+      phoneNumber: "4567890"
     };
 
     const query = {
@@ -443,7 +451,7 @@ describe("[PATCH] /api/users/[id]", () => {
       phoneNumber: "4567890",
     };
 
-    await makeUserHTTPRequest(
+    await makeHTTPRequest(
       userIDHandler,
       "/api/users/1",
       query,
@@ -461,8 +469,9 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "admin@gmail.com",
       role: "Admin",
+      pictureId: "3",
       address: "456 Main Street",
-      phoneNumber: "4567890",
+      phoneNumber: "4567890"
     };
 
     const query = {
@@ -476,7 +485,7 @@ describe("[PATCH] /api/users/[id]", () => {
       phoneNumber: "4567890",
     };
 
-    await makeUserHTTPRequest(
+    await makeHTTPRequest(
       userIDHandler,
       "/api/users/3",
       query,

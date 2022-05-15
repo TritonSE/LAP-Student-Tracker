@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// have to disable type checking for this file because of https://github.com/howardabrams/node-mocks-http/issues/245
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
@@ -21,13 +24,13 @@ import { User } from "../../models/users";
  * Note: Record<String, unknown> is just a type-safe way to specify an object
  */
 const makeHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
-  endpoint: string,
-  query: Object | undefined,
-  method: RequestMethod,
-  body: Object | undefined,
-  expectedResponseCode: number | undefined,
-  expectedBody: Object | undefined
+    handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+    endpoint: string,
+    query: Object | undefined,
+    method: RequestMethod,
+    body: Object | undefined,
+    expectedResponseCode: number | undefined,
+    expectedBody: Object | undefined
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -46,13 +49,13 @@ const makeHTTPRequest = async (
 };
 
 const makeEventHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
-  endpoint: string,
-  query: Object | undefined,
-  method: RequestMethod,
-  body: Object | undefined,
-  expectedResponseCode: number,
-  expectedBody: ClassEvent
+    handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+    endpoint: string,
+    query: Object | undefined,
+    method: RequestMethod,
+    body: Object | undefined,
+    expectedResponseCode: number,
+    expectedBody: ClassEvent
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -65,15 +68,15 @@ const makeEventHTTPRequest = async (
 
   expect(res._getStatusCode()).toBe(expectedResponseCode);
   expect(JSON.parse(res._getData())).toEqual(
-    expect.objectContaining({
-      startTime: expectedBody.startTime,
-      endTime: expectedBody.endTime,
-      timeZone: expectedBody.timeZone,
-      rrule: expectedBody.rrule,
-      language: expectedBody.language,
-      neverEnding: expectedBody.neverEnding,
-      backgroundColor: expectedBody.backgroundColor,
-    })
+      expect.objectContaining({
+        startTime: expectedBody.startTime,
+        endTime: expectedBody.endTime,
+        timeZone: expectedBody.timeZone,
+        rrule: expectedBody.rrule,
+        language: expectedBody.language,
+        neverEnding: expectedBody.neverEnding,
+        backgroundColor: expectedBody.backgroundColor,
+      })
   );
 
   return res;
@@ -82,22 +85,22 @@ const makeEventHTTPRequest = async (
 /* HTTP request handler for users API that ignores pictureId field
    when comparing User response data */
 const makeUserHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
-  endpoint: string,
-  query: Object | undefined,
-  method: RequestMethod,
-  body: Object | undefined,
-  expectedResponseCode: number,
-  expectedBody: User
+    handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+    endpoint: string,
+    query: Object | undefined,
+    method: RequestMethod,
+    body: Object | undefined,
+    expectedResponseCode: number,
+    expectedBody: User
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const res = await makeHTTPRequest(
-    handler,
-    endpoint,
-    query,
-    method,
-    body,
-    expectedResponseCode,
-    undefined
+      handler,
+      endpoint,
+      query,
+      method,
+      body,
+      expectedResponseCode,
+      undefined
   );
   const resObject = JSON.parse(res._getData());
 
@@ -105,6 +108,7 @@ const makeUserHTTPRequest = async (
   if (expectedBody) {
     expect(resObject).toHaveProperty("pictureId");
     delete resObject["pictureId"];
+    delete expectedBody["pictureId"];
     expect(resObject).toEqual(expectedBody);
   }
 
@@ -114,29 +118,29 @@ const makeUserHTTPRequest = async (
 /* HTTP request handler for event feed API that converts Postgres timestamps to
    local ISO for consistency in testing */
 const makeEventFeedHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
-  endpoint: string,
-  query: Object | undefined,
-  method: RequestMethod,
-  queryParams: { start: string; end: string; userId?: string },
-  expectedResponseCode: number,
-  expectedBody: CalendarEvent[]
+    handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+    endpoint: string,
+    query: Object | undefined,
+    method: RequestMethod,
+    queryParams: { start: string; end: string; userId?: string },
+    expectedResponseCode: number,
+    expectedBody: CalendarEvent[]
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const res = await makeHTTPRequest(
-    handler,
-    endpoint +
+      handler,
+      endpoint +
       `?start=${queryParams.start}&end=${queryParams.end}` +
       (queryParams.userId ? `&userId=${queryParams.userId}` : ""),
-    query,
-    method,
-    undefined,
-    expectedResponseCode,
-    undefined
+      query,
+      method,
+      undefined,
+      expectedResponseCode,
+      undefined
   );
 
   // Convert dates in actual body to local ISO
   const returnedCalendarEvents = (JSON.parse(res._getData()) as CalendarEvent[]).map((event) =>
-    convertToLocalISO(event)
+      convertToLocalISO(event)
   );
   // Convert dates in expected body to local ISO
   const expectedCalendarEvents = expectedBody.map((event) => convertToLocalISO(event));
@@ -160,19 +164,19 @@ const convertTimeToISO = (time: string, timeZone: string): string => {
 };
 
 const getISOTimeFromExplicitFields = (
-  year: number,
-  month: number,
-  day: number,
-  hour: number,
-  minute: number,
-  timeZone: string
+    year: number,
+    month: number,
+    day: number,
+    hour: number,
+    minute: number,
+    timeZone: string
 ): string => {
   return DateTime.fromObject(
-    { year: year, month: month, day: day, hour: hour, minute: minute },
-    { zone: timeZone }
+      { year: year, month: month, day: day, hour: hour, minute: minute },
+      { zone: timeZone }
   )
-    .toLocal()
-    .toISO();
+      .toLocal()
+      .toISO();
 };
 
 export {

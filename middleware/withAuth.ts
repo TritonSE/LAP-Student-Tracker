@@ -4,6 +4,8 @@ import {NextApiHandler, NextApiRequest, NextApiResponse} from "next";
 const withAuth = (handler: NextApiHandler) => {
     return async (req: NextApiRequest, res: NextApiResponse) => {
 
+        if (process.env.NO_AUTH == 'true') return handler(req, res);
+
         const token = req.headers['authorization'] as string;
 
         if (!token) {

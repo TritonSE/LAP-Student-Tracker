@@ -1,7 +1,8 @@
 
 import * as admin from 'firebase-admin/app';
 import { getAuth } from "firebase-admin/auth";
-const { privateKey } = JSON.parse(process.env.PRIVATE_KEY || "");
+const { privateKey } = JSON.parse(process.env.PRIVATE_KEY || "") || "";
+
 const fbConfig: any = {
         type: process.env.TYPE || "",
         project_id: process.env.PROJECT_ID || "",

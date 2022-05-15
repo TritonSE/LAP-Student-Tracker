@@ -10,8 +10,13 @@ beforeAll(async () => {
   await client.query("DELETE from commitments");
   await client.query("DELETE from users");
   await client.query("DELETE from availabilities");
+  await client.query("DELETE from images");
+
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+      "INSERT into images (id) VALUES('1')"
+  );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '1')"
   );
   await client.query(
     "INSERT INTO availabilities (user_id, time_zone) VALUES ('2', 'America/Los_Angeles')"

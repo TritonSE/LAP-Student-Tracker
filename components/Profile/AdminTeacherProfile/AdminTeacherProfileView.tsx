@@ -57,6 +57,7 @@ const AdminTeacherProfileView: React.FC = () => {
       clearError();
       setErrorMessage("");
 
+      // compress image and make sure that the file can be compressed
       if (imageChanged && image != null) {
         const imageFile = image;
         const options = {
@@ -67,7 +68,8 @@ const AdminTeacherProfileView: React.FC = () => {
           const compressedFile = await imageCompression(imageFile, options);
           setImage(compressedFile);
         } catch {
-          setErrorMessage("Something went wrong with file upload. Try another file...");
+          setErrorMessage("Something went wrong. Try a smaller file...");
+          return;
         }
       }
 

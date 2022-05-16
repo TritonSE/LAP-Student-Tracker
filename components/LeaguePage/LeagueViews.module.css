@@ -174,14 +174,14 @@
   height: 78px;
   background: #46D5B3;
   border-radius: 15px 15px 0px 0px;
-  display: flex;
-  justify-content: space-between;
   padding-left: 68px;
   padding-right: 68px;
   padding-top: 30px;
 }
 
 .topReqBar p {
+  float: left;
+  width: 20%;
   font-family: 'Inter';
   font-style: normal;
   font-weight: 500;
@@ -192,4 +192,58 @@
   letter-spacing: 0.1px;
   color: #494C4E;
   margin: 0;
+}
+
+.accountBarGrey {
+  width: 1308px;
+  height: 100px;
+  padding-left: 68px;
+  padding-right: 68px;
+  padding-top: 35px;
+  background: #F6F6FA; 
+}
+
+.accountBarWhite {
+  width: 1308px;
+  height: 100px;
+  padding-left: 68px;
+  padding-right: 68px;
+  padding-top: 35px;
+  background: #FFFFFF; 
+}
+
+.accountBarGrey p {
+  float: left;
+  width: 20%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.1px;
+  color: #494C4E;
+  margin: 0;
+}
+
+.accountBarWhite p {
+  float: left;
+  width: 20%;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.1px;
+  color: #494C4E;
+  margin: 0;
+}
+
+.accountsContainer {
+  margin: auto;
+  display: flex;
+  justify-content: center;
 }

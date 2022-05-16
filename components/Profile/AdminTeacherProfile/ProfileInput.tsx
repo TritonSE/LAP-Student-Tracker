@@ -1,6 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 import styles from "./ProfileInput.module.css";
+
 type ProfileInputProps = {
   label: string;
   defaultValue: string | null;

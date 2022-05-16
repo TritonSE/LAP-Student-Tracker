@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/League.module.css";
 import { ClassView } from "../components/LeaguePage/ClassView";
 import { StudentView } from "../components/LeaguePage/StudentView";

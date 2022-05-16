@@ -82,12 +82,12 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const auth = useMemo(() => {
     const fbConfig = {
-          apiKey: process.env.NEXT_PUBLIC_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
-          authDomain:
-            process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-          projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-student-tracker-staging",
-          appId: process.env.NEXT_PUBLIC_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
-        };
+      apiKey: process.env.NEXT_PUBLIC_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
+      authDomain:
+        process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
+      projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-student-tracker-staging",
+      appId: process.env.NEXT_PUBLIC_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
+    };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
     return app.auth();
   }, []);
@@ -116,7 +116,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
         setLocality("Session");
         api.setToken(token);
-        const userObj = (sessionStorage.getItem("user"));
+        const userObj = sessionStorage.getItem("user");
         let user: User;
         if (userObj) {
           user = JSON.parse(userObj);
@@ -133,7 +133,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           setLocality("Local");
           await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
           api.setToken(token);
-          const userObj = (localStorage.getItem("user"));
+          const userObj = localStorage.getItem("user");
           let user: User;
           if (userObj) {
             user = JSON.parse(userObj);

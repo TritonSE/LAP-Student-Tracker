@@ -103,23 +103,73 @@ const updateClass = async (
 // get a class given the id
 const getClass = async (id: string): Promise<Class | null> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class' AND c.event_information_id = $1",
-    values: [id],
+    text:  "SELECT e.name, cl.event_information_id, cl.min_level, cl.max_level, cl.rrstring, cl.start_time, cl.end_time, cl.language, u.id as user_id, u.first_name, u.last_name " +
+        "FROM (((event_information e INNER JOIN classes cl ON e.id = cl.event_information_id) " +
+        "INNER JOIN commitments ON commitments.event_information_id = e.id) " +
+        " INNER JOIN users u ON commitments.user_id = u.id) WHERE role = 'Teacher' AND cl.event_information_id = $1",
+    values: [id]
   };
-
   const res = await client.query(query);
+  
+
   if (res.rows.length == 0) {
     return null;
   }
 
-  let oneClass: Class;
+  let classesWithUserInformation: ClassWithUserInformation[];
   try {
-    oneClass = await decode(ClassSchema, res.rows[0]);
+    classesWithUserInformation = await decode(ClassWithUserInformationArraySchema, res.rows);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }
+  //console.log(classesWithUserInformation);
+  const mapOfClasses = new Map();
+  const individualClasses = [];
+  for(let i = 0; i < classesWithUserInformation.length; i++){
+    if(!mapOfClasses.has(classesWithUserInformation[i].eventInformationId)){
+      let currClass = {name: classesWithUserInformation[i].name,
+                      eventInformationId: classesWithUserInformation[i].eventInformationId,
+                      minLevel: classesWithUserInformation[i].minLevel,
+                      maxLevel:classesWithUserInformation[i].maxLevel,
+                      rrstring: classesWithUserInformation[i].rrstring,
+                      startTime: classesWithUserInformation[i].startTime,
+                      endTime: classesWithUserInformation[i].endTime,
+                      language: classesWithUserInformation[i].language
+                    }
+      individualClasses.push(currClass);
+      let curr = {userId: classesWithUserInformation[i].userId,
+              firstName: classesWithUserInformation[i].firstName,
+              lastName: classesWithUserInformation[i].lastName, 
+            }
+      let teachersArr = [curr];
+      mapOfClasses.set((classesWithUserInformation[i].eventInformationId), teachersArr);
+    }
+    else{
+      let curr = {userId: classesWithUserInformation[i].userId,
+        firstName: classesWithUserInformation[i].firstName,
+        lastName: classesWithUserInformation[i].lastName, 
+      }
+      let teachersArr = mapOfClasses.get(classesWithUserInformation[i].eventInformationId);
+      teachersArr.push(curr);
 
-  return oneClass;
+      mapOfClasses.set((classesWithUserInformation[i].eventInformationId), teachersArr);
+    }
+  }
+  for(let singleClass of individualClasses){
+    let currClass : Class = {
+      name : singleClass.name,
+      eventInformationId: singleClass.eventInformationId,
+      minLevel: singleClass.minLevel,
+      maxLevel: singleClass.maxLevel,
+      rrstring: singleClass.rrstring,
+      startTime: singleClass.startTime,
+      endTime: singleClass.endTime,
+      language: singleClass.language,
+      teachers: mapOfClasses.get(singleClass.eventInformationId)
+    }
+    return currClass;
+  }
+  return null;
 };
 const  getAllClasses = async (): Promise<Class[]> => {
   const query = {
@@ -128,19 +178,67 @@ const  getAllClasses = async (): Promise<Class[]> => {
         "INNER JOIN commitments ON commitments.event_information_id = e.id) " +
         " INNER JOIN users u ON commitments.user_id = u.id) WHERE role = 'Teacher'",
   };
-
   const res = await client.query(query);
-
-  let classesWithUserInformation: Class[];
-
+  //console.log(res);
+  let classesWithUserInformation: ClassWithUserInformation[];
   try {
-    classesWithUserInformation = await decode(ClassArraySchema, res.rows);
+    classesWithUserInformation = await decode(ClassWithUserInformationArraySchema, res.rows);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }
+  const classesArray : Class[] = [];
+  const mapOfClasses = new Map();
+  const individualClasses = [];
+  for(let i = 0; i < classesWithUserInformation.length; i++){
+    if(!mapOfClasses.has(classesWithUserInformation[i].eventInformationId)){
+      let currClass = {name: classesWithUserInformation[i].name,
+                      eventInformationId: classesWithUserInformation[i].eventInformationId,
+                      minLevel: classesWithUserInformation[i].minLevel,
+                      maxLevel:classesWithUserInformation[i].maxLevel,
+                      rrstring: classesWithUserInformation[i].rrstring,
+                      startTime: classesWithUserInformation[i].startTime,
+                      endTime: classesWithUserInformation[i].endTime,
+                      language: classesWithUserInformation[i].language
+                    }
+      individualClasses.push(currClass);
+      let curr = {userId: classesWithUserInformation[i].userId,
+              firstName: classesWithUserInformation[i].firstName,
+              lastName: classesWithUserInformation[i].lastName, 
+            }
+      let teachersArr = [curr];
+      mapOfClasses.set((classesWithUserInformation[i].eventInformationId), teachersArr);
+    }
+    else{
+      let curr = {userId: classesWithUserInformation[i].userId,
+        firstName: classesWithUserInformation[i].firstName,
+        lastName: classesWithUserInformation[i].lastName, 
+      }
+      let teachersArr = mapOfClasses.get(classesWithUserInformation[i].eventInformationId);
+      teachersArr.push(curr);
+
+      mapOfClasses.set((classesWithUserInformation[i].eventInformationId), teachersArr);
+    }
+  }
+  for(let singleClass of individualClasses){
+    let currClass : Class = {
+      name : singleClass.name,
+      eventInformationId: singleClass.eventInformationId,
+      minLevel: singleClass.minLevel,
+      maxLevel: singleClass.maxLevel,
+      rrstring: singleClass.rrstring,
+      startTime: singleClass.startTime,
+      endTime: singleClass.endTime,
+      language: singleClass.language,
+      teachers: mapOfClasses.get(singleClass.eventInformationId)
+    }
+    classesArray.push(currClass);
+  }
 
 
-  return classesWithUserInformation;
+
+
+
+  return classesArray;
 };
 
 export { createClass, getClass, updateClass, getAllClasses };

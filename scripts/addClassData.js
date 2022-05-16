@@ -49,44 +49,68 @@ var addData = function () { return __awaiter(_this, void 0, void 0, function () 
             case 0: return [4 /*yield*/, client.query("DELETE from event_Information")];
             case 1:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('1', 'Intro to Java', 'blue', 'Class', false)")];
+                return [4 /*yield*/, client.query("DELETE from users")];
             case 2:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('2', 'Intro to Python', 'green', 'Class', true)")];
+                return [4 /*yield*/, client.query("DELETE from commitments")];
             case 3:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('3', 'Advanced Java', 'green', 'Class', true)")];
+                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('1', 'One', 'blue', 'Class', false)")];
             case 4:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('4', 'Advanced Java', 'green', 'Class', true)")];
+                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('2', 'Two', 'green', 'Class', true)")];
             case 5:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('5', 'Advanced Java', 'green', 'Class', true)")];
+                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('3', 'Three', 'green', 'Class', true)")];
             case 6:
                 _a.sent();
-                return [4 /*yield*/, client.query("DELETE from classes")];
+                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('4', 'Four', 'green', 'Class', true)")];
             case 7:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('1', 4, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english', '{John, Bill, Carl}')")];
+                return [4 /*yield*/, client.query("INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('5', 'Five', 'green', 'Class', true)")];
             case 8:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('2', 1, 2, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=TU,TH;INTERVAL=1', '06:15Z', '08:15Z', 'english', '{John, Bill, Carl}')")];
+                return [4 /*yield*/, client.query("DELETE from classes")];
             case 9:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('3', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')")];
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('1', 4, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english')")];
             case 10:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('4', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')")];
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('2', 1, 2, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=TU,TH;INTERVAL=1', '06:15Z', '08:15Z', 'english')")];
             case 11:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language, teachers) VALUES('5', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english', '{John, Bill, Carl}')")];
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('3', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english')")];
             case 12:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('77', 'John', 'Test', 'john@gmail.com', 'Teacher', '123 nowhere lane', '123-456-7890')")];
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('4', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english')")];
             case 13:
                 _a.sent();
-                return [4 /*yield*/, client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('77', '5')")];
+                return [4 /*yield*/, client.query("INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('5', 2, 4, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE;INTERVAL=1', '02:10Z', '03:10Z', 'english')")];
             case 14:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('77', 'John', 'Test', 'john@gmail.com', 'Teacher', '123 nowhere lane', '123-456-7890')")];
+            case 15:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('88', 'Zain', 'Khan', 'zk@gmail.com', 'Teacher', '13 nowhere lane', '123-456-7891')")];
+            case 16:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('99', 'Bill', 'Test', 'bt@gmail.com', 'Teacher', '14 nowhere lane', '123-456-7892')")];
+            case 17:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('77', '5')")];
+            case 18:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('88', '4')")];
+            case 19:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('99', '5')")];
+            case 20:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('77', '4')")];
+            case 21:
+                _a.sent();
+                return [4 /*yield*/, client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('77', '1')")];
+            case 22:
                 _a.sent();
                 return [2 /*return*/];
         }

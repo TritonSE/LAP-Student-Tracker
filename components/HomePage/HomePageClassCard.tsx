@@ -9,7 +9,11 @@ type HomePageClassCard = {
   rrstring: string;
   startTime: string;
   endTime: string;
-  teacher: string
+  teachers: {
+    userId: string;
+    firstName: string;
+    lastName: string;
+}[];
 };
 
 const HomePageClassCard: React.FC<HomePageClassCard> = ({
@@ -19,9 +23,9 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
   rrstring,
   startTime,
   endTime,
-  teacher,
+  teachers,
 }) => {
-  const teachers: string[] = [
+  const teacher: string[] = [
     "Teacher1", "Teacher2"
   ];
   const weekday: string[] = [
@@ -35,7 +39,8 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
   ];
   const rule = RRule.fromString(rrstring);
   const dates = rule.options.byweekday.map((val) => weekday[val]).join(", ");
-
+  const teacherNames = teachers.map((val) => val.firstName)
+  //console.log(teachers);
   //this takes in the start and end times, converts them to ISO format, then outputs the hour the class starts and ends
   const convertTime = (timeStart: string, timeEnd: string): string => {
     const startTimeISO = DateTime.fromISO(timeStart).toLocal().toFormat("h:mm");
@@ -52,7 +57,7 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
         ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel}`}
           </a>
         </div>
-        <div className={style.name}>{teacher}</div>
+        <div className={style.name}>{teacherNames.join(", ")}</div>
       </div>
 
       <div className={style.times}>{[dates, "•", convertTime(startTime, endTime)].join(" ")}</div>

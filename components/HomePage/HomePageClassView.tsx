@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./AdminHomePage.module.css";
 import { HomePageClassCard } from "./HomePageClassCard";
-import { Class, ClassbyTeacher } from "../../models/class";
+import { Class } from "../../models/class";
 import { APIContext } from "../../context/APIContext";
 import { Loader } from "../util/Loader";
 import { Error } from "../util/Error";
@@ -12,15 +12,15 @@ const HomePageClassScroll: React.FC = () => {
   const client = useContext(APIContext);
 
   // Use SWR hook to get the data from the backend
-  const { data, error } = useSWR("/api/class", () => client.getClassesbyTeacher());
-
+  const { data, error } = useSWR("/api/class", () => client.getAllClasses());
+  console.log(data);
   if (error) return <Error />;
   if (!data) return <Loader />;
   if (data.length == 0) return <Empty userType="Class" />;
 
   return (
     <>
-      {data.map((classes: ClassbyTeacher) => (
+      {data.map((classes: Class) => (
         <HomePageClassCard
           key={classes.eventInformationId}
           name={classes.name!}
@@ -29,7 +29,7 @@ const HomePageClassScroll: React.FC = () => {
           rrstring={classes.rrstring!}
           startTime={classes.startTime!}
           endTime={classes.endTime!}
-          teacher={classes.teacher!}
+          teachers={classes.teachers!}
         />
       ))}
     </>

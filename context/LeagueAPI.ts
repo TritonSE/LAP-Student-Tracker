@@ -29,8 +29,8 @@ class LeagueAPI {
     return res.data;
   }
 
-  async getAllClasses(): Promise<Class[]> {
-    const res = await this.client.get("api/class");
+  async getAllClasses(userId?: string): Promise<Class[]> {
+    const res = await this.client.get("api/class", { params: { userId: userId } });
     return res.data;
   }
 

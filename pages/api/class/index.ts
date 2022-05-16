@@ -9,8 +9,16 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
   let newClass: CreateClass;
   switch (req.method) {
     case "GET":
+      let user_id: string = ""
+      if(req.query && req.query.userId){
+        if(req.query.userId != undefined){
+          user_id = req.query.userId as string;
+        }
+      }
       try {
-        const result = await getAllClasses();
+        let result = await getAllClasses();
+        //console.log("zain");
+        if(Boolean(user_id)){ result = result.filter(obj => JSON.stringify(obj).toLowerCase().includes(user_id.toLowerCase())) }
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
@@ -18,6 +26,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
     case "POST":
       try {
         newClass = await decode(CreateClassSchema, req.body);
+        //console.log(newClass);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
@@ -29,7 +38,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
           newClass.rrstring,
           newClass.startTime,
           newClass.endTime,
-          newClass.language,
+          newClass.language
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {

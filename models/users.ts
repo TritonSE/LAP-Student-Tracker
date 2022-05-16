@@ -8,6 +8,20 @@ const possibleRoles = t.keyof({
   Parent: null,
 });
 
+export const CreateUserSchema = t.intersection([
+  t.type({
+    id: t.string,
+    firstName: t.string,
+    lastName: t.string,
+    email: t.string,
+    role: possibleRoles,
+  }),
+  t.partial({
+    phoneNumber: t.union([t.string, t.null]),
+    address: t.union([t.string, t.null]),
+  }),
+]);
+
 export const UserSchema = t.intersection([
   t.type({
     id: t.string,
@@ -33,6 +47,7 @@ export const UpdateUserSchema = t.partial({
   approved: t.boolean
 });
 
+export type CreateUser = t.TypeOf<typeof CreateUserSchema>;
 export type User = t.TypeOf<typeof UserSchema>;
 export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>;
 export type Roles = t.TypeOf<typeof possibleRoles>;

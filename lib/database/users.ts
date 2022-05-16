@@ -34,33 +34,12 @@ const createUser = async (
   address?: string | null,
   phone_number?: string | null,
 ): Promise<User | null> => {
-  const query = {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
-    values: [id, firstName, lastName, email, role, true, address, phone_number],
-  };
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("Error on insert into database");
-  }
-
-  await roleSpecificSetup(id, role);
-  return getUser(id);
-};
-
-// create a staff user in the database with given parameters.
-const createStaffUser = async (
-  id: string,
-  firstName: string,
-  lastName: string,
-  email: string,
-  role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
-  address?: string | null,
-  phone_number?: string | null,
-): Promise<User | null> => {
-  const query = {
+  const query = (role == "Admin" || role =="Teacher") ? {
     text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
     values: [id, firstName, lastName, email, role, false, address, phone_number],
+  } : {
+    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
+    values: [id, firstName, lastName, email, role, true, address, phone_number],
   };
   try {
     await client.query(query);
@@ -109,7 +88,7 @@ const updateUser = async (
 // get a user given an id
 const getUser = async (id: string): Promise<User | null> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address, approved FROM users WHERE id = $1",
     values: [id],
   };
 
@@ -129,4 +108,4 @@ const getUser = async (id: string): Promise<User | null> => {
   return user;
 };
 
-export { createUser, createStaffUser, getUser, updateUser };
+export { createUser, getUser, updateUser };

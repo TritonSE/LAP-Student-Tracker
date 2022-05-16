@@ -49,6 +49,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
           newUser.lastName,
           newUser.email,
           newUser.role,
+          newUser.approved,
           newUser.address,
           newUser.phoneNumber
         );

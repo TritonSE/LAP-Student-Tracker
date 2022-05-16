@@ -82,11 +82,11 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const auth = useMemo(() => {
     const fbConfig = {
-          apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
+          apiKey: process.env.NEXT_PUBLIC_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
           authDomain:
-            process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-          projectId: process.env.REACT_APP_FB_PROJECT_ID || "lap-student-tracker-staging",
-          appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
+            process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
+          projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-student-tracker-staging",
+          appId: process.env.NEXT_PUBLIC_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
         };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
     return app.auth();
@@ -116,7 +116,13 @@ export const AuthProvider: React.FC = ({ children }) => {
         await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
         setLocality("Session");
         api.setToken(token);
-        const user = await api.getUser(uid);
+        const userObj = (sessionStorage.getItem("user"));
+        let user: User;
+        if (userObj) {
+          user = JSON.parse(userObj)
+        } else {
+          user = await api.getUser(uid);
+        }
         setUser(user);
         setError(null);
       } else {
@@ -127,7 +133,13 @@ export const AuthProvider: React.FC = ({ children }) => {
           setLocality("Local");
           await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
           api.setToken(token);
-          const user = await api.getUser(uid);
+          const userObj = (localStorage.getItem("user"));
+          let user: User;
+          if (userObj) {
+            user = JSON.parse(userObj);
+          } else {
+            user = await api.getUser(uid);
+          }
           setUser(user);
           setError(null);
         }
@@ -149,17 +161,18 @@ export const AuthProvider: React.FC = ({ children }) => {
         api.setToken(jwt);
 
         const uid = fbUser.uid;
-
+        const user = await api.getUser(uid);
+        // store user in local storage to minimze api calls
         if (rememberMe) {
           localStorage.setItem("apiToken", jwt);
           localStorage.setItem("userId", uid);
           setLocality("Local");
+          localStorage.setItem("user", JSON.stringify(user));
         } else {
           sessionStorage.setItem("apiToken", jwt);
           sessionStorage.setItem("userId", uid);
+          sessionStorage.setItem("user", JSON.stringify(user));
         }
-
-        const user = await api.getUser(uid);
         setUser(user);
       } catch (e) {
         if (e instanceof FirebaseError) {
@@ -184,8 +197,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         setError(null);
         localStorage.removeItem("userId");
         localStorage.removeItem("apiToken");
+        localStorage.removeItem("user");
         sessionStorage.removeItem("userId");
         sessionStorage.removeItem("apiToken");
+        sessionStorage.removeItem("user");
         await auth.signOut();
       } catch (e) {
         setError(e as Error);
@@ -222,6 +237,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
         setUser(user);
         sessionStorage.setItem("userId", uid);
+        sessionStorage.setItem("user", JSON.stringify(user));
         sessionStorage.setItem("apiToken", jwt);
       } catch (e) {
         if (e instanceof FirebaseError) {

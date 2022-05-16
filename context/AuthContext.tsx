@@ -119,7 +119,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         const userObj = (sessionStorage.getItem("user"));
         let user: User;
         if (userObj) {
-          user = JSON.parse(userObj)
+          user = JSON.parse(userObj);
         } else {
           user = await api.getUser(uid);
         }

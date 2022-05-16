@@ -6,7 +6,7 @@ name: cd-staging
 on:
   # Triggers the workflow on push events but only for the master branch
   push:
-    branches: [ master ]
+    branches: [master]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -25,9 +25,9 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.PAT_TOKEN }}
         with:
-          source-directory: '.'
-          destination-github-username: 'Anshul-Birla'
-          destination-repository-name: 'LAP-Student-Tracker-Staging'
+          source-directory: "."
+          destination-github-username: "Anshul-Birla"
+          destination-repository-name: "LAP-Student-Tracker-Staging"
           user-email: anbirla@ucsd.edu
           target-branch: master
           force: true

@@ -81,9 +81,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   };
 
   const auth = useMemo(() => {
-    const fbConfig = process.env.REACT_APP_FB_CONFIG
-      ? JSON.parse(process.env.REACT_APP_FB_CONFIG)
-      : {
+    const fbConfig = {
           apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
           authDomain:
             process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",

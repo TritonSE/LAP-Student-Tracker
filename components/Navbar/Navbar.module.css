@@ -12,35 +12,6 @@
   list-style-type: none;
 }
 
-/* .navitem {
-  margin-left: 5rem;
-}
-
-.navlink {
-  composes: labelLarge from "../../styles/globals.css";
-  bottom: 20px;
-  text-decoration: none;
-  position: relative;
-  bottom: 0px;
-}
-.clicked {
-  composes: labelLarge from "../../styles/globals.css";
-  bottom: 20px;
-  text-decoration: none;
-  position: relative;
-  bottom: 0px;
-  border-bottom: 4px solid var(--orange);
-}
-.navlink:hover::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 0;
-  left: 0;
-  bottom: -6px;
-  border-bottom: 4px solid var(--orange);
-} */
-
 .navitem {
   margin-left: 5rem;
   height: 100%;

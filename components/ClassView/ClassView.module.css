@@ -4,12 +4,10 @@
     align-items: left;
     flex-direction: column;
     padding: 1rem 1.5rem;
-    /* background: rgb(59, 179, 153); */
   }
 
   .backbutton {
     width: fit-content;
-    /* background-color: #a337ca; */
   }
   
   .navmenu {
@@ -25,37 +23,30 @@
     width: 100%;
     padding-bottom: 2rem;
     position: relative;
-    /* background: #000; */
   }
   
   .navitem {
     margin-bottom: 1rem;
     width: 100%;
-    /* background-color: #8e1212; */
+    position: relative;
   }
   
   .navlink {
     composes: labelLarge from "../../styles/globals.css";
     text-decoration: none;
     position: relative;
-    bottom: 0px;
-    left: 0px;
+    padding-left: 6px;
+    border-left: 3px solid transparent;
   }
+
   .clicked {
     composes: labelLarge from "../../styles/globals.css";
-    text-decoration: none;
-    position: relative;
-    bottom: 0px;
-    left: -6px;
+    padding-left: 6px;
     border-left: 3px solid var(--orange);
   }
-  .navlink:hover::after {
+
+  .navlink:hover {
     content: "";
-    position: absolute;
-    text-decoration: none;
-    height: 100%;
-    left: -6px;
-    bottom: 0px;
-    border-left: 3px solid var(--orange);
+    border-left-color: var(--orange);
   }
   

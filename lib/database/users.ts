@@ -70,7 +70,7 @@ const updateUser = async (
       "last_name = COALESCE($3, last_name), " +
       "email = COALESCE($4, email), " +
       "role = COALESCE($5, role), " +
-      "approved = COALESCE($6, approved)" +
+      "approved = COALESCE($6, approved)," +
       "address = COALESCE($7, address), " +
       "phone_number = COALESCE($8, phone_number) " +
       "WHERE id=$1",
@@ -79,7 +79,8 @@ const updateUser = async (
 
   try {
     await client.query(query);
-  } catch {
+  } catch (e) {
+    console.log(e);
     throw Error("Error on update user");
   }
 
@@ -109,6 +110,21 @@ const getUser = async (id: string): Promise<User | null> => {
   return user;
 };
 
+const deleteUser = async (id: string): Promise<boolean> => {
+  const query = {
+    text: "delete from users where id = $1",
+    values: [id],
+  };
+
+  try {
+    await client.query(query);
+  } catch (e) {
+    throw Error("Failed to delete user");
+  }
+
+  return true;
+}
+
 const getAllUsers = async (): Promise<User[]> => {
   const query = {
     text: "SELECT id, first_name, last_name, email, role, approved, phone_number, address FROM users",
@@ -126,4 +142,4 @@ const getAllUsers = async (): Promise<User[]> => {
   return allUsers;
 };
 
-export { createUser, getUser, updateUser, getAllUsers };
+export { createUser, getUser, updateUser, getAllUsers, deleteUser };

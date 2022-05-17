@@ -36,7 +36,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
     case "GET": {
       let role: Roles | undefined = undefined;
       let onlyUnapproved: boolean = false;
-      if (req.query && req.query.role) {
+      if (req.query) {
         if (req.query.role) {
           if (
             ["Admin", "Teacher", "Parent", "Volunteer", "Student"].includes(req.query.role as string)

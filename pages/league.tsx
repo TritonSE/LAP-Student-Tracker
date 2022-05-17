@@ -53,20 +53,24 @@ const League: NextApplicationPage = () => {
   }, []);
 
   // Functionality for income request button on staff view
-  const toggleShowRequests = (): void => {
+  const onShowRequests = (): void => {
     setShowRequests(true);
+  }
+
+  const offShowRequests = (): void => {
+    setShowRequests(false);
   }
 
   // Renders specific content component based on tab state
   const renderComponent = (display: string): JSX.Element | undefined => {
     if (display == "Classes") return <ClassView />;
     if (display == "Students") return <StudentView students={content.Students} />;
-    if (display == "Staff") return <StaffView toggleShowRequests={toggleShowRequests}/>;
+    if (display == "Staff") return <StaffView onShowRequests={onShowRequests}/>;
   };
 
   if (showRequests) {
     return (
-      <IncomingAccountRequests />
+      <IncomingAccountRequests offShowRequests={offShowRequests}/>
     );
   } else {
 

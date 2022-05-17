@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { Class, CreateClass } from "../models/class";
 import { ClassEvent, CreateClassEvent } from "../models/events";
-import { UpdateUser, User } from "../models/users";
+import { UpdateUser, CreateUser, User } from "../models/users";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -54,7 +54,7 @@ class LeagueAPI {
     return res.data;
   }
 
-  async createUser(user: User): Promise<User> {
+  async createUser(user: CreateUser): Promise<User> {
     const res = await this.client.post("api/users/", user);
     return res.data;
   }
@@ -62,6 +62,10 @@ class LeagueAPI {
   async updateUser(user: UpdateUser, id: string): Promise<User> {
     const res = await this.client.patch(`api/users/${id}`, user);
     return res.data;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    await this.client.delete(`api/users/${id}`);
   }
 }
 

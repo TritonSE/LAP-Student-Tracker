@@ -10,7 +10,7 @@ import { IncomingRequestBtn } from "./IncomingRequestBtn";
 import useSWR from "swr";
 
 type StaffViewProp = {
-  toggleShowRequests: () => void;
+  onShowRequests: () => void;
 };
 
 const filters = [
@@ -35,10 +35,14 @@ const StaffScroll: React.FC = () => {
   // Use SWR hook to get the data from the backend
   const { data, error } = useSWR("/api/staff", () => client.getStaff());
 
-  console.log(error);
   if (error) return <Error />;
   if (!data) return <Loader />;
   if (data.length == 0) return <Empty userType="Staff" />;
+
+  let requests = false;
+  if (data.filter((user) => user.approved == false)) {
+    requests = true;
+  }
 
   return (
     <>
@@ -55,12 +59,24 @@ const StaffScroll: React.FC = () => {
   );
 };
 
-const StaffView: React.FC<StaffViewProp> = ({ toggleShowRequests }) => {
+const StaffView: React.FC<StaffViewProp> = ({ onShowRequests }) => {
+  const client = useContext(APIContext);
+
+  // Use SWR hook to get the data from the backend
+  const { data } = useSWR("/api/staff", () => client.getStaff());
+
+  let requests = false;
+  if(data) {
+    if(data.filter((user) => user.approved == false).length > 0) {
+      requests = true;
+    }
+  }
+
   return (
     <div className={styles.compContainer}>
       <div className={styles.leftContainer}>
         <h1 className={styles.compTitle}>Staff</h1>
-        <IncomingRequestBtn requests={false} toggleShowRequests={toggleShowRequests} />
+        <IncomingRequestBtn requests={requests} onShowRequests={onShowRequests} />
         <div className={styles.compList}>
           <ul className={styles.scroll}>
             <StaffScroll />

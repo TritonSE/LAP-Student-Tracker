@@ -4,17 +4,28 @@ import styles from "./LeagueViews.module.css";
 
 type IncomingRequestProps = {
   requests: boolean;
-  toggleShowRequests: () => void;
+  onShowRequests: () => void;
 };
 
-const IncomingRequestBtn: React.FC<IncomingRequestProps> = ({ requests, toggleShowRequests }) => {
-  return (
-    <div>
-      <button className={styles.requestBtn} onClick={() => toggleShowRequests()}>
-        Incoming Requests
-      </button>
-    </div>
-  );
+const IncomingRequestBtn: React.FC<IncomingRequestProps> = ({ requests, onShowRequests }) => {
+  if(requests) {
+    return (
+      <div>
+        <button className={styles.requestBtn} onClick={() => onShowRequests()}>
+          Incoming Requests
+          <span className={styles.notificationIcon}></span>
+        </button>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <button className={styles.requestBtn} onClick={() => onShowRequests()}>
+          Incoming Requests
+        </button>
+      </div>
+    );
+  }
 };
 
 export { IncomingRequestBtn };

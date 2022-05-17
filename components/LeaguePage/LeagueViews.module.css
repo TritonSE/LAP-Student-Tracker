@@ -133,6 +133,7 @@
 }
 
 .requestBtn {
+  position: relative;
   float: right;
   background: #5D5FEF;
   box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.25);
@@ -148,7 +149,18 @@
   margin-right: 20px;
 }
 
+.notificationIcon {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 20px;
+  height: 20px;
+  background: #EF5DA8;
+  border-radius: 16px;
+}
+
 .reqCompContainer {
+  position: relative;
   margin: auto;
   text-align: center;
   margin-top: 60px;
@@ -246,4 +258,13 @@
   margin: auto;
   display: flex;
   justify-content: center;
+}
+
+.backBtn {
+  position: absolute;
+  top: 0px;
+  left: 16%;
+  background: url(../../assets/icons/Vector.png);
+  height: 30px;
+  width: 28px;
 }

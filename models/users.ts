@@ -44,9 +44,9 @@ export const UpdateUserSchema = t.partial({
   lastName: t.string,
   email: t.string,
   role: possibleRoles,
+  approved: t.boolean,
   phoneNumber: t.union([t.string, t.null]),
-  address: t.string,
-  approved: t.boolean
+  address: t.string
 });
 
 export const UserArraySchema = t.array(UserSchema);

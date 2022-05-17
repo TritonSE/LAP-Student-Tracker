@@ -12,7 +12,7 @@
   list-style-type: none;
 }
 
-.navitem {
+/* .navitem {
   margin-left: 5rem;
 }
 
@@ -39,4 +39,29 @@
   left: 0;
   bottom: -6px;
   border-bottom: 4px solid var(--orange);
+} */
+
+.navitem {
+  margin-left: 5rem;
+  height: 100%;
+  position: relative;
+}
+
+.navlink {
+  composes: labelLarge from "../../styles/globals.css";
+  text-decoration: none;
+  position: relative;
+  padding-bottom: 6px;
+  border-bottom: 4px solid transparent;
+}
+
+.clicked {
+  composes: labelLarge from "../../styles/globals.css";
+  padding-bottom: 6px;
+  border-bottom: 4px solid var(--orange);
+}
+
+.navlink:hover {
+  content: "";
+  border-bottom-color: var(--orange);
 }

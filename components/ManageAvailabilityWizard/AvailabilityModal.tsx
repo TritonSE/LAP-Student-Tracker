@@ -38,7 +38,7 @@ const AvailabilityModal: React.FC<AvailabilityModalProps> = ({ handleClose, user
   );
 
   /*
-returns a boolean specifyinh whether times are valid, the day in which a conflict
+returns a boolean specifying whether times are valid, the day in which a conflict
 occurs if time isn't valid, and an error message specifying type of conflict if
 time isn't valid
 */
@@ -87,6 +87,7 @@ time isn't valid
     return [true, "", ""];
   };
 
+  // given a list of time intervals, sort the list in ascending order by their start times
   const sortTimes = (times: string[][]): string[][] => {
     times.sort((t1: string[], t2: string[]) => {
       if (t1[0] == t2[0]) {
@@ -211,8 +212,8 @@ time isn't valid
     return result;
   };
 
+  // function to update availability state when child component changes times
   const updateAvailabilty = (day: string, times: string[][]): void => {
-    // function to update availability state when child component changes times
     setAvailability((oldAvailability) => {
       oldAvailability[day] = times;
       return { ...oldAvailability };

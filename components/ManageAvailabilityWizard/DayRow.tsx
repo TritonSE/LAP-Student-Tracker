@@ -32,7 +32,6 @@ const DayRow: React.FC<DayRowProps> = ({
 
   // function to delete time from time state when TimeSlot component deleted
   const handleDeleteTime = (idx: number): void => {
-    // removed the time array for this day
 
     setAvailabilityTimes((oldAvailability) => {
       oldAvailability.splice(idx, 1);
@@ -41,8 +40,8 @@ const DayRow: React.FC<DayRowProps> = ({
     });
   };
 
+  // creates a new TimeSlot
   const addTimeSlot = (): void => {
-    // creates a new TimeSlot
 
     setAvailabilityTimes((oldAvailability) => {
       oldAvailability.push(["12:00", "13:00"]);

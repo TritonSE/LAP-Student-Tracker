@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import type { NextApplicationPage } from "./_app";
 import { AuthContext } from "../context/AuthContext";
 import { AdminHomePage } from "../components/HomePage/AdminHomePage";
+import { TeacherHomePage } from "../components/HomePage/TeacherHomePage";
 import { UserHomePage } from "../components/HomePage/UserHomePage";
 import { Error } from "../components/util/Error";
 import styles from "../styles/Home.module.css";
@@ -12,9 +13,17 @@ const Home: NextApplicationPage = () => {
 
   if (user == null) return <Error />;
 
+  const renderPage = (role:string) => {
+    switch (role) {
+      case "Admin" : return <AdminHomePage/>
+      case "Teacher" : return <TeacherHomePage userId={user.id}/>
+      default : return <UserHomePage  userId={user.id}/>
+    }
+  }
+
   return (
     <div>
-      {user.role == "Admin" ? <AdminHomePage /> : <UserHomePage userId={user.id} />}
+      {renderPage(user.role)}
       <div className={styles.spacing} />
     </div>
   );

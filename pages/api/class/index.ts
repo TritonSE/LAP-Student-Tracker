@@ -7,18 +7,22 @@ import { StatusCodes } from "http-status-codes";
 
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newClass: CreateClass;
+  let user_id = "";
   switch (req.method) {
     case "GET":
-      let user_id: string = ""
-      if(req.query && req.query.userId){
-        if(req.query.userId != undefined){
+      if (req.query && req.query.userId) {
+        if (req.query.userId != undefined) {
           user_id = req.query.userId as string;
         }
       }
       try {
         let result = await getAllClasses();
         //console.log("zain");
-        if(Boolean(user_id)){ result = result.filter(obj => JSON.stringify(obj).toLowerCase().includes(user_id.toLowerCase())) }
+        if (user_id) {
+          result = result.filter((obj) =>
+            JSON.stringify(obj).toLowerCase().includes(user_id.toLowerCase())
+          );
+        }
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

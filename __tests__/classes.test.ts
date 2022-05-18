@@ -29,14 +29,10 @@ beforeAll(async () => {
     "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('33', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('44', 'Bill', 'Test', 'bt@gmail.com', 'Teacher', '14 nowhere lane', '123-456-7892')",
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('44', 'Bill', 'Test', 'bt@gmail.com', 'Teacher', '14 nowhere lane', '123-456-7892')"
   );
   await client.query("DELETE from commitments");
-  await client.query(
-    "INSERT INTO commitments(user_id, event_information_id) VALUES('44', '11')",
-  );
-
-
+  await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('44', '11')");
 });
 
 afterAll(async () => {
@@ -47,9 +43,7 @@ afterAll(async () => {
 
 describe("[POST] /api/class", () => {
   beforeAll(async () => {
-    await client.query(
-      "INSERT INTO commitments(user_id, event_information_id) VALUES('44', '33')",
-    );
+    await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('44', '33')");
   });
   test("creates a new class", async () => {
     const body: Class = {
@@ -62,7 +56,7 @@ describe("[POST] /api/class", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
-      teachers: []
+      teachers: [],
     };
 
     const expected: Class = {
@@ -75,7 +69,7 @@ describe("[POST] /api/class", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
-      teachers: []
+      teachers: [],
     };
 
     await makeHTTPRequest(
@@ -144,11 +138,7 @@ describe("[GET] /api/class/[id]", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
-      teachers: [
-        {firstName: "Bill",
-               lastName: "Test",
-               userId: "44"}
-      ]
+      teachers: [{ firstName: "Bill", lastName: "Test", userId: "44" }],
     };
 
     const query = {
@@ -195,9 +185,7 @@ describe("[PATCH] /api/class/[id]", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "Java",
-      teachers: [{firstName: "Bill",
-      lastName: "Test",
-      userId: "44"}]
+      teachers: [{ firstName: "Bill", lastName: "Test", userId: "44" }],
     };
 
     const query = {
@@ -234,9 +222,7 @@ describe("[PATCH] /api/class/[id]", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "Java",
-      teachers: [{firstName: "Bill",
-      lastName: "Test",
-      userId: "44"}]
+      teachers: [{ firstName: "Bill", lastName: "Test", userId: "44" }],
     };
 
     const query = {
@@ -294,25 +280,18 @@ describe("[GET] /api/class", () => {
     );
     await client.query("DELETE from users");
     await client.query(
-      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('77', 'John', 'Doe', 'john@gmail.com', 'Teacher', '000 nowhere lane', '123-456-7890')",
+      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('77', 'John', 'Doe', 'john@gmail.com', 'Teacher', '000 nowhere lane', '123-456-7890')"
     );
     await client.query(
-      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('88', 'David', 'Roberts', 'david@gmail.com', 'Teacher', '123 nowhere lane', '123-456-7891')",
+      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('88', 'David', 'Roberts', 'david@gmail.com', 'Teacher', '123 nowhere lane', '123-456-7891')"
     );
     await client.query(
-      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('99', 'Bill', 'Nye', 'bill@gmail.com', 'Teacher', '345 nowhere lane', '123-456-7892')",
+      "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('99', 'Bill', 'Nye', 'bill@gmail.com', 'Teacher', '345 nowhere lane', '123-456-7892')"
     );
     await client.query("DELETE from commitments");
-    await client.query(
-      "INSERT INTO commitments(user_id, event_information_id) VALUES('77', '11')",
-    );
-    await client.query(
-      "INSERT INTO commitments(user_id, event_information_id) VALUES('88', '22')",
-    );
-    await client.query(
-      "INSERT INTO commitments(user_id, event_information_id) VALUES('99', '33')",
-    );
-
+    await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('77', '11')");
+    await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('88', '22')");
+    await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('99', '33')");
   });
   test("get all classes", async () => {
     const expected: Class[] = [
@@ -326,10 +305,7 @@ describe("[GET] /api/class", () => {
         startTime: "07:34Z",
         endTime: "08:34Z",
         language: "C++",
-        teachers: [
-          {userId: "77", firstName: "John", lastName: "Doe"
-          }
-        ]
+        teachers: [{ userId: "77", firstName: "John", lastName: "Doe" }],
       },
       {
         name: "class2",
@@ -341,10 +317,7 @@ describe("[GET] /api/class", () => {
         startTime: "06:34Z",
         endTime: "07:40Z",
         language: "Java",
-        teachers: [
-          {userId: "88", firstName: "David", lastName: "Roberts"
-          }
-        ]
+        teachers: [{ userId: "88", firstName: "David", lastName: "Roberts" }],
       },
       {
         name: "class3",
@@ -356,10 +329,7 @@ describe("[GET] /api/class", () => {
         startTime: "01:00Z",
         endTime: "02:00Z",
         language: "Python",
-        teachers: [
-          {userId: "99", firstName: "Bill", lastName: "Nye"
-          }
-        ]
+        teachers: [{ userId: "99", firstName: "Bill", lastName: "Nye" }],
       },
     ];
     await makeHTTPRequest(

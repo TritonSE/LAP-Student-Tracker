@@ -27,7 +27,8 @@ const makeHTTPRequest = async (
   method: RequestMethod,
   body: Object | undefined,
   expectedResponseCode: number | undefined,
-  expectedBody: Object | undefined
+  expectedBody: Object | undefined,
+  ignoreResKey?: string
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -40,7 +41,14 @@ const makeHTTPRequest = async (
 
   if (expectedResponseCode) expect(res._getStatusCode()).toBe(expectedResponseCode);
   if (expectedBody) {
-    expect(JSON.parse(res._getData())).toEqual(expectedBody);
+    const resData = JSON.parse(res._getData());
+    // key to ignore in actual body when comparing with expected body
+    // use for randomly generated IDs that can't be predetermined
+    if (ignoreResKey) {
+      expect(resData).toHaveProperty(ignoreResKey);
+      delete resData[ignoreResKey];
+    }
+    expect(resData).toEqual(expectedBody);
   }
   return res;
 };

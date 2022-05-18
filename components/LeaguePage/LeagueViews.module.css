@@ -135,17 +135,17 @@
 .requestBtn {
   position: relative;
   float: right;
-  background: #5D5FEF;
+  background: #5d5fef;
   box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
   width: 204px;
   height: 40px;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
-  color: #FFFFFF;
+  color: #ffffff;
   margin-right: 20px;
 }
 
@@ -155,7 +155,7 @@
   right: -7px;
   width: 20px;
   height: 20px;
-  background: #EF5DA8;
+  background: #ef5da8;
   border-radius: 16px;
 }
 
@@ -167,12 +167,12 @@
 }
 
 .reqTitle {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 32px;
   line-height: 40px;
-  color: #1B1C1D;
+  color: #1b1c1d;
 }
 
 .reqList {
@@ -184,7 +184,7 @@
 .topReqBar {
   width: 1308px;
   height: 78px;
-  background: #46D5B3;
+  background: #46d5b3;
   border-radius: 15px 15px 0px 0px;
   padding-left: 68px;
   padding-right: 68px;
@@ -194,7 +194,7 @@
 .topReqBar p {
   float: left;
   width: 20%;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -202,7 +202,7 @@
   align-items: center;
   text-align: center;
   letter-spacing: 0.1px;
-  color: #494C4E;
+  color: #494c4e;
   margin: 0;
 }
 
@@ -212,7 +212,7 @@
   padding-left: 68px;
   padding-right: 68px;
   padding-top: 35px;
-  background: #F6F6FA; 
+  background: #f6f6fa;
 }
 
 .accountBarWhite {
@@ -221,13 +221,13 @@
   padding-left: 68px;
   padding-right: 68px;
   padding-top: 35px;
-  background: #FFFFFF; 
+  background: #ffffff;
 }
 
 .accountBarGrey p {
   float: left;
   width: 20%;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -235,14 +235,14 @@
   align-items: center;
   text-align: center;
   letter-spacing: 0.1px;
-  color: #494C4E;
+  color: #494c4e;
   margin: 0;
 }
 
 .accountBarWhite p {
   float: left;
   width: 20%;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -250,7 +250,7 @@
   align-items: center;
   text-align: center;
   letter-spacing: 0.1px;
-  color: #494C4E;
+  color: #494c4e;
   margin: 0;
 }
 

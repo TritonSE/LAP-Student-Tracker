@@ -62,7 +62,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
       try {
         const result = await deleteUser(id);
         return res.status(StatusCodes.ACCEPTED).json(result);
-      } catch(e) {
+      } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

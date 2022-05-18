@@ -35,13 +35,16 @@ const createUser = async (
   phone_number?: string | null,
   imgId?: string | null
 ): Promise<User | null> => {
-  const query = (role == "Admin" || role =="Teacher") ? {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)",
-    values: [id, firstName, lastName, email, role, false, address, phone_number, imgId],
-  } : {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)",
-    values: [id, firstName, lastName, email, role, true, address, phone_number, imgId],
-  };
+  const query =
+    role == "Admin" || role == "Teacher"
+      ? {
+          text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+          values: [id, firstName, lastName, email, role, false, address, phone_number, imgId],
+        }
+      : {
+          text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+          values: [id, firstName, lastName, email, role, true, address, phone_number, imgId],
+        };
   try {
     await client.query(query);
   } catch (e) {
@@ -80,7 +83,6 @@ const updateUser = async (
   try {
     await client.query(query);
   } catch (e) {
-    console.log(e);
     throw Error("Error on update user");
   }
 
@@ -123,7 +125,7 @@ const deleteUser = async (id: string): Promise<boolean> => {
   }
 
   return true;
-}
+};
 
 const getAllUsers = async (): Promise<User[]> => {
   const query = {
@@ -131,7 +133,7 @@ const getAllUsers = async (): Promise<User[]> => {
   };
 
   const res = await client.query(query);
-  
+
   let allUsers: User[];
   try {
     allUsers = await decode(UserArraySchema, res.rows);

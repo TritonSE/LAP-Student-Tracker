@@ -50,7 +50,9 @@ class LeagueAPI {
   }
 
   async getAllUsers(role?: string, onlyUnapproved?: boolean): Promise<User[]> {
-    const res = await this.client.get("/api/users/", { params: { role: role , onlyUnapproved: onlyUnapproved } });
+    const res = await this.client.get("/api/users/", {
+      params: { role: role, onlyUnapproved: onlyUnapproved },
+    });
     return res.data;
   }
 

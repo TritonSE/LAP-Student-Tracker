@@ -2,7 +2,7 @@ import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest, makeUserHTTPRequest } from "./__testutils__/testutils.test";
-import { UpdateUser, User } from "../models/users";
+import { UpdateUser, User, CreateUser } from "../models/users";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
@@ -12,22 +12,22 @@ const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 beforeAll(async () => {
   await client.query("DELETE from users");
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', true, '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', true, '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', false, '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', false, '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', false, '123 Main Street', '1234567890')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', false, '123 Main Street', '1234567890')"
   );
 });
 
@@ -38,7 +38,7 @@ afterAll(async () => {
 
 describe("[GET] /api/users/?filter", () => {
   test("look for all users", async () => {
-    const expected: User[] = [
+    const expected: CreateUser[] = [
       {
         id: "1",
         firstName: "John",
@@ -119,6 +119,7 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "teacher@gmail.com",
         role: "Teacher",
+        approved: false,
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -128,6 +129,7 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "teacher2@gmail.com",
         role: "Teacher",
+        approved: false,
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -156,6 +158,7 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "john@gmail.com",
         role: "Student",
+        approved: true,
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -165,6 +168,7 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "john2@gmail.com",
         role: "Student",
+        approved: true,
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -193,6 +197,7 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "admin@gmail.com",
         role: "Admin",
+        approved: false,
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -202,6 +207,7 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "admin2@gmail.com",
         role: "Admin",
+        approved: false,
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -241,12 +247,22 @@ describe("[GET] /api/users/?filter", () => {
 
 describe("[POST] /api/users", () => {
   test("creates a new user", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "100",
       firstName: "John",
       lastName: "Doe",
       email: "mynaME@gmail.com",
       role: "Student",
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    };
+    const expectedBody: User = {
+      id: "100",
+      firstName: "John",
+      lastName: "Doe",
+      email: "mynaME@gmail.com",
+      role: "Student",
+      approved: true,
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
@@ -257,12 +273,12 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expectedBody
     );
   });
 
   test("doesn't create a duplicate user", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "1",
       firstName: "John",
       lastName: "Doe",
@@ -284,7 +300,7 @@ describe("[POST] /api/users", () => {
   });
 
   test("doesn't create a different user with an existing email", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "54",
       firstName: "John",
       lastName: "John",
@@ -306,7 +322,7 @@ describe("[POST] /api/users", () => {
   });
 
   test("creates an Admin user", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "50",
       firstName: "Admin",
       lastName: "Doe",
@@ -315,24 +331,14 @@ describe("[POST] /api/users", () => {
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
-    await makeUserHTTPRequest(
-      userHandler,
-      "/api/users/",
-      undefined,
-      "POST",
-      body,
-      StatusCodes.CREATED,
-      body
-    );
-  });
 
-  test("creates an Teacher user", async () => {
-    const body: User = {
-      id: "45",
-      firstName: "Teacher",
+    const expectedBody: User = {
+      id: "50",
+      firstName: "Admin",
       lastName: "Doe",
-      email: "newTeacher@gmail.com",
+      email: "newAdmin@gmail.com",
       role: "Admin",
+      approved: false,
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
@@ -343,7 +349,40 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expectedBody
+    );
+  });
+
+  test("creates an Teacher user", async () => {
+    const body: CreateUser = {
+      id: "45",
+      firstName: "Teacher",
+      lastName: "Doe",
+      email: "newTeacher@gmail.com",
+      role: "Admin",
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    };
+
+    const expectedBody: User = {
+      id: "45",
+      firstName: "Teacher",
+      lastName: "Doe",
+      email: "newTeacher@gmail.com",
+      role: "Admin",
+      approved: false,
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    };
+
+    await makeUserHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody
     );
   });
 
@@ -376,6 +415,7 @@ describe("[GET] /api/users/[id]", () => {
       lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
+      approved: true,
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
@@ -420,6 +460,7 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
+      approved: true,
       address: "456 Main Street",
       phoneNumber: "4567890",
     };
@@ -433,6 +474,7 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
+      approved: true,
       address: "456 Main Street",
       phoneNumber: "4567890",
     };
@@ -455,6 +497,7 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "admin@gmail.com",
       role: "Admin",
+      approved: false,
       address: "456 Main Street",
       phoneNumber: "4567890",
     };

@@ -30,7 +30,7 @@ export const UserSchema = t.intersection([
     lastName: t.string,
     email: t.string,
     role: possibleRoles,
-    approved: t.boolean
+    approved: t.boolean,
   }),
   t.partial({
     phoneNumber: t.union([t.string, t.null]),
@@ -46,7 +46,7 @@ export const UpdateUserSchema = t.partial({
   role: possibleRoles,
   approved: t.boolean,
   phoneNumber: t.union([t.string, t.null]),
-  address: t.string
+  address: t.string,
 });
 
 export const UserArraySchema = t.array(UserSchema);

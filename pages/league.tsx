@@ -14,7 +14,7 @@ type Tab = typeof allTabs[number];
 
 const League: NextApplicationPage = () => {
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
-  const [showRequests, setShowRequests] = useState<Boolean>(false);
+  const [showRequests, setShowRequests] = useState<boolean>(false);
   const [content, setContent] = useState<{
     Classes: Class[];
     Students: Student[];
@@ -38,7 +38,7 @@ const League: NextApplicationPage = () => {
     level: 3,
     classes: ["CSE 123"],
   };
-  const testStudentArray: Student[] = Array(5).fill(testStudent);
+  const testStudentArray: Student[] = Array(1).fill(testStudent);
   // end dummy data
 
   useEffect(() => {
@@ -55,26 +55,23 @@ const League: NextApplicationPage = () => {
   // Functionality for income request button on staff view
   const onShowRequests = (): void => {
     setShowRequests(true);
-  }
+  };
 
   const offShowRequests = (): void => {
     setShowRequests(false);
-  }
+  };
 
   // Renders specific content component based on tab state
   const renderComponent = (display: string): JSX.Element | undefined => {
     if (display == "Classes") return <ClassView />;
     if (display == "Students") return <StudentView students={content.Students} />;
-    if (display == "Staff") return <StaffView onShowRequests={onShowRequests}/>;
+    if (display == "Staff") return <StaffView onShowRequests={onShowRequests} />;
   };
 
   if (showRequests) {
-    return (
-      <IncomingAccountRequests offShowRequests={offShowRequests}/>
-    );
-  } else {
-
+    return <IncomingAccountRequests offShowRequests={offShowRequests} />;
   }
+
   return (
     <>
       <div className={styles.tabsContainer}>

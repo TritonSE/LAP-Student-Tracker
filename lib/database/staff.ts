@@ -17,7 +17,7 @@ const getAllStaff = async (): Promise<Staff[]> => {
   };
 
   const res = await client.query(query);
-  
+
   let staffArray: staffArrayType;
   try {
     staffArray = await decode(StaffArraySchema, res.rows);

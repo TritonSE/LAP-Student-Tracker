@@ -39,11 +39,6 @@ const StaffScroll: React.FC = () => {
   if (!data) return <Loader />;
   if (data.length == 0) return <Empty userType="Staff" />;
 
-  let requests = false;
-  if (data.filter((user) => user.approved == false)) {
-    requests = true;
-  }
-
   return (
     <>
       {data.map((user: User) => (
@@ -66,8 +61,8 @@ const StaffView: React.FC<StaffViewProp> = ({ onShowRequests }) => {
   const { data } = useSWR("/api/staff", () => client.getStaff());
 
   let requests = false;
-  if(data) {
-    if(data.filter((user) => user.approved == false).length > 0) {
+  if (data) {
+    if (data.filter((user) => user.approved == false).length > 0) {
       requests = true;
     }
   }

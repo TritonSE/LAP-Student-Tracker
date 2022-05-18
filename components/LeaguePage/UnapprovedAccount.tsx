@@ -1,16 +1,20 @@
-import { Int } from "io-ts";
 import React from "react";
 import styles from "./LeagueViews.module.css";
 import { User } from "../../models/users";
 
 type UnapprovedAccountProps = {
-  user: User; 
+  user: User;
   index: number;
   approveAccount: (user: User) => void;
   rejectAccount: (user: User) => void;
 };
 
-const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({ user, index, approveAccount, rejectAccount}) => {
+const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
+  user,
+  index,
+  approveAccount,
+  rejectAccount,
+}) => {
   if (index % 2 == 0) {
     return (
       <div className={styles.accountBarGrey}>
@@ -18,7 +22,10 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({ user, index, appr
         <p>{user.email}</p>
         <p>00/00/00</p>
         <p>{user.role}</p>
-        <div><button onClick={() => approveAccount(user)}>Yes</button> / <button onClick={() => rejectAccount(user)}>No</button></div>
+        <div>
+          <button onClick={() => approveAccount(user)}>Yes</button> /{" "}
+          <button onClick={() => rejectAccount(user)}>No</button>
+        </div>
       </div>
     );
   } else {
@@ -28,7 +35,10 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({ user, index, appr
         <p>{user.email}</p>
         <p>00/00/00</p>
         <p>{user.role}</p>
-        <div><button onClick={() => approveAccount(user)}>Yes</button> / <button onClick={() => rejectAccount(user)}>No</button></div>
+        <div>
+          <button onClick={() => approveAccount(user)}>Yes</button> /{" "}
+          <button onClick={() => rejectAccount(user)}>No</button>
+        </div>
       </div>
     );
   }

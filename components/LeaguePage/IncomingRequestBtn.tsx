@@ -1,5 +1,4 @@
-import { boolean } from "fp-ts";
-import React, { useContext } from "react";
+import React from "react";
 import styles from "./LeagueViews.module.css";
 
 type IncomingRequestProps = {
@@ -8,7 +7,7 @@ type IncomingRequestProps = {
 };
 
 const IncomingRequestBtn: React.FC<IncomingRequestProps> = ({ requests, onShowRequests }) => {
-  if(requests) {
+  if (requests) {
     return (
       <div>
         <button className={styles.requestBtn} onClick={() => onShowRequests()}>

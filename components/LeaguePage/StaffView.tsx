@@ -1,12 +1,7 @@
-import React, { useContext } from "react";
+import React, {useState} from "react";
 import styles from "./LeagueViews.module.css";
-import { StaffCard } from "./StaffCard";
-import { APIContext } from "../../context/APIContext";
-import { Loader } from "../util/Loader";
-import { Error } from "../util/Error";
-import { Empty } from "../util/Empty";
-import { User } from "../../models/users";
-import useSWR from "swr";
+import {StaffScroll} from "./StaffScroll";
+
 
 const filters = [
   "Administration",
@@ -23,40 +18,28 @@ const filters = [
   "Level 8",
 ];
 
-// Renders the list of staff or the corresponding error
-const StaffScroll: React.FC = () => {
-  const client = useContext(APIContext);
-
-  // Use SWR hook to get the data from the backend
-  const { data, error } = useSWR("/api/staff", () => client.getStaff());
-
-  if (error) return <Error />;
-  if (!data) return <Loader />;
-  if (data.length == 0) return <Empty userType="Staff" />;
-
-  return (
-    <>
-      {data.map((user: User) => (
-        <StaffCard
-          key={user.id}
-          firstName={user.firstName}
-          lastName={user.lastName}
-          phone_number={user.phoneNumber}
-          email={user.email}
-        />
-      ))}
-    </>
-  );
+const onFilterCheck = (checked: boolean, value: string): void => {
+  const tempSelectedFilters = new Set(selectedClassLevels);
+  if (checked) {
+    tempSelectedFilters.add(Number(value));
+  } else if (!checked) {
+    tempSelectedFilters.delete(Number(value));
+  }
+  setSelectedClassLevels(tempSelectedFilters);
 };
 
+
 const StaffView: React.FC = () => {
+  const [searchBox, setSearchBox] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
   return (
     <div className={styles.compContainer}>
       <div className={styles.leftContainer}>
         <h1 className={styles.compTitle}>Staff</h1>
         <div className={styles.compList}>
           <ul className={styles.scroll}>
-            <StaffScroll />
+            <StaffScroll searchQuery={searchBox} selectedFilters={selectedFilters}/>
           </ul>
         </div>
       </div>
@@ -68,7 +51,13 @@ const StaffView: React.FC = () => {
           {filters.map((l) => (
             <li key={l}>
               <p className={styles.listItemText}>{l}</p>
-              <input type="checkbox"></input>
+              <input
+                type="checkbox"
+                value={l}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onFilterCheck(e.target.checked, e.target.value)
+                }
+              ></input>
             </li>
           ))}
         </ul>
@@ -77,4 +66,4 @@ const StaffView: React.FC = () => {
   );
 };
 
-export { StaffView, StaffScroll };
+export { StaffView };

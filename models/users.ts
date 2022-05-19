@@ -1,6 +1,6 @@
 import * as t from "io-ts";
 
-const possibleRoles = t.keyof({
+export const possibleRoles = t.keyof({
   Admin: null,
   Volunteer: null,
   Student: null,

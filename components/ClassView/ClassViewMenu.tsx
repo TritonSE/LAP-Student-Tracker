@@ -17,6 +17,7 @@ const BackButton: React.FC = () => {
 export const ClassViewMenu: React.FC = () => {
     const router = useRouter();
     const id = router.query.classid;
+    console.log(router.query);
 
     return (
       <nav className={styles.navbar}>

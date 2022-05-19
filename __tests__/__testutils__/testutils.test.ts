@@ -3,7 +3,8 @@
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
-import { ClassEvent, CalendarEvent } from "../../models/events";
+import { CalendarEvent, ClassEvent } from "../../models/events";
+import { User } from "../../models/users";
 
 /**
  * Create and test a HTTP Request
@@ -26,7 +27,8 @@ const makeHTTPRequest = async (
   method: RequestMethod,
   body: Object | undefined,
   expectedResponseCode: number | undefined,
-  expectedBody: Object | undefined
+  expectedBody: Object | undefined,
+  ignoreResKey?: string
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -39,7 +41,14 @@ const makeHTTPRequest = async (
 
   if (expectedResponseCode) expect(res._getStatusCode()).toBe(expectedResponseCode);
   if (expectedBody) {
-    expect(JSON.parse(res._getData())).toEqual(expectedBody);
+    const resData = JSON.parse(res._getData());
+    // key to ignore in actual body when comparing with expected body
+    // use for randomly generated IDs that can't be predetermined
+    if (ignoreResKey) {
+      expect(resData).toHaveProperty(ignoreResKey);
+      delete resData[ignoreResKey];
+    }
+    expect(resData).toEqual(expectedBody);
   }
   return res;
 };
@@ -74,6 +83,38 @@ const makeEventHTTPRequest = async (
       backgroundColor: expectedBody.backgroundColor,
     })
   );
+
+  return res;
+};
+
+/* HTTP request handler for users API that ignores pictureId field
+   when comparing User response data */
+const makeUserHTTPRequest = async (
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  endpoint: string,
+  query: Object | undefined,
+  method: RequestMethod,
+  body: Object | undefined,
+  expectedResponseCode: number,
+  expectedBody: User
+): Promise<MockResponse<NextApiResponse<any>>> => {
+  const res = await makeHTTPRequest(
+    handler,
+    endpoint,
+    query,
+    method,
+    body,
+    expectedResponseCode,
+    undefined
+  );
+  const resObject = JSON.parse(res._getData());
+
+  // Check that pictureId field is there but ignore when comparing objects
+  if (expectedBody) {
+    expect(resObject).toHaveProperty("pictureId");
+    delete resObject["pictureId"];
+    expect(resObject).toEqual(expectedBody);
+  }
 
   return res;
 };
@@ -144,6 +185,7 @@ const getISOTimeFromExplicitFields = (
 
 export {
   makeHTTPRequest,
+  makeUserHTTPRequest,
   makeEventHTTPRequest,
   makeEventFeedHTTPRequest,
   convertTimeToISO,

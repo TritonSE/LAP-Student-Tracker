@@ -117,6 +117,10 @@
   margin-top: 15px;
 }
 
+.spacing {
+  width: 30px;
+}
+
 .inputField {
   border: none;
   border-radius: 8px;
@@ -160,6 +164,7 @@
   margin: 10px 0px;
   padding: 0px 15px;
   cursor: pointer;
+  z-index: 25;
 }
 
 .timeInput {

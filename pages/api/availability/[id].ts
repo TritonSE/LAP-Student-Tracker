@@ -9,7 +9,7 @@ export const availabilityIdHandler: NextApiHandler = async (
   res: NextApiResponse
 ) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const id = req.query.id as string;
@@ -25,7 +25,7 @@ export const availabilityIdHandler: NextApiHandler = async (
           return res.status(StatusCodes.NOT_FOUND).json("Availability of user not found");
         return res.status(StatusCodes.ACCEPTED).json(availability);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
     case "PATCH": {
@@ -50,7 +50,7 @@ export const availabilityIdHandler: NextApiHandler = async (
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
     default: {

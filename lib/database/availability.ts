@@ -29,7 +29,7 @@ const updateAvailability = async (
   try {
     await client.query(query);
   } catch (e) {
-    throw Error("Error on update availability");
+    throw Error("CustomError on update availability");
   }
 
   return getAvailabilityById(id);

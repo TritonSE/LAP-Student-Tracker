@@ -37,7 +37,7 @@ const getEventFeed = async (
   try {
     calendarEventArray = await decode(CalendarEventArraySchema, res.rows);
   } catch (e) {
-    throw Error("Error getting calendar event feed from database.");
+    throw Error("CustomError getting calendar event feed from database.");
   }
 
   return calendarEventArray;

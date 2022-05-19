@@ -7,7 +7,7 @@ import { StatusCodes } from "http-status-codes";
 // Handles all requests to /api/module/[id]
 export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const moduleId = req.query.id as string;
@@ -21,7 +21,7 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       return res.status(StatusCodes.NOT_FOUND).json("module not found");
     }
   } catch (e) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   switch (req.method) {
@@ -36,7 +36,7 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
         const result = await updateModule(moduleId, updateModuleObj.name, updateModuleObj.position);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -45,7 +45,7 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
         const result = await deleteModule(moduleId);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

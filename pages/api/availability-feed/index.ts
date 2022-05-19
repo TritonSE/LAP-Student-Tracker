@@ -11,7 +11,7 @@ const availabilityFeedHandler: NextApiHandler = async (
     case "GET":
       try {
         if (!req.query) {
-          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
         }
 
         const start = req.query.start as string;
@@ -29,7 +29,7 @@ const availabilityFeedHandler: NextApiHandler = async (
         const result = await getAvailabilityFeed(start, end, userId);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
 
     default:

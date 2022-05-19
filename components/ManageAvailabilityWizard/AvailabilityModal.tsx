@@ -9,7 +9,7 @@ import { DateTime } from "luxon";
 import useSWR from "swr";
 import { APIContext } from "../../context/APIContext";
 import { Loader } from "../util/Loader";
-import { Error } from "../util/Error";
+import { CustomError } from "../util/CustomError";
 import { Availability } from "../../models/availability";
 import { ValidDays } from "../../models/availability";
 import axios from "axios";
@@ -128,7 +128,7 @@ time isn't valid
     }
   }, [availability]);
 
-  if (error) return <Error />;
+  if (error) return <CustomError />;
   if (!data) return <Loader />;
 
   let availabilityFromDB: Availability = {
@@ -272,7 +272,7 @@ time isn't valid
 
       // update the cached data from useSWR
       await mutate(newAvailability);
-    } catch (err) {
+    } catch (err: unknown) {
       if (axios.isAxiosError(err) && err.response) setErrMsg(err.response.data);
       else if (err instanceof Error) setErrMsg(err.message);
       else setErrMsg("Error");

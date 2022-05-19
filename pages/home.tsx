@@ -13,13 +13,16 @@ const Home: NextApplicationPage = () => {
 
   if (user == null) return <Error />;
 
-  const renderPage = (role:string) => {
+  const renderPage = (role: string) => {
     switch (role) {
-      case "Admin" : return <AdminHomePage/>
-      case "Teacher" : return <TeacherHomePage userId={user.id}/>
-      default : return <UserHomePage  userId={user.id}/>
+      case "Admin":
+        return <AdminHomePage />;
+      case "Teacher":
+        return <TeacherHomePage userId={user.id} />;
+      default:
+        return <UserHomePage userId={user.id} />;
     }
-  }
+  };
 
   return (
     <div>

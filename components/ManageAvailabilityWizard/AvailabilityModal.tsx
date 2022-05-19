@@ -312,7 +312,7 @@ time isn't valid
             )
           )}
         </div>
-        <div className={styles.spacing}/>
+        <div className={styles.spacing} />
         <hr className={styles.line} />
         <div className={styles.footerContent}>
           <button

@@ -13,7 +13,7 @@ const Home: NextApplicationPage = () => {
 
   if (user == null) return <Error />;
 
-  const renderPage = (role: string) => {
+  const renderPage = (role: string): JSX.Element => {
     switch (role) {
       case "Admin":
         return <AdminHomePage />;

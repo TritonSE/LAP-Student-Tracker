@@ -17,6 +17,8 @@ type AvailabilityModalProps = {
   userId: string;
 };
 
+type DaysOfWeek = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+
 const AvailabilityModal: React.FC<AvailabilityModalProps> = ({ handleClose, userId }) => {
   // repeat modal states initialized by init props
   const [availability, setAvailability] = useState<Availability>({
@@ -138,7 +140,7 @@ time isn't valid
     timeZone: string
   ): Availability => {
     const dummyDate = "2000-01-02 ";
-    const daysOfWeek = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+    const daysOfWeek: DaysOfWeek[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
     const result: Availability = {
       mon: [],
       tue: [],

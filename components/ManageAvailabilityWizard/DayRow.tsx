@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./DayRow.module.css";
 
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 
 import { TimeSlot } from "./TimeSlot";
+import { ValidDays } from "../../models/availability";
 
 type DayRowProps = {
   times: string[][];
-  day: string;
-  setAvailability: (day: string, times: string[][]) => void;
+  day: ValidDays;
+  setAvailability: (day: ValidDays, times: string[][]) => void;
 };
 
 const DayRow: React.FC<DayRowProps> = ({
@@ -34,8 +35,7 @@ const DayRow: React.FC<DayRowProps> = ({
   const handleDeleteTime = (idx: number): void => {
     setAvailabilityTimes((oldAvailability) => {
       oldAvailability.splice(idx, 1);
-      const result = [...oldAvailability];
-      return result;
+      return [...oldAvailability];
     });
   };
 

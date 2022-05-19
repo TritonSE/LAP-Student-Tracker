@@ -1,18 +1,18 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import {
   createClassEvent,
-  teachersExist,
   NonExistingTeacher,
   TeacherConflictError,
+  teachersExist,
   validateTimes,
 } from "../../../../lib/database/events";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
-import { CreateClassEvent, ClassEvent, CreateClassEventSchema } from "../../../../models/events";
+import { ClassEvent, CreateClassEvent, CreateClassEventSchema } from "../../../../models/events";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
-import { Interval, DateTime } from "luxon";
+import { DateTime, Interval } from "luxon";
 
 // handles requests to /api/events/class
 const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

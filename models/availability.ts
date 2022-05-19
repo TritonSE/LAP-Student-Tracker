@@ -10,3 +10,4 @@ export const AvailabilitySchema = t.type({
 });
 
 export type Availability = t.TypeOf<typeof AvailabilitySchema>;
+export type ValidDays = "mon" | "tue" | "wed" | "thu" | "fri" | "sat";

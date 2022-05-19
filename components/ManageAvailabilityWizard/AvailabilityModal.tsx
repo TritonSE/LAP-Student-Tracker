@@ -11,6 +11,8 @@ import { APIContext } from "../../context/APIContext";
 import { Loader } from "../util/Loader";
 import { Error } from "../util/Error";
 import { Availability } from "../../models/availability";
+import { ValidDays } from "../../models/availability";
+import axios from "axios";
 
 type AvailabilityModalProps = {
   handleClose: () => void;
@@ -18,6 +20,16 @@ type AvailabilityModalProps = {
 };
 
 type DaysOfWeek = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+
+type NonNullAvailability = {
+  mon: string[][];
+  tue: string[][];
+  wed: string[][];
+  thu: string[][];
+  fri: string[][];
+  sat: string[][];
+  timeZone: string;
+};
 
 const AvailabilityModal: React.FC<AvailabilityModalProps> = ({ handleClose, userId }) => {
   // repeat modal states initialized by init props
@@ -52,7 +64,7 @@ time isn't valid
       if (day == "timeZone" || allTime == null) {
         continue;
       }
-      //makes a deepcopy so we do not change states
+      //makes a deep copy so we do not change states
       let times = JSON.parse(JSON.stringify(allTime));
 
       // checks for overlapping times
@@ -138,10 +150,10 @@ time isn't valid
     availability: Availability,
     currTimeZone: string,
     timeZone: string
-  ): Availability => {
+  ): NonNullAvailability => {
     const dummyDate = "2000-01-02 ";
     const daysOfWeek: DaysOfWeek[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
-    const result: Availability = {
+    const result: NonNullAvailability = {
       mon: [],
       tue: [],
       wed: [],
@@ -152,9 +164,9 @@ time isn't valid
     };
     //loops through each time in availabilities
     for (const [key, value] of Object.entries(availability)) {
-      const day = key;
+      const day = key as ValidDays;
       const times = value;
-      if (!daysOfWeek.includes(key) || !times) {
+      if (!daysOfWeek.includes(key as DaysOfWeek) || !times) {
         continue;
       }
       //loops through each time interval for the day
@@ -185,7 +197,7 @@ time isn't valid
         // checks for date shifts
         if (newStart.day > startDateTime.day) {
           // whole time slot was shifted to the next day
-          if (nextDay != "sun") {
+          if (nextDay != "sun" && result[nextDay] != null) {
             result[nextDay].push([newStartTime, newEndTime]);
           }
         } else if (newStart.day == startDateTime.day && newEnd.day > endDateTime.day) {
@@ -215,7 +227,7 @@ time isn't valid
   };
 
   // function to update availability state when child component changes times
-  const updateAvailabilty = (day: string, times: string[][]): void => {
+  const updateAvailability = (day: ValidDays, times: string[][]): void => {
     setAvailability((oldAvailability) => {
       oldAvailability[day] = times;
       return { ...oldAvailability };
@@ -290,13 +302,17 @@ time isn't valid
         <div className={styles.availabilityContainer}>
           {Object.entries(availabilityFromDB).map((entry) =>
             entry[0] != "timeZone" ? (
-              <DayRow times={entry[1]} day={entry[0]} setAvailability={updateAvailabilty} />
+              <DayRow
+                times={entry[1] as string[][]}
+                day={entry[0] as ValidDays}
+                setAvailability={updateAvailability}
+              />
             ) : (
               <></>
             )
           )}
         </div>
-
+        <div className={styles.spacing}/>
         <hr className={styles.line} />
         <div className={styles.footerContent}>
           <button

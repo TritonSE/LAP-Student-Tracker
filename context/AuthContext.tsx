@@ -314,6 +314,11 @@ export const AuthProvider: React.FC = ({ children }) => {
       };
       const newUser = await api.updateUser(updateUser, id);
       setUser(newUser);
+      if (locality == "Local") {
+        localStorage.setItem("user", JSON.stringify(newUser));
+      } else {
+        sessionStorage.setItem("user", JSON.stringify(newUser));
+      }
       return true;
     } catch (e) {
       if (e instanceof FirebaseError) {

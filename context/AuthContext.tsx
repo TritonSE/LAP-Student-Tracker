@@ -290,7 +290,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   ): Promise<boolean> => {
     try {
       if (currPassword === "") {
-        setError(new Error("Password must be specificed to change any values"));
+        setError(new Error("Password must be specified to change any values"));
         return false;
       }
 

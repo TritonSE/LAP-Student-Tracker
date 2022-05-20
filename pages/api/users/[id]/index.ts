@@ -1,8 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { updateUser } from "../../../lib/database/users";
-import { UpdateUser, UpdateUserSchema } from "../../../models/users";
+import { updateUser } from "../../../../lib/database/users";
+import { UpdateUser, UpdateUserSchema } from "../../../../models/users";
 import { decode } from "io-ts-promise";
-import { getUser } from "../../../lib/database/users";
+import { getUser } from "../../../../lib/database/users";
 import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/users/[id]

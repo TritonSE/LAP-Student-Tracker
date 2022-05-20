@@ -190,6 +190,7 @@ const AdminTeacherProfileView: React.FC = () => {
               image={image}
               imageLoading={imageLoading}
               onImageChange={handleImageChange}
+              onError={setErrorMessage}
             ></ProfileViewLeft>
           </div>
           <div className={styles.rightContainer}>

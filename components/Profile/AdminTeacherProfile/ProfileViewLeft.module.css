@@ -12,11 +12,17 @@
   justify-content: center;
 }
 
-.dropZoneContent {
+.dropZoneContentDisabled {
   height: 240px;
   width: 240px;
   background-color: #bbb;
   border-radius: 50%;
+  cursor: auto;
+}
+
+.dropZoneContent {
+  composes: dropZoneContentDisabled;
+  cursor: pointer;
 }
 
 .dropZoneImage {

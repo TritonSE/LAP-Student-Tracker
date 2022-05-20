@@ -110,7 +110,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
         if (fileInput.current != null && profileEditable) fileInput.current.click();
       }}
     >
-      <div className={styles.dropZoneContent}>
+      <div className={profileEditable ? styles.dropZoneContent : styles.dropZoneContentDisabled}>
         {image != null ? (
           <Avatar
             alt={firstName + " " + lastName}

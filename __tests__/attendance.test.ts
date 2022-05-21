@@ -198,6 +198,47 @@ describe("[POST] /api/class/[id]/attendance/[session_id]", () => {
       expected
     );
   });
+  test("update attendances for user in a class section", async() => {
+    const query = {
+      id: "id_a",
+      session_id: "a"
+    }
+    const body: CreateAttendance[] = [
+      {
+        userId: '1',
+        attendance: 'Present',
+      },
+      {
+        userId: '2',
+        attendance: 'Unexcused',
+      }
+    ];
+    const expected: Attendance[] = [
+      {
+        sessionId: 'a',
+        userId: '1',
+        firstName: 'John',
+        lastName: 'Doe',
+        attendance: 'Present',
+      },
+      {
+        sessionId: 'a',
+        userId: '2',
+        firstName: 'John',
+        lastName: 'Smith',
+        attendance: 'Unexcused',
+      },
+    ];
+    await makeHTTPRequest(
+      sessionIDHandler,
+      "/api/class/id_a/attendance/a/",
+      query,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expected
+    );
+  });
 });
 
 describe("[GET] /api/users/[id]/attendence/[class_id]", () => {

@@ -85,9 +85,10 @@ const getSingleUserAttendanceFromClassID = async (
             "where b.event_information_id = $1 and b.user_id = $2",
         values: [classId, userId],
     };
-    const res = await client.query(query);
+    
     let singleUserArray: singleUserAttendanceArrayType;
     try {  
+        const res = await client.query(query);
         singleUserArray = await decode(SingleUserAttendanceArraySchema, res.rows);
     }
     catch(e){

@@ -29,7 +29,6 @@ type AuthState = {
     newNumber?: string | null,
     newPassword?: string
   ) => Promise<boolean>;
-  // getNewRefreshToken: () => Promise<string | null>;
 };
 
 const init: AuthState = {
@@ -48,15 +47,11 @@ const init: AuthState = {
   },
   updateUser: () => {
     return new Promise<boolean>(() => false);
-  },
-  // getNewRefreshToken: () => {
-  //   return new Promise<string | null>( () => null);
-  // }
+  }
 };
 
 export const AuthContext = createContext<AuthState>(init);
 // provides the current authenticated user and auth status to the entire app
-// TODO: Add support for API calls via a JWT token
 export const AuthProvider: React.FC = ({ children }) => {
   const api = useContext(APIContext);
   const [locality, setLocality] = useState<string>("Session");
@@ -68,7 +63,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     setError(null);
   };
 
-  // function to handle firebase errors elegantly and display relevent information to the user
+  // function to handle firebase errors elegantly and display relevant information to the user
   const setFirebaseError = (e: FirebaseError): void => {
     if (e.code === "auth/wrong-password") setError(new Error("Password is incorrect"));
     else if (e.code === "auth/user-not-found") setError(new Error("User does not exist"));
@@ -80,6 +75,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     else setError(new Error(e.message));
   };
 
+  // gets the auth state ready on every refresh
   const auth = useMemo(() => {
     const fbConfig = {
       apiKey: process.env.NEXT_PUBLIC_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
@@ -128,7 +124,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       } else {
         const uid = localStorage.getItem("userId");
         const token = localStorage.getItem("apiToken");
-
         if (uid && token) {
           setLocality("Local");
           await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);

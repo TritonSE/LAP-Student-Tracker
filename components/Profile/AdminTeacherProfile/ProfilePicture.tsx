@@ -10,6 +10,8 @@ type ProfilePictureProps = {
     image: File | null;
     onError: (errorMsg: string) => void;
 };
+
+// handles uploading and displaying a profile picture
 export const ProfilePicture: React.FC<ProfilePictureProps> = ({
                                                                   profileEditable,
                                                                   onImageChange,

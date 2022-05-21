@@ -49,10 +49,12 @@ class LeagueAPI {
     this.client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
 
+
   setRefreshTokenFunction(func: () => Promise<string | null>): void {
     this.getNewRefreshToken = func;
   }
 
+  // refresh API token so that we don't run into 401 errors
   async refreshToken(): Promise<string | null> {
     if (!this.getNewRefreshToken) return null;
     return this.getNewRefreshToken();
@@ -70,47 +72,56 @@ class LeagueAPI {
     return res.data;
   }
 
+  // get all classes from the backend
   async getAllClasses(): Promise<Class[]> {
     const res = await this.client.get("api/class");
     return res.data;
   }
 
+  // create an even of type class
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
     const res = await this.client.post("api/events/class", classEvent);
     return res.data;
   }
 
+  // create a class entry
   async createClass(classObj: CreateClass): Promise<Class> {
     const res = await this.client.post("api/class", classObj);
     return res.data;
   }
 
+  // get a user
   async getUser(id: string): Promise<User> {
     const res = await this.client.get(`api/users/${id}`);
     return res.data;
   }
 
+  // get an image (img is a b64 string)
   async getImage(id: string): Promise<Image> {
     await this.refreshToken();
     const res = await this.client.get(`api/images/${id}`);
     return res.data;
   }
 
+  // update an image (img should be a b64 string)
   async updateImage(id: string, updatedImage: UpdateImage): Promise<Image> {
     const res = await this.client.patch(`api/images/${id}`, updatedImage);
     return res.data;
   }
 
+  // get all users, or all users with the specific role if specified
   async getAllUsers(role?: string): Promise<User[]> {
     const res = await this.client.get("/api/users/", { params: { role: role } });
     return res.data;
   }
 
+  // create a user
   async createUser(user: CreateUser): Promise<User> {
     const res = await this.client.post("api/users/", user);
     return res.data;
   }
 
+  // update a user
   async updateUser(user: UpdateUser, id: string): Promise<User> {
     const res = await this.client.patch(`api/users/${id}`, user);
     return res.data;

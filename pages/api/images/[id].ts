@@ -7,7 +7,7 @@ import { StatusCodes } from "http-status-codes";
 // handles requests to /api/images/[id]
 const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const id = req.query.id as string;
@@ -26,7 +26,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
         res.setHeader("Content-Type", image.mimeType);
         return res.status(StatusCodes.ACCEPTED).send(image.img);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -45,7 +45,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
         const result = await updateImage(id, newImage.img, newImage.mimeType);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

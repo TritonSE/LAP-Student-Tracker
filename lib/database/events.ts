@@ -27,7 +27,7 @@ const teachersExist = async (teachers: string[]): Promise<User[]> => {
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("Error on select of database.");
+    throw Error("CustomError on select of database.");
   }
 
   const teacherResult: User[] = res.rows;
@@ -61,7 +61,7 @@ const validateTimes = async (teacher: User, intervals: Interval[]): Promise<void
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("Error on select of database.");
+    throw Error("CustomError on select of database.");
   }
 
   // helper function for sorting intervals
@@ -113,7 +113,7 @@ const createClassEvent = async (
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("Error on insert into database.");
+    throw Error("CustomError on insert into database.");
   }
 
   return res.rows[0].id;

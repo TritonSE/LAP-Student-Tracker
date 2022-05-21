@@ -21,7 +21,7 @@ import { User } from "../../models/users";
  * Note: Record<String, unknown> is just a type-safe way to specify an object
  */
 const makeHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
@@ -54,7 +54,7 @@ const makeHTTPRequest = async (
 };
 
 const makeEventHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
@@ -90,7 +90,7 @@ const makeEventHTTPRequest = async (
 /* HTTP request handler for users API that ignores pictureId field
    when comparing User response data */
 const makeUserHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
@@ -122,7 +122,7 @@ const makeUserHTTPRequest = async (
 /* HTTP request handler for event feed API that converts Postgres timestamps to
    local ISO for consistency in testing */
 const makeEventFeedHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,

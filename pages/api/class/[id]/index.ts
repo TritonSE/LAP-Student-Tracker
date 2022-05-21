@@ -6,7 +6,7 @@ import { StatusCodes } from "http-status-codes";
 //Handles all requests to /api/class/[id]
 export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const id = req.query.id as string;
@@ -22,7 +22,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
         }
         return res.status(StatusCodes.ACCEPTED).json(classes);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -50,7 +50,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
 
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

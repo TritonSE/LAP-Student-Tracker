@@ -57,13 +57,14 @@ const getAttendanceFromSessionID = async (
             "where b.session_id = $1 and b.event_information_id = $2",
         values: [session, classId],
     };
-    const res = await client.query(query);
+    
     let attendanceArray: attendanceArrayType;
 
     try {
+        const res = await client.query(query);
         attendanceArray = await decode(AttendanceArraySchema, res.rows);
     } catch (e) {
-        throw Error("Fields returned incorrectly in database");
+        throw Error("Error getting attendance from session id");
     }
 
     return attendanceArray;
@@ -76,17 +77,17 @@ const getSingleUserAttendanceFromClassID = async (
 ): Promise<SingleUserAttendance[]> => {
     const query = {
         text: 
-            "select a.session_id, a.user_id, a.attendance, c.start_str AS start "+
-            "from attendance as a, calendar_information as c "+
-            "where a.session_id = c.session_id and a.class_id = c.event_information_id "+
-            "and a.user_id = $1 and a.class_id = $2",
-        values: [userId, classId],
+            "select b.session_id, b.user_id, a.attendance, b.start_str as start "+
+            "from ( (select user_id, com.event_information_id, session_id, start_str "+
+            "from (commitments as com inner join calendar_information as c "+
+            "on com.event_information_id = c.event_information_id)) as b left outer join attendance "+
+            "as a on b.user_id = a.user_id and b.event_information_id = a.class_id and a.session_id = b.session_id) "+
+            "where b.event_information_id = $1 and b.user_id = $2",
+        values: [classId, userId],
     };
-
     const res = await client.query(query);
     let singleUserArray: singleUserAttendanceArrayType;
-
-    try {
+    try {  
         singleUserArray = await decode(SingleUserAttendanceArraySchema, res.rows);
     }
     catch(e){
@@ -105,10 +106,9 @@ const createAttendance = async (
 
         const query = {
             text: 
-                "INSERT INTO attendance (session_id, attendance, class_id, user_id) "+
-                "VALUES ($1, $2, $3, $4) " +
-                "ON CONFLICT (session_id, user_id, class_id) "+
-                "UPDATE SET attendance = $2",
+                "insert into attendance (session_id, attendance, class_id, user_id) "+
+                "values($1, $2, $3, $4) "+
+                "on conflict (session_id, user_id) do update set attendance = $2",
             values: [sessionId, attendanceArray[i].attendance, classId, attendanceArray[i].userId]
         };
         try {

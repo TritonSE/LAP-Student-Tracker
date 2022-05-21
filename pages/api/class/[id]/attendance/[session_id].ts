@@ -23,7 +23,7 @@ export const sessionIDHandler: NextApiHandler = async (req: NextApiRequest, res:
     switch (req.method) {
         case "GET": {
             try {
-                const attendanceArray = getAttendanceFromSessionID(sessionId, classId);
+                const attendanceArray = await getAttendanceFromSessionID(sessionId, classId);
                 return res.status(StatusCodes.ACCEPTED).json(attendanceArray);
             }catch(e){
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

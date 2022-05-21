@@ -150,7 +150,7 @@ describe("[GET] /api/class/[id]/attendance/[session_id]", () => {
     ];
     await makeHTTPRequest(
       sessionIDHandler,
-      "/api/class/id_a/attendance/a/",
+      "/api/class/id_a/attendance/a",
       query,
       "GET",
       undefined,
@@ -201,7 +201,7 @@ describe("[POST] /api/class/[id]/attendance/[session_id]", () => {
 });
 
 describe("[GET] /api/users/[id]/attendence/[class_id]", () => {
-  test("get single user attendances for specified users in a", async() => {
+  test("get single user attendances for specified user in a class", async() => {
     const query = {
       id: "1",
       class_id: "id_a"
@@ -212,6 +212,12 @@ describe("[GET] /api/users/[id]/attendence/[class_id]", () => {
         userId: '1',
         attendance: 'Excused',
         start: '2022-02-27T05:00:00.000Z',
+      },
+      {
+        sessionId: 'b',
+        userId: '1',
+        attendance: null,
+        start: '2022-03-01T05:11:45.000Z',
       },
     ];
     await makeHTTPRequest(

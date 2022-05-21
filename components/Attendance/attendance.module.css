@@ -4,7 +4,6 @@
     justify-content: flex-start;
     width: 100%;
     padding-top:2rem;
-    /* background: rgb(138, 42, 42); */
 }
 
 .title {
@@ -12,6 +11,6 @@
     padding-bottom: 2rem;
     position: relative;
     align-self: left;
-    /* background: rgb(45, 162, 200); */
+    padding: 1rem;
 }
 

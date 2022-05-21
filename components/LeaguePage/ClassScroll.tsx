@@ -7,6 +7,7 @@ import { Class } from "../../models/class";
 import { Empty } from "../util/Empty";
 import { ClassCard } from "./ClassCard";
 import { OrderBy } from "./ClassView";
+import { Router, useRouter} from "next/router";
 
 type ClassScrollProp = {
   searchQuery: string;
@@ -22,6 +23,7 @@ export const ClassScroll: React.FC<ClassScrollProp> = ({
 }) => {
   const client = useContext(APIContext);
   const { data: classes, error } = useSWR("/api/class", () => client.getAllClasses());
+  const router = useRouter();
 
   if (error) return <Error />;
   if (!classes) return <Loader />;
@@ -85,8 +87,9 @@ export const ClassScroll: React.FC<ClassScrollProp> = ({
   if (classes.length == 0) return <Empty userType="Classes" />;
 
   return (
-    <>
+    <div >
       {filteredClasses.map((currClass: Class) => (
+        <div onClick={() => router.push(`/class/${currClass.eventInformationId}`)}>
         <ClassCard
           key={currClass.eventInformationId}
           name={currClass.name}
@@ -96,7 +99,8 @@ export const ClassScroll: React.FC<ClassScrollProp> = ({
           startTime={currClass.startTime}
           endTime={currClass.endTime}
         />
+        </div>
       ))}
-    </>
+    </div>
   );
 };

@@ -11,23 +11,23 @@ type singleUserAttendanceArrayType = TypeOf<typeof SingleUserAttendanceArraySche
 
 //get session_ids of events that occur before a given time: GET api/class/[id]/sessions
 type sessionId= {
-    session_id: string,
-    start_str: string
+    sessionId: string,
+    startStr: string
 }
 const getSessions = async (
-    time: string | null,
     classId: string,
+    time?: string
 ): Promise<sessionId[]> => {
     let query;
     if (time){
         query = {
             text:
               "SELECT session_id, start_str "+ 
-              "FROM calendar_information where end_str < $1 "+
-              "WHERE event_information_id = $2",
+              "FROM calendar_information WHERE end_str < $1 "+
+              "AND event_information_id = $2",
             values: [time, classId],
           };
-    }else{
+    } else{
         query = {
             text:
               "SELECT session_id, start_str " +
@@ -43,17 +43,19 @@ const getSessions = async (
 //get attendance objects for given session id (GET: /api/class/[id]/attendence/[session_id])
 const getAttendanceFromSessionID = async (
     session: string,
+    classId: string
 ): Promise<Attendance[]> => {
     const query = {
         text: 
-            "SELECT ua.session_id, ua.user_id, ua.first_name ,ua.last_name, ua.attendance FROM "+
-            "( ( (select user_id, event_information_id, first_name, last_name from "+
-            "(commitments left outer join users on commitments.user_id = users.id)) as c "+
-            "inner join calendar_information as ci on c.event_information_id = ci.event_information_id) as c "+
-            "left outer join attendance as a on "+
-            "a.user_id = c.user_id and a.class_id = c.event_information_id and a.session_id = c.session_id) as ua "+
-            "WHERE user_attendance.session_id = $1",
-        values: [session],
+            "select b.session_id, b.user_id, b.first_name, b.last_name, a.attendance  "+
+            "from ( (select user_id, c.event_information_id, first_name, last_name, session_id from "+
+            "( (select user_id, event_information_id, first_name, last_name from "+
+            "(commitments as comm left outer join users as u on comm.user_id = u.id)) as c "+
+            "inner join calendar_information as ci on c.event_information_id = ci.event_information_id )) "+
+            "as b left outer join attendance a on a.user_id = b.user_id and b.event_information_id = a.class_id "+
+            "and a.session_id = b.session_id ) "+
+            "where b.session_id = $1 and b.event_information_id = $2",
+        values: [session, classId],
     };
     const res = await client.query(query);
     let attendanceArray: attendanceArrayType;
@@ -96,7 +98,7 @@ const getSingleUserAttendanceFromClassID = async (
 const createAttendance = async (
     sessionId: string,
     classId: string,
-    attendanceArray: createAttendanceArrayType,
+    attendanceArray: CreateAttendance[],
 ): Promise<Attendance[]> => {
     for (var i = 0; i < attendanceArray.length; i++){
 
@@ -114,7 +116,7 @@ const createAttendance = async (
             throw Error("Error on insert into database");
         };
     }
-    return getAttendanceFromSessionID(sessionId);
+    return getAttendanceFromSessionID(sessionId, classId);
 }
 
 

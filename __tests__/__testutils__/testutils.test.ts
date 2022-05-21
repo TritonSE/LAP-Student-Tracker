@@ -20,7 +20,7 @@ import { ClassEvent, CalendarEvent } from "../../models/events";
  * Note: Record<String, unknown> is just a type-safe way to specify an object
  */
 const makeHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
@@ -45,7 +45,7 @@ const makeHTTPRequest = async (
 };
 
 const makeEventHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
@@ -81,7 +81,7 @@ const makeEventHTTPRequest = async (
 /* HTTP request handler for event feed API that converts Postgres timestamps to
    local ISO for consistency in testing */
 const makeEventFeedHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,

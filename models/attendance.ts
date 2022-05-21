@@ -12,7 +12,6 @@ export const AttendanceSchema = t.type({
     firstName: t.string,
     lastName: t.string,
     attendance: t.union([possibleAttendance, t.null]),
-  
 });
 
 export const SingleUserAttendanceSchema = t.type({

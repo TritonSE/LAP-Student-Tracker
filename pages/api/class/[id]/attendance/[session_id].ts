@@ -5,7 +5,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
 // handles requests to /api/users/
-const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+export const sessionIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.query) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
     }
@@ -23,10 +23,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
     switch (req.method) {
         case "GET": {
             try {
-                const attendanceArray = getAttendanceFromSessionID(sessionId);
-                if (!attendanceArray){
-                    return res.status(StatusCodes.NOT_FOUND).json("attendance not found");
-                }
+                const attendanceArray = getAttendanceFromSessionID(sessionId, classId);
                 return res.status(StatusCodes.ACCEPTED).json(attendanceArray);
             }catch(e){
                 return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
@@ -57,4 +54,4 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
   }
 };
 
-export default userHandler;
+export default sessionIDHandler;

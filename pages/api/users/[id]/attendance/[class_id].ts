@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSingleUserAttendanceFromClassID } from "../../../../../lib/database/attendance";
 
-export const sessionIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) =>{
+export const userAttendanceHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) =>{
 
     if (!req.query) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
@@ -32,4 +32,4 @@ export const sessionIDHandler: NextApiHandler = async (req: NextApiRequest, res:
     
 }
 
-export default sessionIDHandler;
+export default userAttendanceHandler;

@@ -76,10 +76,11 @@ const getSingleUserAttendanceFromClassID = async (
 ): Promise<SingleUserAttendance[]> => {
     const query = {
         text: 
-            "SELECT a.session_id, a.user_id, a.attendance, c.start_str " + 
-            "FROM attendance a, calendar information c "+
-            "WHERE a.class_id = $1 AND a.user_id = $2 AND a.session_id = c.session_id",
-        values: [classId, userId],
+            "select a.session_id, a.user_id, a.attendance, c.start_str AS start "+
+            "from attendance as a, calendar_information as c "+
+            "where a.session_id = c.session_id and a.class_id = c.event_information_id "+
+            "and a.user_id = $1 and a.class_id = $2",
+        values: [userId, classId],
     };
 
     const res = await client.query(query);

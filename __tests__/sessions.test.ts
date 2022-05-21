@@ -201,7 +201,7 @@ describe("[POST] /api/class/[id]/attendance/[session_id]", () => {
 });
 
 describe("[GET] /api/users/[id]/attendence/[class_id]", () => {
-  test("get single suer attendances for specified users in a", async() => {
+  test("get single user attendances for specified users in a", async() => {
     const query = {
       id: "1",
       class_id: "id_a"

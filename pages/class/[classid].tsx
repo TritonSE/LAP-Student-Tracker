@@ -12,23 +12,20 @@ import { APIContext } from "../../context/APIContext";
 
 const BackButton: React.FC = () => {
   const router = useRouter();
-  const onClick = () => {
-    router.push("/home");
-  };
   return (
     <>
-      <img src="back_button.svg" onClick={onClick} alt="back" className={styles.backbutton} />
+      <img src="back_button.svg" onClick={() => router.push("/home")} alt="back" className={styles.backbutton} />
     </>
   );
 };
 
 const Class: NextApplicationPage = () => {
   const router = useRouter();
+  const client = useContext(APIContext);
+
   const { user } = useContext(AuthContext);
   const { classid } = router.query;
-  const client = useContext(APIContext);
-  console.log(typeof classid);
-  const { data: currClass, error } = useSWR("/api/class" + classid, () => client.getClass(classid));
+  const { data: currClass } = useSWR("/api/class" + classid, () => client.getClass(classid));
 
   const [attendance, setAttendance] = React.useState(false);
   const [roster, setRoster] = React.useState(false);
@@ -56,6 +53,7 @@ const Class: NextApplicationPage = () => {
   return (
     <div className={styles.container}>
       <nav className={styles.navbar}>
+        <BackButton/>
         <ul className={styles.navmenu}>
           <li className={styles.navtitle}>{currClass.name}</li>
           <li className={styles.navitem}>

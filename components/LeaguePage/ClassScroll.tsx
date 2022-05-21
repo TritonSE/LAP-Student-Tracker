@@ -7,7 +7,7 @@ import { Class } from "../../models/class";
 import { Empty } from "../util/Empty";
 import { ClassCard } from "./ClassCard";
 import { OrderBy } from "./ClassView";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 type ClassScrollProp = {
   searchQuery: string;
@@ -91,7 +91,6 @@ export const ClassScroll: React.FC<ClassScrollProp> = ({
       {filteredClasses.map((currClass: Class) => (
         <div onClick={() => router.push(`/class/${currClass.eventInformationId}`)}>
           <ClassCard
-            key={currClass.eventInformationId}
             name={currClass.name}
             minLevel={currClass.minLevel}
             maxLevel={currClass.maxLevel}

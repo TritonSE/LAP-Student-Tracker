@@ -23,7 +23,9 @@ export const Navbar: React.FC = ({ children }) => {
           */
 
                   className={router.pathname == "/home" ? styles.clicked : styles.navlink}
-                  onClick={() => { router.push("/home") }}
+                  onClick={() => {
+                    router.push("/home");
+                  }}
                 >
                   Home
                 </a>
@@ -32,8 +34,9 @@ export const Navbar: React.FC = ({ children }) => {
               <li className={styles.navitem}>
                 <a
                   className={router.pathname == "/league" ? styles.clicked : styles.navlink}
-                  onClick={() => { router.push("/league") }}
-
+                  onClick={() => {
+                    router.push("/league");
+                  }}
                 >
                   The League
                 </a>
@@ -41,7 +44,9 @@ export const Navbar: React.FC = ({ children }) => {
               <li className={styles.navitem}>
                 <a
                   className={router.pathname == "/profile" ? styles.clicked : styles.navlink}
-                  onClick={() => { router.push("/profile") }}
+                  onClick={() => {
+                    router.push("/profile");
+                  }}
                 >
                   Profile
                 </a>

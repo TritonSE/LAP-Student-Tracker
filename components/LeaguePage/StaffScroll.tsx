@@ -28,6 +28,7 @@ const StaffScroll: React.FC<StaffScrollProp> = ({
 
 
     const checkIfFilterSelected = (selectedFilter: string[], staff: Staff): boolean => {
+        
         if (selectedFilter.length === 0) {
           return true;
         }
@@ -43,12 +44,10 @@ const StaffScroll: React.FC<StaffScrollProp> = ({
             }
         })
 
-        
     
         let selected = true
         roleFilters.forEach((role)=>{
-            console.log(!staff.role.includes(role))
-            if (!staff.role.includes(role)) {
+            if (!role.toLowerCase().includes(staff.role.toLowerCase())) {
                 selected = false
             }
         })
@@ -71,11 +70,10 @@ const StaffScroll: React.FC<StaffScrollProp> = ({
        return selected
       };
 
-
     const filteredStaff = data
       .filter(
         (currStaff) =>{
-          return (currStaff.firstName + " " + currStaff.lastName).includes(searchQuery) && checkIfFilterSelected(selectedFilters, currStaff)
+          return (currStaff.firstName + " " + currStaff.lastName).toLowerCase().includes(searchQuery.toLowerCase()) && checkIfFilterSelected(selectedFilters, currStaff)
         }
     )
 

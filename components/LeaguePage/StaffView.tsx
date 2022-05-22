@@ -18,20 +18,36 @@ const filters = [
   "Level 8",
 ];
 
-const onFilterCheck = (checked: boolean, value: string): void => {
-  const tempSelectedFilters = new Set(selectedClassLevels);
-  if (checked) {
-    tempSelectedFilters.add(Number(value));
-  } else if (!checked) {
-    tempSelectedFilters.delete(Number(value));
-  }
-  setSelectedClassLevels(tempSelectedFilters);
-};
+
 
 
 const StaffView: React.FC = () => {
   const [searchBox, setSearchBox] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+
+  const onSearchInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchBox(event.target.value);
+  };
+
+  const onFilterCheck = (checked: boolean, value: string): void => {
+
+    setSelectedFilters((oldFilters) => {
+      
+      if (checked) {
+        // adds the filter to the selected filters list if the checkbox was checked
+        if (!oldFilters.includes(value)) {
+          oldFilters.push(value);
+        }
+      } else if (!checked) {
+        // remove the filter from selected filters list if the checkbox was unchecked
+        const index = oldFilters.indexOf(value);
+        if (index > -1) {
+          oldFilters.splice(index, 1);
+        }
+      }
+      return [...oldFilters];
+    });
+  };
 
   return (
     <div className={styles.compContainer}>
@@ -45,7 +61,12 @@ const StaffView: React.FC = () => {
       </div>
       <span className={styles.spacer} />
       <div className={styles.rightContainer}>
-        <input type="text" placeholder="Search staff" className={styles.searchBar}></input>
+        <input
+          type="text"
+          placeholder="Search staff"
+          className={styles.searchBar}
+          onChange={onSearchInput}
+        ></input>
         <h2 className={styles.filterTitle}>Filter By:</h2>
         <ul className={styles.filterList}>
           {filters.map((l) => (

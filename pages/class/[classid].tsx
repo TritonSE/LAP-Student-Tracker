@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import type { NextApplicationPage } from "../_app";
 import { AuthContext } from "../../context/AuthContext";
 import styles from "../../styles/class.module.css";
@@ -9,43 +9,17 @@ import { Attendance } from "../../components/Attendance/Attendance";
 import { Module } from "../../components/ModuleView/Module";
 import useSWR from "swr";
 import { APIContext } from "../../context/APIContext";
-
-const BackButton: React.FC = () => {
-  const router = useRouter();
-  return (
-    <>
-      <img src="back_button.svg" onClick={() => router.push("/home")} alt="back" className={styles.backbutton} />
-    </>
-  );
-};
+import { BackButton } from "../../components/util/BackButton";
 
 const Class: NextApplicationPage = () => {
   const router = useRouter();
   const client = useContext(APIContext);
 
   const { user } = useContext(AuthContext);
-  const { classid } = router.query;
-  const { data: currClass } = useSWR("/api/class" + classid, () => client.getClass(classid));
+  const classId = router.query.classId as string;
+  const { data: currClass } = useSWR("/api/class" + classId, () => client.getClass(classId));
 
-  const [attendance, setAttendance] = React.useState(false);
-  const [roster, setRoster] = React.useState(false);
-  const [modules, setModules] = React.useState(false);
-
-  const handleUpdate = (name: string): void => {
-    if (name == "attendance") {
-      setAttendance(true);
-      setRoster(false);
-      setModules(false);
-    } else if (name == "roster") {
-      setAttendance(false);
-      setRoster(true);
-      setModules(false);
-    } else if (name == "modules") {
-      setAttendance(false);
-      setRoster(false);
-      setModules(true);
-    }
-  };
+  const [currentModule, setCurrentModule] = useState<string>("attendance");
 
   if (user == null) return <Error />;
   if (currClass == null) return <Error />;
@@ -53,13 +27,13 @@ const Class: NextApplicationPage = () => {
   return (
     <div className={styles.container}>
       <nav className={styles.navbar}>
-        <BackButton/>
         <ul className={styles.navmenu}>
+          <BackButton linkTo="/home" />
           <li className={styles.navtitle}>{currClass.name}</li>
           <li className={styles.navitem}>
             <a
-              className={attendance ? styles.clicked : styles.navlink}
-              onClick={() => handleUpdate("attendance")}
+              className={currentModule == "attendance" ? styles.clicked : styles.navlink}
+              onClick={() => setCurrentModule("attendance")}
             >
               Attendance
             </a>
@@ -68,8 +42,8 @@ const Class: NextApplicationPage = () => {
           <li className={styles.navitem}>
             <a
               id="roster"
-              className={roster ? styles.clicked : styles.navlink}
-              onClick={() => handleUpdate("roster")}
+              className={currentModule == "roster" ? styles.clicked : styles.navlink}
+              onClick={() => setCurrentModule("roster")}
             >
               Roster
             </a>
@@ -77,17 +51,21 @@ const Class: NextApplicationPage = () => {
           <li className={styles.navitem}>
             <a
               id="modules"
-              className={modules ? styles.clicked : styles.navlink}
-              onClick={() => handleUpdate("modules")}
+              className={currentModule == "modules" ? styles.clicked : styles.navlink}
+              onClick={() => setCurrentModule("modules")}
             >
               Modules
             </a>
           </li>
         </ul>
       </nav>
-      {roster && <Roster />}
-      {attendance && <Attendance />}
-      {modules && <Module />}
+      {currentModule == "attendance" ? (
+        <Attendance />
+      ) : currentModule == "roster" ? (
+        <Roster />
+      ) : (
+        <Module />
+      )}
     </div>
   );
 };

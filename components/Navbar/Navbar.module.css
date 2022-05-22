@@ -24,6 +24,7 @@
   position: relative;
   padding-bottom: 6px;
   border-bottom: 4px solid transparent;
+  cursor: pointer;
 }
 
 .clicked {

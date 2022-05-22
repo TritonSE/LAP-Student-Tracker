@@ -1,7 +1,6 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import styles from "./LeagueViews.module.css";
-import {StaffScroll} from "./StaffScroll";
-
+import { StaffScroll } from "./StaffScroll";
 
 const filters = [
   "Administration",
@@ -18,9 +17,6 @@ const filters = [
   "Level 8",
 ];
 
-
-
-
 const StaffView: React.FC = () => {
   const [searchBox, setSearchBox] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
@@ -30,9 +26,7 @@ const StaffView: React.FC = () => {
   };
 
   const onFilterCheck = (checked: boolean, value: string): void => {
-
     setSelectedFilters((oldFilters) => {
-      
       if (checked) {
         // adds the filter to the selected filters list if the checkbox was checked
         if (!oldFilters.includes(value)) {
@@ -55,7 +49,7 @@ const StaffView: React.FC = () => {
         <h1 className={styles.compTitle}>Staff</h1>
         <div className={styles.compList}>
           <ul className={styles.scroll}>
-            <StaffScroll searchQuery={searchBox} selectedFilters={selectedFilters}/>
+            <StaffScroll searchQuery={searchBox} selectedFilters={selectedFilters} />
           </ul>
         </div>
       </div>

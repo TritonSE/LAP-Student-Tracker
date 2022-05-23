@@ -33,7 +33,7 @@ const League: NextApplicationPage = () => {
     email: "garyg@ucsd.edu",
     role: "Student",
     approved: true,
-    date_created: "",
+    dateCreated: "",
     phoneNumber: "(123) 456-7890",
     address: "123",
     level: 3,

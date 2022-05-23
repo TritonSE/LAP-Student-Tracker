@@ -12,22 +12,22 @@ const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 beforeAll(async () => {
   await client.query("DELETE from users");
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', true, '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', true, '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', false, '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', false, '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', false, '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', false, '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
   );
 });
 
@@ -38,13 +38,15 @@ afterAll(async () => {
 
 describe("[GET] /api/users/?filter", () => {
   test("look for all users", async () => {
-    const expected: CreateUser[] = [
+    const expected: User[] = [
       {
         id: "1",
         firstName: "John",
         lastName: "Doe",
         email: "john@gmail.com",
         role: "Student",
+        approved: true,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -54,6 +56,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "john@gmail.com",
         role: "Student",
+        approved: true,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -63,6 +67,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "teacher@gmail.com",
         role: "Teacher",
+        approved: false,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -72,6 +78,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "teacher2@gmail.com",
         role: "Teacher",
+        approved: false,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -81,6 +89,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "admin@gmail.com",
         role: "Admin",
+        approved: false,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -90,6 +100,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "admin2@gmail.com",
         role: "Admin",
+        approved: false,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -120,6 +132,7 @@ describe("[GET] /api/users/?filter", () => {
         email: "teacher@gmail.com",
         role: "Teacher",
         approved: false,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -130,6 +143,7 @@ describe("[GET] /api/users/?filter", () => {
         email: "teacher2@gmail.com",
         role: "Teacher",
         approved: false,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -159,6 +173,7 @@ describe("[GET] /api/users/?filter", () => {
         email: "john@gmail.com",
         role: "Student",
         approved: true,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -169,6 +184,7 @@ describe("[GET] /api/users/?filter", () => {
         email: "john2@gmail.com",
         role: "Student",
         approved: true,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -198,6 +214,7 @@ describe("[GET] /api/users/?filter", () => {
         email: "admin@gmail.com",
         role: "Admin",
         approved: false,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -208,6 +225,7 @@ describe("[GET] /api/users/?filter", () => {
         email: "admin2@gmail.com",
         role: "Admin",
         approved: false,
+        dateCreated: '5/23/2022, 4:45:03 AM',
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -243,6 +261,106 @@ describe("[GET] /api/users/?filter", () => {
       "Query parameter refers to role that does not exist"
     );
   });
+
+  test("look for all approved users", async () => {
+    const query = {
+      approved: 'true',
+    };
+
+    const expected = [{
+      id: "1",
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@gmail.com",
+      role: "Student",
+      approved: true,
+      dateCreated: '5/23/2022, 4:45:03 AM',
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    },
+    {
+      id: "4",
+      firstName: "John",
+      lastName: "Doe",
+      email: "john2@gmail.com",
+      role: "Student",
+      approved: true,
+      dateCreated: '5/23/2022, 4:45:03 AM',
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    }];
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all unapproved users", async () => {
+    const query = {
+      approved: 'false',
+    };
+
+    const expected = [{
+      id: "2",
+      firstName: "Teacher",
+      lastName: "Doe",
+      email: "teacher@gmail.com",
+      role: "Teacher",
+      approved: false,
+      dateCreated: '5/23/2022, 4:45:03 AM',
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    },
+    {
+      id: "5",
+      firstName: "Teacher",
+      lastName: "Doe",
+      email: "teacher2@gmail.com",
+      role: "Teacher",
+      approved: false,
+      dateCreated: '5/23/2022, 4:45:03 AM',
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    },
+    {
+      id: "3",
+      firstName: "Admin",
+      lastName: "Doe",
+      email: "admin@gmail.com",
+      role: "Admin",
+      approved: false,
+      dateCreated: '5/23/2022, 4:45:03 AM',
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    },
+    {
+      id: "6",
+      firstName: "Admin",
+      lastName: "Doe",
+      email: "admin2@gmail.com",
+      role: "Admin",
+      approved: false,
+      dateCreated: '5/23/2022, 4:45:03 AM',
+      address: "123 Main Street",
+      phoneNumber: "1234567890",
+    }];
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
 });
 
 describe("[POST] /api/users", () => {
@@ -263,6 +381,7 @@ describe("[POST] /api/users", () => {
       email: "mynaME@gmail.com",
       role: "Student",
       approved: true,
+      dateCreated: '5/23/2022, 4:45:03 AM',
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
@@ -339,6 +458,7 @@ describe("[POST] /api/users", () => {
       email: "newAdmin@gmail.com",
       role: "Admin",
       approved: false,
+      dateCreated: '5/23/2022, 4:45:03 AM',
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
@@ -371,6 +491,7 @@ describe("[POST] /api/users", () => {
       email: "newTeacher@gmail.com",
       role: "Admin",
       approved: false,
+      dateCreated: '5/23/2022, 4:45:03 AM',
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
@@ -416,6 +537,7 @@ describe("[GET] /api/users/[id]", () => {
       email: "john@gmail.com",
       role: "Student",
       approved: true,
+      dateCreated: '5/23/2022, 4:45:03 AM',
       address: "123 Main Street",
       phoneNumber: "1234567890",
     };
@@ -461,6 +583,7 @@ describe("[PATCH] /api/users/[id]", () => {
       email: "john123@gmail.com",
       role: "Admin",
       approved: true,
+      dateCreated: '5/23/2022, 4:45:03 AM',
       address: "456 Main Street",
       phoneNumber: "4567890",
     };
@@ -498,6 +621,7 @@ describe("[PATCH] /api/users/[id]", () => {
       email: "admin@gmail.com",
       role: "Admin",
       approved: false,
+      dateCreated: '5/23/2022, 4:45:03 AM',
       address: "456 Main Street",
       phoneNumber: "4567890",
     };

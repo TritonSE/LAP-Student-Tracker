@@ -21,7 +21,7 @@ beforeAll(async () => {
   );
 
   await client.query(
-    "INSERT INTO users(id, email, role, approved, first_name, last_name, phone_number, address) VALUES('user_a', 'emaila@gmail.com', 'Teacher', false, 'fname', 'lname', '#', 'addr')"
+    "INSERT INTO users(id, email, role, approved, first_name, last_name, phone_number, address, date_created) VALUES('user_a', 'emaila@gmail.com', 'Teacher', false, 'fname', 'lname', '#', 'addr', '5/23/2022, 4:45:03 AM')"
   );
   await client.query(
     "INSERT INTO commitments(user_id, event_information_id) VALUES('user_a', 'id_a')"

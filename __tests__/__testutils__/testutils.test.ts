@@ -109,11 +109,21 @@ const makeUserHTTPRequest = async (
   );
   const resObject = JSON.parse(res._getData());
 
-  // Check that pictureId field is there but ignore when comparing objects
+  // Check that pictureId and dateCreated fields are there but ignore when comparing objects
   if (expectedBody) {
     expect(resObject).toHaveProperty("pictureId");
     delete resObject["pictureId"];
-    expect(resObject).toEqual(expectedBody);
+    expect(resObject).toEqual({
+      id: expectedBody.id,
+      firstName: expectedBody.firstName,
+      lastName: expectedBody.lastName,
+      email: expectedBody.email,
+      role: expectedBody.role,
+      approved: expectedBody.approved,
+      dateCreated: expect.any(String),
+      phoneNumber: expectedBody.phoneNumber,
+      address: expectedBody.address,
+    });
   }
 
   return res;

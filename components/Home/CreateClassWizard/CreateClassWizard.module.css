@@ -76,7 +76,7 @@
 
 .label {
   margin: 0px;
-  composes: headlineSmall from "../../styles/globals.css";
+  composes: headlineSmall from "../../../styles/globals.css";
 }
 
 .classInput {
@@ -107,7 +107,7 @@
 
 .checkLabel {
   margin: 0px;
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
 }
 
 .row {
@@ -126,7 +126,7 @@
   border-radius: 8px;
   background: var(--gray-4);
   color: var(--black);
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
 }
 
 .dropDownWrapper {
@@ -158,7 +158,7 @@
 
 .dateInput {
   composes: inputField;
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
   width: 170px;
   height: 40px;
   margin: 10px 0px;
@@ -169,7 +169,7 @@
 
 .timeInput {
   composes: inputField;
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
   width: 105px;
   height: 40px;
   margin: 10px 0px;
@@ -204,7 +204,7 @@
 
   white-space: nowrap;
   overflow: auto;
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
 }
 
 .recurrenceInput::placeholder {
@@ -213,7 +213,7 @@
 
 .textInput {
   composes: inputField;
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
   width: 648px;
   height: 40px;
   margin: 10px 0px;

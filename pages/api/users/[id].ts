@@ -3,6 +3,7 @@ import { getUser, updateUser } from "../../../lib/database/users";
 import { UpdateUser, UpdateUserSchema } from "../../../models/users";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
+import { withAuth } from "../../../middleware/withAuth";
 
 // handles requests to /api/users/[id]
 const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -63,4 +64,4 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
   }
 };
 
-export default userIDHandler;
+export default withAuth(userIDHandler);

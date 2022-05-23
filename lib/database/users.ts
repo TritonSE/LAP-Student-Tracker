@@ -31,13 +31,11 @@ const createUser = async (
   lastName: string,
   email: string,
   role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
-  address?: string | null,
-  phone_number?: string | null,
-  imgId?: string | null
+  imgId: string | null
 ): Promise<User | null> => {
   const query = {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
-    values: [id, firstName, lastName, email, role, address, phone_number, imgId],
+    text: "INSERT INTO users(id, first_name, last_name, email, role, picture_id) VALUES($1, $2, $3, $4, $5, $6)",
+    values: [id, firstName, lastName, email, role, imgId],
   };
   try {
     await client.query(query);
@@ -106,7 +104,7 @@ const getUser = async (id: string): Promise<User | null> => {
 
 const getAllUsers = async (): Promise<User[]> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, picture_id, address FROM users",
   };
 
   const res = await client.query(query);

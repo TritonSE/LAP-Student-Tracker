@@ -33,6 +33,17 @@ jobs:
           DB_USER: "postgres"
           DB_HOST: "localhost"
           DB_PASS: "postgres"
+          TYPE: "service_account"
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          AUTH_URI: ${{ secrets.AUTH_URI }}
+          TOKEN_URI: ${{ secrets.TOKEN_URI }}
+          AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.AUTH_PROVIDER_X509_CERT_URL}}
+          CLIENT_x509_CERT_URL: ${{ secrets.CLIENT_x509_CERT_URL }}
+          NO_AUTH: "true"
       - name: Lint
         run: npm run lint-check
       - name: Build

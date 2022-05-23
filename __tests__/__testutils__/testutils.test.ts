@@ -7,7 +7,6 @@ import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
 import { CalendarEvent, ClassEvent } from "../../models/events";
-import { User } from "../../models/users";
 
 /**
  * Create and test a HTTP Request
@@ -19,9 +18,9 @@ import { User } from "../../models/users";
  * @param body the body of the request
  * @param expectedResponseCode the expected response code
  * @param expectedBody the expected body of the response
+ * @param ignoreResKey keys in the response to ignore when comparing object equality
  * @returns result of the operation (whether the test passes or not)
  *
- * Note: Record<String, unknown> is just a type-safe way to specify an object
  */
 const makeHTTPRequest = async (
   handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
@@ -50,7 +49,10 @@ const makeHTTPRequest = async (
     if (ignoreResKey) {
       expect(resData).toHaveProperty(ignoreResKey);
       delete resData[ignoreResKey];
+      // eslint-disable-next-line no-prototype-builtins
+      if (expectedBody.hasOwnProperty(ignoreResKey)) delete expectedBody[ignoreResKey];
     }
+
     expect(resData).toEqual(expectedBody);
   }
   return res;
@@ -92,36 +94,36 @@ const makeEventHTTPRequest = async (
 
 /* HTTP request handler for users API that ignores pictureId field
    when comparing User response data */
-const makeUserHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
-  endpoint: string,
-  query: Object | undefined,
-  method: RequestMethod,
-  body: Object | undefined,
-  expectedResponseCode: number,
-  expectedBody: User
-): Promise<MockResponse<NextApiResponse<any>>> => {
-  const res = await makeHTTPRequest(
-    handler,
-    endpoint,
-    query,
-    method,
-    body,
-    expectedResponseCode,
-    undefined
-  );
-  const resObject = JSON.parse(res._getData());
-
-  // Check that pictureId field is there but ignore when comparing objects
-  if (expectedBody) {
-    expect(resObject).toHaveProperty("pictureId");
-    delete resObject["pictureId"];
-    delete expectedBody["pictureId"];
-    expect(resObject).toEqual(expectedBody);
-  }
-
-  return res;
-};
+// const makeUserHTTPRequest = async (
+//   handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
+//   endpoint: string,
+//   query: Object | undefined,
+//   method: RequestMethod,
+//   body: Object | undefined,
+//   expectedResponseCode: number,
+//   expectedBody: User
+// ): Promise<MockResponse<NextApiResponse<any>>> => {
+//   const res = await makeHTTPRequest(
+//     handler,
+//     endpoint,
+//     query,
+//     method,
+//     body,
+//     expectedResponseCode,
+//     undefined
+//   );
+//   const resObject = JSON.parse(res._getData());
+//
+//   // Check that pictureId field is there but ignore when comparing objects
+//   if (expectedBody) {
+//     expect(resObject).toHaveProperty("pictureId");
+//     delete resObject["pictureId"];
+//     delete expectedBody["pictureId"];
+//     expect(resObject).toEqual(expectedBody);
+//   }
+//
+//   return res;
+// };
 
 /* HTTP request handler for event feed API that converts Postgres timestamps to
    local ISO for consistency in testing */
@@ -189,7 +191,6 @@ const getISOTimeFromExplicitFields = (
 
 export {
   makeHTTPRequest,
-  makeUserHTTPRequest,
   makeEventHTTPRequest,
   makeEventFeedHTTPRequest,
   convertTimeToISO,

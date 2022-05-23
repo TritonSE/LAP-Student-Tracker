@@ -1,7 +1,7 @@
 import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
-import { makeHTTPRequest, makeUserHTTPRequest } from "./__testutils__/testutils.test";
+import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { CreateUser, UpdateUser, User } from "../models/users";
 import { StatusCodes } from "http-status-codes";
 
@@ -259,7 +259,15 @@ describe("[GET] /api/users/?filter", () => {
 
 describe("[POST] /api/users", () => {
   test("creates a new user", async () => {
-    const body: User = {
+    const body: CreateUser = {
+      id: "100",
+      firstName: "John",
+      lastName: "Doe",
+      email: "mynaME@gmail.com",
+      role: "Student",
+    };
+
+    const expected: User = {
       id: "100",
       firstName: "John",
       lastName: "Doe",
@@ -269,14 +277,15 @@ describe("[POST] /api/users", () => {
       address: null,
       phoneNumber: null,
     };
-    await makeUserHTTPRequest(
+    await makeHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expected,
+      "pictureId"
     );
   });
 
@@ -324,7 +333,15 @@ describe("[POST] /api/users", () => {
   });
 
   test("creates an Admin user", async () => {
-    const body: User = {
+    const body: CreateUser = {
+      id: "50",
+      firstName: "Admin",
+      lastName: "Doe",
+      email: "newAdmin@gmail.com",
+      role: "Admin",
+    };
+
+    const expected: User = {
       id: "50",
       firstName: "Admin",
       lastName: "Doe",
@@ -334,19 +351,28 @@ describe("[POST] /api/users", () => {
       address: null,
       phoneNumber: null,
     };
-    await makeUserHTTPRequest(
+    await makeHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expected,
+      "pictureId"
     );
   });
 
   test("creates a teacher user", async () => {
-    const body: User = {
+    const body: CreateUser = {
+      id: "45",
+      firstName: "Teacher",
+      lastName: "Doe",
+      email: "newTeacher@gmail.com",
+      role: "Admin",
+    };
+
+    const expected: User = {
       id: "45",
       firstName: "Teacher",
       lastName: "Doe",
@@ -356,14 +382,16 @@ describe("[POST] /api/users", () => {
       address: null,
       phoneNumber: null,
     };
-    await makeUserHTTPRequest(
+
+    await makeHTTPRequest(
       userHandler,
       "/api/users/",
       undefined,
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expected,
+      "pictureId"
     );
   });
 

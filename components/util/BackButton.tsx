@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/class.module.css";
+import styles from "./BackButton.module.css";
 import { useRouter } from "next/router";
 
 type BackButtonProp = {

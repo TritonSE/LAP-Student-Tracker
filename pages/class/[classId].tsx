@@ -19,7 +19,7 @@ const Class: NextApplicationPage = () => {
   const classId = router.query.classId as string;
   const { data: currClass } = useSWR("/api/class" + classId, () => client.getClass(classId));
 
-  const [currentModule, setCurrentModule] = useState<string>("attendance");
+  const [currentModule, setCurrentModule] = useState<string>("roster");
 
   if (user == null) return <Error />;
   if (currClass == null) return <Error />;

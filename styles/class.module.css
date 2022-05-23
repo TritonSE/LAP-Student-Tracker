@@ -12,10 +12,6 @@
   padding: 1rem 1.5rem;
 }
 
-.backbutton {
-  width: fit-content;
-}
-
 .navmenu {
   display: flex;
   flex-flow: column wrap;

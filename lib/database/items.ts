@@ -55,7 +55,7 @@ const createItem = async (moduleId: string, title: string, link: string): Promis
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("Error on insert into database");
+    throw Error("CustomError on insert into database");
   }
 
   return getItem(res.rows[0].itemId);
@@ -72,7 +72,7 @@ const deleteItem = async (itemId: string): Promise<Item | null> => {
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("Error on delete item");
+    throw Error("CustomError on delete item");
   }
 
   if (res.rows.length == 0) {

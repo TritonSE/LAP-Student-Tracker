@@ -5,6 +5,7 @@ import styles from "./AdminHomePage.module.css";
 
 const AdminHomePage: React.FC<object> = () => {
   const [showWizard, setShowWizard] = useState(false);
+
   const handleClose = (): void => {
     setShowWizard(false);
   };

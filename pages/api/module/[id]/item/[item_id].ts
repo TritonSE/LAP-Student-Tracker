@@ -9,7 +9,7 @@ export const deleteItemHandler: NextApiHandler = async (
   res: NextApiResponse
 ) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const moduleId = req.query.id as string;
@@ -32,7 +32,7 @@ export const deleteItemHandler: NextApiHandler = async (
       return res.status(StatusCodes.NOT_FOUND).json("item not found");
     }
   } catch (e) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   switch (req.method) {
@@ -41,7 +41,7 @@ export const deleteItemHandler: NextApiHandler = async (
         const result = await deleteItem(itemId);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import styles from "./LeagueViews.module.css";
+<<<<<<< HEAD
 import { StaffScroll } from "./StaffScroll";
+=======
+import { StaffCard } from "./StaffCard";
+import { APIContext } from "../../context/APIContext";
+import { Loader } from "../util/Loader";
+import { CustomError } from "../util/CustomError";
+import { Empty } from "../util/Empty";
+import { User } from "../../models/users";
+import useSWR from "swr";
+>>>>>>> cd0ae1bcf20f6a6712ea407b80182503983e7a73
 
 const filters = [
   "Administration",
@@ -21,9 +31,15 @@ const StaffView: React.FC = () => {
   const [searchBox, setSearchBox] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
+<<<<<<< HEAD
   const onSearchInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchBox(event.target.value);
   };
+=======
+  if (error) return <CustomError />;
+  if (!data) return <Loader />;
+  if (data.length == 0) return <Empty userType="Staff" />;
+>>>>>>> cd0ae1bcf20f6a6712ea407b80182503983e7a73
 
   const onFilterCheck = (checked: boolean, value: string): void => {
     setSelectedFilters((oldFilters) => {

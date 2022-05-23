@@ -1,3 +1,4 @@
+// @ts-ignore
 const { Pool } = require("pg");
 const { migrate } = require("postgres-migrations");
 
@@ -12,7 +13,7 @@ const client = new Pool({
 const runMigration = async () => {
   try {
     await migrate({ client }, "./migrations");
-    console.log("Migration Ran Succesfully");
+    console.log("Migration Ran Successfully");
   } catch (e) {
     console.log(e);
   }

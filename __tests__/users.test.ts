@@ -23,40 +23,22 @@ beforeAll(async () => {
 
   await client.query(
 <<<<<<< HEAD
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM' ,'2')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '2')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '3')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
-=======
-    "INSERT INTO users(id, first_name, last_name, email, role, approved,  address, phone_number, picture_id, date_created) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
-  );
-  await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
-  );
-  await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '2')"
-  );
-  await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', '123 Main Street', '1234567890', '2')"
-  );
-  await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890',  '3')"
-  );
-  await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', '123 Main Street', '1234567890', '3')"
->>>>>>> origin/master
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '3')"
   );
 });
 
@@ -412,30 +394,11 @@ describe("[GET] /api/users/?filter", () => {
 describe("[POST] /api/users", () => {
   test("creates a new user", async () => {
     const body: CreateUser = {
-<<<<<<< HEAD
       id: "100",
       firstName: "John",
       lastName: "Doe",
       email: "mynaME@gmail.com",
-      role: "Student",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
-    };
-    const expectedBody: User = {
-=======
->>>>>>> origin/master
-      id: "100",
-      firstName: "John",
-      lastName: "Doe",
-      email: "mynaME@gmail.com",
-      role: "Student",
-<<<<<<< HEAD
-      approved: true,
-      dateCreated: "5/23/2022, 4:45:03 AM",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
-=======
->>>>>>> origin/master
+      role: "Student"
     };
 
     const expected: User = {
@@ -444,7 +407,9 @@ describe("[POST] /api/users", () => {
       lastName: "Doe",
       email: "mynaME@gmail.com",
       role: "Student",
+      approved: true,
       pictureId: "",
+      dateCreated: "",
       address: null,
       phoneNumber: null,
     };

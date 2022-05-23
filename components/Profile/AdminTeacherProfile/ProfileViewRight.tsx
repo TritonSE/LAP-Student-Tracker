@@ -92,16 +92,16 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
 
       <div className={styles.errorMessage}> {errorMessage} </div>
 
-      {!disabled && (
+
         <div className={styles.buttonContainer}>
-          <button className={styles.backButton} onClick={() => onBackClick()}>
+          {!disabled && (<button className={styles.backButton} onClick={() => onBackClick()}>
             <div className={styles.backText}>Back</div>
-          </button>
+          </button>)}
           <button className={styles.signOutButton} onClick={() => onSignoutClick()}>
             <div className={styles.signOutText}>Sign Out</div>
           </button>
         </div>
-      )}
+
     </div>
   );
 };

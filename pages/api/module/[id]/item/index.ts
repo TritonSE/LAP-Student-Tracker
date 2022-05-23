@@ -8,7 +8,7 @@ import { StatusCodes } from "http-status-codes";
 // Handles all requests to /api/module/[id]/item
 export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const moduleId = req.query.id as string;
@@ -22,7 +22,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       return res.status(StatusCodes.NOT_FOUND).json("module not found");
     }
   } catch (e) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   switch (req.method) {
@@ -31,7 +31,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         const modules = await getModuleItems(moduleId);
         return res.status(StatusCodes.ACCEPTED).json(modules);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -46,7 +46,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         const result = await createItem(moduleId, newItem.title, newItem.link);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

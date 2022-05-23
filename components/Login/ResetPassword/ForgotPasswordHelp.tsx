@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/ForgotPassword.module.css";
+import styles from "../../../styles/ForgotPassword.module.css";
 
 type ForgotPasswordMainProps = {
   onNextButtonClick: () => void;

@@ -1,9 +1,9 @@
 /* eslint-disable import/extensions */
 import React, { useContext, useEffect, useState } from "react";
 import { RepeatModal } from "./RepeatModal";
-import { APIContext } from "../../context/APIContext";
-import { CreateClass } from "../../models/class";
-import { CreateClassEvent } from "../../models/events";
+import { APIContext } from "../../../context/APIContext";
+import { CreateClass } from "../../../models/class";
+import { CreateClassEvent } from "../../../models/events";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material/";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
@@ -15,7 +15,7 @@ import useSWR from "swr";
 
 import DatePicker from "react-date-picker/dist/entry.nostyle";
 import TimePicker from "react-time-picker/dist/entry.nostyle";
-import styles from "./CreateEventsWizard.module.css";
+import styles from "./CreateClassWizard.module.css";
 
 // Work around for date/time picker library to work with NextJS
 // https://github.com/vercel/next.js/issues/19936
@@ -23,11 +23,11 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
 
-type CreateEventsWizardProps = {
+type CreateClassWizardProps = {
   handleClose: () => void;
 };
 
-const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) => {
+const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) => {
   // create wizard states
   const [name, setName] = useState<string>("");
   const [multipleLevels, setMultipleLevels] = useState<boolean>(false);
@@ -413,4 +413,4 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
   );
 };
 
-export { CreateEventsWizard };
+export { CreateClassWizard };

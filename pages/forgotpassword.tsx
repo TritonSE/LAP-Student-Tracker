@@ -2,8 +2,8 @@ import { useRouter } from "next/router";
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/ForgotPassword.module.css";
-import { ForgotPasswordMain } from "../components/ResetPassword/ForgotPasswordLanding";
-import { ForgotPasswordHelp } from "../components/ResetPassword/ForgotPasswordHelp";
+import { ForgotPasswordMain } from "../components/Login/ResetPassword/ForgotPasswordLanding";
+import { ForgotPasswordHelp } from "../components/Login/ResetPassword/ForgotPasswordHelp";
 
 const ForgotPassword: React.FC = () => {
   const auth = useContext(AuthContext);

@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { APIContext } from "../../context/APIContext";
-import { Error } from "../util/Error";
 import useSWR, { mutate } from "swr";
 import styles from "./LeagueViews.module.css";
 import { UnapprovedAccount } from "./UnapprovedAccount";
 import Loader from "react-spinners/ClipLoader";
 import { User } from "../../models/users";
+import {CustomError} from "../util/CustomError";
 
 type IncomingAccountRequestsProp = {
   offShowRequests: () => void;
@@ -23,7 +23,7 @@ const IncomingAccountRequests: React.FC<IncomingAccountRequestsProp> = ({ offSho
     }
   );
 
-  if (error) return <Error />;
+  if (error) return <CustomError />;
   if (!data) return <Loader />;
 
   const approveAccount = (user: User): void => {

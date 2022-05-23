@@ -15,7 +15,7 @@ const roleSpecificSetup = async (
       try {
         await client.query(query);
       } catch (e) {
-        throw Error("Error on inserting into availabilities for teachers");
+        throw Error("CustomError on inserting into availabilities for teachers");
       }
       return;
     }
@@ -31,19 +31,17 @@ const createUser = async (
   lastName: string,
   email: string,
   role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
-  address?: string | null,
-  phone_number?: string | null,
-  imgId?: string | null
+  imgId: string | null
 ): Promise<User | null> => {
   const approved = process.env.ALWAYS_APPROVE
     ? process.env.ALWAYS_APPROVE == "true"
     : !(role == "Admin" || role == "Teacher");
   const currentDate = new Date();
-  const date_created = currentDate.toLocaleString("en-US", {
+  const dateCreated = currentDate.toLocaleString("en-US", {
     timeZone: "America/Los_Angeles",
   });
   const query = {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8 )",
     values: [
       id,
       firstName,
@@ -51,16 +49,14 @@ const createUser = async (
       email,
       role,
       approved,
-      date_created,
-      address,
-      phone_number,
+      dateCreated,
       imgId,
     ],
   };
   try {
     await client.query(query);
   } catch (e) {
-    throw Error("Error on insert into database");
+    throw Error("CustomError on insert into database");
   }
 
   await roleSpecificSetup(id, role);
@@ -141,7 +137,7 @@ const deleteUser = async (id: string): Promise<boolean> => {
 
 const getAllUsers = async (): Promise<User[]> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, approved, date_created, phone_number, address FROM users",
+    text: "SELECT id, first_name, last_name, email, role, approved, date_created, picture_id, phone_number, address FROM users",
   };
 
   const res = await client.query(query);

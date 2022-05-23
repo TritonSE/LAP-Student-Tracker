@@ -11,6 +11,9 @@ beforeAll(async () => {
   await client.query("DELETE from calendar_information");
   await client.query("DELETE from commitments");
   await client.query("DELETE from users");
+  await client.query("DELETE from images");
+
+  await client.query("INSERT into images (id) VALUES('1')");
   await client.query(
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('id_a', 'event_a', 'blue', 'Class', false)"
   );
@@ -39,7 +42,11 @@ beforeAll(async () => {
     "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_c', '2022-03-01 21:11:45-08', '2022-03-01 21:11:45-08')"
   );
   await client.query(
+<<<<<<< HEAD
     "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address, date_created) VALUES('user_a', 'emaila@gmail.com', 'role', 'fname', 'lname', '#', 'addr', '5/23/2022, 4:45:03 AM')"
+=======
+    "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address, picture_id) VALUES('user_a', 'emaila@gmail.com', 'role', 'fname', 'lname', '#', 'addr', '1')"
+>>>>>>> origin/master
   );
   await client.query(
     "INSERT INTO commitments(user_id, event_information_id) VALUES('user_a', 'id_a')"

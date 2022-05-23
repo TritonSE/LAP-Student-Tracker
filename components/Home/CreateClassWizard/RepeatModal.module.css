@@ -58,12 +58,12 @@
 }
 
 .largeLabel {
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
   margin: 0px;
 }
 
 .smallLabel {
-  composes: titleMedium from "../../styles/globals.css";
+  composes: titleMedium from "../../../styles/globals.css";
   margin: 0px;
 }
 
@@ -72,7 +72,7 @@
   border-radius: 8px;
   background: var(--gray-4);
   color: var(--black);
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
 }
 
 .inputField:disabled {
@@ -125,7 +125,7 @@
 
 .dateInput {
   composes: inputField;
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
   width: 170px;
   height: 40px;
   margin: 10px 0px;

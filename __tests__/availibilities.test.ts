@@ -1,8 +1,8 @@
-import availabilityIdHandler from "../pages/api/availibility/[id]";
+import availabilityIdHandler from "../pages/api/availability/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { StatusCodes } from "http-status-codes";
-import { Availibility } from "../models/availibility";
+import { Availability } from "../models/availability";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");
@@ -10,8 +10,15 @@ beforeAll(async () => {
   await client.query("DELETE from commitments");
   await client.query("DELETE from users");
   await client.query("DELETE from availabilities");
+  await client.query("DELETE from images");
+
+  await client.query("INSERT into images (id) VALUES('1')");
   await client.query(
+<<<<<<< HEAD
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, date_created) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM')"
+=======
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '1')"
+>>>>>>> origin/master
   );
   await client.query(
     "INSERT INTO availabilities (user_id, time_zone) VALUES ('2', 'America/Los_Angeles')"
@@ -30,7 +37,7 @@ afterAll(async () => {
 const AVAILABILITY_NOT_FOUND_ERROR = "Availability of user not found";
 describe("[GET] /api/availability/[id]", () => {
   test("Getting a users availability", async () => {
-    const expected: Availibility = {
+    const expected: Availability = {
       mon: null,
       tue: null,
       wed: null,
@@ -72,7 +79,7 @@ describe("[GET] /api/availability/[id]", () => {
 
 describe("[PATCH] /api/availabilities/[id]", () => {
   test("Editing a users availability", async () => {
-    const body: Availibility = {
+    const body: Availability = {
       mon: [
         ["08:00", "10:00"],
         ["11:00", "12:00"],
@@ -110,7 +117,7 @@ describe("[PATCH] /api/availabilities/[id]", () => {
   });
 
   test("Editing availability of a user that does not exist", async () => {
-    const body: Availibility = {
+    const body: Availability = {
       mon: [
         ["08:00", "10:00"],
         ["11:00", "12:00"],

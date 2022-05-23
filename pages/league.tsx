@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/League.module.css";
-import { ClassView } from "../components/LeaguePage/ClassView";
-import { StudentView } from "../components/LeaguePage/StudentView";
-import { StaffView } from "../components/LeaguePage/StaffView";
+import { ClassView } from "../components/League/ClassView";
+import { StudentView } from "../components/League/StudentView";
+import { StaffView } from "../components/League/StaffView";
 import { Class } from "../models/class";
 import { User } from "../models/users";
 import { Student } from "../models/students";
 import { NextApplicationPage } from "./_app";
-import { IncomingAccountRequests } from "../components/LeaguePage/IncomingAccountRequests";
+import { IncomingAccountRequests } from "../components/League/IncomingAccountRequests";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
@@ -38,6 +38,7 @@ const League: NextApplicationPage = () => {
     address: "123",
     level: 3,
     classes: ["CSE 123"],
+    pictureId: "1",
   };
   const testStudentArray: Student[] = Array(1).fill(testStudent);
   // end dummy data

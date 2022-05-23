@@ -9,7 +9,7 @@ export const classModulesHandler: NextApiHandler = async (
   res: NextApiResponse
 ) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const classId = req.query.id as string;
@@ -26,7 +26,7 @@ export const classModulesHandler: NextApiHandler = async (
         const modules = await getClassModules(classId);
         return res.status(StatusCodes.ACCEPTED).json(modules);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

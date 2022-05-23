@@ -1,6 +1,6 @@
 import { createUser, getAllUsers } from "../../../lib/database/users";
 import { createImage } from "../../../lib/database/images";
-import { Roles, CreateUser, CreateUserSchema } from "../../../models/users";
+import { CreateUser, CreateUserSchema, Roles } from "../../../models/users";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
@@ -23,13 +23,11 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
           newUser.lastName,
           newUser.email,
           newUser.role,
-          newUser.address,
-          newUser.phoneNumber,
           imgId
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -57,7 +55,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
           result = result.filter((user) => user.approved == approvalStatus);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

@@ -49,7 +49,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
               .json("Query parameter refers to role that does not exist");
         }
       }
-      const approvalStatus = !req.query.approved ? undefined : req.query.approved == 'true';
+      const approvalStatus = !req.query.approved ? undefined : req.query.approved == "true";
       try {
         let result = await getAllUsers();
         if (role) result = result.filter((user) => user.role == role);

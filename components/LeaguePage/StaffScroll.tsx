@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { StaffCard } from "./StaffCard";
 import { APIContext } from "../../context/APIContext";
 import { Loader } from "../util/Loader";
-import { Error } from "../util/Error";
+import { CustomError } from "../util/CustomError";
 import { Empty } from "../util/Empty";
 import { Staff } from "../../models/staff";
 import useSWR from "swr";
@@ -19,7 +19,7 @@ const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters }
   // Use SWR hook to get the data from the backend
   const { data, error } = useSWR("/api/staff", () => client.getStaff());
 
-  if (error) return <Error />;
+  if (error) return <CustomError />;
   if (!data) return <Loader />;
   if (data.length == 0) return <Empty userType="Staff" />;
 

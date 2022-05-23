@@ -35,7 +35,6 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
 
     case "GET": {
       let role: Roles | undefined = undefined;
-      let onlyUnapproved = false;
       if (req.query) {
         if (req.query.role) {
           if (
@@ -49,14 +48,13 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
               .status(StatusCodes.BAD_REQUEST)
               .json("Query parameter refers to role that does not exist");
         }
-        if (req.query.onlyUnapproved) {
-          onlyUnapproved = true;
-        }
       }
+      const approvalStatus = !req.query.approved ? undefined : req.query.approved == "true";
       try {
         let result = await getAllUsers();
         if (role) result = result.filter((user) => user.role == role);
-        if (onlyUnapproved) result = result.filter((user) => user.approved == false);
+        if (approvalStatus != undefined)
+          result = result.filter((user) => user.approved == approvalStatus);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

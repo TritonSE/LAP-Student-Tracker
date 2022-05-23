@@ -6,7 +6,6 @@ import styles from "./LeagueViews.module.css";
 import { UnapprovedAccount } from "./UnapprovedAccount";
 import Loader from "react-spinners/ClipLoader";
 import { User } from "../../models/users";
-import { Empty } from "../util/Empty";
 
 type IncomingAccountRequestsProp = {
   offShowRequests: () => void;
@@ -16,13 +15,16 @@ const IncomingAccountRequests: React.FC<IncomingAccountRequestsProp> = ({ offSho
   const client = useContext(APIContext);
 
   // Use SWR hook to get the data from the backend
-  const { data, error } = useSWR("/api/users", () => client.getAllUsers(undefined, true), {
-    refreshInterval: 100,
-  });
+  const { data, error } = useSWR(
+    "/api/users/?approved=false",
+    () => client.getAllUsers(undefined, false),
+    {
+      refreshInterval: 100,
+    }
+  );
 
   if (error) return <Error />;
   if (!data) return <Loader />;
-  if (data.length == 0) return <Empty userType="Unapproved Requests" />;
 
   const approveAccount = (user: User): void => {
     client.updateUser(
@@ -31,12 +33,12 @@ const IncomingAccountRequests: React.FC<IncomingAccountRequestsProp> = ({ offSho
       },
       user.id
     );
-    mutate("api/users");
+    mutate("/api/users/?approved=false");
   };
 
   const rejectAccount = (user: User): void => {
     client.deleteUser(user.id);
-    mutate("api/users");
+    mutate("/api/users/?approved=false");
   };
 
   return (

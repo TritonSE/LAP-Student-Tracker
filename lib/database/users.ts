@@ -35,16 +35,28 @@ const createUser = async (
   phone_number?: string | null,
   imgId?: string | null
 ): Promise<User | null> => {
-  const query =
-    role == "Admin" || role == "Teacher"
-      ? {
-          text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)",
-          values: [id, firstName, lastName, email, role, false, address, phone_number, imgId],
-        }
-      : {
-          text: "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)",
-          values: [id, firstName, lastName, email, role, true, address, phone_number, imgId],
-        };
+  const approved = process.env.ALWAYS_APPROVE
+    ? process.env.ALWAYS_APPROVE == "true"
+    : !(role == "Admin" || role == "Teacher");
+  const currentDate = new Date();
+  const date_created = currentDate.toLocaleString("en-US", {
+    timeZone: "America/Los_Angeles",
+  });
+  const query = {
+    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+    values: [
+      id,
+      firstName,
+      lastName,
+      email,
+      role,
+      approved,
+      date_created,
+      address,
+      phone_number,
+      imgId,
+    ],
+  };
   try {
     await client.query(query);
   } catch (e) {
@@ -92,7 +104,7 @@ const updateUser = async (
 // get a user given an id
 const getUser = async (id: string): Promise<User | null> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id, approved FROM users WHERE id = $1",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id, approved, date_created FROM users WHERE id = $1",
     values: [id],
   };
 
@@ -129,7 +141,7 @@ const deleteUser = async (id: string): Promise<boolean> => {
 
 const getAllUsers = async (): Promise<User[]> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, approved, phone_number, address FROM users",
+    text: "SELECT id, first_name, last_name, email, role, approved, date_created, phone_number, address FROM users",
   };
 
   const res = await client.query(query);

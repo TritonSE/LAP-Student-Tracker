@@ -20,7 +20,7 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
       <div className={styles.accountBarGrey}>
         <p>{user.firstName + " " + user.lastName}</p>
         <p>{user.email}</p>
-        <p>00/00/00</p>
+        <p>{user.dateCreated}</p>
         <p>{user.role}</p>
         <div>
           <button onClick={() => approveAccount(user)}>Yes</button> /{" "}

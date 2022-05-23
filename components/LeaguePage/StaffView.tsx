@@ -60,12 +60,7 @@ const StaffView: React.FC<StaffViewProp> = ({ onShowRequests }) => {
   // Use SWR hook to get the data from the backend
   const { data } = useSWR("/api/staff", () => client.getStaff());
 
-  let requests = false;
-  if (data) {
-    if (data.filter((user) => user.approved == false).length > 0) {
-      requests = true;
-    }
-  }
+  const requests = data && data.filter((user) => user.approved == false).length > 0;
 
   return (
     <div className={styles.compContainer}>

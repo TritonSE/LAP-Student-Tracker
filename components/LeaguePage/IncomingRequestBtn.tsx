@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./LeagueViews.module.css";
 
 type IncomingRequestProps = {
-  requests: boolean;
+  requests: boolean | undefined;
   onShowRequests: () => void;
 };
 

@@ -31,6 +31,7 @@ export const UserSchema = t.intersection([
     email: t.string,
     role: possibleRoles,
     approved: t.boolean,
+    dateCreated: t.string,
   }),
   t.partial({
     phoneNumber: t.union([t.string, t.null]),

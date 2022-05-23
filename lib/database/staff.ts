@@ -9,7 +9,7 @@ type staffArrayType = TypeOf<typeof StaffArraySchema>;
 const getAllStaff = async (): Promise<Staff[]> => {
   const query = {
     text:
-      "SELECT users.id, users.first_name, users.last_name, users.email, users.role, users.approved," +
+      "SELECT users.id, users.first_name, users.last_name, users.email, users.role, users.approved, users.date_created," +
       "users.phone_number, users.address, classes.min_level, classes.max_level, classes.language " +
       "FROM (((event_information INNER JOIN classes ON event_information.id = classes.event_information_id) " +
       "INNER JOIN commitments ON commitments.event_information_id = event_information.id) " +

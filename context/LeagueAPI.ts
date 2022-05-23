@@ -3,6 +3,7 @@ import { Class, CreateClass } from "../models/class";
 import { ClassEvent, CreateClassEvent } from "../models/events";
 import { CreateUser, UpdateUser, User } from "../models/users";
 import { Image, UpdateImage } from "../models/images";
+import { Availability } from "../models/availability";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -49,7 +50,6 @@ class LeagueAPI {
     this.client.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
 
-
   setRefreshTokenFunction(func: () => Promise<string | null>): void {
     this.getNewRefreshToken = func;
   }
@@ -64,6 +64,11 @@ class LeagueAPI {
   async getStaff(): Promise<User[]> {
     await this.refreshToken();
     const res = await this.client.get("api/staff");
+    return res.data;
+  }
+
+  async getAvailabilities(id: string): Promise<Availability> {
+    const res = await this.client.get(`api/availability/${id}`);
     return res.data;
   }
 
@@ -124,6 +129,11 @@ class LeagueAPI {
   // update a user
   async updateUser(user: UpdateUser, id: string): Promise<User> {
     const res = await this.client.patch(`api/users/${id}`, user);
+    return res.data;
+  }
+
+  async updateAvailabilities(availabilities: Availability, id: string): Promise<Availability> {
+    const res = await this.client.patch(`api/availability/${id}`, availabilities);
     return res.data;
   }
 }

@@ -6,7 +6,11 @@ type UserHomeProp = {
 };
 
 const UserHomePage: React.FC<UserHomeProp> = ({ userId }) => {
-  return <UserCalendar userId={userId} />;
+  return (
+    <div>
+      <UserCalendar userId={userId} />
+    </div>
+  );
 };
 
 export { UserHomePage };

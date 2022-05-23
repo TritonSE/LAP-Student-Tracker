@@ -5,6 +5,7 @@ import styles from "./AdminHomePage.module.css";
 
 const AdminHomePage: React.FC<object> = () => {
   const [showWizard, setShowWizard] = useState(false);
+
   const handleClose = (): void => {
     setShowWizard(false);
   };
@@ -14,7 +15,7 @@ const AdminHomePage: React.FC<object> = () => {
       <div className={styles.homeWrapper}>
         <button className={styles.createBtn} onClick={() => setShowWizard(true)}>
           Create
-          <img className={styles.addIcon} src="AddIcon.png" />
+          <img className={styles.addIcon} src="/AddIcon.png" />
         </button>
         {showWizard ? <CreateClassWizard handleClose={handleClose} /> : null}
       </div>

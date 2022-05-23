@@ -8,7 +8,7 @@ import { withAuth } from "../../../middleware/withAuth";
 // handles requests to /api/images/[id]
 const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const id = req.query.id as string;
@@ -26,7 +26,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
         }
         return res.status(StatusCodes.ACCEPTED).json(image);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -48,7 +48,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
         }
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

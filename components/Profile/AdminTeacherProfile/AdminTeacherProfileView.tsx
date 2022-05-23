@@ -3,7 +3,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { ProfileViewLeft } from "./ProfileViewLeft";
 import { ProfileViewRight } from "./ProfileViewRight";
 import styles from "./AdminTeacherProfile.module.css";
-import { Error } from "../../util/Error";
+import { CustomError } from "../../util/CustomError";
 import { useRouter } from "next/router";
 import { APIContext } from "../../../context/APIContext";
 import { UpdateImage } from "../../../models/images";
@@ -16,7 +16,7 @@ const AdminTeacherProfileView: React.FC = () => {
   const api = useContext(APIContext);
 
   // user will never be null, because if it is, client is redirected to login page
-  if (user == null) return <Error />;
+  if (user == null) return <CustomError />;
 
   const router = useRouter();
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false);

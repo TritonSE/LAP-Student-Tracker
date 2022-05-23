@@ -27,7 +27,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -48,7 +48,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
         if (role) result = result.filter((user) => user.role == role);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 

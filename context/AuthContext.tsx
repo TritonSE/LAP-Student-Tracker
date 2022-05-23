@@ -47,7 +47,7 @@ const init: AuthState = {
   },
   updateUser: () => {
     return new Promise<boolean>(() => false);
-  }
+  },
 };
 
 export const AuthContext = createContext<AuthState>(init);

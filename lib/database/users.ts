@@ -15,7 +15,7 @@ const roleSpecificSetup = async (
       try {
         await client.query(query);
       } catch (e) {
-        throw Error("Error on inserting into availabilities for teachers");
+        throw Error("CustomError on inserting into availabilities for teachers");
       }
       return;
     }
@@ -40,7 +40,7 @@ const createUser = async (
   try {
     await client.query(query);
   } catch (e) {
-    throw Error("Error on insert into database");
+    throw Error("CustomError on insert into database");
   }
 
   await roleSpecificSetup(id, role);
@@ -73,7 +73,7 @@ const updateUser = async (
   try {
     await client.query(query);
   } catch {
-    throw Error("Error on update user");
+    throw Error("CustomError on update user");
   }
 
   return getUser(id);

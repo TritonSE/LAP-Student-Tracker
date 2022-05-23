@@ -5,7 +5,7 @@ import { makeHTTPRequest, makeUserHTTPRequest } from "./__testutils__/testutils.
 import { CreateUser, UpdateUser, User } from "../models/users";
 import { StatusCodes } from "http-status-codes";
 
-const INTERNAL_SERVER_ERROR = "Internal Server Error";
+const INTERNAL_SERVER_ERROR = "Internal Server CustomError";
 const USER_NOT_FOUND_ERROR = "user not found";
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 

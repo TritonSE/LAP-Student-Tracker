@@ -1,4 +1,4 @@
-import availabilityFeedHandler from "../pages/api/availibility-feed";
+import availabilityFeedHandler from "../pages/api/availability-feed";
 import { client } from "../lib/db";
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";

@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ProfileViewLeft.module.css";
-import {Loader} from "../../util/Loader";
-import {ProfilePicture} from "./ProfilePicture";
+import { Loader } from "../../util/Loader";
+import { ProfilePicture } from "./ProfilePicture";
 
 type ProfileViewLeftProps = {
   firstName: string;
@@ -25,7 +25,7 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
   validInput,
   onImageChange,
   handleEditProfileClicked,
-    onError
+  onError,
 }) => {
   const buttonText = editProfileClicked ? "Save" : "Edit Profile";
 

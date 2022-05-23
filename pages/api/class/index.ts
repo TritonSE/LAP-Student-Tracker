@@ -14,7 +14,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         const result = await getAllClasses();
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     case "POST":
       try {
@@ -34,7 +34,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     default:
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");

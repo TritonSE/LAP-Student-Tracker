@@ -92,39 +92,6 @@ const makeEventHTTPRequest = async (
   return res;
 };
 
-/* HTTP request handler for users API that ignores pictureId field
-   when comparing User response data */
-// const makeUserHTTPRequest = async (
-//   handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
-//   endpoint: string,
-//   query: Object | undefined,
-//   method: RequestMethod,
-//   body: Object | undefined,
-//   expectedResponseCode: number,
-//   expectedBody: User
-// ): Promise<MockResponse<NextApiResponse<any>>> => {
-//   const res = await makeHTTPRequest(
-//     handler,
-//     endpoint,
-//     query,
-//     method,
-//     body,
-//     expectedResponseCode,
-//     undefined
-//   );
-//   const resObject = JSON.parse(res._getData());
-//
-//   // Check that pictureId field is there but ignore when comparing objects
-//   if (expectedBody) {
-//     expect(resObject).toHaveProperty("pictureId");
-//     delete resObject["pictureId"];
-//     delete expectedBody["pictureId"];
-//     expect(resObject).toEqual(expectedBody);
-//   }
-//
-//   return res;
-// };
-
 /* HTTP request handler for event feed API that converts Postgres timestamps to
    local ISO for consistency in testing */
 const makeEventFeedHTTPRequest = async (

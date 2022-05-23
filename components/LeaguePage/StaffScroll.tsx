@@ -54,7 +54,10 @@ const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters }
     levelFilters.forEach((level) => {
       // replaces all not-digits with nothing, so result is just number
       const levelNum = parseInt(level.replace(/^\D+/g, ""));
-      if ( (staff.maxLevel !== null && levelNum > staff.maxLevel) || (staff.minLevel !== null && levelNum < staff.minLevel)) {
+      if (
+        (staff.maxLevel !== null && levelNum > staff.maxLevel) ||
+        (staff.minLevel !== null && levelNum < staff.minLevel)
+      ) {
         selected = false;
       }
     });

@@ -2,7 +2,7 @@ import { authAdmin } from "./auth";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
 const withAuth = (handler: NextApiHandler) => {
-  return async (req: NextApiRequest, res: NextApiResponse): Promise<unknown>  => {
+  return async (req: NextApiRequest, res: NextApiResponse): Promise<unknown> => {
     if (process.env.NO_AUTH == "true") return handler(req, res);
 
     const token = req.headers["authorization"] as string;

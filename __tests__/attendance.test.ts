@@ -251,14 +251,14 @@ describe("[GET] /api/users/[id]/attendence/[class_id]", () => {
       {
         sessionId: 'a',
         userId: '1',
-        attendance: 'Excused',
-        start: '2022-02-27T05:00:00.000Z',
+        attendance: 'Present',
+        start: '2022-02-26T21:00:00-08:00',
       },
       {
         sessionId: 'b',
         userId: '1',
         attendance: null,
-        start: '2022-03-01T05:11:45.000Z',
+        start: '2022-02-28T21:11:45-08:00',
       },
     ];
     await makeHTTPRequest(

@@ -77,7 +77,7 @@ const getSingleUserAttendanceFromClassID = async (
 ): Promise<SingleUserAttendance[]> => {
     const query = {
         text: 
-            "select b.session_id, b.user_id, a.attendance, b.start_str as start "+
+            "select b.session_id, b.user_id, a.attendance, TO_JSON(b.start_str) as start "+
             "from ( (select user_id, com.event_information_id, session_id, start_str "+
             "from (commitments as com inner join calendar_information as c "+
             "on com.event_information_id = c.event_information_id)) as b left outer join attendance "+

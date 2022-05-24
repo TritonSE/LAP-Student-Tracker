@@ -5,7 +5,7 @@ import styles from "./LeagueViews.module.css";
 import { UnapprovedAccount } from "./UnapprovedAccount";
 import Loader from "react-spinners/ClipLoader";
 import { User } from "../../models/users";
-import {CustomError} from "../util/CustomError";
+import { CustomError } from "../util/CustomError";
 
 type IncomingAccountRequestsProp = {
   offShowRequests: () => void;

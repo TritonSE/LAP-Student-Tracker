@@ -42,16 +42,7 @@ const createUser = async (
   });
   const query = {
     text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8 )",
-    values: [
-      id,
-      firstName,
-      lastName,
-      email,
-      role,
-      approved,
-      dateCreated,
-      imgId,
-    ],
+    values: [id, firstName, lastName, email, role, approved, dateCreated, imgId],
   };
   try {
     await client.query(query);

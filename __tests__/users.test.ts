@@ -308,7 +308,7 @@ describe("[GET] /api/users/?filter", () => {
         dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
-        pictureId: "1"
+        pictureId: "1",
       },
     ];
 
@@ -398,7 +398,7 @@ describe("[POST] /api/users", () => {
       firstName: "John",
       lastName: "Doe",
       email: "mynaME@gmail.com",
-      role: "Student"
+      role: "Student",
     };
 
     const expected: User = {
@@ -471,7 +471,7 @@ describe("[POST] /api/users", () => {
       firstName: "Admin",
       lastName: "Doe",
       email: "newAdmin@gmail.com",
-      role: "Admin"
+      role: "Admin",
     };
 
     const expectedBody: User = {
@@ -484,7 +484,7 @@ describe("[POST] /api/users", () => {
       dateCreated: "5/23/2022, 4:45:03 AM",
       address: null,
       phoneNumber: null,
-      pictureId: ""
+      pictureId: "",
     };
 
     await makeHTTPRequest(
@@ -495,7 +495,7 @@ describe("[POST] /api/users", () => {
       body,
       StatusCodes.CREATED,
       expectedBody,
-        ["pictureId", "dateCreated"]
+      ["pictureId", "dateCreated"]
     );
   });
 

@@ -47,9 +47,9 @@ const makeHTTPRequest = async (
     // key to ignore in actual body when comparing with expected body
     // use for randomly generated IDs that can't be predetermined
     if (ignoreResKey) {
-      ignoreResKey.forEach( (key) => {
+      ignoreResKey.forEach((key) => {
         expect(resData).toHaveProperty(key);
-        delete resData[key];     // eslint-disable-next-line no-prototype-builtins
+        delete resData[key]; // eslint-disable-next-line no-prototype-builtins
         if (expectedBody.hasOwnProperty(key)) delete expectedBody[key];
       });
     }

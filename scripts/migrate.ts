@@ -2,12 +2,19 @@
 const { Pool } = require("pg");
 const { migrate } = require("postgres-migrations");
 
-const client = new Pool({
+let DB_PORT: number | undefined = undefined;
+if (process.env.DB_PORT) {
+  DB_PORT = Number(process.env.DB_PASS);
+}
+const client: typeof Pool = new Pool({
   user: process.env.DB_USER || "postgres",
   host: process.env.DB_HOST || "localhost",
-  database: "postgres",
+  database: process.env.DB || "postgres",
   password: process.env.DB_PASS || "postgres",
-  port: 5432,
+  port: DB_PORT || 5432,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 const runMigration = async () => {

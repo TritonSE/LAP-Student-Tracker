@@ -12,7 +12,6 @@ const createImage = async (): Promise<string> => {
   try {
     res = await client.query(query);
   } catch (e) {
-    console.log(e);
     throw Error("Error on insert into image database");
   }
 

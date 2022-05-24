@@ -155,7 +155,7 @@ describe("[POST] /api/module/[id]/item", () => {
       body,
       StatusCodes.CREATED,
       expected,
-      "itemId"
+      ["itemId"]
     );
   });
 

@@ -1,13 +1,8 @@
 import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
-<<<<<<< HEAD
-import { makeHTTPRequest, makeUserHTTPRequest } from "./__testutils__/testutils.test";
-import { UpdateUser, User, CreateUser } from "../models/users";
-=======
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { CreateUser, UpdateUser, User } from "../models/users";
->>>>>>> origin/master
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server CustomError";
@@ -22,7 +17,6 @@ beforeAll(async () => {
   await client.query("INSERT INTO images (id) VALUES('3')");
 
   await client.query(
-<<<<<<< HEAD
     "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
@@ -301,6 +295,7 @@ describe("[GET] /api/users/?filter", () => {
         approved: true,
         dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
+        pictureId: "1",
         phoneNumber: "1234567890",
       },
       {
@@ -313,6 +308,7 @@ describe("[GET] /api/users/?filter", () => {
         dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        pictureId: "1"
       },
     ];
 
@@ -342,6 +338,7 @@ describe("[GET] /api/users/?filter", () => {
         approved: false,
         dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
+        pictureId: "2",
         phoneNumber: "1234567890",
       },
       {
@@ -352,6 +349,7 @@ describe("[GET] /api/users/?filter", () => {
         role: "Teacher",
         approved: false,
         dateCreated: "5/23/2022, 4:45:03 AM",
+        pictureId: "2",
         address: "123 Main Street",
         phoneNumber: "1234567890",
       },
@@ -364,6 +362,7 @@ describe("[GET] /api/users/?filter", () => {
         approved: false,
         dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
+        pictureId: "3",
         phoneNumber: "1234567890",
       },
       {
@@ -375,6 +374,7 @@ describe("[GET] /api/users/?filter", () => {
         approved: false,
         dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
+        pictureId: "3",
         phoneNumber: "1234567890",
       },
     ];
@@ -420,12 +420,8 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-<<<<<<< HEAD
-      expectedBody
-=======
       expected,
-      "pictureId"
->>>>>>> origin/master
+      ["pictureId", "dateCreated"]
     );
   });
 
@@ -456,9 +452,6 @@ describe("[POST] /api/users", () => {
       lastName: "John",
       email: "john@gmail.com",
       role: "Student",
-      pictureId: "",
-      address: null,
-      phoneNumber: null,
     };
 
     await makeHTTPRequest(
@@ -474,43 +467,26 @@ describe("[POST] /api/users", () => {
 
   test("creates an Admin user", async () => {
     const body: CreateUser = {
-<<<<<<< HEAD
       id: "50",
       firstName: "Admin",
       lastName: "Doe",
       email: "newAdmin@gmail.com",
-      role: "Admin",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
+      role: "Admin"
     };
 
     const expectedBody: User = {
-=======
->>>>>>> origin/master
       id: "50",
       firstName: "Admin",
       lastName: "Doe",
       email: "newAdmin@gmail.com",
       role: "Admin",
-<<<<<<< HEAD
       approved: false,
       dateCreated: "5/23/2022, 4:45:03 AM",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
-=======
->>>>>>> origin/master
-    };
-
-    const expected: User = {
-      id: "50",
-      firstName: "Admin",
-      lastName: "Doe",
-      email: "newAdmin@gmail.com",
-      role: "Admin",
-      pictureId: "",
       address: null,
       phoneNumber: null,
+      pictureId: ""
     };
+
     await makeHTTPRequest(
       userHandler,
       "/api/users/",
@@ -518,73 +494,42 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-<<<<<<< HEAD
-      expectedBody
+      expectedBody,
+        ["pictureId", "dateCreated"]
     );
   });
 
-  test("creates an Teacher user", async () => {
+  test("creates a Teacher user", async () => {
     const body: CreateUser = {
       id: "45",
       firstName: "Teacher",
       lastName: "Doe",
       email: "newTeacher@gmail.com",
       role: "Admin",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
     };
 
     const expectedBody: User = {
-=======
-      expected,
-      "pictureId"
-    );
-  });
-
-  test("creates a teacher user", async () => {
-    const body: CreateUser = {
->>>>>>> origin/master
-      id: "45",
-      firstName: "Teacher",
-      lastName: "Doe",
-      email: "newTeacher@gmail.com",
-      role: "Admin",
-<<<<<<< HEAD
-      approved: false,
-      dateCreated: "5/23/2022, 4:45:03 AM",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
-    };
-
-    await makeUserHTTPRequest(
-=======
-    };
-
-    const expected: User = {
       id: "45",
       firstName: "Teacher",
       lastName: "Doe",
       email: "newTeacher@gmail.com",
       role: "Admin",
       pictureId: "",
+      dateCreated: "5/23/2022, 4:45:03 AM",
+      approved: false,
       address: null,
       phoneNumber: null,
     };
 
     await makeHTTPRequest(
->>>>>>> origin/master
       userHandler,
       "/api/users/",
       undefined,
       "POST",
       body,
       StatusCodes.CREATED,
-<<<<<<< HEAD
-      expectedBody
-=======
-      expected,
-      "pictureId"
->>>>>>> origin/master
+      expectedBody,
+      ["pictureId", "dateCreated"]
     );
   });
 
@@ -617,14 +562,10 @@ describe("[GET] /api/users/[id]", () => {
       lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
-<<<<<<< HEAD
       approved: true,
       dateCreated: "5/23/2022, 4:45:03 AM",
       address: "123 Main Street",
-=======
->>>>>>> origin/master
       phoneNumber: "1234567890",
-      address: "123 Main Street",
       pictureId: "1",
     };
 
@@ -668,12 +609,9 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
-<<<<<<< HEAD
       approved: true,
       dateCreated: "5/23/2022, 4:45:03 AM",
-=======
       pictureId: "1",
->>>>>>> origin/master
       address: "456 Main Street",
       phoneNumber: "4567890",
     };
@@ -710,12 +648,9 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "admin@gmail.com",
       role: "Admin",
-<<<<<<< HEAD
       approved: false,
       dateCreated: "5/23/2022, 4:45:03 AM",
-=======
       pictureId: "3",
->>>>>>> origin/master
       address: "456 Main Street",
       phoneNumber: "4567890",
     };

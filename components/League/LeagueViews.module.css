@@ -268,3 +268,8 @@
   height: 30px;
   width: 28px;
 }
+
+.approveBtn,
+.rejectBtn {
+  font-size: 18px;
+}

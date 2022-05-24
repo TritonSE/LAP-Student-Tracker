@@ -23,8 +23,13 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
         <p>{user.dateCreated}</p>
         <p>{user.role}</p>
         <div>
-          <button onClick={() => approveAccount(user)}>Yes</button> /{" "}
-          <button onClick={() => rejectAccount(user)}>No</button>
+          <button className={styles.approveBtn} onClick={() => approveAccount(user)}>
+            Yes
+          </button>{" "}
+          /{" "}
+          <button className={styles.rejectBtn} onClick={() => rejectAccount(user)}>
+            No
+          </button>
         </div>
       </div>
     );
@@ -35,9 +40,14 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
         <p>{user.email}</p>
         <p>00/00/00</p>
         <p>{user.role}</p>
-        <div>
-          <button onClick={() => approveAccount(user)}>Yes</button> /{" "}
-          <button onClick={() => rejectAccount(user)}>No</button>
+        <div className={styles.approveBtnsContainer}>
+          <button className={styles.approveBtn} onClick={() => approveAccount(user)}>
+            Yes
+          </button>{" "}
+          /{" "}
+          <button className={styles.rejectBtn} onClick={() => rejectAccount(user)}>
+            No
+          </button>
         </div>
       </div>
     );

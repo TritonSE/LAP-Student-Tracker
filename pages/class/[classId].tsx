@@ -2,14 +2,14 @@ import React, { useState, useContext } from "react";
 import type { NextApplicationPage } from "../_app";
 import { AuthContext } from "../../context/AuthContext";
 import styles from "../../styles/class.module.css";
-import { Error } from "../../components/util/Error";
-import { Roster } from "../../components/Roster/Roster";
+import { Roster } from "../../components/SingleClassView/Roster/Roster";
 import { useRouter } from "next/router";
-import { Attendance } from "../../components/Attendance/Attendance";
-import { Module } from "../../components/ModuleView/Module";
-import useSWR from "swr";
+import { Attendance } from "../../components/SingleClassView/Attendance/Attendance";
+import { Module } from "../../components/SingleClassView/Modules/Module";
 import { APIContext } from "../../context/APIContext";
 import { BackButton } from "../../components/util/BackButton";
+import { CustomError } from "../../components/util/CustomError";
+import useSWR from "swr";
 
 const Class: NextApplicationPage = () => {
   const router = useRouter();
@@ -21,8 +21,7 @@ const Class: NextApplicationPage = () => {
 
   const [currentModule, setCurrentModule] = useState<string>("roster");
 
-  if (user == null) return <Error />;
-  if (currClass == null) return <Error />;
+  if (user == null || currClass == null) return <CustomError />;
 
   return (
     <div className={styles.container}>

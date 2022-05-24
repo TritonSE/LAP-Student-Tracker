@@ -7,7 +7,7 @@
 }
 
 .title {
-  composes: headlineLarge from "../../styles/globals.css";
+  composes: headlineLarge from "../../../styles/globals.css";
   padding-bottom: 2rem;
   position: relative;
   align-self: left;

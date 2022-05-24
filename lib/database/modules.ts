@@ -59,7 +59,7 @@ const createModule = async (
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("Error on insert into database");
+    throw Error("CustomError on insert into database");
   }
 
   return getModule(res.rows[0].moduleId);
@@ -83,7 +83,7 @@ const updateModule = async (
   try {
     await client.query(query);
   } catch (e) {
-    throw Error("Error on update module");
+    throw Error("CustomError on update module");
   }
 
   return getModule(moduleId);
@@ -100,7 +100,7 @@ const deleteModule = async (moduleId: string): Promise<Module | null> => {
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("Error on delete module");
+    throw Error("CustomError on delete module");
   }
 
   if (res.rows.length == 0) {

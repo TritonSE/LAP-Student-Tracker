@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../../styles/ForgotPassword.module.css";
+import styles from "../../../styles/ForgotPassword.module.css";
 import TextField from "@mui/material/TextField";
 
 const cssTextField = {

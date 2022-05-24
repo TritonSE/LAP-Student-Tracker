@@ -3,11 +3,12 @@ import { getUser, updateUser } from "../../../lib/database/users";
 import { UpdateUser, UpdateUserSchema } from "../../../models/users";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
+import { withAuth } from "../../../middleware/withAuth";
 
 // handles requests to /api/users/[id]
 const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
   const id = req.query.id as string;
@@ -25,7 +26,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
         }
         return res.status(StatusCodes.ACCEPTED).json(user);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -53,7 +54,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
 
@@ -63,4 +64,4 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
   }
 };
 
-export default userIDHandler;
+export default withAuth(userIDHandler);

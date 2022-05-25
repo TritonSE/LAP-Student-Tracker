@@ -15,6 +15,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
+import { withAuth } from "../../../../middleware/withAuth";
 
 type Weekdays = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
 type WeekdayIntervals = {
@@ -34,7 +35,7 @@ class TeacherAvailabilityError extends Error {
 }
 
 // handles requests to /api/events/class
-const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST": {
       let newEvent: CreateClassEvent;
@@ -212,4 +213,4 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
   }
 };
 
-export default eventHandler;
+export default withAuth(classEventHandler);

@@ -42,6 +42,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
 
   // selected teachers from dropdown (string of emails)
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
+  const [ignoreAvailabilities, setIgnoreAvailabilities] = useState(false);
 
   const [valid, setValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);

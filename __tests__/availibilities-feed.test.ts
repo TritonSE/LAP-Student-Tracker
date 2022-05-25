@@ -1,4 +1,4 @@
-import availabilityFeedHandler from "../pages/api/availibility-feed";
+import availabilityFeedHandler from "../pages/api/availability-feed";
 import { client } from "../lib/db";
 import { CalendarEvent } from "../models/events";
 import { StatusCodes } from "http-status-codes";
@@ -15,13 +15,16 @@ beforeAll(async () => {
   await client.query("DELETE from calendar_information");
   await client.query("DELETE from commitments");
   await client.query("DELETE from availabilities");
+  await client.query("DELETE from images");
+
+  await client.query("INSERT into images (id) VALUES('1')");
 
   await client.query(
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('id_a', 'event_a', 'blue', 'Class', false)"
   );
 
   await client.query(
-    "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address) VALUES('user_a', 'emaila@gmail.com', 'Teacher', 'fname', 'lname', '#', 'addr')"
+    "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address, picture_id) VALUES('user_a', 'emaila@gmail.com', 'Teacher', 'fname', 'lname', '#', 'addr', '1')"
   );
   await client.query(
     "INSERT INTO commitments(user_id, event_information_id) VALUES('user_a', 'id_a')"

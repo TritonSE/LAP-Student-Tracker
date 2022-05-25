@@ -21,7 +21,7 @@
 
 .wizardContent {
   width: 800px;
-  height: 543px;
+  height: 583px;
   margin: 5% auto;
   border-radius: 16px;
   background-color: var(--white);
@@ -108,6 +108,15 @@
 .checkLabel {
   margin: 0px;
   composes: labelLarge from "../../../styles/globals.css";
+}
+
+.availabilityCheckLabel {
+  margin-left: 40px;
+  composes: labelLarge from "../../../styles/globals.css";
+}
+
+.availabilityWrapper {
+  margin-top: 20px;
 }
 
 .row {

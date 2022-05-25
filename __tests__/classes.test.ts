@@ -21,6 +21,9 @@ beforeAll(async () => {
   await client.query(
     "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('33', 'class3', 'green', 'Class', true)"
   );
+  await client.query(
+    "INSERT INTO event_Information(id, name, background_color, type, never_ending) VALUES('333', 'class3', 'green', 'Class', true)"
+  );
   await client.query("DELETE from classes");
   await client.query(
     "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('11', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english')"
@@ -28,6 +31,7 @@ beforeAll(async () => {
   await client.query(
     "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('33', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'english')"
   );
+
   await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('44', 'Bill', 'Test', 'bt@gmail.com', 'Teacher', '14 nowhere lane', '123-456-7892')"
   );
@@ -43,12 +47,15 @@ afterAll(async () => {
 
 describe("[POST] /api/class", () => {
   beforeAll(async () => {
-    await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('44', '33')");
+    await client.query(
+      "INSERT INTO commitments(user_id, event_information_id) VALUES('44', '333')"
+    );
   });
+
   test("creates a new class", async () => {
     const body: Class = {
       name: "class3",
-      eventInformationId: "33",
+      eventInformationId: "333",
       minLevel: 3,
       maxLevel: 5,
       rrstring:
@@ -56,12 +63,12 @@ describe("[POST] /api/class", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
-      teachers: [],
+      teachers: [{ firstName: "Bill", lastName: "Test", userId: "44" }],
     };
 
     const expected: Class = {
       name: "class3",
-      eventInformationId: "33",
+      eventInformationId: "333",
       minLevel: 3,
       maxLevel: 5,
       rrstring:
@@ -69,7 +76,7 @@ describe("[POST] /api/class", () => {
       startTime: "07:34Z",
       endTime: "08:34Z",
       language: "english",
-      teachers: [],
+      teachers: [{ firstName: "Bill", lastName: "Test", userId: "44" }],
     };
 
     await makeHTTPRequest(

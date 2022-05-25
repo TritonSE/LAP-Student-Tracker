@@ -39,10 +39,10 @@ const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters }
       }
     });
 
-    let selected = true;
+    let selected = false;
     roleFilters.forEach((role) => {
-      if (!role.toLowerCase().includes(staff.role.toLowerCase())) {
-        selected = false;
+      if (role.toLowerCase().includes(staff.role.toLowerCase())) {
+        selected = true;
       }
     });
 
@@ -55,10 +55,12 @@ const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters }
       // replaces all not-digits with nothing, so result is just number
       const levelNum = parseInt(level.replace(/^\D+/g, ""));
       if (
-        (staff.maxLevel !== null && levelNum > staff.maxLevel) ||
-        (staff.minLevel !== null && levelNum < staff.minLevel)
+        staff.maxLevel !== null &&
+        levelNum <= staff.maxLevel &&
+        staff.minLevel !== null &&
+        levelNum >= staff.minLevel
       ) {
-        selected = false;
+        selected = true;
       }
     });
 

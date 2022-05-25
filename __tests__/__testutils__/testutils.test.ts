@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// have to disable type checking for this file because of https://github.com/howardabrams/node-mocks-http/issues/245
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
-import { ClassEvent, CalendarEvent } from "../../models/events";
+import { CalendarEvent, ClassEvent } from "../../models/events";
 
 /**
  * Create and test a HTTP Request
@@ -15,9 +18,9 @@ import { ClassEvent, CalendarEvent } from "../../models/events";
  * @param body the body of the request
  * @param expectedResponseCode the expected response code
  * @param expectedBody the expected body of the response
+ * @param ignoreResKey keys in the response to ignore when comparing object equality
  * @returns result of the operation (whether the test passes or not)
  *
- * Note: Record<String, unknown> is just a type-safe way to specify an object
  */
 const makeHTTPRequest = async (
   handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
@@ -25,8 +28,9 @@ const makeHTTPRequest = async (
   query: Object | undefined,
   method: RequestMethod,
   body: Object | undefined,
-  expectedResponseCode: number,
-  expectedBody: Object | undefined
+  expectedResponseCode: number | undefined,
+  expectedBody: Object | undefined,
+  ignoreResKey?: string
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -37,9 +41,19 @@ const makeHTTPRequest = async (
 
   await handler(req, res);
 
-  expect(res._getStatusCode()).toBe(expectedResponseCode);
+  if (expectedResponseCode) expect(res._getStatusCode()).toBe(expectedResponseCode);
   if (expectedBody) {
-    expect(JSON.parse(res._getData())).toEqual(expectedBody);
+    const resData = JSON.parse(res._getData());
+    // key to ignore in actual body when comparing with expected body
+    // use for randomly generated IDs that can't be predetermined
+    if (ignoreResKey) {
+      expect(resData).toHaveProperty(ignoreResKey);
+      delete resData[ignoreResKey];
+      // eslint-disable-next-line no-prototype-builtins
+      if (expectedBody.hasOwnProperty(ignoreResKey)) delete expectedBody[ignoreResKey];
+    }
+
+    expect(resData).toEqual(expectedBody);
   }
   return res;
 };
@@ -126,4 +140,26 @@ const convertTimeToISO = (time: string, timeZone: string): string => {
   return DateTime.fromFormat(time, "HH:mm", { zone: timeZone }).toISOTime();
 };
 
-export { makeHTTPRequest, makeEventHTTPRequest, makeEventFeedHTTPRequest, convertTimeToISO };
+const getISOTimeFromExplicitFields = (
+  year: number,
+  month: number,
+  day: number,
+  hour: number,
+  minute: number,
+  timeZone: string
+): string => {
+  return DateTime.fromObject(
+    { year: year, month: month, day: day, hour: hour, minute: minute },
+    { zone: timeZone }
+  )
+    .toLocal()
+    .toISO();
+};
+
+export {
+  makeHTTPRequest,
+  makeEventHTTPRequest,
+  makeEventFeedHTTPRequest,
+  convertTimeToISO,
+  getISOTimeFromExplicitFields,
+};

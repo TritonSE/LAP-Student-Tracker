@@ -2,10 +2,10 @@ import { classHandler } from "../pages/api/class";
 import { classIDHandler } from "../pages/api/class/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { UpdateClass, Class, CreateClass } from "../models/class";
+import { Class, CreateClass, UpdateClass } from "../models/class";
 import { StatusCodes } from "http-status-codes";
 
-const INTERNAL_SERVER_ERROR = "Internal Server Error";
+const INTERNAL_SERVER_ERROR = "Internal Server CustomError";
 const CLASS_NOT_FOUND_ERROR = "class not found";
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 

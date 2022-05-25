@@ -2,41 +2,280 @@ import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { UpdateUser, User } from "../models/users";
+import { CreateUser, UpdateUser, User } from "../models/users";
 import { StatusCodes } from "http-status-codes";
 
-const INTERNAL_SERVER_ERROR = "Internal Server Error";
+const INTERNAL_SERVER_ERROR = "Internal Server CustomError";
 const USER_NOT_FOUND_ERROR = "user not found";
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
 beforeAll(async () => {
   await client.query("DELETE from users");
+  await client.query("DELETE FROM images");
+  await client.query("INSERT INTO images (id) VALUES('1')");
+  await client.query("INSERT INTO images (id) VALUES('2')");
+  await client.query("INSERT INTO images (id) VALUES('3')");
+
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '2')"
+  );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', '123 Main Street', '1234567890', '2')"
+  );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890',  '3')"
+  );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', '123 Main Street', '1234567890', '3')"
   );
 });
 
 afterAll(async () => {
   await client.query("DELETE from users");
+  await client.query("DELETE from images");
   await client.end();
+});
+
+describe("[GET] /api/users/?filter", () => {
+  test("look for all users", async () => {
+    const expected: User[] = [
+      {
+        id: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "1",
+      },
+      {
+        id: "4",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "1",
+      },
+      {
+        id: "2",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "2",
+      },
+      {
+        id: "5",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher2@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "2",
+      },
+      {
+        id: "3",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "3",
+      },
+      {
+        id: "6",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin2@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "3",
+      },
+    ];
+
+    const res = await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      undefined,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      undefined
+    );
+
+    const returnedUsers = JSON.parse(res._getData());
+
+    expect(expected.length).toBe(returnedUsers.length);
+    expect(returnedUsers).toEqual(expect.arrayContaining(returnedUsers));
+  });
+
+  test("look for all teachers", async () => {
+    const expected: User[] = [
+      {
+        id: "2",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "2",
+      },
+      {
+        id: "5",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher2@gmail.com",
+        role: "Teacher",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "2",
+      },
+    ];
+
+    const query = {
+      role: "Teacher",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all students", async () => {
+    const expected: User[] = [
+      {
+        id: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "1",
+      },
+      {
+        id: "4",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john2@gmail.com",
+        role: "Student",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "1",
+      },
+    ];
+
+    const query = {
+      role: "Student",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all admin", async () => {
+    const expected: User[] = [
+      {
+        id: "3",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "3",
+      },
+      {
+        id: "6",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin2@gmail.com",
+        role: "Admin",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "3",
+      },
+    ];
+
+    const query = {
+      role: "Admin",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for a role that does not exist", async () => {
+    const query = {
+      role: "DOES_NOT_EXIST",
+    };
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.BAD_REQUEST,
+      "Query parameter refers to role that does not exist"
+    );
+  });
 });
 
 describe("[POST] /api/users", () => {
   test("creates a new user", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "100",
       firstName: "John",
       lastName: "Doe",
       email: "mynaME@gmail.com",
       role: "Student",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
+    };
+
+    const expected: User = {
+      id: "100",
+      firstName: "John",
+      lastName: "Doe",
+      email: "mynaME@gmail.com",
+      role: "Student",
+      pictureId: "",
+      address: null,
+      phoneNumber: null,
     };
     await makeHTTPRequest(
       userHandler,
@@ -45,19 +284,18 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expected,
+      "pictureId"
     );
   });
 
   test("doesn't create a duplicate user", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "1",
       firstName: "John",
       lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
     };
 
     await makeHTTPRequest(
@@ -78,8 +316,9 @@ describe("[POST] /api/users", () => {
       lastName: "John",
       email: "john@gmail.com",
       role: "Student",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
+      pictureId: "",
+      address: null,
+      phoneNumber: null,
     };
 
     await makeHTTPRequest(
@@ -94,14 +333,23 @@ describe("[POST] /api/users", () => {
   });
 
   test("creates an Admin user", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "50",
       firstName: "Admin",
       lastName: "Doe",
       email: "newAdmin@gmail.com",
       role: "Admin",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
+    };
+
+    const expected: User = {
+      id: "50",
+      firstName: "Admin",
+      lastName: "Doe",
+      email: "newAdmin@gmail.com",
+      role: "Admin",
+      pictureId: "",
+      address: null,
+      phoneNumber: null,
     };
     await makeHTTPRequest(
       userHandler,
@@ -110,20 +358,31 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expected,
+      "pictureId"
     );
   });
 
-  test("creates an Teacher user", async () => {
-    const body: User = {
+  test("creates a teacher user", async () => {
+    const body: CreateUser = {
       id: "45",
       firstName: "Teacher",
       lastName: "Doe",
       email: "newTeacher@gmail.com",
       role: "Admin",
-      address: "123 Main Street",
-      phoneNumber: "1234567890",
     };
+
+    const expected: User = {
+      id: "45",
+      firstName: "Teacher",
+      lastName: "Doe",
+      email: "newTeacher@gmail.com",
+      role: "Admin",
+      pictureId: "",
+      address: null,
+      phoneNumber: null,
+    };
+
     await makeHTTPRequest(
       userHandler,
       "/api/users/",
@@ -131,7 +390,8 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-      body
+      expected,
+      "pictureId"
     );
   });
 
@@ -164,8 +424,9 @@ describe("[GET] /api/users/[id]", () => {
       lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
-      address: "123 Main Street",
       phoneNumber: "1234567890",
+      address: "123 Main Street",
+      pictureId: "1",
     };
 
     const query = {
@@ -208,6 +469,7 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
+      pictureId: "1",
       address: "456 Main Street",
       phoneNumber: "4567890",
     };
@@ -243,6 +505,7 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "admin@gmail.com",
       role: "Admin",
+      pictureId: "3",
       address: "456 Main Street",
       phoneNumber: "4567890",
     };

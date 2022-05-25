@@ -8,7 +8,7 @@ const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextAp
     case "GET":
       try {
         if (!req.query) {
-          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
         }
 
         const start = req.query.start as string;
@@ -20,11 +20,10 @@ const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextAp
         }
 
         const result = await getEventFeed(start, end, userId);
-        res.status(StatusCodes.OK).json(result);
+        return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
-      break;
 
     default:
       res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");

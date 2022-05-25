@@ -1,0 +1,301 @@
+.wizardWrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 3;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  opacity: 100;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+}
+
+.wizardWrapper::-webkit-scrollbar {
+  /* WebKit */
+  width: 0;
+  height: 0;
+}
+
+.wizardContent {
+  width: 800px;
+  height: 543px;
+  margin: 5% auto;
+  border-radius: 16px;
+  background-color: var(--white);
+  box-shadow: 1px 4px 22px rgba(27, 28, 29, 0.25);
+}
+
+.headerContent {
+  padding: 0px 48px;
+}
+
+.scrollableContent {
+  padding: 0px 48px;
+  padding-bottom: 26px;
+  overflow: auto;
+}
+
+.footerContent {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  height: 107px;
+  padding: 0px 48px;
+  border-width: 5px 0px 0px 0px;
+}
+
+.errorMsg {
+  color: red;
+}
+
+.titleWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 38px;
+  padding-bottom: 34px;
+}
+
+.padding {
+  width: 24px;
+}
+
+.title {
+  font-family: Inter;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--black);
+  text-align: center;
+  margin: 0px;
+}
+
+.label {
+  margin: 0px;
+  composes: headlineSmall from "../../../styles/globals.css";
+}
+
+.classInput {
+  width: 704px;
+  border-width: 0px 0px 1px 0px;
+}
+
+.multiLevel {
+  width: 472px;
+}
+
+.singleLevel {
+  width: 375px;
+}
+
+.levelsWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32px;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  margin-right: -20px;
+}
+
+.checkLabel {
+  margin: 0px;
+  composes: labelLarge from "../../../styles/globals.css";
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.spacing {
+  width: 30px;
+}
+
+.inputField {
+  border: none;
+  border-radius: 8px;
+  background: var(--gray-4);
+  color: var(--black);
+  composes: labelLarge from "../../../styles/globals.css";
+}
+
+.dropDownWrapper {
+  margin-left: 58px;
+}
+
+.dropDown {
+  width: 80px;
+  height: 40px;
+  border: 1px solid var(--gray-2);
+  background: var(--white);
+  margin-top: 8px;
+  composes: inputField;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.levelInput {
+  width: 80px;
+  height: 40px;
+  text-align: center;
+  composes: inputField;
+}
+
+.levelInput::-webkit-inner-spin-button {
+  opacity: 1;
+}
+
+.dateInput {
+  composes: inputField;
+  composes: labelLarge from "../../../styles/globals.css";
+  width: 170px;
+  height: 40px;
+  margin: 10px 0px;
+  padding: 0px 15px;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.timeInput {
+  composes: inputField;
+  composes: labelLarge from "../../../styles/globals.css";
+  width: 105px;
+  height: 40px;
+  margin: 10px 0px;
+  text-align: center;
+}
+
+.timeInput::placeholder {
+  color: var(--black);
+}
+
+.dash {
+  width: 16px;
+  height: 2px;
+
+  background: #959595;
+  border-radius: 30px;
+  margin: 0px -17px;
+}
+
+.recurrenceButton {
+  width: 220px;
+  height: 40px;
+  margin: 10px 0px;
+  padding: 0px 15px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: var(--gray-4);
+  color: var(--black);
+  cursor: pointer;
+
+  white-space: nowrap;
+  overflow: auto;
+  composes: labelLarge from "../../../styles/globals.css";
+}
+
+.recurrenceInput::placeholder {
+  color: var(--black);
+}
+
+.textInput {
+  composes: inputField;
+  composes: labelLarge from "../../../styles/globals.css";
+  width: 648px;
+  height: 40px;
+  margin: 10px 0px;
+  padding: 0px 20px;
+}
+
+.textInput::placeholder {
+  color: var(--black);
+}
+
+.line {
+  background-color: var(--gray-3);
+  height: 1px;
+  border: none;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.confirmButton {
+  width: 160px;
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  background: var(--orange);
+
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.confirmButton:disabled {
+  opacity: 0.8;
+}
+
+.closeIcon {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.teacherIcon {
+  width: 32px;
+  height: 25.6px;
+}
+
+.timeIcon {
+  width: 35px;
+  height: 35px;
+}
+
+.popover {
+  position: absolute;
+  z-index: 2;
+  margin: 2px 0px;
+  width: 80px;
+  height: 136px;
+}
+
+.cover {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+.colorCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.arrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+}

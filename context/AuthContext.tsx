@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useMemo, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
 import { FirebaseError } from "@firebase/util";
@@ -52,9 +52,9 @@ const init: AuthState = {
 
 export const AuthContext = createContext<AuthState>(init);
 // provides the current authenticated user and auth status to the entire app
-// TODO: Add support for API calls via a JWT token
 export const AuthProvider: React.FC = ({ children }) => {
   const api = useContext(APIContext);
+  const [locality, setLocality] = useState<string>("Session");
 
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<Error | null>(null);
@@ -63,7 +63,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     setError(null);
   };
 
-  // function to handle firebase errors elegantly and display relevent information to the user
+  // function to handle firebase errors elegantly and display relevant information to the user
   const setFirebaseError = (e: FirebaseError): void => {
     if (e.code === "auth/wrong-password") setError(new Error("Password is incorrect"));
     else if (e.code === "auth/user-not-found") setError(new Error("User does not exist"));
@@ -75,37 +75,66 @@ export const AuthProvider: React.FC = ({ children }) => {
     else setError(new Error(e.message));
   };
 
+  // gets the auth state ready on every refresh
   const auth = useMemo(() => {
-    const fbConfig = process.env.REACT_APP_FB_CONFIG
-      ? JSON.parse(process.env.REACT_APP_FB_CONFIG)
-      : {
-          apiKey: process.env.REACT_APP_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
-          authDomain:
-            process.env.REACT_APP_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-          projectId: process.env.REACT_APP_FB_PROJECT_ID || "lap-student-tracker-staging",
-          appId: process.env.REACT_APP_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
-        };
+    const fbConfig = {
+      apiKey: process.env.NEXT_PUBLIC_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
+      authDomain:
+        process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
+      projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-student-tracker-staging",
+      appId: process.env.NEXT_PUBLIC_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
+    };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
     return app.auth();
   }, []);
 
+  // get a new token and place it in the appropriate place
+  const getNewRefreshToken = async (): Promise<string | null> => {
+    if (auth == null) return null;
+    if (auth.currentUser == null) return null;
+    const newToken = await auth.currentUser.getIdToken(false);
+    if (locality == "Local") {
+      localStorage.setItem("apiToken", newToken);
+    } else {
+      sessionStorage.setItem("apiToken", newToken);
+    }
+    api.setToken(newToken);
+    return newToken;
+  };
+
   // get user data from local/session storage on every refresh
   useEffect(() => {
     (async () => {
+      api.setRefreshTokenFunction(getNewRefreshToken);
       const uid = sessionStorage.getItem("userId");
       const token = sessionStorage.getItem("apiToken");
       if (uid && token) {
-        // api.setToken(token);
-        const user = await api.getUser(uid);
+        await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+        setLocality("Session");
+        api.setToken(token);
+        const userObj = sessionStorage.getItem("user");
+        let user: User;
+        if (userObj) {
+          user = JSON.parse(userObj);
+        } else {
+          user = await api.getUser(uid);
+        }
         setUser(user);
         setError(null);
       } else {
         const uid = localStorage.getItem("userId");
         const token = localStorage.getItem("apiToken");
-
         if (uid && token) {
-          // api.setToken(token);
-          const user = await api.getUser(uid);
+          setLocality("Local");
+          await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+          api.setToken(token);
+          const userObj = localStorage.getItem("user");
+          let user: User;
+          if (userObj) {
+            user = JSON.parse(userObj);
+          } else {
+            user = await api.getUser(uid);
+          }
           setUser(user);
           setError(null);
         }
@@ -124,19 +153,21 @@ export const AuthProvider: React.FC = ({ children }) => {
           return;
         }
         const jwt = await fbUser.getIdToken();
-        // api.setToken(jwt);
+        api.setToken(jwt);
 
         const uid = fbUser.uid;
-
+        const user = await api.getUser(uid);
+        // store user in local storage to minimze api calls
         if (rememberMe) {
           localStorage.setItem("apiToken", jwt);
           localStorage.setItem("userId", uid);
+          setLocality("Local");
+          localStorage.setItem("user", JSON.stringify(user));
         } else {
           sessionStorage.setItem("apiToken", jwt);
           sessionStorage.setItem("userId", uid);
+          sessionStorage.setItem("user", JSON.stringify(user));
         }
-
-        const user = await api.getUser(uid);
         setUser(user);
       } catch (e) {
         if (e instanceof FirebaseError) {
@@ -161,8 +192,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         setError(null);
         localStorage.removeItem("userId");
         localStorage.removeItem("apiToken");
+        localStorage.removeItem("user");
         sessionStorage.removeItem("userId");
         sessionStorage.removeItem("apiToken");
+        sessionStorage.removeItem("user");
         await auth.signOut();
       } catch (e) {
         setError(e as Error);
@@ -187,7 +220,7 @@ export const AuthProvider: React.FC = ({ children }) => {
           return;
         }
         const jwt = await fbUser.getIdToken();
-        // api.setToken(jwt);
+        api.setToken(jwt);
 
         const uid = fbUser.uid;
         const user = await api.createUser({
@@ -199,6 +232,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         });
         setUser(user);
         sessionStorage.setItem("userId", uid);
+        sessionStorage.setItem("user", JSON.stringify(user));
         sessionStorage.setItem("apiToken", jwt);
       } catch (e) {
         if (e instanceof FirebaseError) {
@@ -211,7 +245,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   };
 
-  //sends cutom emal for resetting password to user
+  //sends cutom email for resetting password to user
   const forgotPassword = async (email: string): Promise<boolean> => {
     try {
       await auth.sendPasswordResetEmail(email);
@@ -251,7 +285,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   ): Promise<boolean> => {
     try {
       if (currPassword === "") {
-        setError(new Error("Password must be specificed to change any values"));
+        setError(new Error("Password must be specified to change any values"));
         return false;
       }
 
@@ -275,6 +309,11 @@ export const AuthProvider: React.FC = ({ children }) => {
       };
       const newUser = await api.updateUser(updateUser, id);
       setUser(newUser);
+      if (locality == "Local") {
+        localStorage.setItem("user", JSON.stringify(newUser));
+      } else {
+        sessionStorage.setItem("user", JSON.stringify(newUser));
+      }
       return true;
     } catch (e) {
       if (e instanceof FirebaseError) {

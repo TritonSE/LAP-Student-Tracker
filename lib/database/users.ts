@@ -1,26 +1,49 @@
 import { client } from "../db";
-import { User, UserSchema } from "../../models/users";
+import { User, UserArraySchema, UserSchema } from "../../models/users";
 import { decode } from "io-ts-promise";
+
+const roleSpecificSetup = async (
+  id: string,
+  role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer"
+): Promise<void> => {
+  switch (role) {
+    case "Teacher": {
+      const query = {
+        text: "INSERT INTO availabilities (user_id, time_zone) VALUES ($1, 	$2)",
+        values: [id, "America/Los_Angeles"],
+      };
+      try {
+        await client.query(query);
+      } catch (e) {
+        throw Error("CustomError on inserting into availabilities for teachers");
+      }
+      return;
+    }
+    default:
+      return;
+  }
+};
+
 // create a user in the database with given parameters.
 const createUser = async (
   id: string,
   firstName: string,
   lastName: string,
   email: string,
-  role: string,
-  address?: string | null,
-  phone_number?: string | null
+  role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
+  imgId: string | null
 ): Promise<User | null> => {
   const query = {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES($1, $2, $3, $4, $5, $6, $7)",
-    values: [id, firstName, lastName, email, role, address, phone_number],
+    text: "INSERT INTO users(id, first_name, last_name, email, role, picture_id) VALUES($1, $2, $3, $4, $5, $6)",
+    values: [id, firstName, lastName, email, role, imgId],
   };
   try {
     await client.query(query);
   } catch (e) {
-    throw Error("Error on insert into database");
+    throw Error("CustomError on insert into database");
   }
 
+  await roleSpecificSetup(id, role);
   return getUser(id);
 };
 
@@ -50,7 +73,7 @@ const updateUser = async (
   try {
     await client.query(query);
   } catch {
-    throw Error("Error on update user");
+    throw Error("CustomError on update user");
   }
 
   return getUser(id);
@@ -59,7 +82,7 @@ const updateUser = async (
 // get a user given an id
 const getUser = async (id: string): Promise<User | null> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users WHERE id = $1",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id FROM users WHERE id = $1",
     values: [id],
   };
 
@@ -79,4 +102,21 @@ const getUser = async (id: string): Promise<User | null> => {
   return user;
 };
 
-export { createUser, getUser, updateUser };
+const getAllUsers = async (): Promise<User[]> => {
+  const query = {
+    text: "SELECT id, first_name, last_name, email, role, phone_number, picture_id, address FROM users",
+  };
+
+  const res = await client.query(query);
+
+  let allUsers: User[];
+  try {
+    allUsers = await decode(UserArraySchema, res.rows);
+  } catch (e) {
+    throw Error("Fields returned incorrectly in database");
+  }
+
+  return allUsers;
+};
+
+export { createUser, getUser, updateUser, getAllUsers };

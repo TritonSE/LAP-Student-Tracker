@@ -5,7 +5,7 @@ import { Navbar } from "./Navbar";
 const Layout: React.FC = ({ children }) => {
   const router = useRouter();
   const hideNavbar = ["/login", "/signup", "/forgotpassword", "/resetpassword"];
-  const showNavbar = hideNavbar.includes(router.pathname) ? false : true;
+  const showNavbar = !hideNavbar.includes(router.pathname);
   return (
     <div>
       {showNavbar && <Navbar />}

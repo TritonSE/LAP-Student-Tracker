@@ -1,0 +1,39 @@
+.unapprovedContainer {
+  padding: 5% 0 0 20%;
+}
+
+.textContainer h1 {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 45px;
+  line-height: 52px;
+  color: #1b1c1d;
+}
+
+.textContainer p {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  color: #1c1b1f;
+}
+
+.returnBtn {
+  width: 260px;
+  height: 72px;
+  background: #f37121;
+  border-radius: 16px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  color: #1c1b1f;
+}
+
+.returnBtnContainer {
+  margin-top: 361px;
+  padding-left: 300px;
+}

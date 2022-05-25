@@ -32,13 +32,13 @@ beforeAll(async () => {
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('4', 'Gary', 'Gillespie', 'gary@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('4', 'Gary', 'Gillespie', 'gary@gmail.com', 'Teacher', '123 Main Street', '1234567890', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('5', 'Rick', 'Ord', 'ricko@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('5', 'Rick', 'Ord', 'ricko@gmail.com', 'Teacher', '123 Main Street', '1234567890', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('6', 'Miles', 'Jones', 'miles@gmail.com', 'Teacher', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('6', 'Miles', 'Jones', 'miles@gmail.com', 'Teacher', '123 Main Street', '1234567890', '1')"
   );
   await client.query(
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('e_1', 'Java Bear', 'blue', 'Class', false)"
@@ -344,7 +344,7 @@ describe("[POST] /api/events/class", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher Rick Ord is not available for class Math 101",
+      "Teacher Rick Ord is not available for class Math 101"
     );
   });
 
@@ -375,7 +375,7 @@ describe("[POST] /api/events/class", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher Miles Jones is not available for class Math 101",
+      "Teacher Miles Jones is not available for class Math 101"
     );
   });
 });

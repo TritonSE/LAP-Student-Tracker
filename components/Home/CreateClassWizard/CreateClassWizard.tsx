@@ -403,7 +403,9 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                 checked={ignoreAvailabilities}
                 onChange={() => setIgnoreAvailabilities(!ignoreAvailabilities)}
               />
-              <label className={styles.availabilityCheckLabel}>Override teacher availabilities</label>
+              <label className={styles.availabilityCheckLabel}>
+                Override teacher availabilities
+              </label>
             </div>
           </div>
 

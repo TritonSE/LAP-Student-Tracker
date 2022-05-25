@@ -170,4 +170,4 @@ const getAvailabilityFeed = async (
   });
 };
 
-export { getAvailabilityFeed };
+export { getAvailabilityFeed, timeDateZoneToDateTime };

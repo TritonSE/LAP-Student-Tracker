@@ -212,6 +212,7 @@ const CreateEventsWizard: React.FC<CreateEventsWizardProps> = ({ handleClose }) 
       neverEnding: endType === "never",
       backgroundColor: colorMap[color],
       teachers: selectedTeachers,
+      checkAvailabilities: false,
     };
 
     try {

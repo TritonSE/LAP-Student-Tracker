@@ -6,6 +6,8 @@ import {
   teachersExist,
   validateTimes,
 } from "../../../../lib/database/events";
+import { getAvailabilityById } from "../../../../lib/database/availability";
+import { timeDateZoneToDateTime } from "../../../../lib/database/availability-feed";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
 import { ClassEvent, CreateClassEvent, CreateClassEventSchema } from "../../../../models/events";
@@ -13,6 +15,23 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
+
+type Weekdays = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
+type WeekdayIntervals = {
+  mon: Interval | null;
+  tue: Interval | null;
+  wed: Interval | null;
+  thu: Interval | null;
+  fri: Interval | null;
+  sat: Interval | null;
+};
+
+class TeacherAvailabilityError extends Error {
+  constructor(msg: string) {
+    super(msg);
+    Object.setPrototypeOf(this, TeacherAvailabilityError.prototype);
+  }
+}
 
 // handles requests to /api/events/class
 const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -45,6 +64,17 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
         });
 
         const intervals: Interval[] = [];
+        const intervalsByWeekDay: WeekdayIntervals = {
+          mon: null,
+          tue: null,
+          wed: null,
+          thu: null,
+          fri: null,
+          sat: null,
+        };
+
+        const indexToWeekdays = ["temp", "mon", "tue", "wed", "thu", "fri", "sat", "sun"];
+        const seenWeekDays = new Set();
 
         // Create start-end interval from each date
         for (const date of allDates) {
@@ -66,18 +96,71 @@ const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
             })
             .setZone(newEvent.timeZone);
 
-          intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
+          const interval = Interval.fromDateTimes(dateStart, dateEnd);
+          intervals.push(interval);
+
+          const weekDay = dateStart.weekday;
+          if (!seenWeekDays.has(weekDay)) {
+            seenWeekDays.add(weekDay);
+            const weekDayStr = indexToWeekdays[weekDay] as Weekdays;
+            if (weekDayStr != "sun") {
+              intervalsByWeekDay[weekDayStr] = interval;
+            }
+          }
         }
 
-        // verify that each teacher is available during class times
+        // verify scheduling for each teacher
         try {
           for (const teacher of teachers) {
+            // verify that teacher doesn't have another event during this class
             await validateTimes(teacher, intervals);
+
+            // verify that teacher has availability set during this class time
+            if (newEvent.checkAvailabilities) {
+              const availabilities = await getAvailabilityById(teacher.id);
+              let weekday: keyof WeekdayIntervals;
+              for (weekday in intervalsByWeekDay) {
+                const interval = intervalsByWeekDay[weekday];
+                let isAvailable = false;
+                if (availabilities && interval) {
+                  const availabilityTimes = availabilities[weekday];
+                  if (availabilityTimes) {
+                    for (const time of availabilityTimes) {
+                      const availableStartDateTime = timeDateZoneToDateTime(
+                        time[0],
+                        interval.start,
+                        availabilities.timeZone
+                      );
+                      const availableEndDateTime = timeDateZoneToDateTime(
+                        time[1],
+                        interval.start,
+                        availabilities.timeZone
+                      );
+                      const availabilityInterval = Interval.fromDateTimes(
+                        availableStartDateTime,
+                        availableEndDateTime
+                      );
+                      if (availabilityInterval.engulfs(interval)) {
+                        isAvailable = true;
+                        break;
+                      }
+                    }
+                  }
+                }
+                if (interval && !isAvailable) {
+                  throw new TeacherAvailabilityError(
+                    `Teacher ${teacher.firstName} ${teacher.lastName} is not available for class ${newEvent.name}`
+                  );
+                }
+              }
+            }
           }
         } catch (e) {
           if (e instanceof TeacherConflictError)
             return res.status(StatusCodes.BAD_REQUEST).json(e.message);
-          else res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
+          else if (e instanceof TeacherAvailabilityError) {
+            return res.status(StatusCodes.BAD_REQUEST).json(e.message);
+          } else res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
         }
 
         // create the class event in event_information table

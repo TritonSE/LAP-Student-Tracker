@@ -154,7 +154,7 @@ describe("[POST] /api/module", () => {
       expected,
       StatusCodes.CREATED,
       expected,
-      "moduleId"
+      ["moduleId"]
     );
   });
 
@@ -173,7 +173,7 @@ describe("[POST] /api/module", () => {
       expected,
       StatusCodes.CREATED,
       expected,
-      "moduleId"
+      ["moduleId"]
     );
   });
 

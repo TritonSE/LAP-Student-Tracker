@@ -10,5 +10,7 @@ CREATE TABLE users (
     first_name text DEFAULT NULL,
     last_name text DEFAULT NULL,
     phone_number text DEFAULT NULL,
-    address text DEFAULT NULL
+    address text DEFAULT NULL,
+    approved boolean DEFAULT false,
+    date_created text NOT NULL
 );

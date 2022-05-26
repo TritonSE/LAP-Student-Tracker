@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import styles from "./EventsView.module.css";
 import { ClassCard } from "./ClassCard";
-import { Class } from "../../models/class";
-import { APIContext } from "../../context/APIContext";
-import { Loader } from "../util/Loader";
-import { CustomError } from "../util/CustomError";
-import { Empty } from "../util/Empty";
+import { Class } from "../../../models/class";
+import { APIContext } from "../../../context/APIContext";
+import { Loader } from "../../util/Loader";
+import { CustomError } from "../../util/CustomError";
+import { Empty } from "../../util/Empty";
 import useSWR from "swr";
 
 
@@ -50,7 +50,7 @@ const EventsView: React.FC<EventsViewProps> = ({setShowEventsViewPage}) => {
         <div className={styles.backButtonSpacing}/>
         <div className={styles.buttonContainer}>
             <button className={styles.backButton} onClick={() => setShowEventsViewPage(false)}>
-            <img className={styles.backArrow} src="/BackArrow.png" />
+            <img className={styles.backArrow} src="/BackArrow.png" alt={"back"} />
           </button>
         </div>
         <div className={styles.titleSpacing}/>

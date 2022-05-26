@@ -49,7 +49,7 @@ const ClassCard: React.FC<HomePageClassCard> = ({
     <div className={style.card}>
         <div className={style.title}>
           <div className={style.titleSpacing}/>
-          <a className={style.classTitle} href="">
+          <a className={style.classTitle} href="components/Home/EventsView/ClassCard">
             {`${name}
         ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel}`}
           </a>

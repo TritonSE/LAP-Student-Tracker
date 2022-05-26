@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import type { NextApplicationPage } from "./_app";
 import { AdminHomePage } from "../components/Home/AdminHomePage";
 import { TeacherHomePage } from "../components/Home/TeacherHomePage";
-import { UserHomePage } from "../components/Home/UserHomePage";
 import { AuthContext } from "../context/AuthContext";
 import { CustomError } from "../components/util/CustomError";
 import styles from "../styles/Home.module.css";
@@ -20,7 +19,7 @@ const Home: NextApplicationPage = () => {
       case "Teacher":
         return <TeacherHomePage userId={user.id} />;
       default:
-        return <UserHomePage userId={user.id} />;
+        return <TeacherHomePage userId={user.id} />;
     }
   };
 

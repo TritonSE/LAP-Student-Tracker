@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { AdminCalendar } from "./Calendar/AdminCalendar";
-import { EventsView } from "./EventsView";
-import styles from "./AdminHomePage.module.css";
+import { EventsView } from "./EventsView/EventsView";
+import homePageStyles from "./OveralHomePage.module.css";
 import {CreateClassWizard} from "./CreateClassWizard/CreateClassWizard";
 
 const AdminHomePage: React.FC<object> = () => {
@@ -20,22 +20,23 @@ const AdminHomePage: React.FC<object> = () => {
 
 
   return (
-    <div>
+    <div className={homePageStyles.homeWrapper}>
       {showMainScreenButtons && <div>
-          <div className={styles.homeWrapper}>
-            <button className={styles.createBtn} onClick={() => setShowWizard(true)}>
-              Create
-              <img className={styles.addIcon} src="AddIcon.png" />
+          <div className={homePageStyles.buttonWrapper}>
+            <div className={homePageStyles.createBtnWrapper}>
+              <button className={homePageStyles.createBtn} onClick={() => setShowWizard(true)}>
+                Create
+                <img className={homePageStyles.addIcon} src="/AddIcon.png" />
+              </button>
+            </div>
+            <button className={homePageStyles.manageBtn} onClick={() => setShowManageClassesViewView(true)}>
+              {<div style={{ color: "white" }}>Manage Classes</div>}
             </button>
-            {showWizard ? <CreateClassWizard handleClose={handleClose} /> : null}
           </div>
-          <button className={styles.manageBtn} onClick={() => setShowManageClassesViewView(true)}>
-            {<div style={{ color: "white" }}>Manage Classes</div>}
-          </button>
         </div> }
       {showWizard ? <CreateClassWizard handleClose={handleClose} /> : null}
 
-      <div>{showManageClassesView ? <EventsView setShowEventsViewPage={setShowManageClassesViewView}/> : <AdminCalendar />}</div>
+      {showManageClassesView ? <EventsView setShowEventsViewPage={setShowManageClassesViewView}/> : <AdminCalendar />}
     </div>
   );
 };

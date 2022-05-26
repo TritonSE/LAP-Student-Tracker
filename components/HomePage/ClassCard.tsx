@@ -1,5 +1,5 @@
 import React from "react";
-import style from "./AdminHomePage.module.css";
+import style from "./ClassCard.module.css";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 type HomePageClassCard = {
@@ -16,7 +16,7 @@ type HomePageClassCard = {
   }[];
 };
 
-const HomePageClassCard: React.FC<HomePageClassCard> = ({
+const ClassCard: React.FC<HomePageClassCard> = ({
   name,
   minLevel,
   maxLevel,
@@ -35,9 +35,9 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
     "Sunday",
   ];
   const rule = RRule.fromString(rrstring);
-  const dates = rule.options.byweekday.map((val) => weekday[val]).join(", ");
-  const teacherNames = teachers.map((val) => val.firstName);
-  //console.log(teachers);
+  const dates = rule.options.byweekday.sort().map((val) => weekday[val]).join(", ");
+  const teacherNames = teachers.map((val) => val.firstName +  " " + val.lastName);
+
   //this takes in the start and end times, converts them to ISO format, then outputs the hour the class starts and ends
   const convertTime = (timeStart: string, timeEnd: string): string => {
     const startTimeISO = DateTime.fromISO(timeStart).toLocal().toFormat("h:mm");
@@ -47,19 +47,18 @@ const HomePageClassCard: React.FC<HomePageClassCard> = ({
   };
   return (
     <div className={style.card}>
-      <div>
         <div className={style.title}>
-          <a href="">
+          <div className={style.titleSpacing}/>
+          <a className={style.classTitle} href="">
             {`${name}
         ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel}`}
           </a>
         </div>
-        <div className={style.name}>{teacherNames.join(", ")}</div>
-      </div>
-
+      <div className={style.titleTeacherSpacing}/>
+      <div className={style.name}>{teacherNames.join(", ")}</div>
       <div className={style.times}>{[dates, "•", convertTime(startTime, endTime)].join(" ")}</div>
     </div>
   );
 };
 
-export { HomePageClassCard };
+export { ClassCard };

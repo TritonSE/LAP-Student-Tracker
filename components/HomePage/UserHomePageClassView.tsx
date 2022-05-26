@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styles from "./AdminHomePage.module.css";
-import { HomePageClassCard } from "./HomePageClassCard";
+import { ClassCard } from "./ClassCard";
 import { Class } from "../../models/class";
 import { APIContext } from "../../context/APIContext";
 import { Loader } from "../util/Loader";

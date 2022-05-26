@@ -45,7 +45,16 @@
 .classCardsContainer {
     margin-left: 80px;
     margin-right: 42px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-auto-flow: row dense;
+    column-gap: 42px;
+    row-gap: 42px;
+    grid-template-columns: repeat(auto-fit, minmax(0, min(100%/3, max(298px, 100%/5))));
+
+
+}
+
+.cardContainer {
+    display: inline;
+    width: 290px;
 }

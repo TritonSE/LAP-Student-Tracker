@@ -85,7 +85,7 @@ export const ClassScroll: React.FC<ClassScrollProp> = ({
   if (classes.length == 0) return <Empty userType="Classes" />;
 
   return (
-    <>
+    <div>
       {filteredClasses.map((currClass: Class) => (
         <ClassCard
           key={currClass.eventInformationId}
@@ -97,6 +97,6 @@ export const ClassScroll: React.FC<ClassScrollProp> = ({
           endTime={currClass.endTime}
         />
       ))}
-    </>
+    </div>
   );
 };

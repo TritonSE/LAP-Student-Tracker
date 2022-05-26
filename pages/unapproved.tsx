@@ -13,18 +13,27 @@ const Unapproved: React.FC = () => {
   };
 
   return (
-    <div className={styles.unapprovedContainer}>
-      <div className={styles.textContainer}>
-        <h1>We are verifying your account.</h1>
-        <p>Please hold tight until we review your credentials.</p>
-        <p>Have any questions? Please email admin@jointheleague.org</p>
+    <>
+      <div className={styles.headerContainer}>
+        <div className={styles.headerLogo}>
+          <img src="logo1.png"></img>
+          <img src="logo2.png"></img>
+        </div>
       </div>
-      <div className={styles.returnBtnContainer}>
-        <button className={styles.returnBtn} onClick={() => returnToSignUp()}>
-          Return to Sign up
-        </button>
+      <div className={styles.unapprovedContainer}>
+        <div className={styles.textContainer}>
+          <h1>We are verifying your account.</h1>
+          <p>Please hold tight until we review your credentials.</p>
+          <p>Have any questions? Please email admin@jointheleague.org</p>
+        </div>
+        <div className={styles.spacing}></div>
+        <div className={styles.returnBtnContainer}>
+          <button className={styles.returnBtn} onClick={() => returnToSignUp()}>
+            Return to Sign up
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

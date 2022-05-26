@@ -1,5 +1,6 @@
 .unapprovedContainer {
-  padding: 5% 0 0 20%;
+  width: 50%;
+  margin: 0 auto;
 }
 
 .textContainer h1 {
@@ -34,6 +35,17 @@
 }
 
 .returnBtnContainer {
-  margin-top: 361px;
-  padding-left: 300px;
+  /*margin: auto;*/
+  /*margin-top: 361px;*/
+  /*padding-left: 300px;*/
+  width: 50%;
+  margin: 0 auto;
+}
+
+.spacing {
+  height: 20rem;
+}
+
+.headerContainer {
+  padding: 2rem;
 }

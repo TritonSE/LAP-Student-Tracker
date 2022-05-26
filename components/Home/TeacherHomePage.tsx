@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { UserCalendar } from "./Calendar/UserCalendar";
-import { AvailabilityModal } from "../ManageAvailabilityWizard/AvailabilityModal";
-import styles from "./TeacherHomePage.module.css"; //TODO change to user specific
+import { AvailabilityModal } from "./ManageAvailabilityWizard/AvailabilityModal";
+import homeStyles from "./OveralHomePage.module.css"
+import {EventsView} from "./EventsView/EventsView"; //TODO change to user specific
 
 type TeacherHomeProp = {
   userId: string;
@@ -9,25 +10,38 @@ type TeacherHomeProp = {
 
 const TeacherHomePage: React.FC<TeacherHomeProp> = ({ userId }) => {
   const [showManageAvailability, setShowManageAvailability] = useState(false);
+  const [showManageClassesView, setShowManageClassesViewView] = useState(false);
+  const [showMainScreenButtons, setShowMainScreenButtons] = useState(true);
+
+
+    useEffect( () => {
+        setShowMainScreenButtons(!showManageClassesView);
+    }, [showManageClassesView]);
+
 
   const handleClose = (): void => {
     setShowManageAvailability(false);
   };
 
   return (
-    <div>
-      <div className={styles.homeWrapper}>
-        <button className={styles.createBtn} onClick={() => setShowManageAvailability(true)}>
-          Manage
-          <img className={styles.addIcon} src="/AddIcon.png" />
-        </button>
-        {showManageAvailability ? (
-          <AvailabilityModal handleClose={handleClose} userId={userId} />
-        ) : null}
+      <div className={homeStyles.homeWrapper}>
+          {showMainScreenButtons && <div>
+              <div className={homeStyles.buttonWrapper}>
+                  <div className={homeStyles.createBtnWrapper}>
+                      <button className={homeStyles.createBtn} onClick={() => setShowManageAvailability(true)}>
+                          Manage
+                          <img className={homeStyles.addIcon} src="/AddIcon.png" />
+                      </button>
+                  </div>
+                  <button className={homeStyles.manageBtn} onClick={() => setShowManageClassesViewView(true)}>
+                      {<div style={{ color: "white" }}>Manage Classes</div>}
+                  </button>
+              </div>
+          </div> }
+          { showManageAvailability ? <AvailabilityModal handleClose={handleClose} userId={userId}/> : null}
+          { showManageClassesView ? <EventsView setShowEventsViewPage={setShowManageClassesViewView}/> : <UserCalendar userId={userId}/>}
       </div>
 
-      <UserCalendar userId={userId} />
-    </div>
   );
 };
 

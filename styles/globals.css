@@ -3,6 +3,16 @@
   src: url(../assets/fonts/Inter.otf) format("opentype");
 }
 
+@font-face {
+  font-family: "Roboto-Bold";
+  src: url(../assets/fonts/Roboto-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto-Light";
+  src: url(../assets/fonts/Roboto-Light.ttf) format("truetype");
+}
+
 .headlineLarge {
   font-family: "Inter";
   font-weight: 500;

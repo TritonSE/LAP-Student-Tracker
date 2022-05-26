@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 
 // using daygrid plugin to allow time grid plugin to load
-const AdminCalendar: React.FC<object> = () => {
+const AdminCalendar: React.FC = () => {
   const _ = dayGridPlugin;
   return (
     <div className={styles.calendarContainer}>

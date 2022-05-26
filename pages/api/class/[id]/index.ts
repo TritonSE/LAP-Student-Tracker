@@ -49,7 +49,6 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
           newClass.endTime,
           newClass.language
         );
-
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");

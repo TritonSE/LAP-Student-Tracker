@@ -9,6 +9,13 @@ export const ClassSchema = t.type({
   startTime: t.string,
   endTime: t.string,
   language: t.string,
+  teachers: t.array(
+    t.type({
+      userId: t.string,
+      firstName: t.string,
+      lastName: t.string,
+    })
+  ),
 });
 
 export const CreateClassSchema = t.type({

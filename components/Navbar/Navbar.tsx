@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 export const Navbar: React.FC = ({ children }) => {
   const router = useRouter();
   return (
-    <>
+    <div className={styles.navbarContainer}>
       <nav className={styles.navbar}>
         <a className={styles.navlogo}>
           <img src="logo1.png"></img>
@@ -56,6 +56,6 @@ export const Navbar: React.FC = ({ children }) => {
         </div>
       </nav>
       {children}
-    </>
+    </div>
   );
 };

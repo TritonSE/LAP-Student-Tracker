@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// have to disable type checking for this file because of https://github.com/howardabrams/node-mocks-http/issues/245
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
 import { CalendarEvent, ClassEvent } from "../../models/events";
-import { User } from "../../models/users";
 
 /**
  * Create and test a HTTP Request
@@ -16,18 +18,19 @@ import { User } from "../../models/users";
  * @param body the body of the request
  * @param expectedResponseCode the expected response code
  * @param expectedBody the expected body of the response
+ * @param ignoreResKey keys in the response to ignore when comparing object equality
  * @returns result of the operation (whether the test passes or not)
  *
- * Note: Record<String, unknown> is just a type-safe way to specify an object
  */
 const makeHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
   body: Object | undefined,
   expectedResponseCode: number | undefined,
-  expectedBody: Object | undefined
+  expectedBody: Object | undefined,
+  ignoreResKey?: string
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -40,13 +43,23 @@ const makeHTTPRequest = async (
 
   if (expectedResponseCode) expect(res._getStatusCode()).toBe(expectedResponseCode);
   if (expectedBody) {
-    expect(JSON.parse(res._getData())).toEqual(expectedBody);
+    const resData = JSON.parse(res._getData());
+    // key to ignore in actual body when comparing with expected body
+    // use for randomly generated IDs that can't be predetermined
+    if (ignoreResKey) {
+      expect(resData).toHaveProperty(ignoreResKey);
+      delete resData[ignoreResKey];
+      // eslint-disable-next-line no-prototype-builtins
+      if (expectedBody.hasOwnProperty(ignoreResKey)) delete expectedBody[ignoreResKey];
+    }
+
+    expect(resData).toEqual(expectedBody);
   }
   return res;
 };
 
 const makeEventHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
@@ -79,42 +92,10 @@ const makeEventHTTPRequest = async (
   return res;
 };
 
-/* HTTP request handler for users API that ignores pictureId field
-   when comparing User response data */
-const makeUserHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
-  endpoint: string,
-  query: Object | undefined,
-  method: RequestMethod,
-  body: Object | undefined,
-  expectedResponseCode: number,
-  expectedBody: User
-): Promise<MockResponse<NextApiResponse<any>>> => {
-  const res = await makeHTTPRequest(
-    handler,
-    endpoint,
-    query,
-    method,
-    body,
-    expectedResponseCode,
-    undefined
-  );
-  const resObject = JSON.parse(res._getData());
-
-  // Check that pictureId field is there but ignore when comparing objects
-  if (expectedBody) {
-    expect(resObject).toHaveProperty("pictureId");
-    delete resObject["pictureId"];
-    expect(resObject).toEqual(expectedBody);
-  }
-
-  return res;
-};
-
 /* HTTP request handler for event feed API that converts Postgres timestamps to
    local ISO for consistency in testing */
 const makeEventFeedHTTPRequest = async (
-  handler: (req: NextApiRequest, res: NextApiResponse<any>) => void | Promise<void>,
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
@@ -177,7 +158,6 @@ const getISOTimeFromExplicitFields = (
 
 export {
   makeHTTPRequest,
-  makeUserHTTPRequest,
   makeEventHTTPRequest,
   makeEventFeedHTTPRequest,
   convertTimeToISO,

@@ -12,7 +12,7 @@ const createImage = async (): Promise<string> => {
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("Error on insert into database");
+    throw Error("CustomError on insert into database");
   }
 
   return res.rows[0].id;
@@ -21,8 +21,8 @@ const createImage = async (): Promise<string> => {
 // updates existing images entry by id
 const updateImage = async (
   id: string,
-  img?: Uint8Array,
-  mimeType?: string
+  b64img: string | null,
+  mimeType: string
 ): Promise<Image | null> => {
   const query = {
     text:
@@ -30,13 +30,13 @@ const updateImage = async (
       "SET img = COALESCE($2, img), " +
       "mime_type = COALESCE($3, mime_type) " +
       "WHERE id=$1",
-    values: [id, img, mimeType],
+    values: [id, b64img, mimeType],
   };
 
   try {
     await client.query(query);
   } catch (e) {
-    throw Error("Error on update image");
+    throw Error("CustomError on update image");
   }
 
   return getImage(id);
@@ -58,8 +58,8 @@ const getImage = async (id: string): Promise<Image | null> => {
   let image: Image;
   try {
     image = await decode(ImageSchema, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
+  } catch {
+    throw Error("Fields returned incorrectly from database");
   }
 
   return image;

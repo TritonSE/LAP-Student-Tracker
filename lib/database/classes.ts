@@ -38,7 +38,7 @@ const createClass = async (
   try {
     await client.query(query);
   } catch {
-    throw Error("Error on insert into database");
+    throw Error("CustomError on insert into database");
   }
 
   return getClass(eventInformationId);
@@ -70,7 +70,7 @@ const updateClass = async (
   try {
     await client.query(query);
   } catch (e) {
-    throw Error("Error on update class");
+    throw Error("CustomError on update class");
   }
 
   return getClass(eventInformationId);

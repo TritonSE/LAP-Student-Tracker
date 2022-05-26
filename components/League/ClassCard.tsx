@@ -29,6 +29,7 @@ const ClassCard: React.FC<ClassCardProps> = ({
     "Saturday",
     "Sunday",
   ];
+
   const rule = RRule.fromString(rrstring);
   //geting all days of week from the rrule object to output
   const dates = rule.options.byweekday.map((val) => weekday[val]).join(", ");

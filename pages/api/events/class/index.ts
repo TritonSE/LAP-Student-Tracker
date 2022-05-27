@@ -87,7 +87,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
               minute: startTime.minute,
               second: startTime.second,
             })
-            .setZone(newEvent.timeZone);
+            .setZone(newEvent.timeZone, { keepLocalTime: true });
 
           const dateEnd = DateTime.fromJSDate(dateWithoutTime)
             .set({
@@ -95,7 +95,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
               minute: endTime.minute,
               second: endTime.second,
             })
-            .setZone(newEvent.timeZone);
+            .setZone(newEvent.timeZone, { keepLocalTime: true });
 
           const interval = Interval.fromDateTimes(dateStart, dateEnd);
           intervals.push(interval);
@@ -161,7 +161,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
             return res.status(StatusCodes.BAD_REQUEST).json(e.message);
           else if (e instanceof TeacherAvailabilityError) {
             return res.status(StatusCodes.BAD_REQUEST).json(e.message);
-          } else res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
+          } else return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
         }
 
         // create the class event in event_information table

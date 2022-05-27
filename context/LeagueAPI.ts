@@ -101,6 +101,12 @@ class LeagueAPI {
     return res.data;
   }
 
+  async getAllUsers(role?: string, approved?: boolean | undefined): Promise<User[]> {
+    const res = await this.client.get("/api/users/", {
+      params: { role: role, approved: approved },
+    });
+    return res.data;
+  }
   // get an image (img is a b64 string)
   async getImage(id: string): Promise<Image> {
     await this.refreshToken();
@@ -114,13 +120,6 @@ class LeagueAPI {
     return res.data;
   }
 
-  // get all users, or all users with the specific role if specified
-  async getAllUsers(role?: string): Promise<User[]> {
-    const res = await this.client.get("/api/users/", { params: { role: role } });
-    return res.data;
-  }
-
-  // create a user
   async createUser(user: CreateUser): Promise<User> {
     const res = await this.client.post("api/users/", user);
     return res.data;
@@ -132,6 +131,9 @@ class LeagueAPI {
     return res.data;
   }
 
+  async deleteUser(id: string): Promise<void> {
+    await this.client.delete(`api/users/${id}`);
+  }
   async updateAvailabilities(availabilities: Availability, id: string): Promise<Availability> {
     const res = await this.client.patch(`api/availability/${id}`, availabilities);
     return res.data;

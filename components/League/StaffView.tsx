@@ -6,7 +6,12 @@ import { Loader } from "../util/Loader";
 import { CustomError } from "../util/CustomError";
 import { Empty } from "../util/Empty";
 import { User } from "../../models/users";
+import { IncomingRequestBtn } from "./IncomingRequestBtn";
 import useSWR from "swr";
+
+type StaffViewProp = {
+  onShowRequests: () => void;
+};
 
 const filters = [
   "Administration",
@@ -49,11 +54,19 @@ const StaffScroll: React.FC = () => {
   );
 };
 
-const StaffView: React.FC = () => {
+const StaffView: React.FC<StaffViewProp> = ({ onShowRequests }) => {
+  const client = useContext(APIContext);
+
+  // Use SWR hook to get the data from the backend
+  const { data } = useSWR("/api/staff", () => client.getStaff());
+
+  const requests = data && data.filter((user) => user.approved == false).length > 0;
+
   return (
     <div className={styles.compContainer}>
       <div className={styles.leftContainer}>
         <h1 className={styles.compTitle}>Staff</h1>
+        <IncomingRequestBtn requests={requests} onShowRequests={onShowRequests} />
         <div className={styles.compList}>
           <ul className={styles.scroll}>
             <StaffScroll />

@@ -19,7 +19,11 @@ const AuthGuard: React.FC = ({ children }) => {
 
   // if auth initialized with a valid user show protected page
   if (!initializing && user !== null) {
-    return <>{children}</>;
+    if (user.approved) {
+      return <>{children}</>;
+    } else {
+      router.push("/unapproved");
+    }
   }
 
   /* return a loading indicator while things are initializing and redirect has not happened yet */

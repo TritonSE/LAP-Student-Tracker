@@ -23,7 +23,7 @@
   border-width: 1px;
   border-color: var(--black);
   border-style: solid;
-  composes: labelLarge from "../../styles/globals.css";
+  composes: labelLarge from "../../../styles/globals.css";
   flex: 0 0 auto;
   text-align: center;
   cursor: pointer;

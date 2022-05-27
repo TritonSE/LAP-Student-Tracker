@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { UserCalendar } from "./Calendar/UserCalendar";
-import { AvailabilityModal } from "../ManageAvailabilityWizard/AvailabilityModal";
+import { AvailabilityModal } from "./ManageAvailabilityWizard/AvailabilityModal";
 import styles from "./TeacherHomePage.module.css"; //TODO change to user specific
 
 type TeacherHomeProp = {

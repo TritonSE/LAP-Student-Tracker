@@ -42,7 +42,7 @@ beforeAll(async () => {
     "INSERT INTO calendar_information(event_information_id, start_str, end_str) VALUES('id_c', '2022-03-01 21:11:45-08', '2022-03-01 21:11:45-08')"
   );
   await client.query(
-    "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address, picture_id) VALUES('user_a', 'emaila@gmail.com', 'role', 'fname', 'lname', '#', 'addr', '1')"
+    "INSERT INTO users(id, email, role, first_name, last_name, phone_number, address, date_created, picture_id) VALUES('user_a', 'emaila@gmail.com', 'role', 'fname', 'lname', '#', 'addr', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
     "INSERT INTO commitments(user_id, event_information_id) VALUES('user_a', 'id_a')"

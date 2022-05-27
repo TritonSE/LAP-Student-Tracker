@@ -1,7 +1,7 @@
 // @ts-ignore
 const { Pool } = require("pg");
-const dotenv = require("dotenv");
 const { migrate } = require("postgres-migrations");
+require("dotenv").config({ path: "./.env.staging" });
 
 let DB_PORT = undefined;
 if (process.env.DB_PORT) {
@@ -13,6 +13,9 @@ const client = new Pool({
   database: process.env.DB || "postgres",
   password: process.env.DB_PASS || "postgres",
   port: DB_PORT || 5432,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 const runMigration = async () => {

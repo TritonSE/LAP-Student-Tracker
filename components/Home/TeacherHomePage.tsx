@@ -22,7 +22,7 @@ const TeacherHomePage: React.FC<TeacherHomeProp> = ({ userId }) => {
   const handleClose = (): void => {
     setShowManageAvailability(false);
   };
-
+  console.log(userId);
   return (
       <div className={homeStyles.homeWrapper}>
           {showMainScreenButtons && <div>
@@ -39,7 +39,7 @@ const TeacherHomePage: React.FC<TeacherHomeProp> = ({ userId }) => {
               </div>
           </div> }
           { showManageAvailability ? <AvailabilityModal handleClose={handleClose} userId={userId}/> : null}
-          { showManageClassesView ? <EventsView setShowEventsViewPage={setShowManageClassesViewView}/> : <UserCalendar userId={userId}/>}
+          { showManageClassesView ? <EventsView setShowEventsViewPage={setShowManageClassesViewView} userId={userId}/> : <UserCalendar userId={userId}/>}
       </div>
 
   );

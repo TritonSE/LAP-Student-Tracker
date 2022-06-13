@@ -11,14 +11,15 @@ import useSWR from "swr";
 
 type EventsViewProps = {
   setShowEventsViewPage: (showEventsPage: boolean) => void
+  userId?: string ;
 };
 
 
-const ClassCardRenderer: React.FC = () => {
+const ClassCardRenderer: React.FC<EventsViewProps> = ({userId}) => {
   const client = useContext(APIContext);
 
   // Use SWR hook to get the data from the backend
-  const { data, error } = useSWR("/api/class", () => client.getAllClasses());
+  const { data, error } = useSWR("/api/class", () => client.getAllClasses(userId));
   if (error) return <CustomError />;
   if (!data) return <Loader />;
   if (data.length == 0) return <Empty userType="Class" />;
@@ -28,6 +29,8 @@ const ClassCardRenderer: React.FC = () => {
       {data.map((classes: Class) => (
             <div key={classes.name} className={styles.cardContainer}>
               <ClassCard
+              //temporary id
+                id = {"1"}
                 key={classes.eventInformationId}
                 name={classes.name}
                 minLevel={classes.minLevel}
@@ -43,8 +46,7 @@ const ClassCardRenderer: React.FC = () => {
   );
 };
 
-const EventsView: React.FC<EventsViewProps> = ({setShowEventsViewPage}) => {
-
+const EventsView: React.FC<EventsViewProps> = ({setShowEventsViewPage}, {userId}) => {
   return (
     <div>
         <div className={styles.backButtonSpacing}/>
@@ -58,7 +60,7 @@ const EventsView: React.FC<EventsViewProps> = ({setShowEventsViewPage}) => {
             <div className={styles.classTitle}>Classes</div>
         </div>
         <div className={styles.titleCardSpacing}/>
-        <ClassCardRenderer />
+        <ClassCardRenderer setShowEventsViewPage = {setShowEventsViewPage} userId= {userId}/>
     </div>
   );
 };

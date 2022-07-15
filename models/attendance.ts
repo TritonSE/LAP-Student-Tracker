@@ -1,33 +1,33 @@
 import * as t from "io-ts";
-import {array} from "io-ts";
+import { array } from "io-ts";
 
 const possibleAttendance = t.keyof({
-    Unexcused: null,
-    Excused: null,
-    Present: null,
+  Unexcused: null,
+  Excused: null,
+  Present: null,
 });
 
 export const AttendanceSchema = t.type({
-    sessionId: t.string,
-    userId: t.string,
-    firstName: t.string,
-    lastName: t.string,
-    attendance: t.union([possibleAttendance, t.null]),
+  sessionId: t.string,
+  userId: t.string,
+  firstName: t.string,
+  lastName: t.string,
+  attendance: t.union([possibleAttendance, t.null]),
 });
 
 export const SingleUserAttendanceSchema = t.type({
-    sessionId: t.string,
-    userId: t.string,
-    attendance: t.union([possibleAttendance, t.null]),
-    start: t.string,
+  sessionId: t.string,
+  userId: t.string,
+  attendance: t.union([possibleAttendance, t.null]),
+  start: t.string,
 });
 
 export const CreateAttendanceSchema = t.type({
-    userId: t.string,
-    attendance: possibleAttendance,
+  userId: t.string,
+  attendance: possibleAttendance,
 });
 
-export const CreateAttendanceArraySchema = t.array(CreateAttendanceSchema)
+export const CreateAttendanceArraySchema = t.array(CreateAttendanceSchema);
 
 export type Attendance = t.TypeOf<typeof AttendanceSchema>;
 export type SingleUserAttendance = t.TypeOf<typeof SingleUserAttendanceSchema>;

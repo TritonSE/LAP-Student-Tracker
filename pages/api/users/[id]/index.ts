@@ -1,16 +1,10 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-<<<<<<< HEAD:pages/api/users/[id]/index.ts
 import { updateUser } from "../../../../lib/database/users";
 import { UpdateUser, UpdateUserSchema } from "../../../../models/users";
 import { decode } from "io-ts-promise";
 import { getUser } from "../../../../lib/database/users";
-=======
-import { getUser, updateUser } from "../../../lib/database/users";
-import { UpdateUser, UpdateUserSchema } from "../../../models/users";
-import { decode } from "io-ts-promise";
->>>>>>> 7e33d57605f41697e2d5862b05374421aab0e112:pages/api/users/[id].ts
 import { StatusCodes } from "http-status-codes";
-import { withAuth } from "../../../middleware/withAuth";
+import { withAuth } from "../../../../middleware/withAuth";
 
 // handles requests to /api/users/[id]
 const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {

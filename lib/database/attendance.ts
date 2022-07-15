@@ -1,41 +1,36 @@
-import { client } from "../db";
-import { array, TypeOf, Any } from "io-ts";
-import { Attendance, AttendanceSchema, SingleUserAttendance, SingleUserAttendanceSchema, CreateAttendance, CreateAttendanceSchema, createAttendanceArrayType} from "../../models/attendance";
-import { decode } from "io-ts-promise";
-
-const AttendanceArraySchema = array(AttendanceSchema);
-type attendanceArrayType = TypeOf<typeof AttendanceArraySchema>;
-
-const SingleUserAttendanceArraySchema = array(SingleUserAttendanceSchema);
-type singleUserAttendanceArrayType = TypeOf<typeof SingleUserAttendanceArraySchema>;
+import {client} from "../db";
+import {
+    Attendance,
+    AttendanceArraySchema,
+    CreateAttendance,
+    SingleUserAttendance,
+    SingleUserAttendanceArraySchema
+} from "../../models/attendance";
+import {decode} from "io-ts-promise";
 
 //get session_ids of events that occur before a given time: GET api/class/[id]/sessions
 type sessionId= {
     sessionId: string,
     startStr: string
-}
+};
+
 const getSessions = async (
     classId: string,
     time?: string
 ): Promise<sessionId[]> => {
-    let query;
-    if (time){
-        query = {
-            text:
-              "SELECT session_id, start_str "+ 
-              "FROM calendar_information WHERE end_str < $1 "+
-              "AND event_information_id = $2",
-            values: [time, classId],
-          };
-    } else{
-        query = {
-            text:
-              "SELECT session_id, start_str " +
-              "FROM calendar_information "+
-              "WHERE event_information_id = $1",
-            values: [classId],
-        };
-    }
+    const query = time ? {
+        text:
+            "SELECT session_id, start_str "+
+            "FROM calendar_information WHERE end_str < $1 "+
+            "AND event_information_id = $2",
+        values: [time, classId],
+    } : {
+        text:
+            "SELECT session_id, start_str " +
+            "FROM calendar_information "+
+            "WHERE event_information_id = $1",
+        values: [classId],
+    };
     const res = await client.query(query);
     return res.rows;
 };
@@ -58,7 +53,7 @@ const getAttendanceFromSessionID = async (
         values: [session, classId],
     };
     
-    let attendanceArray: attendanceArrayType;
+    let attendanceArray: Attendance[];
 
     try {
         const res = await client.query(query);
@@ -68,7 +63,7 @@ const getAttendanceFromSessionID = async (
     }
 
     return attendanceArray;
-}
+};
 
 //get single user attendance array from class id (GET:/api/users/[id]/attendence/[class_id])
 const getSingleUserAttendanceFromClassID = async (
@@ -86,7 +81,7 @@ const getSingleUserAttendanceFromClassID = async (
         values: [classId, userId],
     };
     
-    let singleUserArray: singleUserAttendanceArrayType;
+    let singleUserArray: SingleUserAttendance[];
     try {  
         const res = await client.query(query);
         singleUserArray = await decode(SingleUserAttendanceArraySchema, res.rows);
@@ -95,7 +90,7 @@ const getSingleUserAttendanceFromClassID = async (
         throw Error("Error getting single user's attendance from database.");
     }
     return singleUserArray;
-}
+};
 
 //add attendance of array os user_ids with attendance for a session id (POST:/api/class/[id]/attendence/[session_id])
 const createAttendance = async (
@@ -103,23 +98,22 @@ const createAttendance = async (
     classId: string,
     attendanceArray: CreateAttendance[],
 ): Promise<Attendance[]> => {
-    for (var i = 0; i < attendanceArray.length; i++){
-
+    for (const createAttendanceObj of attendanceArray) {
         const query = {
-            text: 
+            text:
                 "insert into attendance (session_id, attendance, class_id, user_id) "+
                 "values($1, $2, $3, $4) "+
                 "on conflict (session_id, user_id) do update set attendance = $2",
-            values: [sessionId, attendanceArray[i].attendance, classId, attendanceArray[i].userId]
+            values: [sessionId, createAttendanceObj.attendance, classId, createAttendanceObj.userId]
         };
         try {
             await client.query(query);
         } catch (e) {
             throw Error("Error on insert into database");
-        };
+        }
     }
     return getAttendanceFromSessionID(sessionId, classId);
-}
+};
 
 
 export { getSessions, getAttendanceFromSessionID, getSingleUserAttendanceFromClassID, createAttendance };

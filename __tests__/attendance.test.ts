@@ -5,8 +5,6 @@ import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { StatusCodes } from "http-status-codes";
 import { Attendance, CreateAttendance , SingleUserAttendance} from "../models/attendance";
-import { Any } from "io-ts";
-import RRule from "rrule";
 
 const INTERNAL_SERVER_ERROR = "Internal Server Error";
 

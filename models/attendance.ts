@@ -1,4 +1,5 @@
 import * as t from "io-ts";
+import {array} from "io-ts";
 
 const possibleAttendance = t.keyof({
     Unexcused: null,
@@ -32,3 +33,5 @@ export type Attendance = t.TypeOf<typeof AttendanceSchema>;
 export type SingleUserAttendance = t.TypeOf<typeof SingleUserAttendanceSchema>;
 export type CreateAttendance = t.TypeOf<typeof CreateAttendanceSchema>;
 export type createAttendanceArrayType = t.TypeOf<typeof CreateAttendanceArraySchema>;
+export const AttendanceArraySchema = array(AttendanceSchema);
+export const SingleUserAttendanceArraySchema = array(SingleUserAttendanceSchema);

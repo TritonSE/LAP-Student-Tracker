@@ -4,7 +4,7 @@ import { CreateAttendanceArraySchema, createAttendanceArrayType } from "../../..
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
-// handles requests to /api/users/
+// handles requests to /api/class/[id]/attendance/[session_id]
 export const sessionIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!req.query) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

@@ -2,7 +2,10 @@ import { sessionHandler } from "../pages/api/class/[id]/sessions";
 import { sessionIDHandler } from "../pages/api/class/[id]/attendance/[session_id]";
 import { userAttendanceHandler } from "../pages/api/users/[id]/attendance/[class_id]";
 import { client } from "../lib/db";
-import { makeHTTPRequest } from "./__testutils__/testutils.test";
+import {
+  makeHTTPRequest,
+  makeSingleUserAttendanceHTTPRequest,
+} from "./__testutils__/testutils.test";
 import { StatusCodes } from "http-status-codes";
 import { Attendance, CreateAttendance, SingleUserAttendance } from "../models/attendance";
 
@@ -12,6 +15,8 @@ beforeAll(async () => {
   await client.query("DELETE from commitments");
   await client.query("DELETE from users");
   await client.query("DELETE from attendance");
+  await client.query("DELETE FROM images");
+  await client.query("INSERT INTO images(id) VALUES ('1')");
   await client.query(
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('id_a', 'event_a', 'blue', 'Class', false)"
   );
@@ -25,13 +30,13 @@ beforeAll(async () => {
     "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('a', 'id_a', '2022-02-26 21:00:00-08', '2022-02-26 21:00:00-08')"
   );
   await client.query(
-    "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('b', 'id_a', '2022-02-28 21:11:45-08', '2022-02-28 21:11:45-08')"
+    "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('b', 'id_a', '2022-02-28 21:11:00-08', '2022-02-28 21:11:00-08')"
   );
   await client.query(
-    "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('c', 'id_b', '2022-02-24 21:11:45-08', '2022-02-24 21:11:45-08')"
+    "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('c', 'id_b', '2022-02-24 21:11:00-08', '2022-02-24 21:11:00-08')"
   );
   await client.query(
-    "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('d', 'id_b', '2022-02-26 21:11:45-08', '2022-02-26 21:11:45-08')"
+    "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('d', 'id_b', '2022-02-26 21:11:00-08', '2022-02-26 21:11:00-08')"
   );
   await client.query(
     "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('e', 'id_c', '2022-02-23 21:11:45-08', '2022-02-23 21:11:45-08')"
@@ -40,10 +45,10 @@ beforeAll(async () => {
     "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('f', 'id_c', '2022-03-01 21:11:45-08', '2022-03-01 21:11:45-08')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number) VALUES('2', 'John', 'Smith', 'smith@gmail.com', 'Student', '123 Main Street', '1234567890')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'John', 'Smith', 'smith@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
   );
   await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('1', 'id_a')");
   await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('2', 'id_a')");
@@ -88,7 +93,6 @@ describe("[GET] /api/class/[id]/sessions", () => {
       expected
     );
   });
-
   test("get session ids without specified time", async () => {
     const query = {
       id: "id_a",
@@ -100,7 +104,7 @@ describe("[GET] /api/class/[id]/sessions", () => {
       },
       {
         sessionId: "b",
-        startStr: "2022-03-01T05:11:45.000Z",
+        startStr: "2022-03-01T05:11:00.000Z",
       },
     ];
     await makeHTTPRequest(
@@ -230,7 +234,7 @@ describe("[POST] /api/class/[id]/attendance/[session_id]", () => {
   });
 });
 
-describe("[GET] /api/users/[id]/attendence/[class_id]", () => {
+describe("[GET] /api/users/[id]/attendance/[class_id]", () => {
   test("get single user attendances for specified user in a class", async () => {
     const query = {
       id: "1",
@@ -247,15 +251,14 @@ describe("[GET] /api/users/[id]/attendence/[class_id]", () => {
         sessionId: "b",
         userId: "1",
         attendance: null,
-        start: "2022-02-28T21:11:45-08:00",
+        start: "2022-02-28T21:11:00-08:00",
       },
     ];
-    await makeHTTPRequest(
+    await makeSingleUserAttendanceHTTPRequest(
       userAttendanceHandler,
       "/api/users/1/attendance/id_a/",
       query,
       "GET",
-      undefined,
       StatusCodes.ACCEPTED,
       expected
     );

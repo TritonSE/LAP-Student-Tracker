@@ -12,7 +12,7 @@ const createImage = async (): Promise<string> => {
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("CustomError on insert into database");
+    throw Error("Error on insert into image database");
   }
 
   return res.rows[0].id;

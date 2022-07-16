@@ -22,8 +22,10 @@ export const Navbar: React.FC = ({ children }) => {
           the signup page, where they shouldn't be displayed
           */
 
-                  href="home"
                   className={router.pathname == "/home" ? styles.clicked : styles.navlink}
+                  onClick={() => {
+                    router.push("/home");
+                  }}
                 >
                   Home
                 </a>
@@ -31,16 +33,20 @@ export const Navbar: React.FC = ({ children }) => {
 
               <li className={styles.navitem}>
                 <a
-                  href="league"
                   className={router.pathname == "/league" ? styles.clicked : styles.navlink}
+                  onClick={() => {
+                    router.push("/league");
+                  }}
                 >
                   The League
                 </a>
               </li>
               <li className={styles.navitem}>
                 <a
-                  href="profile"
                   className={router.pathname == "/profile" ? styles.clicked : styles.navlink}
+                  onClick={() => {
+                    router.push("/profile");
+                  }}
                 >
                   Profile
                 </a>

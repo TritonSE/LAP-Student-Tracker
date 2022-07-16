@@ -1,10 +1,9 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { updateUser } from "../../../../lib/database/users";
 import { UpdateUser, UpdateUserSchema } from "../../../../models/users";
 import { decode } from "io-ts-promise";
-import { getUser } from "../../../../lib/database/users";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
+import {getUser, updateUser, deleteUser} from "../../../../lib/database/users";
 
 // handles requests to /api/users/[id]
 const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -50,12 +49,22 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
           newUser.lastName,
           newUser.email,
           newUser.role,
+          newUser.approved,
           newUser.address,
           newUser.phoneNumber
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+      }
+    }
+
+    case "DELETE": {
+      try {
+        const result = await deleteUser(id);
+        return res.status(StatusCodes.ACCEPTED).json(result);
+      } catch (e) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
 

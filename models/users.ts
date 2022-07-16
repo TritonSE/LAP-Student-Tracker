@@ -15,6 +15,8 @@ export const UserSchema = t.type({
   email: t.string,
   role: possibleRoles,
   pictureId: t.string,
+  approved: t.boolean,
+  dateCreated: t.string,
   phoneNumber: t.union([t.string, t.null]),
   address: t.union([t.string, t.null]),
 });
@@ -32,13 +34,13 @@ export const UpdateUserSchema = t.partial({
   lastName: t.string,
   email: t.string,
   role: possibleRoles,
+  approved: t.boolean,
   phoneNumber: t.union([t.string, t.null]),
   address: t.string,
 });
 
 export const UserArraySchema = t.array(UserSchema);
-
-export type User = t.TypeOf<typeof UserSchema>;
 export type CreateUser = t.TypeOf<typeof CreateUserSchema>;
+export type User = t.TypeOf<typeof UserSchema>;
 export type UpdateUser = t.TypeOf<typeof UpdateUserSchema>;
 export type Roles = t.TypeOf<typeof possibleRoles>;

@@ -131,3 +131,145 @@
 .rightText {
   composes: titleSmall from "../../styles/globals.css";
 }
+
+.requestBtn {
+  position: relative;
+  float: right;
+  background: #5d5fef;
+  box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  width: 204px;
+  height: 40px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  color: #ffffff;
+  margin-right: 20px;
+}
+
+.notificationIcon {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 20px;
+  height: 20px;
+  background: #ef5da8;
+  border-radius: 16px;
+}
+
+.reqCompContainer {
+  position: relative;
+  margin: auto;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.reqTitle {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 40px;
+  color: #1b1c1d;
+}
+
+.reqList {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.topReqBar {
+  width: 1308px;
+  height: 78px;
+  background: #46d5b3;
+  border-radius: 15px 15px 0px 0px;
+  padding-left: 68px;
+  padding-right: 68px;
+  padding-top: 30px;
+}
+
+.topReqBar p {
+  float: left;
+  width: 20%;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.1px;
+  color: #494c4e;
+  margin: 0;
+}
+
+.accountBarGrey {
+  width: 1308px;
+  height: 100px;
+  padding-left: 68px;
+  padding-right: 68px;
+  padding-top: 35px;
+  background: #f6f6fa;
+}
+
+.accountBarWhite {
+  width: 1308px;
+  height: 100px;
+  padding-left: 68px;
+  padding-right: 68px;
+  padding-top: 35px;
+  background: #ffffff;
+}
+
+.accountBarGrey p {
+  float: left;
+  width: 20%;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.1px;
+  color: #494c4e;
+  margin: 0;
+}
+
+.accountBarWhite p {
+  float: left;
+  width: 20%;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.1px;
+  color: #494c4e;
+  margin: 0;
+}
+
+.accountsContainer {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.backBtn {
+  position: absolute;
+  top: 0px;
+  left: 16%;
+  background: url(../../assets/icons/Vector.png);
+  height: 30px;
+  width: 28px;
+}
+
+.approveBtn,
+.rejectBtn {
+  font-size: 18px;
+}

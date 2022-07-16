@@ -45,10 +45,10 @@ beforeAll(async () => {
     "INSERT INTO calendar_information(session_id, event_information_id, start_str, end_str) VALUES('f', 'id_c', '2022-03-01 21:11:45-08', '2022-03-01 21:11:45-08')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id, date_created) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890', '1', '2022-03-01')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'John', 'Smith', 'smith@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id, date_created) VALUES('2', 'John', 'Smith', 'smith@gmail.com', 'Student', '123 Main Street', '1234567890', '1','2022-03-01')"
   );
   await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('1', 'id_a')");
   await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('2', 'id_a')");

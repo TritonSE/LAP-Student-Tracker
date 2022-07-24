@@ -6,6 +6,10 @@ import {
   teachersExist,
   validateTimes,
 } from "../../../../lib/database/events";
+import {
+  TeacherAvailabilityError,
+  validateAvailabilities,
+} from "../../../../lib/database/availability";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
 import { ClassEvent, CreateClassEvent, CreateClassEventSchema } from "../../../../models/events";
@@ -57,7 +61,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
               minute: startTime.minute,
               second: startTime.second,
             })
-            .setZone(newEvent.timeZone);
+            .setZone(newEvent.timeZone, { keepLocalTime: true });
 
           const dateEnd = DateTime.fromJSDate(dateWithoutTime)
             .set({
@@ -65,20 +69,28 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
               minute: endTime.minute,
               second: endTime.second,
             })
-            .setZone(newEvent.timeZone);
+            .setZone(newEvent.timeZone, { keepLocalTime: true });
 
           intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
         }
 
-        // verify that each teacher is available during class times
+        // verify scheduling for each teacher
         try {
           for (const teacher of teachers) {
+            // verify that teacher doesn't have another event during this class
             await validateTimes(teacher, intervals);
+
+            // verify that teacher has availability set during this class time
+            if (newEvent.checkAvailabilities) {
+              await validateAvailabilities(teacher, intervals, newEvent.name);
+            }
           }
         } catch (e) {
           if (e instanceof TeacherConflictError)
             return res.status(StatusCodes.BAD_REQUEST).json(e.message);
-          else res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
+          else if (e instanceof TeacherAvailabilityError) {
+            return res.status(StatusCodes.BAD_REQUEST).json(e.message);
+          } else return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
         }
 
         // create the class event in event_information table

@@ -42,6 +42,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
   // selected teachers from dropdown (string of emails)
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
+  const [ignoreAvailabilities, setIgnoreAvailabilities] = useState(false);
 
   const [valid, setValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -212,6 +213,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       neverEnding: endType === "never",
       backgroundColor: colorMap[color],
       teachers: selectedTeachers,
+      checkAvailabilities: !ignoreAvailabilities,
     };
 
     try {
@@ -393,6 +395,17 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                   </MenuItem>
                 ))}
               </Select>
+            </div>
+            <div className={styles.availabilityWrapper}>
+              <input
+                className={styles.checkbox}
+                type="checkbox"
+                checked={ignoreAvailabilities}
+                onChange={() => setIgnoreAvailabilities(!ignoreAvailabilities)}
+              />
+              <label className={styles.availabilityCheckLabel}>
+                Override teacher availabilities
+              </label>
             </div>
           </div>
 

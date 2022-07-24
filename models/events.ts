@@ -10,6 +10,7 @@ export const CreateClassEventSchema = t.type({
   neverEnding: t.boolean,
   backgroundColor: t.string,
   teachers: t.array(t.string),
+  checkAvailabilities: t.boolean,
 });
 
 export const ClassEventSchema = t.type({

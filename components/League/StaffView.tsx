@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import styles from "./LeagueViews.module.css";
 import { StaffScroll } from "./StaffScroll";
+import { IncomingRequestBtn } from "./IncomingRequestBtn";
+
+type StaffViewProp = {
+  onShowRequests: () => void;
+};
 
 const filters = [
   "Administration",
@@ -17,9 +22,10 @@ const filters = [
   "Level 8",
 ];
 
-const StaffView: React.FC = () => {
+const StaffView: React.FC<StaffViewProp> = ({ onShowRequests }) => {
   const [searchBox, setSearchBox] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [requests, setRequests] = useState<boolean>(false);
 
   const onSearchInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setSearchBox(event.target.value);
@@ -47,9 +53,14 @@ const StaffView: React.FC = () => {
     <div className={styles.compContainer}>
       <div className={styles.leftContainer}>
         <h1 className={styles.compTitle}>Staff</h1>
+        <IncomingRequestBtn requests={requests} onShowRequests={onShowRequests} />
         <div className={styles.compList}>
           <ul className={styles.scroll}>
-            <StaffScroll searchQuery={searchBox} selectedFilters={selectedFilters} />
+            <StaffScroll
+              searchQuery={searchBox}
+              selectedFilters={selectedFilters}
+              setRequests={setRequests}
+            />
           </ul>
         </div>
       </div>

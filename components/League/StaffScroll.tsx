@@ -10,10 +10,11 @@ import useSWR from "swr";
 type StaffScrollProp = {
   searchQuery: string;
   selectedFilters: string[];
+  setRequests: (incomingRequests: boolean) => void;
 };
 
 // Renders the list of staff or the corresponding error
-const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters }) => {
+const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters, setRequests }) => {
   const client = useContext(APIContext);
 
   // Use SWR hook to get the data from the backend
@@ -22,6 +23,8 @@ const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters }
   if (error) return <CustomError />;
   if (!data) return <Loader />;
   if (data.length == 0) return <Empty userType="Staff" />;
+
+  setRequests(data.reduce((acc, cur) => (cur.approved === false ? ++acc : acc), 0) > 0);
 
   const checkIfFilterSelected = (selectedFilter: string[], staff: Staff): boolean => {
     if (selectedFilter.length === 0) {
@@ -71,7 +74,9 @@ const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters }
     return (
       (currStaff.firstName + " " + currStaff.lastName)
         .toLowerCase()
-        .includes(searchQuery.toLowerCase()) && checkIfFilterSelected(selectedFilters, currStaff)
+        .includes(searchQuery.toLowerCase()) &&
+      checkIfFilterSelected(selectedFilters, currStaff) &&
+      currStaff.approved
     );
   });
 

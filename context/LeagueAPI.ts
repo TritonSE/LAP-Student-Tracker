@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { Class, CreateClass } from "../models/class";
 import { ClassEvent, CreateClassEvent } from "../models/events";
+import { Staff } from "../models/staff";
 import { CreateUser, UpdateUser, User } from "../models/users";
 import { Image, UpdateImage } from "../models/images";
 import { Availability } from "../models/availability";
@@ -61,8 +62,7 @@ class LeagueAPI {
   }
 
   // Get the staff from the backend
-  async getStaff(): Promise<User[]> {
-    await this.refreshToken();
+  async getStaff(): Promise<Staff[]> {
     const res = await this.client.get("api/staff");
     return res.data;
   }

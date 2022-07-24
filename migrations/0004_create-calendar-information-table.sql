@@ -4,6 +4,7 @@
  **/
 
 CREATE TABLE calendar_information (
+    session_id text PRIMARY KEY DEFAULT gen_random_uuid(),
     event_information_id text,
     start_str TIMESTAMP WITH TIME ZONE,
     end_str TIMESTAMP WITH TIME ZONE,

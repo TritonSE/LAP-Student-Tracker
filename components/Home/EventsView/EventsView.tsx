@@ -30,7 +30,7 @@ const ClassCardRenderer: React.FC<EventsViewProps> = ({userId}) => {
             <div key={classes.name} className={styles.cardContainer}>
               <ClassCard
               //temporary id
-                id = {"1"}
+                id = {userId}
                 key={classes.eventInformationId}
                 name={classes.name}
                 minLevel={classes.minLevel}
@@ -46,7 +46,7 @@ const ClassCardRenderer: React.FC<EventsViewProps> = ({userId}) => {
   );
 };
 
-const EventsView: React.FC<EventsViewProps> = ({setShowEventsViewPage}, {userId}) => {
+const EventsView: React.FC<EventsViewProps> = ({setShowEventsViewPage, userId}) => {
   return (
     <div>
         <div className={styles.backButtonSpacing}/>

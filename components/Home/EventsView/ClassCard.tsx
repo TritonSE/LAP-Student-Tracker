@@ -13,7 +13,7 @@ import useSWR from "swr";
 
 
 type HomePageClassCard = {
-  id: string;
+  id?: string;
   name: string;
   minLevel: number;
   maxLevel: number;
@@ -94,41 +94,38 @@ const ClassCard: React.FC<HomePageClassCard> = ({
       <div className={style.name}>{teacherNames.join(", ")}</div>
       <div className={style.times}>{[dates, "•", convertTime(startTime, endTime)].join(" ")}</div>
     </div>
-
-    <IconButton size="small" color="default" style={{
-                left: 260,
-                bottom: 143,
+      { !id ? <><IconButton size="small" color="default" style={{
+        left: 260,
+        bottom: 143,
+      }}
+                           id="long-button"
+                           aria-controls={open ? 'long-menu' : undefined}
+                           aria-expanded={open ? 'true' : undefined}
+                           aria-haspopup="true"
+                           onClick={handleClick}
+      > <MoreVertIcon/> </IconButton><Menu
+          id="long-menu"
+          MenuListProps={{
+            'aria-labelledby': 'long-button',
           }}
-        id="long-button"
-        aria-controls={open ? 'long-menu' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-          > <MoreVertIcon /> </IconButton>
-          <Menu
-        id="long-menu"
-        MenuListProps={{
-          'aria-labelledby': 'long-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        PaperProps={{
-          style: {
-            maxHeight: 48 * 4.5,
-            width: '20ch',
-          },
-        }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            style: {
+              maxHeight: 48 * 4.5,
+              width: '20ch',
+            },
+          }}
       >
         {options.map((option) => (
-          <MenuItem key={option} selected={option === 'Delete'} onClick={
-            deleteBut
-            }>
-            {option}
-          </MenuItem>
+            <MenuItem key={option} selected={option === 'Delete'} onClick={deleteBut}>
+              {option}
+            </MenuItem>
         ))}
-      </Menu>
+      </Menu></> : null }
     </div>
+
   );
 };
 

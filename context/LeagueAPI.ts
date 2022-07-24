@@ -81,8 +81,9 @@ class LeagueAPI {
     const res = await this.client.get("api/class", { params: { userId: userId } });
     return res.data;
   }
-  async deleteClassEvent(userId: string){
+  async deleteClassEvent(userId: string): Promise<Class>{
     const res = await this.client.delete("api/events/class", { params: { userId: userId } });
+    return res.data;
   }
   // create an even of type class
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
@@ -137,6 +138,10 @@ class LeagueAPI {
     const res = await this.client.patch(`api/availability/${id}`, availabilities);
     return res.data;
   }
+
+  // async deleteClass(id: string): Promise<Class> {
+  //   const res = await this.client.delete()
+  // }
 }
 
 export { LeagueAPI };

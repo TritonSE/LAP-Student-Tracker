@@ -4,11 +4,11 @@ import { AvailabilityModal } from "./ManageAvailabilityWizard/AvailabilityModal"
 import homeStyles from "./OveralHomePage.module.css";
 import {EventsView} from "./EventsView/EventsView"; //TODO change to user specific
 
-type TeacherHomeProp = {
+type UserHomePageProp = {
   userId: string;
 };
 
-const TeacherHomePage: React.FC<TeacherHomeProp> = ({ userId }) => {
+const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
   const [showManageAvailability, setShowManageAvailability] = useState(false);
   const [showManageClassesView, setShowManageClassesViewView] = useState(false);
   const [showMainScreenButtons, setShowMainScreenButtons] = useState(true);
@@ -22,7 +22,6 @@ const TeacherHomePage: React.FC<TeacherHomeProp> = ({ userId }) => {
   const handleClose = (): void => {
     setShowManageAvailability(false);
   };
-  console.log(userId);
   return (
       <div className={homeStyles.homeWrapper}>
           {showMainScreenButtons && <div>
@@ -45,4 +44,4 @@ const TeacherHomePage: React.FC<TeacherHomeProp> = ({ userId }) => {
   );
 };
 
-export { TeacherHomePage };
+export { UserHomePage };

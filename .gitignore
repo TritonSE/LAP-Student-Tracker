@@ -25,7 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env
+.env.staging
 .env.local
 .env.development.local
 .env.test.local
@@ -44,4 +44,5 @@ yarn-error.log*
 
 /.idea/
 
-lap-student-tracker-staging-firebase-adminsdk-b957b-058bd73482.json
+/lap-student-tracker-staging-firebase-adminsdk-b957b-058bd73482.json
+/.env.staging

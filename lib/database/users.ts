@@ -31,13 +31,18 @@ const createUser = async (
   lastName: string,
   email: string,
   role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer",
-  address?: string | null,
-  phone_number?: string | null,
-  imgId?: string | null
+  imgId: string | null
 ): Promise<User | null> => {
+  const approved = process.env.ALWAYS_APPROVE
+    ? process.env.ALWAYS_APPROVE == "true"
+    : !(role == "Admin" || role == "Teacher");
+  const currentDate = new Date();
+  const dateCreated = currentDate.toLocaleString("en-US", {
+    timeZone: "America/Los_Angeles",
+  });
   const query = {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8)",
-    values: [id, firstName, lastName, email, role, address, phone_number, imgId],
+    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8 )",
+    values: [id, firstName, lastName, email, role, approved, dateCreated, imgId],
   };
   try {
     await client.query(query);
@@ -56,6 +61,7 @@ const updateUser = async (
   lastName?: string,
   email?: string,
   role?: string,
+  approved?: boolean,
   address?: string,
   phone_number?: string | null
 ): Promise<User | null> => {
@@ -66,16 +72,17 @@ const updateUser = async (
       "last_name = COALESCE($3, last_name), " +
       "email = COALESCE($4, email), " +
       "role = COALESCE($5, role), " +
-      "address = COALESCE($6, address), " +
-      "phone_number = COALESCE($7, phone_number) " +
+      "approved = COALESCE($6, approved)," +
+      "address = COALESCE($7, address), " +
+      "phone_number = COALESCE($8, phone_number) " +
       "WHERE id=$1",
-    values: [id, firstName, lastName, email, role, address, phone_number],
+    values: [id, firstName, lastName, email, role, approved, address, phone_number],
   };
 
   try {
     await client.query(query);
-  } catch {
-    throw Error("CustomError on update user");
+  } catch (e) {
+    throw Error("Error on update user");
   }
 
   return getUser(id);
@@ -84,7 +91,7 @@ const updateUser = async (
 // get a user given an id
 const getUser = async (id: string): Promise<User | null> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id FROM users WHERE id = $1",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id, approved, date_created FROM users WHERE id = $1",
     values: [id],
   };
 
@@ -104,9 +111,24 @@ const getUser = async (id: string): Promise<User | null> => {
   return user;
 };
 
+const deleteUser = async (id: string): Promise<boolean> => {
+  const query = {
+    text: "delete from users where id = $1",
+    values: [id],
+  };
+
+  try {
+    await client.query(query);
+  } catch (e) {
+    throw Error("Failed to delete user");
+  }
+
+  return true;
+};
+
 const getAllUsers = async (): Promise<User[]> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address FROM users",
+    text: "SELECT id, first_name, last_name, email, role, approved, date_created, picture_id, phone_number, address FROM users",
   };
 
   const res = await client.query(query);
@@ -121,4 +143,4 @@ const getAllUsers = async (): Promise<User[]> => {
   return allUsers;
 };
 
-export { createUser, getUser, updateUser, getAllUsers };
+export { createUser, getUser, updateUser, getAllUsers, deleteUser };

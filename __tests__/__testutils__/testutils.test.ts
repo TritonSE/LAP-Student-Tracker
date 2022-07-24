@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+// have to disable type checking for this file because of https://github.com/howardabrams/node-mocks-http/issues/245
 import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
 import { CalendarEvent, ClassEvent } from "../../models/events";
-import { User } from "../../models/users";
+import { SingleUserAttendance } from "../../models/attendance";
 
 /**
  * Create and test a HTTP Request
@@ -16,9 +19,9 @@ import { User } from "../../models/users";
  * @param body the body of the request
  * @param expectedResponseCode the expected response code
  * @param expectedBody the expected body of the response
+ * @param ignoreResKey keys in the response to ignore when comparing object equality
  * @returns result of the operation (whether the test passes or not)
  *
- * Note: Record<String, unknown> is just a type-safe way to specify an object
  */
 const makeHTTPRequest = async (
   handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
@@ -28,7 +31,7 @@ const makeHTTPRequest = async (
   body: Object | undefined,
   expectedResponseCode: number | undefined,
   expectedBody: Object | undefined,
-  ignoreResKey?: string
+  ignoreResKey?: string[]
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -45,9 +48,13 @@ const makeHTTPRequest = async (
     // key to ignore in actual body when comparing with expected body
     // use for randomly generated IDs that can't be predetermined
     if (ignoreResKey) {
-      expect(resData).toHaveProperty(ignoreResKey);
-      delete resData[ignoreResKey];
+      ignoreResKey.forEach((key) => {
+        expect(resData).toHaveProperty(key);
+        delete resData[key]; // eslint-disable-next-line no-prototype-builtins
+        if (expectedBody.hasOwnProperty(key)) delete expectedBody[key];
+      });
     }
+
     expect(resData).toEqual(expectedBody);
   }
   return res;
@@ -87,34 +94,34 @@ const makeEventHTTPRequest = async (
   return res;
 };
 
-/* HTTP request handler for users API that ignores pictureId field
-   when comparing User response data */
-const makeUserHTTPRequest = async (
+const makeSingleUserAttendanceHTTPRequest = async (
   handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
   endpoint: string,
   query: Object | undefined,
   method: RequestMethod,
-  body: Object | undefined,
   expectedResponseCode: number,
-  expectedBody: User
+  expectedBody: SingleUserAttendance[]
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const res = await makeHTTPRequest(
     handler,
     endpoint,
     query,
     method,
-    body,
+    undefined,
     expectedResponseCode,
     undefined
   );
-  const resObject = JSON.parse(res._getData());
 
-  // Check that pictureId field is there but ignore when comparing objects
-  if (expectedBody) {
-    expect(resObject).toHaveProperty("pictureId");
-    delete resObject["pictureId"];
-    expect(resObject).toEqual(expectedBody);
-  }
+  const returnedAttendanceObjects = (JSON.parse(res._getData()) as SingleUserAttendance[]).map(
+    (event: SingleUserAttendance) => convertSingleUserAttendanceFieldsToLocalISO(event)
+  );
+
+  const expectedAttendanceObjects = expectedBody.map((event) =>
+    convertSingleUserAttendanceFieldsToLocalISO(event)
+  );
+
+  expect(returnedAttendanceObjects.length).toBe(expectedAttendanceObjects.length);
+  expect(returnedAttendanceObjects).toEqual(expect.arrayContaining(expectedAttendanceObjects));
 
   return res;
 };
@@ -144,10 +151,12 @@ const makeEventFeedHTTPRequest = async (
 
   // Convert dates in actual body to local ISO
   const returnedCalendarEvents = (JSON.parse(res._getData()) as CalendarEvent[]).map((event) =>
-    convertToLocalISO(event)
+    convertCalendarEventFieldsToLocalISO(event)
   );
   // Convert dates in expected body to local ISO
-  const expectedCalendarEvents = expectedBody.map((event) => convertToLocalISO(event));
+  const expectedCalendarEvents = expectedBody.map((event) =>
+    convertCalendarEventFieldsToLocalISO(event)
+  );
 
   // Compare actual and expected array lengths and contents
   expect(returnedCalendarEvents.length).toBe(expectedCalendarEvents.length);
@@ -157,10 +166,17 @@ const makeEventFeedHTTPRequest = async (
 };
 
 /* Converts startStr and endStr in CalendarEvent object to local ISO */
-const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
+const convertCalendarEventFieldsToLocalISO = (event: CalendarEvent): CalendarEvent => {
   event.start = DateTime.fromJSDate(new Date(event.start)).toLocal().toISO();
   event.end = DateTime.fromJSDate(new Date(event.end)).toLocal().toISO();
   return event;
+};
+
+const convertSingleUserAttendanceFieldsToLocalISO = (
+  attend: SingleUserAttendance
+): SingleUserAttendance => {
+  attend.start = DateTime.fromISO(attend.start).toLocal().toISO();
+  return attend;
 };
 
 const convertTimeToISO = (time: string, timeZone: string): string => {
@@ -185,9 +201,9 @@ const getISOTimeFromExplicitFields = (
 
 export {
   makeHTTPRequest,
-  makeUserHTTPRequest,
   makeEventHTTPRequest,
   makeEventFeedHTTPRequest,
   convertTimeToISO,
   getISOTimeFromExplicitFields,
+  makeSingleUserAttendanceHTTPRequest,
 };

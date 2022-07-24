@@ -1,0 +1,52 @@
+.row {
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.modalDay {
+  font-weight: 500;
+  font-size: 28px;
+  line-height: 36px;
+  font-family: Inter;
+  color: var(--black);
+  width: 70px;
+  flex: 0 0 auto;
+  text-transform: capitalize;
+}
+
+.modalAddTime {
+  width: 144px;
+  height: 40px;
+  border-radius: 8px;
+  line-height: 40px;
+  border-width: 1px;
+  border-color: var(--black);
+  border-style: solid;
+  composes: labelLarge from "../../../styles/globals.css";
+  flex: 0 0 auto;
+  text-align: center;
+  cursor: pointer;
+}
+.modalAddTime p {
+  margin: 0px;
+  display: inline-block;
+}
+
+.modalAddTimePlus {
+  border: 2px solid var(--black);
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 5px;
+  line-height: 15px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.timeSlotContainer {
+  margin: 0px 10px;
+  /* gap: 0px 20px;
+  display:flex; */
+  width: 100%;
+}

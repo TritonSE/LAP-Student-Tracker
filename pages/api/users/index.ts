@@ -1,6 +1,6 @@
 import { createUser, getAllUsers } from "../../../lib/database/users";
 import { createImage } from "../../../lib/database/images";
-import { Roles, User, UserSchema } from "../../../models/users";
+import { CreateUser, CreateUserSchema, Roles } from "../../../models/users";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
@@ -9,9 +9,9 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST": {
-      let newUser: User;
+      let newUser: CreateUser;
       try {
-        newUser = await decode(UserSchema, req.body);
+        newUser = await decode(CreateUserSchema, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
@@ -23,8 +23,6 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
           newUser.lastName,
           newUser.email,
           newUser.role,
-          newUser.address,
-          newUser.phoneNumber,
           imgId
         );
         return res.status(StatusCodes.CREATED).json(result);
@@ -35,19 +33,26 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
 
     case "GET": {
       let role: Roles | undefined = undefined;
-      if (req.query && req.query.role) {
-        if (
-          ["Admin", "Teacher", "Parent", "Volunteer", "Student"].includes(req.query.role as string)
-        )
-          role = req.query.role as Roles;
-        else
-          return res
-            .status(StatusCodes.BAD_REQUEST)
-            .json("Query parameter refers to role that does not exist");
+      if (req.query) {
+        if (req.query.role) {
+          if (
+            ["Admin", "Teacher", "Parent", "Volunteer", "Student"].includes(
+              req.query.role as string
+            )
+          )
+            role = req.query.role as Roles;
+          else
+            return res
+              .status(StatusCodes.BAD_REQUEST)
+              .json("Query parameter refers to role that does not exist");
+        }
       }
+      const approvalStatus = !req.query.approved ? undefined : req.query.approved == "true";
       try {
         let result = await getAllUsers();
         if (role) result = result.filter((user) => user.role == role);
+        if (approvalStatus != undefined)
+          result = result.filter((user) => user.approved == approvalStatus);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");

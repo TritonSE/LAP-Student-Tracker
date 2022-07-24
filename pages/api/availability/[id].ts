@@ -3,6 +3,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { Availability, AvailabilitySchema } from "../../../models/availability";
 import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
+import { withAuth } from "../../../middleware/withAuth";
 //Handles all requests to /api/availability/[id]
 export const availabilityIdHandler: NextApiHandler = async (
   req: NextApiRequest,
@@ -59,4 +60,4 @@ export const availabilityIdHandler: NextApiHandler = async (
   }
 };
 
-export default availabilityIdHandler;
+export default withAuth(availabilityIdHandler);

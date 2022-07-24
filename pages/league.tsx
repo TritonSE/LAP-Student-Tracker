@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import styles from "../styles/League.module.css";
-import { ClassView } from "../components/LeaguePage/ClassView";
-import { StudentView } from "../components/LeaguePage/StudentView";
-import { StaffView } from "../components/LeaguePage/StaffView";
+import { ClassView } from "../components/League/ClassView";
+import { StudentView } from "../components/League/StudentView";
+import { StaffView } from "../components/League/StaffView";
 import { Class } from "../models/class";
 import { User } from "../models/users";
 import { Student } from "../models/students";
 import { NextApplicationPage } from "./_app";
+import { IncomingAccountRequests } from "../components/League/IncomingAccountRequests";
 
 const allTabs = ["Classes", "Students", "Staff"] as const;
 type Tab = typeof allTabs[number];
 
 const League: NextApplicationPage = () => {
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
+  const [showRequests, setShowRequests] = useState<boolean>(false);
   const [content, setContent] = useState<{
     Classes: Class[];
     Students: Student[];
@@ -30,12 +32,15 @@ const League: NextApplicationPage = () => {
     lastName: "Gillespie",
     email: "garyg@ucsd.edu",
     role: "Student",
+    approved: true,
+    dateCreated: "",
     phoneNumber: "(123) 456-7890",
     address: "123",
     level: 3,
     classes: ["CSE 123"],
+    pictureId: "1",
   };
-  const testStudentArray: Student[] = Array(5).fill(testStudent);
+  const testStudentArray: Student[] = Array(1).fill(testStudent);
   // end dummy data
 
   useEffect(() => {
@@ -49,12 +54,25 @@ const League: NextApplicationPage = () => {
     });
   }, []);
 
+  // Functionality for income request button on staff view
+  const onShowRequests = (): void => {
+    setShowRequests(true);
+  };
+
+  const offShowRequests = (): void => {
+    setShowRequests(false);
+  };
+
   // Renders specific content component based on tab state
   const renderComponent = (display: string): JSX.Element | undefined => {
     if (display == "Classes") return <ClassView />;
     if (display == "Students") return <StudentView students={content.Students} />;
-    if (display == "Staff") return <StaffView />;
+    if (display == "Staff") return <StaffView onShowRequests={onShowRequests} />;
   };
+
+  if (showRequests) {
+    return <IncomingAccountRequests offShowRequests={offShowRequests} />;
+  }
 
   return (
     <>

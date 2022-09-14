@@ -5,6 +5,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "generate-api": "openapi-io-ts -i models/openapi/config.yaml -o src/api && mv ./src/api/components/schemas/*.* ./models && rm -rf src",
     "test": "jest --runInBand",
     "migrate": "node scripts/migrate.ts",
     "migrate_staging": "node scripts/migrate-staging.ts",
@@ -61,6 +62,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.17.0",
     "@babel/plugin-syntax-jsx": "^7.16.7",
+    "@openapi-io-ts/cli": "^0.4.1",
     "@types/jest": "^27.4.0",
     "@types/luxon": "^2.0.9",
     "@types/node": "17.0.5",

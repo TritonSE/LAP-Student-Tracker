@@ -1,0 +1,524 @@
+openapi: 3.0.0
+info:
+  title: Converted from company.swagger.yaml with typeconv
+  version: "1"
+paths: {}
+components:
+  schemas:
+    Roles:
+      type: string
+      enum:
+        - Admin
+        - Volunteer
+        - Student
+        - Teacher
+        - Parent
+    CreateUser:
+      title: CreateUser
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Roles"
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - role
+      additionalProperties: false
+    User:
+      title: User
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Roles"
+        pictureId:
+          type: string
+        approved:
+          type: boolean
+        dateCreated:
+          type: string
+        phoneNumber:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - role
+        - pictureId
+        - approved
+        - dateCreated
+        - phoneNumber
+        - address
+      additionalProperties: false
+    Student:
+      title: Student
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Roles"
+        pictureId:
+          type: string
+        approved:
+          type: boolean
+        dateCreated:
+          type: string
+        phoneNumber:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        level:
+          type: number
+        classes:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - role
+        - pictureId
+        - approved
+        - dateCreated
+        - phoneNumber
+        - address
+        - level
+        - classes
+    Staff:
+      title: Staff
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Roles"
+        pictureId:
+          type: string
+        approved:
+          type: boolean
+        dateCreated:
+          type: string
+        phoneNumber:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        minLevel:
+          type: number
+          nullable: true
+        maxLevel:
+          type: number
+          nullable: true
+        language:
+          type: string
+          nullable: true
+      required:
+        - minLevel
+        - maxLevel
+        - language
+    UpdateModule:
+      title: UpdateModule
+      type: object
+      properties:
+        name:
+          type: string
+        position:
+          type: number
+    CreateModule:
+      title: CreateModule
+      type: object
+      properties:
+        name:
+          type: string
+        position:
+          type: number
+        classId:
+          type: string
+      required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - role
+        - pictureId
+        - approved
+        - dateCreated
+        - phoneNumber
+        - address
+        - classId
+        - name
+        - position
+    Module:
+      title: Module
+      type: object
+      properties:
+        moduleId:
+          type: string
+      required:
+        - moduleId
+    CreateItem:
+      title: CreateItem
+      type: object
+      properties:
+        title:
+          type: string
+        link:
+          type: string
+      required:
+        - title
+        - link
+    Item:
+      title: Item
+      type: object
+      properties:
+        title:
+          type: string
+        link:
+          type: string
+        moduleId:
+          type: string
+        itemId:
+          type: string
+      required:
+        - title
+        - link
+        - moduleId
+        - itemId
+    UpdateImage:
+      title: UpdateImage
+      properties:
+        img:
+          type: string
+        mimeType:
+          type: string
+      required:
+        - img
+        - mimeType
+    Image:
+      title: Image
+      type: object
+      properties:
+        img:
+          type: string
+        mimeType:
+          type: string
+        id:
+          type: string
+      required:
+        - id
+        - img
+        - mimeType
+    ClassEvent:
+      title: ClassEvent
+      type: object
+      properties:
+        eventInformationId:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        timeZone:
+          type: string
+        rrule:
+          type: string
+        language:
+          type: string
+        neverEnding:
+          type: string
+        backgroundColor:
+          type: string
+      required:
+        - eventInformationId
+        - startTime
+        - endTime
+        - timeZone
+        - rrule
+        - language
+        - neverEnding
+        - backgroundColor
+    CreateClassEvent:
+      title: CreateClassEvent
+      type: object
+      properties:
+        eventInformationId:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        timeZone:
+          type: string
+        rrule:
+          type: string
+        language:
+          type: string
+        neverEnding:
+          type: string
+        backgroundColor:
+          type: string
+        name:
+          type: string
+        teachers:
+          type: array
+          items:
+            type: string
+        checkAvailabilities:
+          type: boolean
+      required:
+        - eventInformationId
+        - startTime
+        - endTime
+        - timeZone
+        - rrule
+        - language
+        - neverEnding
+        - backgroundColor
+        - teachers
+        - checkAvailabilities
+    UpdateClass:
+      title: UpdateClass
+      type: object
+      properties:
+        minLevel:
+          type: number
+        maxLevel:
+          type: number
+        rrstring:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        language:
+          type: string
+    CreateClass:
+      title: CreateClass
+      type: object
+      properties:
+        minLevel:
+          type: number
+        maxLevel:
+          type: number
+        rrstring:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        language:
+          type: string
+        eventInformationId:
+          type: string
+      required:
+        - eventInformationId
+        - minLevel
+        - maxLevel
+        - rrstring
+        - startTime
+        - endTime
+        - language
+    Class:
+      title: Class
+      type: object
+      properties:
+        minLevel:
+          type: number
+        maxLevel:
+          type: number
+        rrstring:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        language:
+          type: string
+        eventInformationId:
+          type: string
+        name:
+          type: string
+      required:
+        - eventInformationId
+        - minLevel
+        - maxLevel
+        - rrstring
+        - startTime
+        - endTime
+        - language
+        - name
+    Availability:
+      title: Availability
+      type: object
+      properties:
+        mon:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          nullable: true
+        tue:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          nullable: true
+        wed:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          nullable: true
+        thu:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          nullable: true
+        fri:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          nullable: true
+        sat:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+          nullable: true
+        timeZone:
+          type: string
+      required:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+        - sat
+    AttendanceTypes:
+      type: string
+      enum:
+        - Unexcused
+        - Excused
+        - Present
+      nullable: true
+    Attendace:
+      title: Attendance
+      type: object
+      properties:
+        sessionId:
+          type: number
+        userId:
+          type: number
+        attendance:
+          $ref: "#/components/schemas/AttendanceTypes"
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required:
+        - sessionId
+        - userId
+        - attendance
+        - firstName
+        - lastName
+    CreateAttendance:
+      title: CreateAttendance
+      type: object
+      properties:
+        userId:
+          type: string
+        attendance:
+          $ref: "#/components/schemas/AttendanceTypes"
+      required:
+        - userId
+        - attendance
+    SingleUserAttendance:
+      title: SingleUserAttendance
+      type: object
+      properties:
+        sessionId:
+          type: number
+        userId:
+          type: number
+        attendance:
+          $ref: "#/components/schemas/AttendanceTypes"
+        start:
+          type: string
+      required:
+        - sessionId
+        - userId
+        - attendance
+        - start
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

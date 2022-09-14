@@ -1,6 +1,7 @@
 import { createUser, getAllUsers } from "../../../lib/database/users";
 import { createImage } from "../../../lib/database/images";
-import { CreateUser, CreateUserSchema, Roles } from "../../../models/users";
+import { Roles } from "../../../models/users";
+import { CreateUser } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
@@ -11,7 +12,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
     case "POST": {
       let newUser: CreateUser;
       try {
-        newUser = await decode(CreateUserSchema, req.body);
+        newUser = await decode(CreateUser, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

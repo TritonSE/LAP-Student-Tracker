@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { Image, ImageSchema } from "../../models/images";
+import { Image } from "../../models";
 import { decode } from "io-ts-promise";
 
 // creates null images entry returning id, called when new user is created
@@ -57,7 +57,7 @@ const getImage = async (id: string): Promise<Image | null> => {
 
   let image: Image;
   try {
-    image = await decode(ImageSchema, res.rows[0]);
+    image = await decode(Image, res.rows[0]);
   } catch {
     throw Error("Fields returned incorrectly from database");
   }

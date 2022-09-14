@@ -2,7 +2,7 @@ import availabilityIdHandler from "../pages/api/availability/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { StatusCodes } from "http-status-codes";
-import { Availability } from "../models/availability";
+import { Availability } from "../models";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");

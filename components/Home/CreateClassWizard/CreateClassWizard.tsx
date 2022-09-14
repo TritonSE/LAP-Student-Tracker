@@ -2,8 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../../../context/APIContext";
-import { CreateClass } from "../../../models/class";
-import { CreateClassEvent } from "../../../models/events";
+import { CreateClass, CreateClassEvent } from "../../../models";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material/";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";

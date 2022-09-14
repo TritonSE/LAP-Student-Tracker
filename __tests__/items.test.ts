@@ -2,7 +2,7 @@ import itemHandler from "../pages/api/module/[id]/item";
 import deleteItemHandler from "../pages/api/module/[id]/item/[item_id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { Item, CreateItem } from "../models/items";
+import { Item, CreateItem } from "../models";
 import { StatusCodes } from "http-status-codes";
 
 const MODULE_NOT_FOUND_ERROR = "module not found";

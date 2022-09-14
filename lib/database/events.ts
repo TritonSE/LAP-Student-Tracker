@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { User } from "../../models/users";
+import { User } from "../../models";
 import { Interval } from "luxon";
 
 class NonExistingTeacher extends Error {

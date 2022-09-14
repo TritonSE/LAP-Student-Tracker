@@ -1,9 +1,9 @@
 import { client } from "../db";
-import { Class, ClassSchema } from "../../models/class";
+import { Class } from "../../models";
 import { decode } from "io-ts-promise";
 import { array, TypeOf } from "io-ts";
 
-const ClassArraySchema = array(ClassSchema);
+const ClassArraySchema = array(Class);
 type classArrayType = TypeOf<typeof ClassArraySchema>;
 const createClass = async (
   eventInformationId: string,
@@ -74,7 +74,7 @@ const getClass = async (id: string): Promise<Class | null> => {
 
   let oneClass: Class;
   try {
-    oneClass = await decode(ClassSchema, res.rows[0]);
+    oneClass = await decode(Class, res.rows[0]);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }

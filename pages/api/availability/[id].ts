@@ -1,7 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import { Availability, AvailabilitySchema } from "../../../models/availability";
+import { Availability } from "../../../models";
+// import { Availability, AvailabilitySchema } from "../../../models/availability";
 import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
 import { withAuth } from "../../../middleware/withAuth";
 //Handles all requests to /api/availability/[id]
@@ -34,7 +35,7 @@ export const availabilityIdHandler: NextApiHandler = async (
       if ((await getAvailabilityById(id)) == null)
         return res.status(StatusCodes.NOT_FOUND).json("Availability of user not found");
       try {
-        availability = await decode(AvailabilitySchema, req.body);
+        availability = await decode(Availability, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

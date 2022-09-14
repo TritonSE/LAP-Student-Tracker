@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { UpdateImage, UpdateImageSchema } from "../../../models/images";
+import { UpdateImage } from "../../../models";
 import { decode } from "io-ts-promise";
 import { getImage, updateImage } from "../../../lib/database/images";
 import { StatusCodes } from "http-status-codes";
@@ -37,7 +37,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
       }
       let newImage: UpdateImage;
       try {
-        newImage = await decode(UpdateImageSchema, req.body);
+        newImage = await decode(UpdateImage, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

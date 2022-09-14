@@ -7,7 +7,7 @@ import {
   makeSingleUserAttendanceHTTPRequest,
 } from "./__testutils__/testutils.test";
 import { StatusCodes } from "http-status-codes";
-import { Attendance, CreateAttendance, SingleUserAttendance } from "../models/attendance";
+import { Attendance, CreateAttendance, SingleUserAttendance } from "../models/";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");

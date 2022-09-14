@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./LeagueViews.module.css";
-import { User } from "../../models/users";
+import { User } from "../../models";
 
 type UnapprovedAccountProps = {
   user: User;

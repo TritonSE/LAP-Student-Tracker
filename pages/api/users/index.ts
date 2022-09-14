@@ -1,6 +1,6 @@
 import { createUser, getAllUsers } from "../../../lib/database/users";
 import { createImage } from "../../../lib/database/images";
-import { Roles } from "../../../models/users";
+import { Roles } from "../../../models";
 import { CreateUser } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";

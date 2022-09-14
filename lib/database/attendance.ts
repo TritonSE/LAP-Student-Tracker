@@ -1,11 +1,9 @@
 import { client } from "../db";
 import {
   Attendance,
-  AttendanceArraySchema,
   CreateAttendance,
   SingleUserAttendance,
-  SingleUserAttendanceArraySchema,
-} from "../../models/attendance";
+} from "../../models";
 import { decode } from "io-ts-promise";
 
 //get session_ids of events that occur before a given time: GET api/class/[id]/sessions

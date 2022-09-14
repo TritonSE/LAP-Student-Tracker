@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { UpdateUser, UpdateUserSchema } from "../../../../models/users";
+import { UpdateUser } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
@@ -37,7 +37,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
       }
       let newUser: UpdateUser;
       try {
-        newUser = await decode(UpdateUserSchema, req.body);
+        newUser = await decode(UpdateUser, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

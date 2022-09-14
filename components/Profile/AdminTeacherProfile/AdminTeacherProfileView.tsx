@@ -6,7 +6,7 @@ import styles from "./AdminTeacherProfile.module.css";
 import { CustomError } from "../../util/CustomError";
 import { useRouter } from "next/router";
 import { APIContext } from "../../../context/APIContext";
-import { UpdateImage } from "../../../models/images";
+import { UpdateImage } from "../../../models/";
 import { fromByteArray } from "base64-js";
 import imageCompression from "browser-image-compression";
 

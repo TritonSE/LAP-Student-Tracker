@@ -2,7 +2,7 @@ import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { CreateUser, UpdateUser, User } from "../models/users";
+import { CreateUser, UpdateUser, User } from "../models";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server CustomError";

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from "
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
 import { FirebaseError } from "@firebase/util";
-import { Roles, UpdateUser, User } from "../models/users";
+import { Roles, UpdateUser, User } from "../models";
 import { APIContext } from "./APIContext";
 
 type AuthState = {

@@ -12,7 +12,7 @@ import {
 } from "../../../../lib/database/availability";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
-import { ClassEvent, CreateClassEvent, CreateClassEventSchema } from "../../../../models/events";
+import { ClassEvent, CreateClassEvent } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
@@ -25,7 +25,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
     case "POST": {
       let newEvent: CreateClassEvent;
       try {
-        newEvent = await decode(CreateClassEventSchema, req.body);
+        newEvent = await decode(CreateClassEvent, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

@@ -1,7 +1,7 @@
 import staffHandler from "../pages/api/staff";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { Staff } from "../models/staff";
+import { Staff } from "../models";
 import { StatusCodes } from "http-status-codes";
 
 beforeAll(async () => {

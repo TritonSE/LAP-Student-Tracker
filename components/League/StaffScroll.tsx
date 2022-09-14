@@ -4,7 +4,7 @@ import { APIContext } from "../../context/APIContext";
 import { Loader } from "../util/Loader";
 import { CustomError } from "../util/CustomError";
 import { Empty } from "../util/Empty";
-import { Staff } from "../../models/staff";
+import { Staff } from "../../models";
 import useSWR from "swr";
 
 type StaffScrollProp = {

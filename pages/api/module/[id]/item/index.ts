@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getModule } from "../../../../../lib/database/modules";
 import { getModuleItems, createItem } from "../../../../../lib/database/items";
-import { CreateItem, CreateItemSchema } from "../../../../../models/items";
+import { CreateItem } from "../../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
@@ -38,7 +38,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     case "POST": {
       let newItem: CreateItem;
       try {
-        newItem = await decode(CreateItemSchema, req.body);
+        newItem = await decode(CreateItem, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

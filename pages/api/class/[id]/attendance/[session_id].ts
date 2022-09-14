@@ -3,10 +3,6 @@ import {
   getAttendanceFromSessionID,
   createAttendance,
 } from "../../../../../lib/database/attendance";
-import {
-  CreateAttendanceArraySchema,
-  createAttendanceArrayType,
-} from "../../../../../models/attendance";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 

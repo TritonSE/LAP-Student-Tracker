@@ -3,7 +3,7 @@ import { APIContext } from "../../context/APIContext";
 import useSWR from "swr";
 import { CustomError } from "../util/CustomError";
 import { Loader } from "../util/Loader";
-import { Class } from "../../models/class";
+import { Class } from "../../models";
 import { Empty } from "../util/Empty";
 import { ClassCard } from "./ClassCard";
 import { OrderBy } from "./ClassView";

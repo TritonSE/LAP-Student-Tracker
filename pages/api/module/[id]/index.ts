@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getModule, updateModule, deleteModule } from "../../../../lib/database/modules";
-import { UpdateModule, UpdateModuleSchema } from "../../../../models/modules";
+import { UpdateModule } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
@@ -28,7 +28,7 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
     case "PATCH": {
       let updateModuleObj: UpdateModule;
       try {
-        updateModuleObj = await decode(UpdateModuleSchema, req.body);
+        updateModuleObj = await decode(UpdateModule, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

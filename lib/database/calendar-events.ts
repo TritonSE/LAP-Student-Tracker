@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { CalendarEvent, CalendarEventArraySchema } from "../../models/events";
+import { CalendarEvent, CalendarEventArraySchema } from "../../models";
 import { decode } from "io-ts-promise";
 
 // Fetches calendar event feed for a particular user from database

@@ -34,6 +34,28 @@ components:
         - email
         - role
       additionalProperties: false
+    UpdateUser:
+      title: User
+      type: object
+      properties:
+        id:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        role:
+          $ref: "#/components/schemas/Roles"
+        pictureId:
+          type: string
+        approved:
+          type: boolean
+        phoneNumber:
+          type: string
+        address:
+          type: string
     User:
       title: User
       type: object
@@ -153,6 +175,16 @@ components:
           type: string
           nullable: true
       required:
+        - id
+        - firstName
+        - lastName
+        - email
+        - role
+        - pictureId
+        - approved
+        - dateCreated
+        - phoneNumber
+        - address
         - minLevel
         - maxLevel
         - language
@@ -194,7 +226,16 @@ components:
       properties:
         moduleId:
           type: string
+        name:
+          type: string
+        position:
+          type: number
+        classId:
+          type: string
       required:
+        - name
+        - position
+        - classId
         - moduleId
     CreateItem:
       title: CreateItem
@@ -265,7 +306,7 @@ components:
         language:
           type: string
         neverEnding:
-          type: string
+          type: boolean
         backgroundColor:
           type: string
       required:
@@ -294,7 +335,7 @@ components:
         language:
           type: string
         neverEnding:
-          type: string
+          type: boolean
         backgroundColor:
           type: string
         name:
@@ -306,7 +347,6 @@ components:
         checkAvailabilities:
           type: boolean
       required:
-        - eventInformationId
         - startTime
         - endTime
         - timeZone
@@ -316,6 +356,7 @@ components:
         - backgroundColor
         - teachers
         - checkAvailabilities
+        - name
     UpdateClass:
       title: UpdateClass
       type: object
@@ -442,6 +483,7 @@ components:
         - thu
         - fri
         - sat
+        - timeZone
     AttendanceTypes:
       type: string
       enum:
@@ -449,14 +491,14 @@ components:
         - Excused
         - Present
       nullable: true
-    Attendace:
+    Attendance:
       title: Attendance
       type: object
       properties:
         sessionId:
-          type: number
+          type: string
         userId:
-          type: number
+          type: string
         attendance:
           $ref: "#/components/schemas/AttendanceTypes"
         firstName:
@@ -485,9 +527,9 @@ components:
       type: object
       properties:
         sessionId:
-          type: number
+          type: string
         userId:
-          type: number
+          type: string
         attendance:
           $ref: "#/components/schemas/AttendanceTypes"
         start:

@@ -1,6 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { createClass, getAllClasses } from "../../../lib/database/classes";
-import { CreateClass, CreateClassSchema } from "../../../models/class";
+import { CreateClass } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
@@ -18,7 +18,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
       }
     case "POST":
       try {
-        newClass = await decode(CreateClassSchema, req.body);
+        newClass = await decode(CreateClass, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

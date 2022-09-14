@@ -1,9 +1,9 @@
 import { client } from "../db";
-import { Staff, StaffSchema } from "../../models/staff";
+import { Staff } from "../../models";
 import { array, TypeOf } from "io-ts";
 import { decode } from "io-ts-promise";
 
-const StaffArraySchema = array(StaffSchema);
+const StaffArraySchema = array(Staff);
 type staffArray = TypeOf<typeof StaffArraySchema>;
 
 const getAllStaff = async (): Promise<Staff[]> => {

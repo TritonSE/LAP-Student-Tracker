@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { User, UserArraySchema, UserSchema } from "../../models/users";
+import { User } from "../../models";
 import { decode } from "io-ts-promise";
 
 const roleSpecificSetup = async (
@@ -103,7 +103,7 @@ const getUser = async (id: string): Promise<User | null> => {
 
   let user: User;
   try {
-    user = await decode(UserSchema, res.rows[0]);
+    user = await decode(User, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }

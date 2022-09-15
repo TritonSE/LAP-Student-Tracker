@@ -54,8 +54,10 @@ components:
           type: boolean
         phoneNumber:
           type: string
+          nullable: true
         address:
           type: string
+          nullable: true
     User:
       title: User
       type: object
@@ -267,6 +269,7 @@ components:
         - itemId
     UpdateImage:
       title: UpdateImage
+      type: object
       properties:
         img:
           type: string
@@ -322,8 +325,6 @@ components:
       title: CreateClassEvent
       type: object
       properties:
-        eventInformationId:
-          type: string
         startTime:
           type: string
         endTime:
@@ -539,6 +540,26 @@ components:
         - userId
         - attendance
         - start
+    CalendarEvent:
+      title: CalendarEvent
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        backgroundColor:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+      required:
+        - id
+        - title
+        - backgroundColor
+        - start
+        - end
 
 
 

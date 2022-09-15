@@ -11,7 +11,7 @@ import { APIContext } from "../../../context/APIContext";
 import { Loader } from "../../util/Loader";
 import { CustomError } from "../../util/CustomError";
 import { Availability } from "../../../models";
-import { ValidDays } from "../../../models/availability";
+import { ValidDays } from "../../../models/custom/CustomTypes";
 import axios from "axios";
 
 type AvailabilityModalProps = {

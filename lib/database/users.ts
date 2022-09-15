@@ -1,6 +1,8 @@
 import { client } from "../db";
 import { User } from "../../models";
 import { decode } from "io-ts-promise";
+import { array } from "io-ts";
+const UserArraySchema = array(User);
 
 const roleSpecificSetup = async (
   id: string,
@@ -62,7 +64,7 @@ const updateUser = async (
   email?: string,
   role?: string,
   approved?: boolean,
-  address?: string,
+  address?: string | null,
   phone_number?: string | null
 ): Promise<User | null> => {
   const query = {

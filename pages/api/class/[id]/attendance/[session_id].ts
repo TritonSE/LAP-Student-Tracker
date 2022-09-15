@@ -5,7 +5,9 @@ import {
 } from "../../../../../lib/database/attendance";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-
+import {CreateAttendance} from "../../../../../models";
+import {array} from "io-ts";
+const CreateAttendanceArraySchema = array(CreateAttendance);
 // handles requests to /api/class/[id]/attendance/[session_id]
 export const sessionIDHandler: NextApiHandler = async (
   req: NextApiRequest,
@@ -36,7 +38,7 @@ export const sessionIDHandler: NextApiHandler = async (
     }
 
     case "POST": {
-      let newAttendance: createAttendanceArrayType;
+      let newAttendance: CreateAttendance[];
       try {
         newAttendance = await decode(CreateAttendanceArraySchema, req.body);
       } catch (e) {

@@ -20,7 +20,7 @@ const AdminTeacherProfileView: React.FC = () => {
 
   const router = useRouter();
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false);
-  const [phoneNumber, setPhoneNumber] = useState<string | undefined | null>(user.phoneNumber);
+  const [phoneNumber, setPhoneNumber] = useState<string | null | undefined>(user.phoneNumber);
   const [email, setEmail] = useState<string>(user.email);
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");

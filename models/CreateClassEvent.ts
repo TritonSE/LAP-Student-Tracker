@@ -2,7 +2,6 @@ import * as t from "io-ts";
 
 
 export const CreateClassEvent = t.type({
-    eventInformationId: t.string,
     startTime: t.string,
     endTime: t.string,
     timeZone: t.string,
@@ -16,7 +15,6 @@ export const CreateClassEvent = t.type({
 })
 
 export interface CreateClassEvent {
-    eventInformationId: string,
     startTime: string,
     endTime: string,
     timeZone: string,

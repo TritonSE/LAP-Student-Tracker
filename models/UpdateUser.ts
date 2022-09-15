@@ -1,11 +1,12 @@
 import * as t from "io-ts";
-
+import { Roles } from "./Roles";
 
 export const UpdateUser = t.partial({
     id: t.string,
     firstName: t.string,
     lastName: t.string,
     email: t.string,
+    role: Roles,
     pictureId: t.string,
     approved: t.boolean,
     phoneNumber: t.union([
@@ -23,6 +24,7 @@ export interface UpdateUser {
     firstName?: string,
     lastName?: string,
     email?: string,
+    role?: Roles,
     pictureId?: string,
     approved?: boolean,
     phoneNumber?:

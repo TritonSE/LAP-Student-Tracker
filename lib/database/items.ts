@@ -1,7 +1,8 @@
 import { client } from "../db";
 import { Item } from "../../models";
 import { decode } from "io-ts-promise";
-
+import { array } from "io-ts"
+const ItemArraySchema = array(Item);
 // get all items for a particular module id
 const getModuleItems = async (moduleId: string): Promise<Item[]> => {
   const query = {

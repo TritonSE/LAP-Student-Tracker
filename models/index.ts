@@ -1,6 +1,7 @@
 export * from "./Attendance";
 export * from "./AttendanceTypes";
 export * from "./Availability";
+export * from "./CalendarEvent";
 export * from "./Class";
 export * from "./ClassEvent";
 export * from "./CreateAttendance";

@@ -1,7 +1,8 @@
 import { client } from "../db";
-import { CalendarEvent, CalendarEventArraySchema } from "../../models";
+import { CalendarEvent } from "../../models";
 import { decode } from "io-ts-promise";
-
+import { array } from "io-ts";
+const CalendarEventArraySchema = array(CalendarEvent);
 // Fetches calendar event feed for a particular user from database
 const getEventFeed = async (
   start: string,

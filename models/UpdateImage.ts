@@ -1,6 +1,12 @@
 import * as t from "io-ts";
 
 
-export const UpdateImage = t.unknown
+export const UpdateImage = t.type({
+    img: t.string,
+    mimeType: t.string
+})
 
-export type UpdateImage = unknown
+export interface UpdateImage {
+    img: string,
+    mimeType: string
+}

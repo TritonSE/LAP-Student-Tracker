@@ -1,1 +1,3 @@
 .next/
+models/*.ts
+public/swagger.json

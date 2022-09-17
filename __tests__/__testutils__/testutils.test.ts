@@ -7,7 +7,7 @@ import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
 import { CalendarEvent, ClassEvent } from "../../models/events";
-import { SingleUserAttendance } from "../../models/attendance";
+import { SingleUserAttendance } from "../../models";
 
 /**
  * Create and test a HTTP Request

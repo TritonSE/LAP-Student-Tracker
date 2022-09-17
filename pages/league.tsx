@@ -3,9 +3,9 @@ import styles from "../styles/League.module.css";
 import { ClassView } from "../components/League/ClassView";
 import { StudentView } from "../components/League/StudentView";
 import { StaffView } from "../components/League/StaffView";
-import { Class } from "../models/class";
-import { User } from "../models/users";
-import { Student } from "../models/students";
+import { Class } from "../models";
+import { User } from "../models";
+import { Student } from "../models";
 import { NextApplicationPage } from "./_app";
 import { IncomingAccountRequests } from "../components/League/IncomingAccountRequests";
 

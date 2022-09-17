@@ -5,7 +5,7 @@ import {
   makeEventHTTPRequest,
   makeHTTPRequest,
 } from "./__testutils__/testutils.test";
-import { ClassEvent, CreateClassEvent } from "../models/events";
+import { ClassEvent, CreateClassEvent } from "../models";
 import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";
 

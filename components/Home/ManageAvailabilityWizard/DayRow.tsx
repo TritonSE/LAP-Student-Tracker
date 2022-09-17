@@ -5,7 +5,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 
 import { TimeSlot } from "./TimeSlot";
-import { ValidDays } from "../../../models/availability";
+import { ValidDays } from "../../../models/custom/CustomTypes";
 
 type DayRowProps = {
   times: string[][];

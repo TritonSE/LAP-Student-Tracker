@@ -1,8 +1,7 @@
-import { Availability, AvailabilitySchema } from "../../models/availability";
+import { User, Availability } from "../../models";
 import { client } from "../db";
 import { decode } from "io-ts-promise";
 import { Interval } from "luxon";
-import { User } from "../../models/users";
 import { timeDateZoneToDateTime } from "./availability-feed";
 
 type Weekdays = "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";
@@ -59,7 +58,7 @@ const getAvailabilityById = async (id: string): Promise<Availability | null> => 
   }
   let availability: Availability;
   try {
-    availability = await decode(AvailabilitySchema, res.rows[0]);
+    availability = await decode(Availability, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }

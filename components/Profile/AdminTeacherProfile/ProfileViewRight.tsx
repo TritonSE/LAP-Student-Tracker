@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ProfileViewRight.module.css";
 import { ProfileInput } from "./ProfileInput";
-import { Roles } from "../../../models/users";
+import { Roles } from "../../../models";
 
 type ProfileViewRightProps = {
   phoneNumber: string | null | undefined;

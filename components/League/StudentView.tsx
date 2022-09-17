@@ -1,5 +1,5 @@
 import React from "react";
-import { Student } from "../../models/students";
+import { Student } from "../../models";
 import { StudentCard } from "./StudentCard";
 import styles from "./LeagueViews.module.css";
 

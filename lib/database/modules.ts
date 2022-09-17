@@ -1,7 +1,8 @@
 import { client } from "../db";
-import { Module, ModuleArraySchema, ModuleSchema } from "../../models/modules";
+import { Module } from "../../models";
 import { decode } from "io-ts-promise";
-
+import { array } from "io-ts";
+const ModuleArraySchema = array(Module);
 // get all modules for a particular class id
 const getClassModules = async (classId: string): Promise<Module[]> => {
   const query = {
@@ -36,7 +37,7 @@ const getModule = async (moduleId: string): Promise<Module | null> => {
 
   let classModule: Module;
   try {
-    classModule = await decode(ModuleSchema, res.rows[0]);
+    classModule = await decode(Module, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }
@@ -109,7 +110,7 @@ const deleteModule = async (moduleId: string): Promise<Module | null> => {
 
   let deletedModule: Module;
   try {
-    deletedModule = await decode(ModuleSchema, res.rows[0]);
+    deletedModule = await decode(Module, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }

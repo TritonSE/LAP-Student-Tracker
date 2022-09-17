@@ -1,6 +1,6 @@
 import availabilityFeedHandler from "../pages/api/availability-feed";
 import { client } from "../lib/db";
-import { CalendarEvent } from "../models/events";
+import { CalendarEvent } from "../models";
 import { StatusCodes } from "http-status-codes";
 import { getISOTimeFromExplicitFields, makeHTTPRequest } from "./__testutils__/testutils.test";
 import ColorHash from "color-hash";

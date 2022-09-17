@@ -4,7 +4,7 @@ import useSWR, { mutate } from "swr";
 import styles from "./LeagueViews.module.css";
 import { UnapprovedAccount } from "./UnapprovedAccount";
 import Loader from "react-spinners/ClipLoader";
-import { User } from "../../models/users";
+import { User } from "../../models";
 import { CustomError } from "../util/CustomError";
 
 type IncomingAccountRequestsProp = {

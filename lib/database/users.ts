@@ -1,6 +1,8 @@
 import { client } from "../db";
-import { User, UserArraySchema, UserSchema } from "../../models/users";
+import { User } from "../../models";
 import { decode } from "io-ts-promise";
+import { array } from "io-ts";
+const UserArraySchema = array(User);
 
 const roleSpecificSetup = async (
   id: string,
@@ -62,7 +64,7 @@ const updateUser = async (
   email?: string,
   role?: string,
   approved?: boolean,
-  address?: string,
+  address?: string | null,
   phone_number?: string | null
 ): Promise<User | null> => {
   const query = {
@@ -103,7 +105,7 @@ const getUser = async (id: string): Promise<User | null> => {
 
   let user: User;
   try {
-    user = await decode(UserSchema, res.rows[0]);
+    user = await decode(User, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }

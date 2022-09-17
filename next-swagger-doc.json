@@ -1,0 +1,11 @@
+{
+  "apiFolder": "pages/api",
+  "schemaFolders": ["models/openapi/"],
+  "definition": {
+    "openapi": "3.0.0",
+    "info": {
+      "title": "LAP Student Tracker API",
+      "version": "1.0"
+    }
+  }
+}

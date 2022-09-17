@@ -3,14 +3,71 @@ import {
   getAttendanceFromSessionID,
   createAttendance,
 } from "../../../../../lib/database/attendance";
-import {
-  CreateAttendanceArraySchema,
-  createAttendanceArrayType,
-} from "../../../../../models/attendance";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-
-// handles requests to /api/class/[id]/attendance/[session_id]
+import { CreateAttendance } from "../../../../../models";
+import { array } from "io-ts";
+const CreateAttendanceArraySchema = array(CreateAttendance);
+/**
+ * @swagger
+ * /api/class/{id}/attendance/{sessionId}:
+ *  get:
+ *    description: Get the attendance records for all students within this session for this class
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: path
+ *        name: sessionId
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Found all attendance records
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                $ref: '#/components/schemas/Attendance'
+ *  post:
+ *    description: Add attendance records for multiple students in this session. Will overwrite or create attendance records for each student
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: path
+ *        name: sessionId
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      description: Array of attendance objects for attendance
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: array
+ *            items:
+ *              type: object
+ *              $ref: '#/components/schemas/CreateAttendance'
+ *    responses:
+ *      201:
+ *        description: Attendance created/updated successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                $ref: '#/components/schemas/Attendance'
+ */
 export const sessionIDHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -40,7 +97,7 @@ export const sessionIDHandler: NextApiHandler = async (
     }
 
     case "POST": {
-      let newAttendance: createAttendanceArrayType;
+      let newAttendance: CreateAttendance[];
       try {
         newAttendance = await decode(CreateAttendanceArraySchema, req.body);
       } catch (e) {

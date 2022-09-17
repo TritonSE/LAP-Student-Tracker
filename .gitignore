@@ -46,3 +46,6 @@ yarn-error.log*
 
 /lap-student-tracker-staging-firebase-adminsdk-b957b-058bd73482.json
 /.env.staging
+/public/swagger.json
+
+/models/*.ts

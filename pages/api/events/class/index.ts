@@ -12,20 +12,43 @@ import {
 } from "../../../../lib/database/availability";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
-import { ClassEvent, CreateClassEvent, CreateClassEventSchema } from "../../../../models/events";
+import { ClassEvent, CreateClassEvent } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
 import { withAuth } from "../../../../middleware/withAuth";
 
-// handles requests to /api/events/class
+/**
+ * @swagger
+ * /events/class:
+ *  post:
+ *    description: Create a new class event (this api will generate events for the calendar). Has validation to ensure teachers are not double booked
+ *    requestBody:
+ *      description: The data for the new class
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/CreateClassEvent'
+ *    responses:
+ *      201:
+ *        description: Class created successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/ClassEvent'
+ * @param req
+ * @param res
+ */
 const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST": {
       let newEvent: CreateClassEvent;
       try {
-        newEvent = await decode(CreateClassEventSchema, req.body);
+        newEvent = await decode(CreateClassEvent, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

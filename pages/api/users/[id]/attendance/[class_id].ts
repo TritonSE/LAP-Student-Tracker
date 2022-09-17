@@ -2,6 +2,32 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSingleUserAttendanceFromClassID } from "../../../../../lib/database/attendance";
 
+/**
+ * @swagger
+ * /api/users/{id}/attendance/{classId}:
+ *  get:
+ *    description: Get single user's attendance
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: path
+ *        name: classId
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      202:
+ *        description: Found attendance record
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/SingleUserAttendance'
+ *
+ */
 export const userAttendanceHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse

@@ -1,11 +1,7 @@
 import { client } from "../db";
-import {
-  Attendance,
-  CreateAttendance,
-  SingleUserAttendance,
-} from "../../models";
+import { Attendance, CreateAttendance, SingleUserAttendance } from "../../models";
 import { decode } from "io-ts-promise";
-import {array} from "io-ts";
+import { array } from "io-ts";
 const AttendanceArraySchema = array(Attendance);
 const SingleUserAttendanceArraySchema = array(SingleUserAttendance);
 //get session_ids of events that occur before a given time: GET api/class/[id]/sessions

@@ -5,8 +5,8 @@ import {
 } from "../../../../../lib/database/attendance";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import {CreateAttendance} from "../../../../../models";
-import {array} from "io-ts";
+import { CreateAttendance } from "../../../../../models";
+import { array } from "io-ts";
 const CreateAttendanceArraySchema = array(CreateAttendance);
 /**
  * @swagger

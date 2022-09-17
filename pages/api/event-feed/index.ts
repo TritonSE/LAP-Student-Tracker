@@ -2,7 +2,39 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getEventFeed } from "../../../lib/database/calendar-events";
 import { StatusCodes } from "http-status-codes";
 
-// handles requests to /api/event-feed/
+/**
+ * @swagger
+ * /api/event-feed:
+ *  get:
+ *    description: gets events for the calendar given the start and end date, and can be further filtered by user id
+ *    parameters:
+ *      - in: query
+ *        name: start
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: end
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: userId
+ *        required: false
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Getting all events
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/CalendarEvent'
+ *
+ * @param req
+ * @param res
+ */
 const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":

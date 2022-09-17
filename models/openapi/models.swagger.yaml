@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Converted from company.swagger.yaml with typeconv
+  title: Converted from company.models.swagger.yaml with typeconv
   version: "1"
 paths: {}
 components:

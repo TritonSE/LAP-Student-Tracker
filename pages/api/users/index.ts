@@ -6,7 +6,46 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
-// handles requests to /api/users/
+/**
+ * @swagger
+ * /api/users:
+ *  get:
+ *    description: Returns all users
+ *    parameters:
+ *      - in: query
+ *        name: role
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Returned successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                $ref: '#/components/schemas/User'
+ *  post:
+ *    description: Add a new user
+ *    requestBody:
+ *      description: User to be created
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/CreateUser'
+ *    responses:
+ *      201:
+ *        description: Successfully created a new user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/User'
+ *
+ */
 const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST": {

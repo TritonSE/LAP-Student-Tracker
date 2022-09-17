@@ -5,7 +5,52 @@ import { getImage, updateImage } from "../../../lib/database/images";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
 
-// handles requests to /api/images/[id]
+/**
+ * @swagger
+ * /api/images/{id}:
+ *  get:
+ *    description: get the b64 encoded image associated with the id
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      202:
+ *        description: Image found
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Image'
+ *  patch:
+ *    description: update the image data associated with this id
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      description: Fields to be updated. img should be b64 encoding of image
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/UpdateImage'
+ *    responses:
+ *      202:
+ *        description: Image updated successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Image'
+ * @param req
+ * @param res
+ */
 const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");

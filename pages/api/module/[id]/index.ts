@@ -5,6 +5,35 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
 // Handles all requests to /api/module/[id]
+/**
+ * @swagger
+ * /api/module/{id}:
+ *  patch:
+ *    description: Edit a module
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      description: The new data for the module
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/UpdateModule'
+ *    responses:
+ *      202:
+ *        description: Module updated successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Module'
+ *
+ */
 export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");

@@ -6,6 +6,30 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
 // Handles all requests to /api/module
+/**
+ * @swagger
+ * /api/module:
+ *  post:
+ *    description: Add a module to the database
+ *    requestBody:
+ *      description: The data for the module
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/CreateModule'
+ *    responses:
+ *      201:
+ *        description: Module created
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Module'
+ *
+ *
+ */
 export const createModuleHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse

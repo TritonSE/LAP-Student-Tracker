@@ -5,7 +5,66 @@ import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
 import { getUser, updateUser, deleteUser } from "../../../../lib/database/users";
 
-// handles requests to /api/users/[id]
+/**
+ * @swagger
+ * /api/users/{id}:
+ *  get:
+ *   description: Get a user by id
+ *   parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *   responses:
+ *      200:
+ *        description: Found user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/User'
+ *  patch:
+ *   description: Edit a user's details
+ *   parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *   requestBody:
+ *    description: The new data for the user
+ *    required: true
+ *    content:
+ *      application/json:
+ *        schema:
+ *          type: object
+ *          $ref: '#/components/schemas/UpdateUser'
+ *   responses:
+ *    201:
+ *      description: Updated user successfully
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/User'
+ *  delete:
+ *   description: Delete a user from the database
+ *   parameters:
+ *        - in: path
+ *          name: id
+ *          required: true
+ *          schema:
+ *            type: string
+ *   responses:
+ *      202:
+ *        description: Delete user successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/User'
+ */
 const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");

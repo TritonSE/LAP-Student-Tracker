@@ -27,6 +27,8 @@ jobs:
           DB_USER: "postgres"
           DB_HOST: "localhost"
           DB_PASS: "postgres"
+      - name: Build Models
+        run: npm run generate-models
       - name: Test Unit Tests
         run: npm run test
         env:

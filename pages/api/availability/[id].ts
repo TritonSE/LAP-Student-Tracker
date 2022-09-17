@@ -5,13 +5,57 @@ import { Availability } from "../../../models";
 // import { Availability, AvailabilitySchema } from "../../../models/availability";
 import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
 import { withAuth } from "../../../middleware/withAuth";
-//Handles all requests to /api/availability/[id]
+
+/**
+ * @swagger
+ * /api/availability/{id}:
+ *  get:
+ *    description: Get the availability for a given teacher
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      202:
+ *        description: Availability returned sucesfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Availability'
+ *  patch:
+ *    description: Update the availability of a teacher
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      description: The new availability for the teacher
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Availability'
+ *    responses:
+ *      201:
+ *        description: Availability updated sucesfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Availability'
+ */
 export const availabilityIdHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 
   const id = req.query.id as string;

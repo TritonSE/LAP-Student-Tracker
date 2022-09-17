@@ -5,7 +5,40 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
 //Handles all requests to /api/class
-
+/**
+ * @swagger
+ * /api/class:
+ *  get:
+ *    description: get a list of all classes in the school
+ *    responses:
+ *      200:
+ *        description: Successfully getting all classes
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                $ref: '#/components/schemas/Class'
+ *  post:
+ *    description: Create a class
+ *    requestBody:
+ *      description: Data for the class that needs to be created. Name is already store in the db due to the call to the events/class api
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/CreateClass'
+ *    responses:
+ *      201:
+ *        description: Successfully created the class
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Class'
+ */
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newClass: CreateClass;
   switch (req.method) {

@@ -93,9 +93,11 @@ export const AuthProvider: React.FC = ({ children }) => {
     if (auth == null) return null;
     if (auth.currentUser == null) return null;
     const newToken = await auth.currentUser.getIdToken(false);
+    console.log("new token found");
     if (locality == "Local") {
       localStorage.setItem("apiToken", newToken);
     } else {
+      console.log("session storage done");
       sessionStorage.setItem("apiToken", newToken);
     }
     api.setToken(newToken);
@@ -108,6 +110,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       api.setRefreshTokenFunction(getNewRefreshToken);
       const uid = sessionStorage.getItem("userId");
       const token = sessionStorage.getItem("apiToken");
+      console.log("set new refresh token");
       if (uid && token) {
         await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
         setLocality("Session");

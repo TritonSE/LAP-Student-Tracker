@@ -2,8 +2,11 @@ import React from "react";
 import styles from "./LeagueViews.module.css";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
+import Link from 'next/link';
+
 
 type ClassCardProps = {
+  id: string
   name: string;
   minLevel: number;
   maxLevel: number;
@@ -13,6 +16,7 @@ type ClassCardProps = {
 };
 
 const ClassCard: React.FC<ClassCardProps> = ({
+    id,
   name,
   minLevel,
   maxLevel,
@@ -30,6 +34,11 @@ const ClassCard: React.FC<ClassCardProps> = ({
     "Sunday",
   ];
 
+  const onClassClick = (): void => {
+    console.log("click");
+    // router.push("/class/" + id);
+  };
+
   const rule = RRule.fromString(rrstring);
   //geting all days of week from the rrule object to output
   const dates = rule.options.byweekday.map((val) => weekday[val]).join(", ");
@@ -42,11 +51,13 @@ const ClassCard: React.FC<ClassCardProps> = ({
     return finalTimes + "";
   };
   return (
-    <div className={styles.listElem}>
+    <div className={styles.listElem} onClick={() => onClassClick()}>
       <div>
+        <Link href={"/class/" + id}>
         <p className={styles.leftText}>{`${name} ${
           minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel
         }`}</p>
+        </Link>
       </div>
       <div className={styles.rightText}>
         {[dates, "•", convertTime(startTime, endTime)].join(" ")}

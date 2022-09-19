@@ -13,3 +13,71 @@
   align-self: left;
   padding: 1rem;
 }
+
+.spacer {
+  height: 42px;
+}
+
+.button {
+  height: 22.5px;
+  /*background: url(../../../assets/icons/downVector.png);*/
+  /*height: 30px;*/
+  width: 30px;
+}
+
+.buttonLabel {
+  composes: labelLarge from "../../../styles/globals.css";
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.tableRow {
+  composes: labelLarge from "../../../styles/globals.css";
+  text-align: center;
+  height: 48px;
+}
+
+.tableHeader {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+  height: 48px;
+}
+
+.dropdownHeader {
+  height: 48px;
+  width: 99%;
+  background-color: #46D5B3;
+  border-radius: 5px;
+}
+
+.table {
+  width: 100%;
+}
+
+/*.table{*/
+/*  border-collapse:collapse;*/
+/*  border:1px solid #FF0000;*/
+/*}*/
+
+/*.table td{*/
+/*  border:1px solid #FF0000;*/
+/*}*/
+
+.profileButton {
+  box-sizing: border-box;
+  border: 1.5px solid #F37121;
+  filter: drop-shadow(0px 2px 14px rgba(0, 0, 0, 0.25));
+  border-radius: 10px;
+  height: 40px;
+  length: 182px;
+
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+}

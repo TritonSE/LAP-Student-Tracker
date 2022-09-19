@@ -89,6 +89,7 @@ export const ClassScroll: React.FC<ClassScrollProp> = ({
       {filteredClasses.map((currClass: Class) => (
         <ClassCard
           key={currClass.eventInformationId}
+          id={currClass.eventInformationId}
           name={currClass.name}
           minLevel={currClass.minLevel}
           maxLevel={currClass.maxLevel}

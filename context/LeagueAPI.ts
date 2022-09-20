@@ -32,7 +32,9 @@ class LeagueAPI {
         const originalRequestConfig = error.config;
         if (error.response) {
           if (error.response.status == 401 && !originalRequestConfig._retry) {
+            console.log("RETRY WITH NEW TOKEN")
             const newTokenCreated = await this.refreshToken();
+            console.log("MEW TOKEN " + newTokenCreated);
             if (!newTokenCreated) return Promise.reject(error);
             this.token = newTokenCreated;
             originalRequestConfig._retry = true;
@@ -134,8 +136,14 @@ class LeagueAPI {
   async deleteUser(id: string): Promise<void> {
     await this.client.delete(`api/users/${id}`);
   }
+
   async updateAvailabilities(availabilities: Availability, id: string): Promise<Availability> {
     const res = await this.client.patch(`api/availability/${id}`, availabilities);
+    return res.data;
+  }
+
+  async getRoster(classId: string): Promise<User[]> {
+    const res = await this.client.get(`api/class/${classId}/roster`);
     return res.data;
   }
 }

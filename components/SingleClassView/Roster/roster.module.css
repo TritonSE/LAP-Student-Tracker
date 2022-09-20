@@ -18,17 +18,29 @@
   height: 42px;
 }
 
+.buttonContainer {
+  height: 48px;
+  width: 55px;
+  display: inline-block;
+  padding: 10px;
+}
+
 .button {
-  height: 22.5px;
-  /*background: url(../../../assets/icons/downVector.png);*/
-  /*height: 30px;*/
-  width: 30px;
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.button img {
+  height: 80%;
+  width: 80%;
 }
 
 .buttonLabel {
   composes: labelLarge from "../../../styles/globals.css";
   display: inline-block;
-  vertical-align: middle;
+  /*padding: 10px;*/
 }
 
 .tableRow {
@@ -58,14 +70,6 @@
   width: 100%;
 }
 
-/*.table{*/
-/*  border-collapse:collapse;*/
-/*  border:1px solid #FF0000;*/
-/*}*/
-
-/*.table td{*/
-/*  border:1px solid #FF0000;*/
-/*}*/
 
 .profileButton {
   box-sizing: border-box;

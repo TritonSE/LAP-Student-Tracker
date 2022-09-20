@@ -284,8 +284,10 @@ components:
       properties:
         img:
           type: string
+          nullable: true
         mimeType:
           type: string
+          nullable: true
         id:
           type: string
       required:

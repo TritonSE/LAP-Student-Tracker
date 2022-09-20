@@ -2,25 +2,15 @@ import React from "react";
 import styles from "./roster.module.css";
 import {User} from "../../../models";
 
-export const TeacherTableView: React.FC = () => {
+type TeacherTableViewProps = {
+    teachers: User[]
+};
 
-    const tempTeachers: User[] = [
-        {
-            id: "tempId",
-            firstName: "Teacher1",
-            lastName: "lastName",
-            role: "Teacher",
-            pictureId: "pictureId",
-            approved: true,
-            email: "email.com",
-            dateCreated: "none",
-            phoneNumber: null, address: null
-        }
-    ];
+export const TeacherTableView: React.FC<TeacherTableViewProps> = ({teachers}) => {
 
-    const tableRows = tempTeachers.map( (user) => {
+    const tableRows = teachers.map( (user) => {
         return(
-            <tr className={styles.tableRow}>
+            <tr className={styles.tableRow} key={user.id}>
                 <td>{user.firstName}</td>
                 <td>{user.lastName}</td>
                 <td>{user.role}</td>
@@ -42,5 +32,5 @@ export const TeacherTableView: React.FC = () => {
             <th>Info</th>
         </tr>
             {tableRows}
-    </table>)
+    </table>);
 }

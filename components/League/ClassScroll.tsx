@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { APIContext } from "../../context/APIContext";
 import useSWR from "swr";
 import { CustomError } from "../util/CustomError";
-import { Loader } from "../util/Loader";
+import { CustomLoader } from "../util/CustomLoader";
 import { Class } from "../../models";
 import { Empty } from "../util/Empty";
 import { ClassCard } from "./ClassCard";
@@ -24,7 +24,7 @@ export const ClassScroll: React.FC<ClassScrollProp> = ({
   const { data: classes, error } = useSWR("/api/class", () => client.getAllClasses());
 
   if (error) return <CustomError />;
-  if (!classes) return <Loader />;
+  if (!classes) return <CustomLoader />;
 
   const checkIfLevelSelected = (selectedLevels: Set<number>, tempClass: Class): boolean => {
     if (selectedLevels.size === 0) {

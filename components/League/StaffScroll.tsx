@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StaffCard } from "./StaffCard";
 import { APIContext } from "../../context/APIContext";
-import { Loader } from "../util/Loader";
+import { CustomLoader } from "../util/CustomLoader";
 import { CustomError } from "../util/CustomError";
 import { Empty } from "../util/Empty";
 import { Staff } from "../../models";
@@ -21,10 +21,10 @@ const StaffScroll: React.FC<StaffScrollProp> = ({ searchQuery, selectedFilters, 
   const { data, error } = useSWR("/api/staff", () => client.getStaff());
 
   if (error) return <CustomError />;
-  if (!data) return <Loader />;
+  if (!data) return <CustomLoader />;
   if (data.length == 0) return <Empty userType="Staff" />;
 
-  setRequests(data.reduce((acc, cur) => (cur.approved === false ? ++acc : acc), 0) > 0);
+  setRequests(data.reduce((acc, cur) => (!cur.approved ? ++acc : acc), 0) > 0);
 
   const checkIfFilterSelected = (selectedFilter: string[], staff: Staff): boolean => {
     if (selectedFilter.length === 0) {

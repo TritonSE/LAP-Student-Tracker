@@ -21,13 +21,15 @@ const Class: NextApplicationPage = () => {
 
   const [currentModule, setCurrentModule] = useState<string>("roster");
 
+
+
   if (user == null || currClass == null) return <CustomError />;
 
   return (
     <div className={styles.container}>
       <nav className={styles.navbar}>
         <ul className={styles.navmenu}>
-          <BackButton linkTo="/home" />
+          <BackButton linkTo="/league" />
           <li className={styles.navtitle}>{currClass.name}</li>
           <li className={styles.navitem}>
             <a
@@ -61,12 +63,14 @@ const Class: NextApplicationPage = () => {
       {currentModule == "attendance" ? (
         <Attendance />
       ) : currentModule == "roster" ? (
-        <Roster />
+        <Roster id={classId} />
       ) : (
         <Module />
       )}
     </div>
   );
 };
+
+Class.requireAuth = true;
 
 export default Class;

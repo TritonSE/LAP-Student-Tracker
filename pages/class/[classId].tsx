@@ -10,6 +10,7 @@ import { APIContext } from "../../context/APIContext";
 import { BackButton } from "../../components/util/BackButton";
 import { CustomError } from "../../components/util/CustomError";
 import useSWR from "swr";
+import { CustomLoader } from "../../components/util/CustomLoader";
 
 const Class: NextApplicationPage = () => {
   const router = useRouter();
@@ -21,9 +22,8 @@ const Class: NextApplicationPage = () => {
 
   const [currentModule, setCurrentModule] = useState<string>("roster");
 
-
-
-  if (user == null || currClass == null) return <CustomError />;
+  if (user == null) return <CustomError />;
+  if (currClass == null) return <CustomLoader />;
 
   return (
     <div className={styles.container}>

@@ -24,7 +24,7 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
   imageLoading,
   editProfileClicked,
   validInput,
-    editable,
+  editable,
   onImageChange,
   handleEditProfileClicked,
   onError,
@@ -49,15 +49,17 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
       <div className={styles.padding}></div>
       <div className={styles.name}> {firstName + " " + lastName}</div>
       <div className={styles.buttonPadding}></div>
-      {editable ? <div className={styles.center}>
-        <button
-          disabled={!validInput}
-          onClick={async () => await handleEditProfileClicked()}
-          className={styles.editButton}
-        >
-          {buttonText}
-        </button>
-      </div> : null }
+      {editable ? (
+        <div className={styles.center}>
+          <button
+            disabled={!validInput}
+            onClick={async () => await handleEditProfileClicked()}
+            className={styles.editButton}
+          >
+            {buttonText}
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 };

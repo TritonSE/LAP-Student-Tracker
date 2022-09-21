@@ -32,9 +32,7 @@ class LeagueAPI {
         const originalRequestConfig = error.config;
         if (error.response) {
           if (error.response.status == 401 && !originalRequestConfig._retry) {
-            console.log("RETRY WITH NEW TOKEN")
             const newTokenCreated = await this.refreshToken();
-            console.log("MEW TOKEN " + newTokenCreated);
             if (!newTokenCreated) return Promise.reject(error);
             this.token = newTokenCreated;
             originalRequestConfig._retry = true;

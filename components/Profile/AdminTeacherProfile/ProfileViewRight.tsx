@@ -12,7 +12,7 @@ type ProfileViewRightProps = {
   confirmPassword: string;
   disabled: boolean;
   errorMessage: string;
-  editable: boolean
+  editable: boolean;
   // functions that handle updating states of their respective variables
   handleEmailChange: (newEmail: string) => void;
   handlePhoneNumberChange: (newNumber: string) => void;
@@ -34,7 +34,7 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
   confirmPassword,
   disabled,
   errorMessage,
-    editable,
+  editable,
   handleEmailChange,
   handlePasswordChange,
   handleConfirmPasswordChange,
@@ -94,16 +94,18 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
 
       <div className={styles.errorMessage}> {errorMessage} </div>
 
-      { editable ? <div className={styles.buttonContainer}>
-        {!disabled && (
-          <button className={styles.backButton} onClick={() => onBackClick()}>
-            <div className={styles.backText}>Back</div>
+      {editable ? (
+        <div className={styles.buttonContainer}>
+          {!disabled && (
+            <button className={styles.backButton} onClick={() => onBackClick()}>
+              <div className={styles.backText}>Back</div>
+            </button>
+          )}
+          <button className={styles.signOutButton} onClick={() => onSignoutClick()}>
+            <div className={styles.signOutText}>Sign Out</div>
           </button>
-        )}
-        <button className={styles.signOutButton} onClick={() => onSignoutClick()}>
-          <div className={styles.signOutText}>Sign Out</div>
-        </button>
-      </div> : null }
+        </div>
+      ) : null}
     </div>
   );
 };

@@ -1,36 +1,44 @@
 import React from "react";
 import styles from "./roster.module.css";
-import {User} from "../../../models";
+import { User } from "../../../models";
+import { useRouter } from "next/router";
 
 type TeacherTableViewProps = {
-    teachers: User[]
+  teachers: User[];
 };
 
-export const TeacherTableView: React.FC<TeacherTableViewProps> = ({teachers}) => {
+export const TeacherTableView: React.FC<TeacherTableViewProps> = ({ teachers }) => {
+  const router = useRouter();
 
-    const tableRows = teachers.map( (user) => {
-        return(
-            <tr className={styles.tableRow} key={user.id}>
-                <td>{user.firstName}</td>
-                <td>{user.lastName}</td>
-                <td>{user.role}</td>
-                <td>
-                    <button className={styles.profileButton}> View Profile</button>
-                </td>
-            </tr>
+  const onProfileClick = (id: string): void => {
+    router.push(`/profile/${id}`);
+  };
 
-        );
-    });
-
-
+  const tableRows = teachers.map((user) => {
     return (
-        <table className={styles.table}>
-        <tr className={styles.tableHeader}>
-            <th>First</th>
-            <th>Last</th>
-            <th>Position</th>
-            <th>Info</th>
-        </tr>
-            {tableRows}
-    </table>);
-}
+      <tr className={styles.tableRow} key={user.id}>
+        <td>{user.firstName}</td>
+        <td>{user.lastName}</td>
+        <td>{user.role}</td>
+        <td>
+          <button className={styles.profileButton} onClick={() => onProfileClick(user.id)}>
+            {" "}
+            View Profile
+          </button>
+        </td>
+      </tr>
+    );
+  });
+
+  return (
+    <table className={styles.table}>
+      <tr className={styles.tableHeader}>
+        <th>First</th>
+        <th>Last</th>
+        <th>Position</th>
+        <th>Info</th>
+      </tr>
+      {tableRows}
+    </table>
+  );
+};

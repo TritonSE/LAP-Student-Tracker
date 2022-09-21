@@ -6,18 +6,16 @@ import styles from "./AdminTeacherProfile.module.css";
 import { CustomError } from "../../util/CustomError";
 import { useRouter } from "next/router";
 import { APIContext } from "../../../context/APIContext";
-import {UpdateImage, User} from "../../../models/";
+import { UpdateImage, User } from "../../../models/";
 import { fromByteArray } from "base64-js";
 import imageCompression from "browser-image-compression";
-import {CustomLoader} from "../../util/CustomLoader";
 
 // component that renders the admin/teacher profile page
 type AdminTeacherProfileViewProps = {
-  userId?: string
+  otherUser?: User; // if we need to display a user that is not the logged in one, pass the details here
 };
-const AdminTeacherProfileView: React.FC<AdminTeacherProfileViewProps> = ({userId}) => {
-
-  const {user:loggedInUser, error, updateUser, clearError, logout} = useContext(AuthContext);
+const AdminTeacherProfileView: React.FC<AdminTeacherProfileViewProps> = ({ otherUser }) => {
+  const { user: loggedInUser, error, updateUser, clearError, logout } = useContext(AuthContext);
 
   const api = useContext(APIContext);
 
@@ -26,7 +24,9 @@ const AdminTeacherProfileView: React.FC<AdminTeacherProfileViewProps> = ({userId
 
   const router = useRouter();
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false);
-  const [phoneNumber, setPhoneNumber] = useState<string | null | undefined>(loggedInUser.phoneNumber);
+  const [phoneNumber, setPhoneNumber] = useState<string | null | undefined>(
+    loggedInUser.phoneNumber
+  );
   const [email, setEmail] = useState<string>(loggedInUser.email);
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
@@ -35,35 +35,16 @@ const AdminTeacherProfileView: React.FC<AdminTeacherProfileViewProps> = ({userId
   const [image, setImage] = useState<File | null>(null);
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [imageChanged, setImageChanged] = useState<boolean>(false);
-  const [user, setUser] = useState<User>(loggedInUser);
-  const [displayPage, setDisplayPage] = useState<boolean>(false);
-  const [editable, _] = useState<boolean>(userId == undefined);
+  // the user being displayed
+  const [user, _setUser] = useState<User>(otherUser ? otherUser : loggedInUser);
+  // if a custom user is being rendered, make it not editable
+  const [editable, _setEditable] = useState<boolean>(otherUser == undefined);
 
   useEffect(() => {
     (async () => {
       await resetImage();
     })();
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      await loadCustomUserIfGiven();
-    })();
-  }, []);
-
-  const loadCustomUserIfGiven = async (): Promise<void> => {
-    if (userId) {
-      const user = await api.getUser(userId);
-      setUserFields(user);
-    }
-    setDisplayPage(true);
-  }
-
-  const setUserFields = (user: User): void => {
-    setPhoneNumber(user.phoneNumber);
-    setEmail(user.email);
-    setUser(user);
-  }
 
   const resetImage = async (): Promise<void> => {
     setImageLoading(true);
@@ -103,8 +84,8 @@ const AdminTeacherProfileView: React.FC<AdminTeacherProfileViewProps> = ({userId
       }
 
       const userSuccess = await updateUser(
-          loggedInUser.id,
-          loggedInUser.email,
+        loggedInUser.id,
+        loggedInUser.email,
         currentPassword,
         email,
         phoneNumber,
@@ -205,9 +186,6 @@ const AdminTeacherProfileView: React.FC<AdminTeacherProfileViewProps> = ({userId
     );
   }, [validEmail, validPassword, validPhoneNumber, validConfirmPassword, error]);
 
-  if (!displayPage) {
-    return <CustomLoader/>;
-  }
   return (
     <div className={styles.rectangleContainer}>
       <div className={styles.rectangle}>

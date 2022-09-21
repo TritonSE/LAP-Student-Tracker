@@ -134,8 +134,14 @@ class LeagueAPI {
   async deleteUser(id: string): Promise<void> {
     await this.client.delete(`api/users/${id}`);
   }
+
   async updateAvailabilities(availabilities: Availability, id: string): Promise<Availability> {
     const res = await this.client.patch(`api/availability/${id}`, availabilities);
+    return res.data;
+  }
+
+  async getRoster(classId: string): Promise<User[]> {
+    const res = await this.client.get(`api/class/${classId}/roster`);
     return res.data;
   }
 }

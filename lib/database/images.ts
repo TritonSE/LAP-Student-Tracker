@@ -58,7 +58,7 @@ const getImage = async (id: string): Promise<Image | null> => {
   let image: Image;
   try {
     image = await decode(Image, res.rows[0]);
-  } catch {
+  } catch (e) {
     throw Error("Fields returned incorrectly from database");
   }
 

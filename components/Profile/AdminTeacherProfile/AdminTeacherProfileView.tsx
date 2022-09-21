@@ -6,22 +6,28 @@ import styles from "./AdminTeacherProfile.module.css";
 import { CustomError } from "../../util/CustomError";
 import { useRouter } from "next/router";
 import { APIContext } from "../../../context/APIContext";
-import { UpdateImage } from "../../../models/";
+import { UpdateImage, User } from "../../../models/";
 import { fromByteArray } from "base64-js";
 import imageCompression from "browser-image-compression";
 
 // component that renders the admin/teacher profile page
-const AdminTeacherProfileView: React.FC = () => {
-  const { user, error, updateUser, clearError, logout } = useContext(AuthContext);
+type AdminTeacherProfileViewProps = {
+  otherUser?: User; // if we need to display a user that is not the logged in one, pass the details here
+};
+const AdminTeacherProfileView: React.FC<AdminTeacherProfileViewProps> = ({ otherUser }) => {
+  const { user: loggedInUser, error, updateUser, clearError, logout } = useContext(AuthContext);
+
   const api = useContext(APIContext);
 
   // user will never be null, because if it is, client is redirected to login page
-  if (user == null) return <CustomError />;
+  if (loggedInUser == null) return <CustomError />;
 
   const router = useRouter();
   const [editProfileClicked, setEditProfileClicked] = useState<boolean>(false);
-  const [phoneNumber, setPhoneNumber] = useState<string | null | undefined>(user.phoneNumber);
-  const [email, setEmail] = useState<string>(user.email);
+  const [phoneNumber, setPhoneNumber] = useState<string | null | undefined>(
+    loggedInUser.phoneNumber
+  );
+  const [email, setEmail] = useState<string>(loggedInUser.email);
   const [currentPassword, setCurrentPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -29,6 +35,10 @@ const AdminTeacherProfileView: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imageLoading, setImageLoading] = useState<boolean>(false);
   const [imageChanged, setImageChanged] = useState<boolean>(false);
+  // the user being displayed
+  const [user, _setUser] = useState<User>(otherUser ? otherUser : loggedInUser);
+  // if a custom user is being rendered, make it not editable
+  const [editable, _setEditable] = useState<boolean>(otherUser == undefined);
 
   useEffect(() => {
     (async () => {
@@ -38,7 +48,7 @@ const AdminTeacherProfileView: React.FC = () => {
 
   const resetImage = async (): Promise<void> => {
     setImageLoading(true);
-    const image = await api.getImage(user.pictureId);
+    const image = await api.getImage(loggedInUser.pictureId);
     if (image.img == null) {
       setImage(null);
     } else {
@@ -74,8 +84,8 @@ const AdminTeacherProfileView: React.FC = () => {
       }
 
       const userSuccess = await updateUser(
-        user.id,
-        user.email,
+        loggedInUser.id,
+        loggedInUser.email,
         currentPassword,
         email,
         phoneNumber,
@@ -91,7 +101,7 @@ const AdminTeacherProfileView: React.FC = () => {
           mimeType: imageType,
           img: b64img,
         };
-        const updatedImageFromDB = api.updateImage(user.pictureId, updatedImage);
+        const updatedImageFromDB = api.updateImage(loggedInUser.pictureId, updatedImage);
         if (!updatedImageFromDB) imageSuccess = false;
       }
       if (userSuccess && imageSuccess) {
@@ -102,8 +112,8 @@ const AdminTeacherProfileView: React.FC = () => {
   };
 
   const onBackClick = async (): Promise<void> => {
-    setPhoneNumber(user.phoneNumber);
-    setEmail(user.email);
+    setPhoneNumber(loggedInUser.phoneNumber);
+    setEmail(loggedInUser.email);
     setCurrentPassword("");
     setNewPassword("");
     setConfirmPassword("");
@@ -191,6 +201,7 @@ const AdminTeacherProfileView: React.FC = () => {
               imageLoading={imageLoading}
               onImageChange={handleImageChange}
               onError={setErrorMessage}
+              editable={editable}
             ></ProfileViewLeft>
           </div>
           <div className={styles.rightContainer}>
@@ -203,6 +214,7 @@ const AdminTeacherProfileView: React.FC = () => {
               confirmPassword={confirmPassword}
               disabled={!editProfileClicked}
               errorMessage={errorMessage}
+              editable={editable}
               handleEmailChange={handleEmailChange}
               handleCurrentPasswordChange={handleCurrentPasswordChange}
               handleConfirmPasswordChange={handleConfirmPassword}

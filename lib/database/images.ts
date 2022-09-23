@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { Image, ImageSchema } from "../../models/images";
+import { Image } from "../../models";
 import { decode } from "io-ts-promise";
 
 // creates null images entry returning id, called when new user is created
@@ -12,7 +12,7 @@ const createImage = async (): Promise<string> => {
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("CustomError on insert into database");
+    throw Error("Error on insert into image database");
   }
 
   return res.rows[0].id;
@@ -57,8 +57,8 @@ const getImage = async (id: string): Promise<Image | null> => {
 
   let image: Image;
   try {
-    image = await decode(ImageSchema, res.rows[0]);
-  } catch {
+    image = await decode(Image, res.rows[0]);
+  } catch (e) {
     throw Error("Fields returned incorrectly from database");
   }
 

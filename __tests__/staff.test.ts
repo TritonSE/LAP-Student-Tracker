@@ -1,7 +1,7 @@
 import staffHandler from "../pages/api/staff";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { Staff } from "../models/staff";
+import { Staff } from "../models";
 import { StatusCodes } from "http-status-codes";
 
 beforeAll(async () => {
@@ -12,13 +12,13 @@ beforeAll(async () => {
   await client.query("DELETE from images");
   await client.query("INSERT INTO images(id) VALUES('1')");
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, date_created, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '1')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890', '1')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('1', 'Test Event', 'blue', 'class', 'false')"
@@ -43,6 +43,8 @@ describe("[GET] /api/staff", () => {
         lastName: "Doe",
         email: "teacher@gmail.com",
         role: "Teacher",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         minLevel: 3,
@@ -56,6 +58,8 @@ describe("[GET] /api/staff", () => {
         lastName: "Doe",
         email: "admin@gmail.com",
         role: "Admin",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         minLevel: null,

@@ -2,8 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../../../context/APIContext";
-import { CreateClass } from "../../../models/class";
-import { CreateClassEvent } from "../../../models/events";
+import { CreateClass, CreateClassEvent } from "../../../models";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material/";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
@@ -42,6 +41,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
   // selected teachers from dropdown (string of emails)
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
+  const [ignoreAvailabilities, setIgnoreAvailabilities] = useState(false);
 
   const [valid, setValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -212,6 +212,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       neverEnding: endType === "never",
       backgroundColor: colorMap[color],
       teachers: selectedTeachers,
+      checkAvailabilities: !ignoreAvailabilities,
     };
 
     try {
@@ -393,6 +394,17 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                   </MenuItem>
                 ))}
               </Select>
+            </div>
+            <div className={styles.availabilityWrapper}>
+              <input
+                className={styles.checkbox}
+                type="checkbox"
+                checked={ignoreAvailabilities}
+                onChange={() => setIgnoreAvailabilities(!ignoreAvailabilities)}
+              />
+              <label className={styles.availabilityCheckLabel}>
+                Override teacher availabilities
+              </label>
             </div>
           </div>
 

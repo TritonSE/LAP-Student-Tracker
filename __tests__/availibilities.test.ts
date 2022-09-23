@@ -2,7 +2,7 @@ import availabilityIdHandler from "../pages/api/availability/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { StatusCodes } from "http-status-codes";
-import { Availability } from "../models/availability";
+import { Availability } from "../models";
 
 beforeAll(async () => {
   await client.query("DELETE from event_information");
@@ -14,7 +14,7 @@ beforeAll(async () => {
 
   await client.query("INSERT into images (id) VALUES('1')");
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '1')"
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, date_created, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
     "INSERT INTO availabilities (user_id, time_zone) VALUES ('2', 'America/Los_Angeles')"

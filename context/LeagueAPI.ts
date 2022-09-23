@@ -1,9 +1,10 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass } from "../models/class";
-import { ClassEvent, CreateClassEvent } from "../models/events";
-import {CreateUser, UpdateUser, User} from "../models/users";
-import {Availability} from "../models/availability";
-import {UpdateImage, Image} from "../models/images";
+import { Class, CreateClass } from "../models";
+import { ClassEvent, CreateClassEvent } from "../models";
+import { Staff } from "../models";
+import { CreateUser, UpdateUser, User } from "../models";
+import { Image, UpdateImage } from "../models";
+import { Availability } from "../models";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -61,8 +62,7 @@ class LeagueAPI {
   }
 
   // Get the staff from the backend
-  async getStaff(): Promise<User[]> {
-    await this.refreshToken();
+  async getStaff(): Promise<Staff[]> {
     const res = await this.client.get("api/staff");
     return res.data;
   }
@@ -81,7 +81,7 @@ class LeagueAPI {
     const res = await this.client.get("api/class", { params: { userId: userId } });
     return res.data;
   }
-  async deleteClassEvent(userId: string): Promise<Class>{
+  async deleteClassEvent(userId: string): Promise<Class> {
     const res = await this.client.delete(`api/events/class/${userId}`);
     return res.data;
   }
@@ -103,6 +103,12 @@ class LeagueAPI {
     return res.data;
   }
 
+  async getAllUsers(role?: string, approved?: boolean | undefined): Promise<User[]> {
+    const res = await this.client.get("/api/users/", {
+      params: { role: role, approved: approved },
+    });
+    return res.data;
+  }
   // get an image (img is a b64 string)
   async getImage(id: string): Promise<Image> {
     await this.refreshToken();
@@ -116,13 +122,6 @@ class LeagueAPI {
     return res.data;
   }
 
-  // get all users, or all users with the specific role if specified
-  async getAllUsers(role?: string): Promise<User[]> {
-    const res = await this.client.get("/api/users/", { params: { role: role } });
-    return res.data;
-  }
-
-  // create a user
   async createUser(user: CreateUser): Promise<User> {
     const res = await this.client.post("api/users/", user);
     return res.data;
@@ -134,14 +133,19 @@ class LeagueAPI {
     return res.data;
   }
 
+  async deleteUser(id: string): Promise<void> {
+    await this.client.delete(`api/users/${id}`);
+  }
+
   async updateAvailabilities(availabilities: Availability, id: string): Promise<Availability> {
     const res = await this.client.patch(`api/availability/${id}`, availabilities);
     return res.data;
   }
 
-  // async deleteClass(id: string): Promise<Class> {
-  //   const res = await this.client.delete()
-  // }
+  async getRoster(classId: string): Promise<User[]> {
+    const res = await this.client.get(`api/class/${classId}/roster`);
+    return res.data;
+  }
 }
 
 export { LeagueAPI };

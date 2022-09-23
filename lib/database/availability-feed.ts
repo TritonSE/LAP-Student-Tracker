@@ -1,5 +1,5 @@
 import { DateTime, Interval } from "luxon";
-import { CalendarEvent } from "../../models/events";
+import { CalendarEvent } from "../../models";
 import { getAvailabilityById } from "./availability";
 import { getEventFeed } from "./calendar-events";
 import { getUser } from "./users";
@@ -170,4 +170,4 @@ const getAvailabilityFeed = async (
   });
 };
 
-export { getAvailabilityFeed };
+export { getAvailabilityFeed, timeDateZoneToDateTime };

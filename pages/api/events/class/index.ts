@@ -6,22 +6,49 @@ import {
   teachersExist,
   validateTimes,
 } from "../../../../lib/database/events";
+import {
+  TeacherAvailabilityError,
+  validateAvailabilities,
+} from "../../../../lib/database/availability";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
-import { ClassEvent, CreateClassEvent, CreateClassEventSchema } from "../../../../models/events";
+import { ClassEvent, CreateClassEvent } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
 import { withAuth } from "../../../../middleware/withAuth";
 
-// handles requests to /api/events/class
+/**
+ * @swagger
+ * /events/class:
+ *  post:
+ *    description: Create a new class event (this api will generate events for the calendar). Has validation to ensure teachers are not double booked
+ *    requestBody:
+ *      description: The data for the new class
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/CreateClassEvent'
+ *    responses:
+ *      201:
+ *        description: Class created successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/ClassEvent'
+ * @param req
+ * @param res
+ */
 const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST": {
       let newEvent: CreateClassEvent;
       try {
-        newEvent = await decode(CreateClassEventSchema, req.body);
+        newEvent = await decode(CreateClassEvent, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
@@ -57,7 +84,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
               minute: startTime.minute,
               second: startTime.second,
             })
-            .setZone(newEvent.timeZone);
+            .setZone(newEvent.timeZone, { keepLocalTime: true });
 
           const dateEnd = DateTime.fromJSDate(dateWithoutTime)
             .set({
@@ -65,20 +92,28 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
               minute: endTime.minute,
               second: endTime.second,
             })
-            .setZone(newEvent.timeZone);
+            .setZone(newEvent.timeZone, { keepLocalTime: true });
 
           intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
         }
 
-        // verify that each teacher is available during class times
+        // verify scheduling for each teacher
         try {
           for (const teacher of teachers) {
+            // verify that teacher doesn't have another event during this class
             await validateTimes(teacher, intervals);
+
+            // verify that teacher has availability set during this class time
+            if (newEvent.checkAvailabilities) {
+              await validateAvailabilities(teacher, intervals, newEvent.name);
+            }
           }
         } catch (e) {
           if (e instanceof TeacherConflictError)
             return res.status(StatusCodes.BAD_REQUEST).json(e.message);
-          else res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
+          else if (e instanceof TeacherAvailabilityError) {
+            return res.status(StatusCodes.BAD_REQUEST).json(e.message);
+          } else return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
         }
 
         // create the class event in event_information table

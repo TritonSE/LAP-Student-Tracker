@@ -1,7 +1,8 @@
 import { client } from "../db";
-import { Item, ItemArraySchema, ItemSchema } from "../../models/items";
+import { Item } from "../../models";
 import { decode } from "io-ts-promise";
-
+import { array } from "io-ts";
+const ItemArraySchema = array(Item);
 // get all items for a particular module id
 const getModuleItems = async (moduleId: string): Promise<Item[]> => {
   const query = {
@@ -36,7 +37,7 @@ const getItem = async (itemId: string): Promise<Item | null> => {
 
   let item: Item;
   try {
-    item = await decode(ItemSchema, res.rows[0]);
+    item = await decode(Item, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }
@@ -81,7 +82,7 @@ const deleteItem = async (itemId: string): Promise<Item | null> => {
 
   let item: Item;
   try {
-    item = await decode(ItemSchema, res.rows[0]);
+    item = await decode(Item, res.rows[0]);
   } catch (e) {
     throw Error("Fields returned incorrectly in database");
   }

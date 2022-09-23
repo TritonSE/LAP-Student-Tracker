@@ -7,6 +7,7 @@ import { NextApiRequest, NextApiResponse } from "next/types";
 import { createMocks, MockResponse, RequestMethod } from "node-mocks-http";
 import { DateTime } from "luxon";
 import { CalendarEvent, ClassEvent } from "../../models/events";
+import { SingleUserAttendance } from "../../models";
 
 /**
  * Create and test a HTTP Request
@@ -30,7 +31,7 @@ const makeHTTPRequest = async (
   body: Object | undefined,
   expectedResponseCode: number | undefined,
   expectedBody: Object | undefined,
-  ignoreResKey?: string
+  ignoreResKey?: string[]
 ): Promise<MockResponse<NextApiResponse<any>>> => {
   const { req, res } = createMocks<NextApiRequest, NextApiResponse>({
     method: method,
@@ -47,10 +48,11 @@ const makeHTTPRequest = async (
     // key to ignore in actual body when comparing with expected body
     // use for randomly generated IDs that can't be predetermined
     if (ignoreResKey) {
-      expect(resData).toHaveProperty(ignoreResKey);
-      delete resData[ignoreResKey];
-      // eslint-disable-next-line no-prototype-builtins
-      if (expectedBody.hasOwnProperty(ignoreResKey)) delete expectedBody[ignoreResKey];
+      ignoreResKey.forEach((key) => {
+        expect(resData).toHaveProperty(key);
+        delete resData[key]; // eslint-disable-next-line no-prototype-builtins
+        if (expectedBody.hasOwnProperty(key)) delete expectedBody[key];
+      });
     }
 
     expect(resData).toEqual(expectedBody);
@@ -92,6 +94,38 @@ const makeEventHTTPRequest = async (
   return res;
 };
 
+const makeSingleUserAttendanceHTTPRequest = async (
+  handler: (req: NextApiRequest, res: NextApiResponse<any>) => any,
+  endpoint: string,
+  query: Object | undefined,
+  method: RequestMethod,
+  expectedResponseCode: number,
+  expectedBody: SingleUserAttendance[]
+): Promise<MockResponse<NextApiResponse<any>>> => {
+  const res = await makeHTTPRequest(
+    handler,
+    endpoint,
+    query,
+    method,
+    undefined,
+    expectedResponseCode,
+    undefined
+  );
+
+  const returnedAttendanceObjects = (JSON.parse(res._getData()) as SingleUserAttendance[]).map(
+    (event: SingleUserAttendance) => convertSingleUserAttendanceFieldsToLocalISO(event)
+  );
+
+  const expectedAttendanceObjects = expectedBody.map((event) =>
+    convertSingleUserAttendanceFieldsToLocalISO(event)
+  );
+
+  expect(returnedAttendanceObjects.length).toBe(expectedAttendanceObjects.length);
+  expect(returnedAttendanceObjects).toEqual(expect.arrayContaining(expectedAttendanceObjects));
+
+  return res;
+};
+
 /* HTTP request handler for event feed API that converts Postgres timestamps to
    local ISO for consistency in testing */
 const makeEventFeedHTTPRequest = async (
@@ -117,10 +151,12 @@ const makeEventFeedHTTPRequest = async (
 
   // Convert dates in actual body to local ISO
   const returnedCalendarEvents = (JSON.parse(res._getData()) as CalendarEvent[]).map((event) =>
-    convertToLocalISO(event)
+    convertCalendarEventFieldsToLocalISO(event)
   );
   // Convert dates in expected body to local ISO
-  const expectedCalendarEvents = expectedBody.map((event) => convertToLocalISO(event));
+  const expectedCalendarEvents = expectedBody.map((event) =>
+    convertCalendarEventFieldsToLocalISO(event)
+  );
 
   // Compare actual and expected array lengths and contents
   expect(returnedCalendarEvents.length).toBe(expectedCalendarEvents.length);
@@ -130,10 +166,17 @@ const makeEventFeedHTTPRequest = async (
 };
 
 /* Converts startStr and endStr in CalendarEvent object to local ISO */
-const convertToLocalISO = (event: CalendarEvent): CalendarEvent => {
+const convertCalendarEventFieldsToLocalISO = (event: CalendarEvent): CalendarEvent => {
   event.start = DateTime.fromJSDate(new Date(event.start)).toLocal().toISO();
   event.end = DateTime.fromJSDate(new Date(event.end)).toLocal().toISO();
   return event;
+};
+
+const convertSingleUserAttendanceFieldsToLocalISO = (
+  attend: SingleUserAttendance
+): SingleUserAttendance => {
+  attend.start = DateTime.fromISO(attend.start).toLocal().toISO();
+  return attend;
 };
 
 const convertTimeToISO = (time: string, timeZone: string): string => {
@@ -162,4 +205,5 @@ export {
   makeEventFeedHTTPRequest,
   convertTimeToISO,
   getISOTimeFromExplicitFields,
+  makeSingleUserAttendanceHTTPRequest,
 };

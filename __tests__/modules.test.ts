@@ -3,7 +3,7 @@ import moduleHandler from "../pages/api/module/[id]";
 import createModuleHandler from "../pages/api/module";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { Module, CreateModule } from "../models/modules";
+import { Module, CreateModule } from "../models";
 import { StatusCodes } from "http-status-codes";
 
 const CLASS_NOT_FOUND_ERROR = "class not found";
@@ -154,7 +154,7 @@ describe("[POST] /api/module", () => {
       expected,
       StatusCodes.CREATED,
       expected,
-      "moduleId"
+      ["moduleId"]
     );
   });
 
@@ -173,7 +173,7 @@ describe("[POST] /api/module", () => {
       expected,
       StatusCodes.CREATED,
       expected,
-      "moduleId"
+      ["moduleId"]
     );
   });
 

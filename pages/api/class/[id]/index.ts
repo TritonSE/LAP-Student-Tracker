@@ -1,11 +1,53 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getClass, updateClass } from "../../../../lib/database/classes";
-import { UpdateClass, UpdateClassSchema } from "../../../../models/class";
+import { UpdateClass } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
 
-//Handles all requests to /api/class/[id]
+/**
+ * @swagger
+ * /api/class/{id}:
+ *  get:
+ *    description: Gets the information for a specific class
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      202:
+ *        description: Class found successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Class'
+ *  patch:
+ *    description: Edit the information for a specific class
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    requestBody:
+ *      description: Update data for class. Times are non-updatable
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/UpdateClass'
+ *    responses:
+ *      201:
+ *        description: Class successfully updated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Class'
+ */
 export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
@@ -35,7 +77,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
       }
 
       try {
-        newClass = await decode(UpdateClassSchema, req.body);
+        newClass = await decode(UpdateClass, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }

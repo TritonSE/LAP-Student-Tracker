@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useRouter } from "next/router";
-import { Loader } from "./Loader";
+import { CustomLoader } from "./CustomLoader";
 
 // functions to redirect users if they have not been logged in
 const AuthGuard: React.FC = ({ children }) => {
@@ -19,11 +19,15 @@ const AuthGuard: React.FC = ({ children }) => {
 
   // if auth initialized with a valid user show protected page
   if (!initializing && user !== null) {
-    return <>{children}</>;
+    if (user.approved) {
+      return <>{children}</>;
+    } else {
+      router.push("/unapproved");
+    }
   }
 
   /* return a loading indicator while things are initializing and redirect has not happened yet */
-  return <Loader />;
+  return <CustomLoader />;
 };
 
 export { AuthGuard };

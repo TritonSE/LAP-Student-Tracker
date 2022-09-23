@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { AdminCalendar } from "./Calendar/AdminCalendar";
 import { EventsView } from "./EventsView/EventsView";
 import homePageStyles from "./OveralHomePage.module.css";
-import {CreateClassWizard} from "./CreateClassWizard/CreateClassWizard";
+import { CreateClassWizard } from "./CreateClassWizard/CreateClassWizard";
 
 const AdminHomePage: React.FC<object> = () => {
   const [showWizard, setShowWizard] = useState(false);
@@ -13,15 +13,14 @@ const AdminHomePage: React.FC<object> = () => {
     setShowWizard(false);
   };
 
-
-  useEffect( () => {
+  useEffect(() => {
     setShowMainScreenButtons(!showManageClassesView);
   }, [showManageClassesView]);
 
-
   return (
     <div className={homePageStyles.homeWrapper}>
-      {showMainScreenButtons && <div>
+      {showMainScreenButtons && (
+        <div>
           <div className={homePageStyles.buttonWrapper}>
             <div className={homePageStyles.createBtnWrapper}>
               <button className={homePageStyles.createBtn} onClick={() => setShowWizard(true)}>
@@ -29,14 +28,22 @@ const AdminHomePage: React.FC<object> = () => {
                 <img className={homePageStyles.addIcon} src="/AddIcon.png" />
               </button>
             </div>
-            <button className={homePageStyles.manageBtn} onClick={() => setShowManageClassesViewView(true)}>
+            <button
+              className={homePageStyles.manageBtn}
+              onClick={() => setShowManageClassesViewView(true)}
+            >
               {<div style={{ color: "white" }}>Manage Classes</div>}
             </button>
           </div>
-        </div> }
+        </div>
+      )}
       {showWizard ? <CreateClassWizard handleClose={handleClose} /> : null}
 
-      {showManageClassesView ? <EventsView setShowEventsViewPage={setShowManageClassesViewView}/> : <AdminCalendar />}
+      {showManageClassesView ? (
+        <EventsView setShowEventsViewPage={setShowManageClassesViewView} />
+      ) : (
+        <AdminCalendar />
+      )}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import userHandler from "../pages/api/users";
 import userIDHandler from "../pages/api/users/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { CreateUser, UpdateUser, User } from "../models/users";
+import { CreateUser, UpdateUser, User } from "../models";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server CustomError";
@@ -17,22 +17,22 @@ beforeAll(async () => {
   await client.query("INSERT INTO images (id) VALUES('3')");
 
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('1', 'John', 'Doe', 'john@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', '123 Main Street', '1234567890', '1')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('4', 'John', 'Doe', 'john2@gmail.com', 'Student', true, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', '123 Main Street', '1234567890', '2')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('2', 'Teacher', 'Doe', 'teacher@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM' ,'2')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', '123 Main Street', '1234567890', '2')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('5', 'Teacher', 'Doe', 'teacher2@gmail.com', 'Teacher', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '2')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', '123 Main Street', '1234567890',  '3')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('3', 'Admin', 'Doe', 'admin@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '3')"
   );
   await client.query(
-    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', '123 Main Street', '1234567890', '3')"
+    "INSERT INTO users(id, first_name, last_name, email, role, approved, address, phone_number, date_created, picture_id) VALUES('6', 'Admin', 'Doe', 'admin2@gmail.com', 'Admin', false, '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '3')"
   );
 });
 
@@ -51,6 +51,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "john@gmail.com",
         role: "Student",
+        approved: true,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
@@ -61,6 +63,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "john@gmail.com",
         role: "Student",
+        approved: true,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
@@ -71,6 +75,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "teacher@gmail.com",
         role: "Teacher",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "2",
@@ -81,6 +87,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "teacher2@gmail.com",
         role: "Teacher",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "2",
@@ -91,6 +99,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "admin@gmail.com",
         role: "Admin",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "3",
@@ -101,6 +111,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "admin2@gmail.com",
         role: "Admin",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "3",
@@ -131,6 +143,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "teacher@gmail.com",
         role: "Teacher",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "2",
@@ -141,6 +155,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "teacher2@gmail.com",
         role: "Teacher",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "2",
@@ -170,6 +186,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "john@gmail.com",
         role: "Student",
+        approved: true,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
@@ -180,6 +198,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "john2@gmail.com",
         role: "Student",
+        approved: true,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
@@ -209,6 +229,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "admin@gmail.com",
         role: "Admin",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "3",
@@ -219,6 +241,8 @@ describe("[GET] /api/users/?filter", () => {
         lastName: "Doe",
         email: "admin2@gmail.com",
         role: "Admin",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "3",
@@ -255,6 +279,116 @@ describe("[GET] /api/users/?filter", () => {
       "Query parameter refers to role that does not exist"
     );
   });
+
+  test("look for all approved users", async () => {
+    const query = {
+      approved: "true",
+    };
+
+    const expected = [
+      {
+        id: "1",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john@gmail.com",
+        role: "Student",
+        approved: true,
+        dateCreated: "5/23/2022, 4:45:03 AM",
+        address: "123 Main Street",
+        pictureId: "1",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "4",
+        firstName: "John",
+        lastName: "Doe",
+        email: "john2@gmail.com",
+        role: "Student",
+        approved: true,
+        dateCreated: "5/23/2022, 4:45:03 AM",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+        pictureId: "1",
+      },
+    ];
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
+
+  test("look for all unapproved users", async () => {
+    const query = {
+      approved: "false",
+    };
+
+    const expected = [
+      {
+        id: "2",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher@gmail.com",
+        role: "Teacher",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
+        address: "123 Main Street",
+        pictureId: "2",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "5",
+        firstName: "Teacher",
+        lastName: "Doe",
+        email: "teacher2@gmail.com",
+        role: "Teacher",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
+        pictureId: "2",
+        address: "123 Main Street",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "3",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin@gmail.com",
+        role: "Admin",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
+        address: "123 Main Street",
+        pictureId: "3",
+        phoneNumber: "1234567890",
+      },
+      {
+        id: "6",
+        firstName: "Admin",
+        lastName: "Doe",
+        email: "admin2@gmail.com",
+        role: "Admin",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
+        address: "123 Main Street",
+        pictureId: "3",
+        phoneNumber: "1234567890",
+      },
+    ];
+
+    await makeHTTPRequest(
+      userHandler,
+      "/api/users/",
+      query,
+      "GET",
+      undefined,
+      StatusCodes.OK,
+      expected
+    );
+  });
 });
 
 describe("[POST] /api/users", () => {
@@ -273,7 +407,9 @@ describe("[POST] /api/users", () => {
       lastName: "Doe",
       email: "mynaME@gmail.com",
       role: "Student",
+      approved: true,
       pictureId: "",
+      dateCreated: "",
       address: null,
       phoneNumber: null,
     };
@@ -285,7 +421,7 @@ describe("[POST] /api/users", () => {
       body,
       StatusCodes.CREATED,
       expected,
-      "pictureId"
+      ["pictureId", "dateCreated"]
     );
   });
 
@@ -310,15 +446,12 @@ describe("[POST] /api/users", () => {
   });
 
   test("doesn't create a different user with an existing email", async () => {
-    const body: User = {
+    const body: CreateUser = {
       id: "54",
       firstName: "John",
       lastName: "John",
       email: "john@gmail.com",
       role: "Student",
-      pictureId: "",
-      address: null,
-      phoneNumber: null,
     };
 
     await makeHTTPRequest(
@@ -341,16 +474,19 @@ describe("[POST] /api/users", () => {
       role: "Admin",
     };
 
-    const expected: User = {
+    const expectedBody: User = {
       id: "50",
       firstName: "Admin",
       lastName: "Doe",
       email: "newAdmin@gmail.com",
       role: "Admin",
-      pictureId: "",
+      approved: false,
+      dateCreated: "5/23/2022, 4:45:03 AM",
       address: null,
       phoneNumber: null,
+      pictureId: "",
     };
+
     await makeHTTPRequest(
       userHandler,
       "/api/users/",
@@ -358,12 +494,12 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-      expected,
-      "pictureId"
+      expectedBody,
+      ["pictureId", "dateCreated"]
     );
   });
 
-  test("creates a teacher user", async () => {
+  test("creates a Teacher user", async () => {
     const body: CreateUser = {
       id: "45",
       firstName: "Teacher",
@@ -372,13 +508,15 @@ describe("[POST] /api/users", () => {
       role: "Admin",
     };
 
-    const expected: User = {
+    const expectedBody: User = {
       id: "45",
       firstName: "Teacher",
       lastName: "Doe",
       email: "newTeacher@gmail.com",
       role: "Admin",
       pictureId: "",
+      dateCreated: "5/23/2022, 4:45:03 AM",
+      approved: false,
       address: null,
       phoneNumber: null,
     };
@@ -390,8 +528,8 @@ describe("[POST] /api/users", () => {
       "POST",
       body,
       StatusCodes.CREATED,
-      expected,
-      "pictureId"
+      expectedBody,
+      ["pictureId", "dateCreated"]
     );
   });
 
@@ -424,8 +562,10 @@ describe("[GET] /api/users/[id]", () => {
       lastName: "Doe",
       email: "john@gmail.com",
       role: "Student",
-      phoneNumber: "1234567890",
+      approved: true,
+      dateCreated: "5/23/2022, 4:45:03 AM",
       address: "123 Main Street",
+      phoneNumber: "1234567890",
       pictureId: "1",
     };
 
@@ -469,6 +609,8 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
+      approved: true,
+      dateCreated: "5/23/2022, 4:45:03 AM",
       pictureId: "1",
       address: "456 Main Street",
       phoneNumber: "4567890",
@@ -483,6 +625,7 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "john123@gmail.com",
       role: "Admin",
+      approved: true,
       address: "456 Main Street",
       phoneNumber: "4567890",
     };
@@ -505,6 +648,8 @@ describe("[PATCH] /api/users/[id]", () => {
       lastName: "Brown",
       email: "admin@gmail.com",
       role: "Admin",
+      approved: false,
+      dateCreated: "5/23/2022, 4:45:03 AM",
       pictureId: "3",
       address: "456 Main Street",
       phoneNumber: "4567890",

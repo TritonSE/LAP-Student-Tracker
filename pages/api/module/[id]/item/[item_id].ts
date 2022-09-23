@@ -3,7 +3,31 @@ import { getModule } from "../../../../../lib/database/modules";
 import { getItem, deleteItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
 
-// Handles all requests to /api/module/[id]/item/[item_id]
+/**
+ * @swagger
+ * /api/module/{id}/item/{itemId}:
+ *  delete:
+ *    description: delete an item from a module
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: path
+ *        name: itemId
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      202:
+ *        description: Item deleted
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Item'
+ */
 export const deleteItemHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse

@@ -2,7 +2,41 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getAvailabilityFeed } from "../../../lib/database/availability-feed";
 
-// handles requests to /api/availability-feed/
+/**
+ * @swagger
+ * /api/availability-feed:
+ *  get:
+ *    description: Get calendar events for a certain user's availability. Is used by the React Calendar
+ *    parameters:
+ *      - in: query
+ *        name: start
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: end
+ *        required: true
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: userId
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Events found successfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                $ref: '#/components/schemas/CalendarEvent'
+ *
+ * @param req
+ * @param res
+ */
 const availabilityFeedHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse

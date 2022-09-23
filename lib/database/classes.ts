@@ -1,5 +1,5 @@
 import { client } from "../db";
-import { Class } from "../../models/class";
+import { Class } from "../../models";
 import { decode } from "io-ts-promise";
 import { array, TypeOf } from "io-ts";
 import * as t from "io-ts";
@@ -24,10 +24,13 @@ type ClassWithUserInformation = TypeOf<typeof ClassWithUserInformationSchema>;
 type ClassWithoutTeacherInfo = {
   name: string;
   eventInformationId: string;
-  minLevel: number; maxLevel: number;
-  rrstring: string; startTime: string;
-  endTime: string; language: string; };
-
+  minLevel: number;
+  maxLevel: number;
+  rrstring: string;
+  startTime: string;
+  endTime: string;
+  language: string;
+};
 
 const createClass = async (
   eventInformationId: string,
@@ -107,7 +110,7 @@ const getClass = async (id: string): Promise<Class | null> => {
     throw Error("Fields returned incorrectly in database");
   }
 
-  const classInfo:Class = {
+  const classInfo: Class = {
     name: classesWithUserInformation[0].name,
     eventInformationId: classesWithUserInformation[0].eventInformationId,
     minLevel: classesWithUserInformation[0].minLevel,
@@ -116,17 +119,16 @@ const getClass = async (id: string): Promise<Class | null> => {
     startTime: classesWithUserInformation[0].startTime,
     endTime: classesWithUserInformation[0].endTime,
     language: classesWithUserInformation[0].language,
-    teachers: []
-  }
+    teachers: [],
+  };
 
   // go through result from the database query and add all teachers into classInfo
-  classesWithUserInformation.forEach( (classesWithUserInformation) => {
-    classInfo.teachers.push(
-        {
-          userId: classesWithUserInformation.userId,
-          firstName: classesWithUserInformation.firstName,
-          lastName: classesWithUserInformation.lastName,
-        });
+  classesWithUserInformation.forEach((classesWithUserInformation) => {
+    classInfo.teachers.push({
+      userId: classesWithUserInformation.userId,
+      firstName: classesWithUserInformation.firstName,
+      lastName: classesWithUserInformation.lastName,
+    });
   });
 
   return classInfo;
@@ -149,9 +151,9 @@ const getAllClasses = async (): Promise<Class[]> => {
   }
   const classesArray: Class[] = [];
   const classToTeacherMap = new Map();
-  const individualClasses: ClassWithoutTeacherInfo[] = []
+  const individualClasses: ClassWithoutTeacherInfo[] = [];
   // process data to get classes mapped to a list of teacher assigned to them
-  classesWithUserInformation.forEach( (classWithUserInformation) => {
+  classesWithUserInformation.forEach((classWithUserInformation) => {
     if (!classToTeacherMap.has(classWithUserInformation.eventInformationId)) {
       // this is a class that has not been encountered before
       const newClass = {
@@ -189,7 +191,7 @@ const getAllClasses = async (): Promise<Class[]> => {
   });
 
   // process map to get class and teacher into the same data structure
-  individualClasses.forEach( (singleClass) => {
+  individualClasses.forEach((singleClass) => {
     const currClass: Class = {
       name: singleClass.name,
       eventInformationId: singleClass.eventInformationId,

@@ -6,7 +6,7 @@ import { LoginPositionInput } from "../components/Login/LoginPositionInput";
 import { CreateEmailAndPassword } from "../components/Login/CreateEmailAndPassword";
 import { AuthContext } from "../context/AuthContext";
 import { LoginPageNavigation } from "../components/Login/LoginPageNavigation";
-import { Roles } from "../models/users";
+import { Roles } from "../models";
 
 const Login: React.FC = () => {
   const auth = useContext(AuthContext);

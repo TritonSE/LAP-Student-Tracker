@@ -1,8 +1,6 @@
 import { client } from "../db";
-import { User } from "../../models/users";
+import { User } from "../../models";
 import { Interval } from "luxon";
-import { decode } from "io-ts-promise";
-import { ClassEventSchema } from "../../models/events";
 
 class NonExistingTeacher extends Error {
   constructor(msg: string) {
@@ -120,9 +118,7 @@ const createClassEvent = async (
 
   return res.rows[0].id;
 };
-const deleteClassEvent = async (
-  id: string
-): Promise<string | null> => {
+const deleteClassEvent = async (id: string): Promise<string | null> => {
   const query = {
     text: "DELETE FROM event_information WHERE id = $1 RETURNING *",
     values: [id],
@@ -137,4 +133,11 @@ const deleteClassEvent = async (
   return res.rows[0].id;
 };
 
-export { createClassEvent, validateTimes, teachersExist, deleteClassEvent, NonExistingTeacher, TeacherConflictError };
+export {
+  createClassEvent,
+  validateTimes,
+  teachersExist,
+  deleteClassEvent,
+  NonExistingTeacher,
+  TeacherConflictError,
+};

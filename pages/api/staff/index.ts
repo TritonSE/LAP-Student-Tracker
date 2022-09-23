@@ -2,7 +2,25 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getAllStaff } from "../../../lib/database/staff";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
-// handles requests to /api/staff/
+
+/**
+ * @swagger
+ * /api/staff:
+ *  get:
+ *    description: Get all staff
+ *    responses:
+ *      202:
+ *        description: Returning staff succesfully
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                type: object
+ *                $ref: '#/components/schemas/Staff'
+ * @param req
+ * @param res
+ */
 const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "GET":

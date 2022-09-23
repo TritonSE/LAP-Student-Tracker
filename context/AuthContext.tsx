@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from "
 import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
 import { FirebaseError } from "@firebase/util";
-import { Roles, UpdateUser, User } from "../models/users";
+import { Roles, UpdateUser, User } from "../models";
 import { APIContext } from "./APIContext";
 
 type AuthState = {
@@ -93,6 +93,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     if (auth == null) return null;
     if (auth.currentUser == null) return null;
     const newToken = await auth.currentUser.getIdToken(false);
+
     if (locality == "Local") {
       localStorage.setItem("apiToken", newToken);
     } else {
@@ -105,6 +106,7 @@ export const AuthProvider: React.FC = ({ children }) => {
   // get user data from local/session storage on every refresh
   useEffect(() => {
     (async () => {
+      setInitializing(true);
       api.setRefreshTokenFunction(getNewRefreshToken);
       const uid = sessionStorage.getItem("userId");
       const token = sessionStorage.getItem("apiToken");

@@ -3,7 +3,26 @@ import { getClass } from "../../../../../lib/database/classes";
 import { getClassModules } from "../../../../../lib/database/modules";
 import { StatusCodes } from "http-status-codes";
 
-// Handles all requests to /api/class/[id]/modules
+/**
+ * @swagger
+ * /api/class/{id}/modules:
+ *  get:
+ *    description: Get all modules for a specific class
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    responses:
+ *      200:
+ *        description: Getting all modules for this class
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Module'
+ */
 export const classModulesHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
@@ -26,7 +45,7 @@ export const classModulesHandler: NextApiHandler = async (
         const modules = await getClassModules(classId);
         return res.status(StatusCodes.ACCEPTED).json(modules);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
 

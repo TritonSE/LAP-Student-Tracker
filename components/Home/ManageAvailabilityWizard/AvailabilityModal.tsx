@@ -8,10 +8,10 @@ import { DayRow } from "./DayRow";
 import { DateTime } from "luxon";
 import useSWR from "swr";
 import { APIContext } from "../../../context/APIContext";
-import { Loader } from "../../util/Loader";
+import { CustomLoader } from "../../util/CustomLoader";
 import { CustomError } from "../../util/CustomError";
-import { Availability } from "../../../models/availability";
-import { ValidDays } from "../../../models/availability";
+import { Availability } from "../../../models";
+import { ValidDays } from "../../../models/custom/CustomTypes";
 import axios from "axios";
 
 type AvailabilityModalProps = {
@@ -129,7 +129,7 @@ time isn't valid
   }, [availability]);
 
   if (error) return <CustomError />;
-  if (!data) return <Loader />;
+  if (!data) return <CustomLoader />;
 
   let availabilityFromDB: Availability = {
     mon: data.mon == null ? [] : data.mon,

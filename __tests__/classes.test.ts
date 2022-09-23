@@ -2,7 +2,7 @@ import { classHandler } from "../pages/api/class";
 import { classIDHandler } from "../pages/api/class/[id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
-import { Class, CreateClass, UpdateClass } from "../models/class";
+import { Class, CreateClass, UpdateClass } from "../models";
 import { StatusCodes } from "http-status-codes";
 
 const INTERNAL_SERVER_ERROR = "Internal Server CustomError";

@@ -19,10 +19,14 @@ const ClassCardRenderer: React.FC<EventsViewProps> = ({userId}) => {
   const client = useContext(APIContext);
 
   // Use SWR hook to get the data from the backend
-  const { data, error } = useSWR("/api/class", () => client.getAllClasses(userId));
+  const { data, mutate, error } = useSWR("/api/class", () => client.getAllClasses(userId));
   if (error) return <CustomError />;
   if (!data) return <Loader />;
   if (data.length == 0) return <Empty userType="Class" />;
+
+  const refreshClass = async (): Promise<void> => {
+      await mutate();
+  };
 
   return (
     <div className={styles.classCardsContainer}>
@@ -31,6 +35,7 @@ const ClassCardRenderer: React.FC<EventsViewProps> = ({userId}) => {
               <ClassCard
               //temporary id
                 id = {userId}
+                eventInformationId={classes.eventInformationId}
                 key={classes.eventInformationId}
                 name={classes.name}
                 minLevel={classes.minLevel}
@@ -39,6 +44,7 @@ const ClassCardRenderer: React.FC<EventsViewProps> = ({userId}) => {
                 startTime={classes.startTime}
                 endTime={classes.endTime}
                 teachers={classes.teachers}
+                refreshClassList={refreshClass}
               />
             </div>
       ))}

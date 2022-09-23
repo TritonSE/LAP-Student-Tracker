@@ -6,14 +6,13 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { deleteClassEvent } from "../../../lib/database/events";
-import { string } from "fp-ts";
 import { APIContext } from "../../../context/APIContext";
-import useSWR from "swr";
+import Link from "next/link";
 
 
 type HomePageClassCard = {
   id?: string;
+  eventInformationId: string
   name: string;
   minLevel: number;
   maxLevel: number;
@@ -25,10 +24,12 @@ type HomePageClassCard = {
     firstName: string;
     lastName: string;
   }[];
+  refreshClassList: () => Promise<void>;
 };
 
 const ClassCard: React.FC<HomePageClassCard> = ({
   id,
+    eventInformationId,
   name,
   minLevel,
   maxLevel,
@@ -36,6 +37,7 @@ const ClassCard: React.FC<HomePageClassCard> = ({
   startTime,
   endTime,
   teachers,
+    refreshClassList,
 }) => {
   const client = useContext(APIContext);
   const weekday: string[] = [
@@ -64,19 +66,25 @@ const ClassCard: React.FC<HomePageClassCard> = ({
   };
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (): void => {
     setAnchorEl(null);
   };
-  const deleteBut = () => {
-    setAnchorEl(null);
-    const { data, error } = useSWR("/api/class", () => client.deleteClassEvent("5"));
-    //deleteClassEvent(id);
 
-    
+  const onClassDelete = async (id: string): Promise<void> => {
+    await client.deleteClassEvent(id);
+    await refreshClassList();
+    handleClose();
   };
+  // const deleteBut = () => {
+  //   setAnchorEl(null);
+  //   const { data, error } = useSWR("/api/class", () => client.deleteClassEvent("5"));
+  //   //deleteClassEvent(id);
+  //
+  //
+  // };
 
 
   return (
@@ -84,11 +92,12 @@ const ClassCard: React.FC<HomePageClassCard> = ({
     <div className={style.card}>
         <div className={style.title}>
           <div className={style.titleSpacing}/>
-          
-          <a className={style.classTitle} href="components/Home/EventsView/ClassCard">
+          <Link href={`/class/${eventInformationId}`}>
+          <a className={style.classTitle}>
             {`${name}
         ${minLevel === maxLevel ? minLevel : minLevel + "-" + maxLevel}`}
           </a>
+          </Link>
         </div>
       <div className={style.titleTeacherSpacing}/>
       <div className={style.name}>{teacherNames.join(", ")}</div>
@@ -119,7 +128,7 @@ const ClassCard: React.FC<HomePageClassCard> = ({
           }}
       >
         {options.map((option) => (
-            <MenuItem key={option} selected={option === 'Delete'} onClick={deleteBut}>
+            <MenuItem key={option} selected={option === 'Delete'} onClick={async () => {await onClassDelete(eventInformationId);}}>
               {option}
             </MenuItem>
         ))}

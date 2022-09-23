@@ -1,7 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { deleteClassEvent } from "../../../../../lib/database/events";
-
-import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 
 // Handles all requests to /api/events/class/{id}

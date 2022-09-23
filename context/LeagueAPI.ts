@@ -82,7 +82,7 @@ class LeagueAPI {
     return res.data;
   }
   async deleteClassEvent(userId: string): Promise<Class>{
-    const res = await this.client.delete("api/events/class", { params: { userId: userId } });
+    const res = await this.client.delete(`api/events/class/${userId}`);
     return res.data;
   }
   // create an even of type class

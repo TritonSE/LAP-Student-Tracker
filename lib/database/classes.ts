@@ -2,9 +2,36 @@ import { client } from "../db";
 import { Class } from "../../models";
 import { decode } from "io-ts-promise";
 import { array, TypeOf } from "io-ts";
+import * as t from "io-ts";
 
-const ClassArraySchema = array(Class);
-type classArrayType = TypeOf<typeof ClassArraySchema>;
+const ClassWithUserInformationSchema = t.type({
+  name: t.string,
+  eventInformationId: t.string,
+  minLevel: t.number,
+  maxLevel: t.number,
+  rrstring: t.string,
+  startTime: t.string,
+  endTime: t.string,
+  language: t.string,
+  userId: t.string,
+  firstName: t.string,
+  lastName: t.string,
+});
+const ClassWithUserInformationArraySchema = array(ClassWithUserInformationSchema);
+
+type ClassWithUserInformation = TypeOf<typeof ClassWithUserInformationSchema>;
+
+type ClassWithoutTeacherInfo = {
+  name: string;
+  eventInformationId: string;
+  minLevel: number;
+  maxLevel: number;
+  rrstring: string;
+  startTime: string;
+  endTime: string;
+  language: string;
+};
+
 const createClass = async (
   eventInformationId: string,
   minLevel: number,
@@ -21,8 +48,8 @@ const createClass = async (
 
   try {
     await client.query(query);
-  } catch {
-    throw Error("CustomError on insert into database");
+  } catch (e) {
+    throw Error("Error on POST in create class");
   }
 
   return getClass(eventInformationId);
@@ -63,37 +90,121 @@ const updateClass = async (
 // get a class given the id
 const getClass = async (id: string): Promise<Class | null> => {
   const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class' AND c.event_information_id = $1",
+    text:
+      "SELECT e.name, cl.event_information_id, cl.min_level, cl.max_level, cl.rrstring, cl.start_time, cl.end_time, cl.language, u.id as user_id, u.first_name, u.last_name " +
+      "FROM (((event_information e INNER JOIN classes cl ON e.id = cl.event_information_id)" +
+      "INNER JOIN commitments ON commitments.event_information_id = e.id) " +
+      " INNER JOIN users u ON commitments.user_id = u.id) WHERE role = 'Teacher' AND cl.event_information_id = $1",
     values: [id],
   };
-
   const res = await client.query(query);
+
   if (res.rows.length == 0) {
     return null;
   }
 
-  let oneClass: Class;
+  let classesWithUserInformation: ClassWithUserInformation[];
   try {
-    oneClass = await decode(Class, res.rows[0]);
+    classesWithUserInformation = await decode(ClassWithUserInformationArraySchema, res.rows);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }
 
-  return oneClass;
-};
-const getAllClasses = async (): Promise<Class[]> => {
-  const query = {
-    text: "SELECT e.name, c.event_information_id, c.min_level, c.max_level, c.rrstring, c.start_time, c.end_time, c.language FROM event_information e, classes c WHERE e.id = c.event_information_id AND e.type = 'Class'",
+  const classInfo: Class = {
+    name: classesWithUserInformation[0].name,
+    eventInformationId: classesWithUserInformation[0].eventInformationId,
+    minLevel: classesWithUserInformation[0].minLevel,
+    maxLevel: classesWithUserInformation[0].maxLevel,
+    rrstring: classesWithUserInformation[0].rrstring,
+    startTime: classesWithUserInformation[0].startTime,
+    endTime: classesWithUserInformation[0].endTime,
+    language: classesWithUserInformation[0].language,
+    teachers: [],
   };
 
-  const res = await client.query(query);
+  // go through result from the database query and add all teachers into classInfo
+  classesWithUserInformation.forEach((classesWithUserInformation) => {
+    classInfo.teachers.push({
+      userId: classesWithUserInformation.userId,
+      firstName: classesWithUserInformation.firstName,
+      lastName: classesWithUserInformation.lastName,
+    });
+  });
 
-  let classesArray: classArrayType;
+  return classInfo;
+};
+
+const getAllClasses = async (): Promise<Class[]> => {
+  const query = {
+    text:
+      "SELECT e.name, cl.event_information_id, cl.min_level, cl.max_level, cl.rrstring, cl.start_time, cl.end_time, cl.language, u.id as user_id, u.first_name, u.last_name " +
+      "FROM (((event_information e INNER JOIN classes cl ON e.id = cl.event_information_id) " +
+      "INNER JOIN commitments ON commitments.event_information_id = e.id) " +
+      " INNER JOIN users u ON commitments.user_id = u.id) WHERE role = 'Teacher'",
+  };
+  const res = await client.query(query);
+  let classesWithUserInformation: ClassWithUserInformation[];
   try {
-    classesArray = await decode(ClassArraySchema, res.rows);
+    classesWithUserInformation = await decode(ClassWithUserInformationArraySchema, res.rows);
   } catch {
     throw Error("Fields returned incorrectly in database");
   }
+  const classesArray: Class[] = [];
+  const classToTeacherMap = new Map();
+  const individualClasses: ClassWithoutTeacherInfo[] = [];
+  // process data to get classes mapped to a list of teacher assigned to them
+  classesWithUserInformation.forEach((classWithUserInformation) => {
+    if (!classToTeacherMap.has(classWithUserInformation.eventInformationId)) {
+      // this is a class that has not been encountered before
+      const newClass = {
+        name: classWithUserInformation.name,
+        eventInformationId: classWithUserInformation.eventInformationId,
+        minLevel: classWithUserInformation.minLevel,
+        maxLevel: classWithUserInformation.maxLevel,
+        rrstring: classWithUserInformation.rrstring,
+        startTime: classWithUserInformation.startTime,
+        endTime: classWithUserInformation.endTime,
+        language: classWithUserInformation.language,
+      };
+      // add to the individual class array
+      individualClasses.push(newClass);
+      const newClassTeacher = {
+        userId: classWithUserInformation.userId,
+        firstName: classWithUserInformation.firstName,
+        lastName: classWithUserInformation.lastName,
+      };
+      // create a teacher array to be the value of the class to teacher map
+      const teachersArr = [newClassTeacher];
+      classToTeacherMap.set(classWithUserInformation.eventInformationId, teachersArr);
+    } else {
+      // we have seen this teacher before, so we just add the teacher to the map
+      const newTeacher = {
+        userId: classWithUserInformation.userId,
+        firstName: classWithUserInformation.firstName,
+        lastName: classWithUserInformation.lastName,
+      };
+      const teachersArr = classToTeacherMap.get(classWithUserInformation.eventInformationId);
+      teachersArr.push(newTeacher);
+
+      classToTeacherMap.set(classWithUserInformation.eventInformationId, teachersArr);
+    }
+  });
+
+  // process map to get class and teacher into the same data structure
+  individualClasses.forEach((singleClass) => {
+    const currClass: Class = {
+      name: singleClass.name,
+      eventInformationId: singleClass.eventInformationId,
+      minLevel: singleClass.minLevel,
+      maxLevel: singleClass.maxLevel,
+      rrstring: singleClass.rrstring,
+      startTime: singleClass.startTime,
+      endTime: singleClass.endTime,
+      language: singleClass.language,
+      teachers: classToTeacherMap.get(singleClass.eventInformationId),
+    };
+    classesArray.push(currClass);
+  });
 
   return classesArray;
 };

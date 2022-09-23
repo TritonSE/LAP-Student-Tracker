@@ -77,12 +77,14 @@ class LeagueAPI {
     return res.data;
   }
 
-  // get all classes from the backend
-  async getAllClasses(): Promise<Class[]> {
-    const res = await this.client.get("api/class");
+  async getAllClasses(userId?: string): Promise<Class[]> {
+    const res = await this.client.get("api/class", { params: { userId: userId } });
     return res.data;
   }
-
+  async deleteClassEvent(userId: string): Promise<Class> {
+    const res = await this.client.delete(`api/events/class/${userId}`);
+    return res.data;
+  }
   // create an even of type class
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
     const res = await this.client.post("api/events/class", classEvent);

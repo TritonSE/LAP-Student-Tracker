@@ -41,10 +41,22 @@ import { withAuth } from "../../../middleware/withAuth";
  */
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newClass: CreateClass;
+  let user_id = "";
   switch (req.method) {
     case "GET":
+      if (req.query && req.query.userId) {
+        if (req.query.userId != undefined) {
+          user_id = req.query.userId as string;
+        }
+      }
       try {
-        const result = await getAllClasses();
+        let result = await getAllClasses();
+
+        if (user_id) {
+          result = result.filter((obj) =>
+            JSON.stringify(obj).toLowerCase().includes(user_id.toLowerCase())
+          );
+        }
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
@@ -67,7 +79,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     default:
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");

@@ -1,0 +1,52 @@
+.backButtonSpacing {
+  height: 42px;
+}
+
+.backButton {
+  border: none;
+  background: transparent;
+}
+
+.backArrow {
+  border: none;
+  opacity: 10;
+  background: white;
+}
+
+.titleSpacing {
+  height: 42px;
+}
+
+.classTitleContainer {
+  width: 466px;
+  border-bottom: 1.5px solid #85888c;
+}
+
+.classTitle {
+  font-family: "Roboto-Bold";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 35px;
+  line-height: 41px;
+  color: #1b1c1d;
+  padding-bottom: 5px;
+}
+
+.titleCardSpacing {
+  height: 40px;
+}
+
+/* Styles for scrolling component */
+.classCardsContainer {
+  margin-right: 42px;
+  display: grid;
+  grid-auto-flow: row dense;
+  column-gap: 42px;
+  row-gap: 42px;
+  grid-template-columns: repeat(auto-fit, minmax(0, min(100%/3, max(298px, 100%/5))));
+}
+
+.cardContainer {
+  display: inline;
+  width: 290px;
+}

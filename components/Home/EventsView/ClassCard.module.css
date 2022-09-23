@@ -1,0 +1,51 @@
+.card {
+  box-sizing: border-box;
+  width: 298px;
+  height: 149px;
+  border: 0.5px solid #c4c4c4;
+  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.25));
+  border-radius: 10px;
+  display: inline-block;
+}
+
+.title {
+  height: 93px;
+  background: #ffc702;
+  border-radius: 10px 10px 0px 0px;
+  width: 100%;
+}
+
+.titleSpacing {
+  height: 53px;
+}
+
+.classTitle {
+  font-family: "Roboto-Bold";
+  font-style: normal;
+  font-size: 24px;
+  line-height: 28px;
+  color: #000000;
+  padding-left: 13px;
+  cursor: pointer;
+}
+
+.titleTeacherSpacing {
+  height: 9px;
+}
+
+.name {
+  font-family: "Roboto-Light";
+  font-size: 15px;
+  padding-left: 13px;
+  text-overflow: ellipsis;
+}
+
+.times {
+  font-family: "Roboto-Light";
+  font-size: 10px;
+  line-height: 10px;
+  padding-left: 13px;
+  padding-top: 5px;
+  width: 90%;
+  text-overflow: ellipsis;
+}

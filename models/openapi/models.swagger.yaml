@@ -422,6 +422,21 @@ components:
           type: string
         name:
           type: string
+        teachers:
+          type: array
+          items:
+            type: object
+            properties:
+              firstName:
+                type: string
+              lastName:
+                type: string
+              userId:
+                type: string
+            required:
+              - firstName
+              - lastName
+              - userId
       required:
         - eventInformationId
         - minLevel
@@ -431,6 +446,7 @@ components:
         - endTime
         - language
         - name
+        - teachers
     Availability:
       title: Availability
       type: object

@@ -1,10 +1,10 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserCalendar } from "./Calendar/UserCalendar";
 import { AvailabilityModal } from "./ManageAvailabilityWizard/AvailabilityModal";
 import homeStyles from "./OveralHomePage.module.css";
 import { EventsView } from "./EventsView/EventsView";
-import {AuthContext} from "../../context/AuthContext";
-import {CustomError} from "../util/CustomError"; //TODO change to user specific
+import { AuthContext } from "../../context/AuthContext";
+import { CustomError } from "../util/CustomError"; //TODO change to user specific
 
 type UserHomePageProp = {
   userId: string;
@@ -14,10 +14,9 @@ type UserHomePageProp = {
  * Displays the home page for a normal user, with additional content for teachers
  */
 const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
-
   const { user } = useContext(AuthContext);
 
-  if (user == null) return <CustomError/>;
+  if (user == null) return <CustomError />;
 
   const [showManageAvailability, setShowManageAvailability] = useState(false);
   const [showManageClassesView, setShowManageClassesViewView] = useState(false);

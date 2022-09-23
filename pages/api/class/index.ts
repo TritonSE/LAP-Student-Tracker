@@ -51,7 +51,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
       }
       try {
         let result = await getAllClasses();
-        //console.log("zain");
+
         if (user_id) {
           result = result.filter((obj) =>
             JSON.stringify(obj).toLowerCase().includes(user_id.toLowerCase())
@@ -79,7 +79,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     default:
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");

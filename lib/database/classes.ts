@@ -48,8 +48,8 @@ const createClass = async (
 
   try {
     await client.query(query);
-  } catch {
-    throw Error("CustomError on insert into database");
+  } catch (e) {
+    throw Error("Error on POST in create class");
   }
 
   return getClass(eventInformationId);
@@ -92,7 +92,7 @@ const getClass = async (id: string): Promise<Class | null> => {
   const query = {
     text:
       "SELECT e.name, cl.event_information_id, cl.min_level, cl.max_level, cl.rrstring, cl.start_time, cl.end_time, cl.language, u.id as user_id, u.first_name, u.last_name " +
-      "FROM (((event_information e INNER JOIN classes cl ON e.id = cl.event_information_id) " +
+      "FROM (((event_information e INNER JOIN classes cl ON e.id = cl.event_information_id)" +
       "INNER JOIN commitments ON commitments.event_information_id = e.id) " +
       " INNER JOIN users u ON commitments.user_id = u.id) WHERE role = 'Teacher' AND cl.event_information_id = $1",
     values: [id],

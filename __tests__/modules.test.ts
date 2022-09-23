@@ -14,6 +14,12 @@ beforeAll(async () => {
   await client.query("DELETE from event_information");
   await client.query("DELETE from classes");
   await client.query("DELETE from modules");
+  await client.query("DELETE from users");
+  await client.query("DELETE from images");
+  await client.query("INSERT INTO images(id) VALUES ('1')");
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, picture_id, date_created) VALUES('44', 'Bill', 'Test', 'bt@gmail.com', 'Teacher', '14 nowhere lane', '123-456-7892', '1', 'today')"
+  );
   await client.query(
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('e_1', 'CSE 8A', 'blue', 'Class', 'false')"
   );
@@ -41,6 +47,8 @@ beforeAll(async () => {
   await client.query(
     "INSERT INTO modules(module_id, class_id, name, position) VALUES('m_5', 'e_2', 'Week 2', 1)"
   );
+  await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('44', 'e_1')");
+  await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('44', 'e_2')");
 });
 
 afterAll(async () => {

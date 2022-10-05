@@ -1,9 +1,20 @@
 import styles from "./Navbar.module.css";
-import React from "react";
+import React, {useContext} from "react";
 import { useRouter } from "next/router";
+import {AuthContext} from "../../context/AuthContext";
+
 
 export const Navbar: React.FC = ({ children }) => {
   const router = useRouter();
+  // let authUser = null;
+  // try {
+    const {user} = useContext(AuthContext);
+  //   authUser = user;
+  // } catch {
+  //   return null;
+  // }
+
+  if (user == null) return null;
   return (
     <div className={styles.navbarContainer}>
       <nav className={styles.navbar}>
@@ -31,7 +42,7 @@ export const Navbar: React.FC = ({ children }) => {
                 </a>
               </li>
 
-              <li className={styles.navitem}>
+                { user.role != "Student" ? <li className={styles.navitem}>
                 <a
                   className={router.pathname == "/league" ? styles.clicked : styles.navlink}
                   onClick={() => {
@@ -40,7 +51,7 @@ export const Navbar: React.FC = ({ children }) => {
                 >
                   The League
                 </a>
-              </li>
+              </li> : null }
               <li className={styles.navitem}>
                 <a
                   className={router.pathname == "/profile" ? styles.clicked : styles.navlink}

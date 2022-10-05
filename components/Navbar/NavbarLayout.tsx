@@ -9,7 +9,7 @@ const Layout: React.FC = ({ children }) => {
   const showNavbar = !hideNavbar.includes(router.pathname);
   return (
     <div>
-      {showNavbar && <Navbar />}
+      {showNavbar ? <Navbar /> : null}
       {children}
     </div>
   );

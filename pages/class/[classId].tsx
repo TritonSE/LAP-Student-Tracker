@@ -29,7 +29,7 @@ const Class: NextApplicationPage = () => {
     <div className={styles.container}>
       <nav className={styles.navbar}>
         <ul className={styles.navmenu}>
-          <BackButton linkTo="/league" />
+          <BackButton linkTo="/home" />
           <li className={styles.navtitle}>{currClass.name}</li>
           <li className={styles.navitem}>
             <a

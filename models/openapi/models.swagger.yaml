@@ -347,6 +347,10 @@ components:
           type: array
           items:
             type: string
+        students:
+          type: array
+          items:
+            type: string
         checkAvailabilities:
           type: boolean
       required:
@@ -358,6 +362,7 @@ components:
         - neverEnding
         - backgroundColor
         - teachers
+        - students
         - checkAvailabilities
         - name
     UpdateClass:

@@ -29,7 +29,7 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
   handleEditProfileClicked,
   onError,
 }) => {
-  const buttonText = editProfileClicked ? "Save" : "Edit Index";
+  const buttonText = editProfileClicked ? "Save" : "Edit Profile";
 
   return (
     <div className={styles.rightContainer}>

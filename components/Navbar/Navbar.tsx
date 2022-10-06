@@ -1,14 +1,13 @@
 import styles from "./Navbar.module.css";
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/router";
-import {AuthContext} from "../../context/AuthContext";
-
+import { AuthContext } from "../../context/AuthContext";
 
 export const Navbar: React.FC = ({ children }) => {
   const router = useRouter();
   // let authUser = null;
   // try {
-    const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   //   authUser = user;
   // } catch {
   //   return null;
@@ -42,16 +41,18 @@ export const Navbar: React.FC = ({ children }) => {
                 </a>
               </li>
 
-                { user.role != "Student" ? <li className={styles.navitem}>
-                <a
-                  className={router.pathname == "/league" ? styles.clicked : styles.navlink}
-                  onClick={() => {
-                    router.push("/league");
-                  }}
-                >
-                  The League
-                </a>
-              </li> : null }
+              {user.role != "Student" ? (
+                <li className={styles.navitem}>
+                  <a
+                    className={router.pathname == "/league" ? styles.clicked : styles.navlink}
+                    onClick={() => {
+                      router.push("/league");
+                    }}
+                  >
+                    The League
+                  </a>
+                </li>
+              ) : null}
               <li className={styles.navitem}>
                 <a
                   className={router.pathname == "/profile" ? styles.clicked : styles.navlink}

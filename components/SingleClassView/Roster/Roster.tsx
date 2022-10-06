@@ -14,8 +14,6 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
   const [showTeacher, setShowTeacher] = useState(true);
 
   const { data: roster, error } = useSWR(`api/class/${id}/roster`, () => api.getRoster(id));
-
-  console.log(roster)
   if (error) return <CustomError />;
   if (!roster) return <CustomLoader />;
 
@@ -34,7 +32,9 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
         </div>
         <div className={styles.buttonLabel}> Teachers </div>
       </div>
-      {showTeacher ? <TeacherTableView teachers={roster.filter((user) => user.role == "Teacher")} /> : null}
+      {showTeacher ? (
+        <TeacherTableView teachers={roster.filter((user) => user.role == "Teacher")} />
+      ) : null}
     </div>
   );
 };

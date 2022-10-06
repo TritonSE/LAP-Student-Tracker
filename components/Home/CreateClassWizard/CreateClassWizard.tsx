@@ -67,7 +67,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   );
 
   const { data: allStudents, error: fetchStudentError } = useSWR("/api/users?filter=Student", () =>
-      client.getAllUsers("Student")
+    client.getAllUsers("Student")
   );
 
   // since all teachers can be undefined, check here and use an empty array if it is
@@ -106,8 +106,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     );
     const errorMessage = fetchTeacherError
       ? fetchTeacherError.message
-        : fetchStudentError ?
-            fetchTeacherError.message
+      : fetchStudentError
+      ? fetchTeacherError.message
       : !nameValid
       ? "Please enter a name for the class"
       : !teachersValid
@@ -270,11 +270,11 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
   const handleStudentChange = (event: SelectChangeEvent<typeof selectedStudents>): void => {
     const {
-      target: {value}
+      target: { value },
     } = event;
     setSelectedStudents(
-        // On autofill we get a stringified value.
-        typeof value === "string" ? value.split(",") : value
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
     );
   };
 
@@ -418,19 +418,19 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
               <div className={styles.spacing} />
               <Select
-                  labelId="demo-multiple-name-label"
-                  id="demo-multiple-name"
-                  multiple
-                  value={selectedStudents}
-                  onChange={handleStudentChange}
-                  sx={{
-                    width: 650,
-                  }}
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
+                multiple
+                value={selectedStudents}
+                onChange={handleStudentChange}
+                sx={{
+                  width: 650,
+                }}
               >
                 {students.map((user) => (
-                    <MenuItem key={user.id} value={user.id}>
-                      {user.firstName}
-                    </MenuItem>
+                  <MenuItem key={user.id} value={user.id}>
+                    {user.firstName}
+                  </MenuItem>
                 ))}
               </Select>
             </div>

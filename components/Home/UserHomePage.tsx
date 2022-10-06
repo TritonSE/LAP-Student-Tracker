@@ -26,7 +26,7 @@ const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
     setShowMainScreenButtons(!showManageClassesView);
   }, [showManageClassesView]);
 
-  useEffect ( () => {
+  useEffect(() => {
     setShowMainScreenButtons(user.role === "Teacher");
   }, []);
 

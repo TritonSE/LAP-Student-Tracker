@@ -32,6 +32,7 @@ $ npm run migrate
 ```
 
 Generate the models from the swagger spec:
+
 ```bash
 $ npm run generate-models
 ```

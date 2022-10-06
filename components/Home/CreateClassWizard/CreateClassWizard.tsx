@@ -220,7 +220,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       neverEnding: endType === "never",
       backgroundColor: colorMap[color],
       teachers: selectedTeachers,
-      students: selectedStudents,
+      studentIds: selectedStudents,
       checkAvailabilities: !ignoreAvailabilities,
     };
 

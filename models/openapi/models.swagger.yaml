@@ -347,7 +347,7 @@ components:
           type: array
           items:
             type: string
-        students:
+        studentIds:
           type: array
           items:
             type: string
@@ -362,7 +362,7 @@ components:
         - neverEnding
         - backgroundColor
         - teachers
-        - students
+        - studentIds
         - checkAvailabilities
         - name
     UpdateClass:

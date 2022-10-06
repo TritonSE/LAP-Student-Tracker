@@ -11,7 +11,7 @@ export const CreateClassEvent = t.type({
     backgroundColor: t.string,
     name: t.string,
     teachers: t.array(t.string),
-    students: t.array(t.string),
+    studentIds: t.array(t.string),
     checkAvailabilities: t.boolean
 })
 
@@ -25,6 +25,6 @@ export interface CreateClassEvent {
     backgroundColor: string,
     name: string,
     teachers: Array<string>,
-    students: Array<string>,
+    studentIds: Array<string>,
     checkAvailabilities: boolean
 }

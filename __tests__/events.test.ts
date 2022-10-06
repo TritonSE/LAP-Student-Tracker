@@ -91,7 +91,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
       teachers: ["teacher@gmail.com"],
-      students: [],
+      studentIds: [],
       checkAvailabilities: false,
     };
 
@@ -128,7 +128,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
       teachers: ["teacher@gmail.com"],
-      students: [],
+      studentIds: [],
       checkAvailabilities: false,
     };
 
@@ -165,7 +165,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
       teachers: ["random123@gmail.com"],
-      students: [],
+      studentIds: [],
       checkAvailabilities: false,
     };
 
@@ -222,7 +222,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
       teachers: ["teacher@gmail.com"],
-      students: [],
+      studentIds: [],
       checkAvailabilities: false,
     };
 
@@ -265,7 +265,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
       teachers: ["teacher@gmail.com"],
-      students: [],
+      studentIds: [],
       checkAvailabilities: false,
     };
 
@@ -297,7 +297,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
       teachers: ["gary@gmail.com"],
-      students: [],
+      studentIds: [],
       checkAvailabilities: true,
     };
 
@@ -340,7 +340,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
       teachers: ["ricko@gmail.com"],
-      students: [],
+      studentIds: [],
       checkAvailabilities: true,
     };
 
@@ -372,7 +372,7 @@ describe("[POST] /api/events/class", () => {
       neverEnding: false,
       backgroundColor: "blue",
       teachers: ["miles@gmail.com"],
-      students: [],
+      studentIds: [],
       checkAvailabilities: true,
     };
 

@@ -138,7 +138,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
             await createCommitment(teacher.id, result);
           }
 
-          for (const studentId of newEvent.students) {
+          for (const studentId of newEvent.studentIds) {
             await createCommitment(studentId, result);
           }
         } catch (e) {

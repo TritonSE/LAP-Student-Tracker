@@ -137,6 +137,10 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           for (const teacher of teachers) {
             await createCommitment(teacher.id, result);
           }
+
+          for (const studentId of newEvent.studentIds) {
+            await createCommitment(studentId, result);
+          }
         } catch (e) {
           return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");
         }

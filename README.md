@@ -31,6 +31,12 @@ Run database migrations to get the database up to date:
 $ npm run migrate
 ```
 
+Generate the models from the swagger spec:
+
+```bash
+$ npm run generate-models
+```
+
 Finally, start the server:
 
 ```bash

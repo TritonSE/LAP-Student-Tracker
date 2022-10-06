@@ -41,6 +41,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
   // selected teachers from dropdown (string of emails)
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
+  const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [ignoreAvailabilities, setIgnoreAvailabilities] = useState(false);
 
   const [valid, setValid] = useState<boolean>(false);
@@ -65,8 +66,13 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     client.getAllUsers("Teacher")
   );
 
+  const { data: allStudents, error: fetchStudentError } = useSWR("/api/users?filter=Student", () =>
+    client.getAllUsers("Student")
+  );
+
   // since all teachers can be undefined, check here and use an empty array if it is
   const teachers = allTeachers ? allTeachers : [];
+  const students = allStudents ? allStudents : [];
 
   const client = useContext(APIContext);
 
@@ -99,6 +105,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
         startBeforeEndDate
     );
     const errorMessage = fetchTeacherError
+      ? fetchTeacherError.message
+      : fetchStudentError
       ? fetchTeacherError.message
       : !nameValid
       ? "Please enter a name for the class"
@@ -212,6 +220,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       neverEnding: endType === "never",
       backgroundColor: colorMap[color],
       teachers: selectedTeachers,
+      studentIds: selectedStudents,
       checkAvailabilities: !ignoreAvailabilities,
     };
 
@@ -254,6 +263,16 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       target: { value },
     } = event;
     setSelectedTeachers(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value
+    );
+  };
+
+  const handleStudentChange = (event: SelectChangeEvent<typeof selectedStudents>): void => {
+    const {
+      target: { value },
+    } = event;
+    setSelectedStudents(
       // On autofill we get a stringified value.
       typeof value === "string" ? value.split(",") : value
     );
@@ -390,6 +409,26 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
               >
                 {teachers.map((user) => (
                   <MenuItem key={user.id} value={user.email}>
+                    {user.firstName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </div>
+            <div className={styles.row}>
+              <img className={styles.teacherIcon} src="TeacherIcon.png" />
+              <div className={styles.spacing} />
+              <Select
+                labelId="demo-multiple-name-label"
+                id="demo-multiple-name"
+                multiple
+                value={selectedStudents}
+                onChange={handleStudentChange}
+                sx={{
+                  width: 650,
+                }}
+              >
+                {students.map((user) => (
+                  <MenuItem key={user.id} value={user.id}>
                     {user.firstName}
                   </MenuItem>
                 ))}

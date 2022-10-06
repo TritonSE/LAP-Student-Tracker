@@ -20,11 +20,15 @@ const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
 
   const [showManageAvailability, setShowManageAvailability] = useState(false);
   const [showManageClassesView, setShowManageClassesViewView] = useState(false);
-  const [showMainScreenButtons, setShowMainScreenButtons] = useState(user.role == "Teacher");
+  const [showMainScreenButtons, setShowMainScreenButtons] = useState(false);
 
   useEffect(() => {
     setShowMainScreenButtons(!showManageClassesView);
   }, [showManageClassesView]);
+
+  useEffect(() => {
+    setShowMainScreenButtons(user.role === "Teacher");
+  }, []);
 
   const handleClose = (): void => {
     setShowManageAvailability(false);

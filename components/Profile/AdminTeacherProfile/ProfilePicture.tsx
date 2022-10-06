@@ -20,6 +20,7 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
   image,
   onError,
 }) => {
+  // console.log(lastName)
   const fileInput = useRef<HTMLInputElement>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const acceptableMimeType = ["image/png", "image/jpeg"];

@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "generate-models": "openapi-io-ts -i models/openapi/models.swagger.yaml -o src/api && mv ./src/api/components/schemas/*.* ./models && rm -rf src",
-    "gennerate-api-doc": "next-swagger-doc-cli next-swagger-doc.json",
+    "generate-api-doc": "next-swagger-doc-cli next-swagger-doc.json",
     "test": "jest --runInBand",
     "migrate": "node scripts/migrate.ts",
     "migrate_staging": "node scripts/migrate-staging.ts",

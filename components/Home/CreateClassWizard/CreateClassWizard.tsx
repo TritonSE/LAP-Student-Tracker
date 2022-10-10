@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import React, { useContext, useEffect, useState } from "react";
 import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../../../context/APIContext";
@@ -11,10 +10,13 @@ import { ColorResult } from "react-color/index";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from "axios";
 import useSWR from "swr";
-
-import DatePicker from "react-date-picker/dist/entry.nostyle";
-import TimePicker from "react-time-picker/dist/entry.nostyle";
 import styles from "./CreateClassWizard.module.css";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import Button from "@mui/material/Button";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import TextField from "@mui/material/TextField";
+import { DesktopTimePicker } from "@mui/x-date-pickers";
 
 // Work around for date/time picker library to work with NextJS
 // https://github.com/vercel/next.js/issues/19936
@@ -32,9 +34,9 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const [multipleLevels, setMultipleLevels] = useState<boolean>(false);
   const [minLevel, setMinLevel] = useState<number>(1);
   const [maxLevel, setMaxLevel] = useState<number>(1);
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [startTime, setStartTime] = useState<string>("10:00");
-  const [endTime, setEndTime] = useState<string>("11:00");
+  const [startDate, setStartDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
+  const [startTime, setStartTime] = useState<DateTime | null>(null);
+  const [endTime, setEndTime] = useState<DateTime | null>(null);
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
   const [showRepeatModal, setShowRepeatModal] = useState<boolean>(false);
   const [color, setColor] = useState<string>("#ffc702");
@@ -51,7 +53,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   // saved repeat modal states
   const [weekDays, setWeekDays] = useState<number[]>([(((new Date().getDay() - 1) % 7) + 7) % 7]);
   const [endType, setEndType] = useState<string>("never");
-  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
   const [count, setCount] = useState<number>(1);
   const [rruleText, setRruleText] = useState<string>(
     new RRule({
@@ -90,8 +92,9 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const teachersValid = selectedTeachers.length > 0;
   const levelsValid = !!minLevel && (!multipleLevels || !!maxLevel);
   const startDateValid = startDate != null;
-  const startTimeValid = startTime != "";
-  const endTimeValid = endTime != "";
+  const startTimeValid = startTime != null;
+  const endTimeValid = endTime != null;
+  const startBeforeEndTime = startTimeValid && endTimeValid && startTime < endTime;
   const startBeforeEndDate = startDate <= endDate || endType != "on";
 
   useEffect(() => {
@@ -102,7 +105,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
         startDateValid &&
         startTimeValid &&
         endTimeValid &&
-        startBeforeEndDate
+        startBeforeEndDate &&
+        startBeforeEndTime
     );
     const errorMessage = fetchTeacherError
       ? fetchTeacherError.message
@@ -122,6 +126,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       ? "Please enter a valid end time"
       : !startBeforeEndDate
       ? "Please ensure that the end date is after the start date"
+      : !startBeforeEndTime
+      ? "Please ensure that the start time is before the end time"
       : "";
     setErrMsg(errorMessage);
   }, [
@@ -132,6 +138,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     startTimeValid,
     endTimeValid,
     startBeforeEndDate,
+    startBeforeEndTime,
   ]);
 
   // force max level to exceed min level
@@ -150,7 +157,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const handleRepeatStates = (
     weekDaysParam: number[],
     endTypeParam: string,
-    endDateParam: Date,
+    endDateParam: DateTime,
     countParam: number
   ): void => {
     setWeekDays(weekDaysParam);
@@ -186,15 +193,15 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     let rrule;
     if (endType === "on") {
       rrule = new RRule({
-        dtstart: startDate,
+        dtstart: startDate.toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays,
-        until: endDate,
+        until: endDate.toJSDate(),
       });
     } else if (endType === "after") {
       rrule = new RRule({
-        dtstart: startDate,
+        dtstart: startDate.toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays,
@@ -202,7 +209,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       });
     } else {
       rrule = new RRule({
-        dtstart: startDate,
+        dtstart: startDate.toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays,
@@ -210,10 +217,15 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     }
     const rruleStr = rrule.toString();
 
+    // this can never be true, but done to appease typechecking
+    if (startTime == null || endTime == null) {
+      return;
+    }
+
     const createEvent: CreateClassEvent = {
       name: name,
-      startTime: startTime,
-      endTime: endTime,
+      startTime: startTime.toFormat("HH:mm"),
+      endTime: endTime.toFormat("HH:mm"),
       timeZone: DateTime.local().zoneName,
       rrule: rruleStr,
       language: lang,
@@ -315,22 +327,36 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
               }`}
             >
               <p className={styles.label}>Levels</p>
-              <input
-                className={styles.levelInput}
+              <TextField
+                label="Min Level"
                 type="number"
-                min={1}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                size={"small"}
+                className={styles.levelInput}
+                InputProps={{ inputProps: { min: 0 } }}
                 value={minLevel}
-                onChange={(e) => setMinLevel(e.target.valueAsNumber)}
+                onChange={(e) => {
+                  setMinLevel(parseInt(e.target.value));
+                }}
               />
               {multipleLevels ? (
                 <>
                   <span className={styles.dash} />
-                  <input
-                    className={styles.levelInput}
+                  <TextField
+                    label="Max Level"
                     type="number"
-                    min={minLevel + 1}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    size={"small"}
+                    className={styles.levelInput}
+                    InputProps={{ inputProps: { min: minLevel } }}
                     value={maxLevel}
-                    onChange={(e) => setMaxLevel(e.target.valueAsNumber)}
+                    onChange={(e) => {
+                      setMinLevel(parseInt(e.target.value));
+                    }}
                   />
                 </>
               ) : null}
@@ -345,35 +371,43 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
             <div className={styles.row}>
               <img className={styles.timeIcon} src="TimeIcon.png" />
-              <DatePicker
-                className={styles.dateInput}
-                onChange={setStartDate}
-                value={startDate}
-                clearIcon={null}
-                openCalendarOnFocus={false}
-              />
-              <TimePicker
-                className={styles.timeInput}
-                onChange={setStartTime}
-                value={startTime}
-                clearIcon={null}
-                clockIcon={null}
-                disableClock={true}
-                format="h:mma"
-              />
-              <span className={styles.dash} />
-              <TimePicker
-                className={styles.timeInput}
-                onChange={setEndTime}
-                value={endTime}
-                clearIcon={null}
-                clockIcon={null}
-                disableClock={true}
-                format="h:mma"
-              />
-              <button className={styles.recurrenceButton} onClick={() => setShowRepeatModal(true)}>
-                {rruleText}
-              </button>
+              <LocalizationProvider dateAdapter={AdapterLuxon}>
+                <div className={styles.datePickerContainer}>
+                  <DesktopDatePicker
+                    inputFormat="DD"
+                    value={startDate}
+                    onChange={(newDate) => {
+                      setStartDate(newDate ? newDate : startDate);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </div>
+                <div className={styles.timePickerContainer}>
+                  <DesktopTimePicker
+                    label="Start Time"
+                    value={startTime}
+                    onChange={(newTime) => {
+                      setStartTime(newTime);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </div>
+                <div className={styles.timePickerContainer}>
+                  <DesktopTimePicker
+                    label="End Time"
+                    value={endTime}
+                    onChange={(newTime) => {
+                      setEndTime(newTime);
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </div>
+              </LocalizationProvider>
+
+              <Button variant="outlined" color="primary" onClick={() => setShowRepeatModal(true)}>
+                {" "}
+                {rruleText.length > 21 ? rruleText.substring(0, 17) + " ..." : rruleText}{" "}
+              </Button>
             </div>
 
             <div className={styles.dropDownWrapper}>
@@ -404,7 +438,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                 value={selectedTeachers}
                 onChange={handleTeacherChange}
                 sx={{
-                  width: 650,
+                  width: 750,
                 }}
               >
                 {teachers.map((user) => (
@@ -424,7 +458,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                 value={selectedStudents}
                 onChange={handleStudentChange}
                 sx={{
-                  width: 650,
+                  width: 750,
                 }}
               >
                 {students.map((user) => (

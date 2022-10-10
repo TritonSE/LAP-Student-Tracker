@@ -13,6 +13,28 @@ import { NextPage } from "next";
 import "@fullcalendar/common/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+declare module "@mui/material/styles" {
+  interface Theme {
+    palette: {
+      primary: {
+        main: string;
+      };
+      secondary: {
+        main: string;
+      };
+    };
+  }
+}
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#f37121",
+    },
+  },
+});
 
 export type NextApplicationPage<P = any, IP = P> = NextPage<P, IP> & {
   requireAuth?: boolean;
@@ -24,15 +46,17 @@ function MyApp(props: AppProps): JSX.Element {
   return (
     <APIProvider>
       <AuthProvider>
-        <Layout>
-          {Component.requireAuth ? (
-            <AuthGuard>
+        <ThemeProvider theme={theme}>
+          <Layout>
+            {Component.requireAuth ? (
+              <AuthGuard>
+                <Component {...pageProps} />
+              </AuthGuard>
+            ) : (
               <Component {...pageProps} />
-            </AuthGuard>
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </Layout>
+            )}
+          </Layout>
+        </ThemeProvider>
       </AuthProvider>
     </APIProvider>
   );

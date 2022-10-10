@@ -20,7 +20,7 @@
 }
 
 .wizardContent {
-  width: 800px;
+  width: 850px;
   height: 650px;
   margin: 5% auto;
   border-radius: 16px;
@@ -80,7 +80,7 @@
 }
 
 .classInput {
-  width: 704px;
+  width: 754px;
   border-width: 0px 0px 1px 0px;
 }
 
@@ -158,7 +158,7 @@
   width: 80px;
   height: 40px;
   text-align: center;
-  composes: inputField;
+  /*composes: inputField;*/
 }
 
 .levelInput::-webkit-inner-spin-button {
@@ -207,13 +207,18 @@
   border: none;
   border-radius: 8px;
 
-  background: var(--gray-4);
-  color: var(--black);
+  /*background: var(--gray-4);*/
+  /*color: var(--black);*/
   cursor: pointer;
+  border-color: var(--orange);
 
   white-space: nowrap;
   overflow: auto;
-  composes: labelLarge from "../../../styles/globals.css";
+  composes: labelMedium from "../../../styles/globals.css";
+}
+
+.MuiButton-outlinedSecondary {
+  border: "1px solid pink";
 }
 
 .recurrenceInput::placeholder {
@@ -280,7 +285,7 @@
 
 .popover {
   position: absolute;
-  z-index: 2;
+  z-index: 1;
   margin: 2px 0px;
   width: 80px;
   height: 136px;
@@ -307,4 +312,12 @@
   padding: 3px;
   transform: rotate(45deg);
   -webkit-transform: rotate(45deg);
+}
+
+.datePickerContainer {
+  width: 180px;
+}
+
+.timePickerContainer {
+  width: 140px;
 }

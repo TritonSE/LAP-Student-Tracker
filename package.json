@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
+    "@date-io/luxon": "^2.16.0",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@fullcalendar/common": "5.10.1",
@@ -25,6 +26,7 @@
     "@fullcalendar/timegrid": "5.10.0",
     "@mui/icons-material": "^5.8.2",
     "@mui/material": "^5.5.2",
+    "@mui/x-date-pickers": "^5.0.4",
     "@next/env": "^12.1.6",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",

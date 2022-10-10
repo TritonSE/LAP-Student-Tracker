@@ -1,18 +1,26 @@
-/* eslint-disable import/extensions */
 import React, { useEffect, useState } from "react";
 import styles from "./RepeatModal.module.css";
 
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
-import DatePicker from "react-date-picker/dist/entry.nostyle";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import TextField from "@mui/material/TextField";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTime } from "luxon";
 
 type RepeatModalProps = {
   handleClose: () => void;
-  handleStates: (weekDays: number[], endSelection: string, endDate: Date, count: number) => void;
+  handleStates: (
+    weekDays: number[],
+    endSelection: string,
+    endDate: DateTime,
+    count: number
+  ) => void;
   // props for initial state values
   initWeekDays: number[];
   initEndSelection: string;
-  initEndDate: Date;
+  initEndDate: DateTime;
   initCount: number;
 };
 
@@ -38,9 +46,7 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
       ? endDate != null
       : endSelection === "after"
       ? !!count
-      : endSelection === "never"
-      ? true
-      : false;
+      : endSelection === "never";
 
   useEffect(() => {
     setValid(weekDaysValid && endSelectionValid);
@@ -123,14 +129,18 @@ const RepeatModal: React.FC<RepeatModalProps> = ({
             onChange={(e) => setEndSelection(e.target.value)}
           />
           <label>On</label>
-          <DatePicker
-            disabled={endSelection !== "on"}
-            className={styles.dateInput}
-            onChange={setEndDate}
-            value={endDate}
-            clearIcon={null}
-            openCalendarOnFocus={false}
-          />
+          <LocalizationProvider dateAdapter={AdapterLuxon}>
+            <div className={styles.datePickerContainer}>
+              <DesktopDatePicker
+                inputFormat="DD"
+                value={endDate}
+                onChange={(newDate) => {
+                  setEndDate(newDate ? newDate : endDate);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </div>
+          </LocalizationProvider>
         </div>
         <div className={styles.radioOptionWrapper}>
           <input

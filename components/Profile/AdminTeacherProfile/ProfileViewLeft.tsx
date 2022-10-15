@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./ProfileViewLeft.module.css";
 import { CustomLoader } from "../../util/CustomLoader";
 import { ProfilePicture } from "./ProfilePicture";
+import { Button } from "@mui/material";
 
 type ProfileViewLeftProps = {
   firstName: string;
@@ -51,13 +52,22 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
       <div className={styles.buttonPadding}></div>
       {editable ? (
         <div className={styles.center}>
-          <button
+          <Button
             disabled={!validInput}
+            variant="contained"
             onClick={async () => await handleEditProfileClicked()}
             className={styles.editButton}
           >
+            {" "}
             {buttonText}
-          </button>
+          </Button>
+          {/*<button*/}
+          {/*  disabled={!validInput}*/}
+          {/*  onClick={async () => await handleEditProfileClicked()}*/}
+          {/*  className={styles.editButton}*/}
+          {/*>*/}
+          {/*  {buttonText}*/}
+          {/*</button>*/}
         </div>
       ) : null}
     </div>

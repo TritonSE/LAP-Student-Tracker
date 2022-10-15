@@ -9,7 +9,6 @@ const withTM = require("next-transpile-modules")([
   "@fullcalendar/interaction",
   "@fullcalendar/react",
   "@fullcalendar/timegrid",
-  "@cubedoodl/react-simple-scheduler",
 ]);
 
 module.exports = withTM({

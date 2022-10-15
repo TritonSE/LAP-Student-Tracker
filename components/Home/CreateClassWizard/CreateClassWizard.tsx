@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { RepeatModal } from "./RepeatModal";
 import { APIContext } from "../../../context/APIContext";
 import { CreateClass, CreateClassEvent } from "../../../models";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material/";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
 import { CirclePicker } from "react-color";
@@ -23,6 +22,7 @@ import { DesktopTimePicker } from "@mui/x-date-pickers";
 import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
+import { Autocomplete } from "@mui/material";
 
 type CreateClassWizardProps = {
   handleClose: () => void;
@@ -43,6 +43,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
   // selected teachers from dropdown (string of emails)
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
+  // selected students from dropdown (sting of id's)
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
   const [ignoreAvailabilities, setIgnoreAvailabilities] = useState(false);
 
@@ -270,26 +271,6 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     handleClose();
   };
 
-  const handleTeacherChange = (event: SelectChangeEvent<typeof selectedTeachers>): void => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedTeachers(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
-  const handleStudentChange = (event: SelectChangeEvent<typeof selectedStudents>): void => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedStudents(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value
-    );
-  };
-
   return (
     <>
       {showRepeatModal ? (
@@ -375,6 +356,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                 <div className={styles.datePickerContainer}>
                   <DesktopDatePicker
                     inputFormat="DD"
+                    className={styles.dateInput}
                     value={startDate}
                     onChange={(newDate) => {
                       setStartDate(newDate ? newDate : startDate);
@@ -404,7 +386,12 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                 </div>
               </LocalizationProvider>
 
-              <Button variant="outlined" color="primary" onClick={() => setShowRepeatModal(true)}>
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                onClick={() => setShowRepeatModal(true)}
+              >
                 {" "}
                 {rruleText.length > 21 ? rruleText.substring(0, 17) + " ..." : rruleText}{" "}
               </Button>
@@ -431,42 +418,38 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
             <div className={styles.row}>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
               <div className={styles.spacing} />
-              <Select
-                labelId="demo-multiple-name-label"
-                id="demo-multiple-name"
+              <Autocomplete
                 multiple
-                value={selectedTeachers}
-                onChange={handleTeacherChange}
-                sx={{
-                  width: 750,
-                }}
-              >
-                {teachers.map((user) => (
-                  <MenuItem key={user.id} value={user.email}>
-                    {user.firstName}
-                  </MenuItem>
-                ))}
-              </Select>
+                limitTags={5}
+                id="teacher-input"
+                options={teachers}
+                onChange={(event, value) => setSelectedTeachers(value.map((user) => user.email))}
+                getOptionLabel={(teacher) => teacher.firstName + " " + teacher.lastName}
+                renderInput={(params) => (
+                  <TextField {...params} label="Teachers" placeholder="Teachers" />
+                )}
+                isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
+                sx={{ width: 750 }}
+              />
             </div>
+
             <div className={styles.row}>
               <img className={styles.teacherIcon} src="TeacherIcon.png" />
               <div className={styles.spacing} />
-              <Select
-                labelId="demo-multiple-name-label"
-                id="demo-multiple-name"
+
+              <Autocomplete
                 multiple
-                value={selectedStudents}
-                onChange={handleStudentChange}
-                sx={{
-                  width: 750,
-                }}
-              >
-                {students.map((user) => (
-                  <MenuItem key={user.id} value={user.id}>
-                    {user.firstName}
-                  </MenuItem>
-                ))}
-              </Select>
+                limitTags={10}
+                id="student-input"
+                options={students}
+                onChange={(event, value) => setSelectedStudents(value.map((user) => user.id))}
+                getOptionLabel={(student) => student.firstName + " " + student.lastName}
+                renderInput={(params) => (
+                  <TextField {...params} label="Students" placeholder="Students" />
+                )}
+                isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
+                sx={{ width: 750 }}
+              />
             </div>
             <div className={styles.availabilityWrapper}>
               <input

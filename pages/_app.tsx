@@ -24,6 +24,9 @@ declare module "@mui/material/styles" {
       secondary: {
         main: string;
       };
+      neutral: {
+        main: string;
+      };
     };
   }
 }
@@ -33,6 +36,9 @@ const theme = createTheme({
     primary: {
       main: "#f37121",
     },
+  },
+  typography: {
+    fontFamily: ["Inter"].join(","),
   },
 });
 

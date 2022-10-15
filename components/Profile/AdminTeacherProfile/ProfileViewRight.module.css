@@ -43,9 +43,9 @@
 .backButton {
   width: 88px;
   height: 40px;
-  background: #c4c4c4;
   border-radius: 8px;
   float: left;
+  background-color: #bfc1c4;
 }
 
 .signOutButton {

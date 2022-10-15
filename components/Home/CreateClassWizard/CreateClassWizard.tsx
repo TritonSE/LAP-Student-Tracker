@@ -336,7 +336,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                     InputProps={{ inputProps: { min: minLevel } }}
                     value={maxLevel}
                     onChange={(e) => {
-                      setMinLevel(parseInt(e.target.value));
+                      setMaxLevel(parseInt(e.target.value));
                     }}
                   />
                 </>

@@ -167,3 +167,10 @@
   line-height: 22px;
   cursor: pointer;
 }
+
+.datePickerContainer {
+  width: 190px;
+  height: 40px;
+  padding: 15px;
+  margin-bottom: 40px;
+}

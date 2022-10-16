@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./ProfileViewRight.module.css";
 import { ProfileInput } from "./ProfileInput";
 import { Roles } from "../../../models";
+import { Button } from "@mui/material";
 
 type ProfileViewRightProps = {
   phoneNumber: string | null | undefined;
@@ -97,13 +98,17 @@ const ProfileViewRight: React.FC<ProfileViewRightProps> = ({
       {editable ? (
         <div className={styles.buttonContainer}>
           {!disabled && (
-            <button className={styles.backButton} onClick={() => onBackClick()}>
+            <Button variant="contained" className={styles.backButton} onClick={() => onBackClick()}>
               <div className={styles.backText}>Back</div>
-            </button>
+            </Button>
           )}
-          <button className={styles.signOutButton} onClick={() => onSignoutClick()}>
+          <Button
+            variant="contained"
+            className={styles.signOutButton}
+            onClick={() => onSignoutClick()}
+          >
             <div className={styles.signOutText}>Sign Out</div>
-          </button>
+          </Button>
         </div>
       ) : null}
     </div>

@@ -30,6 +30,22 @@ const AdminCalendar: React.FC = () => {
       />
     </div>
   );
+  //
+  //   return (
+  //       <>
+  //           <Calendar
+  //               selected={selected}
+  //               setSelected={setSelected}
+  //           />
+  //           <Scheduler
+  //               events={events}
+  //               selected={selected}
+  //               setSelected={setSelected}
+  //               onRequestAdd={(evt) => addEvent(evt)}
+  //               onRequestEdit={(evt) => alert("Edit element requested")}
+  //           />
+  //       </>
+  //   );
 };
 
 export { AdminCalendar };

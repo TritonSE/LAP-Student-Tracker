@@ -54,10 +54,10 @@
 
 .editButton {
   margin: auto;
-  width: 87px;
-  height: 39px;
+  width: 150px;
+  height: 55px;
   border-radius: 8px;
-  background-color: var(--orange);
+  /*background-color: var(--orange);*/
 }
 
 .center {

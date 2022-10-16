@@ -13,7 +13,8 @@ const fbConfig = {
   client_id: process.env.CLIENT_ID || "",
   auth_uri: process.env.AUTH_URI || "https://accounts.google.com/o/oauth2/auth",
   token_uri: process.env.TOKEN_URI || "https://oauth2.googleapis.com/token",
-  auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL || "https://www.googleapis.com/oauth2/v1/certs",
+  auth_provider_x509_cert_url:
+    process.env.AUTH_PROVIDER_X509_CERT_URL || "https://www.googleapis.com/oauth2/v1/certs",
   client_x509_cert_url: process.env.CLIENT_x509_CERT_URL || "",
 };
 let fbAdmin;

@@ -25,31 +25,10 @@ const League: NextApplicationPage = () => {
     Staff: [],
   });
 
-  // start dummy data, delete once api is implemented
-  const testStudent: Student = {
-    id: "student_id",
-    firstName: "Gary",
-    lastName: "Gillespie",
-    email: "garyg@ucsd.edu",
-    role: "Student",
-    approved: true,
-    dateCreated: "",
-    phoneNumber: "(123) 456-7890",
-    address: "123",
-    level: 3,
-    classes: ["CSE 123"],
-    pictureId: "1",
-  };
-  const testStudentArray: Student[] = Array(1).fill(testStudent);
-  // end dummy data
-
   useEffect(() => {
-    // Eventually api call to get classes/students/staff...
-    // Use dummy data for now
-
     setContent({
       Classes: [],
-      Students: testStudentArray,
+      Students: [],
       Staff: [],
     });
   }, []);
@@ -66,7 +45,7 @@ const League: NextApplicationPage = () => {
   // Renders specific content component based on tab state
   const renderComponent = (display: string): JSX.Element | undefined => {
     if (display == "Classes") return <ClassView />;
-    if (display == "Students") return <StudentView students={content.Students} />;
+    if (display == "Students") return <StudentView />;
     if (display == "Staff") return <StaffView onShowRequests={onShowRequests} />;
   };
 

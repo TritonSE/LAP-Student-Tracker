@@ -4,7 +4,7 @@ import styles from "./LeagueViews.module.css";
 type StudentCardProps = {
   firstName: string;
   lastName: string;
-  level: number;
+  level: number | null;
   classes: string[];
 };
 
@@ -14,7 +14,7 @@ const StudentCard: React.FC<StudentCardProps> = ({ firstName, lastName, level, c
       <div>
         <p className={styles.leftText}>{firstName + " " + lastName}</p>
       </div>
-      <div className={styles.rightText}>{["Level " + level, "•", classes[0]].join(" ")}</div>
+      {level && <div className={styles.rightText}>{["Level " + level, "•", classes[0]].join(" ")}</div>}
     </div>
   );
 };

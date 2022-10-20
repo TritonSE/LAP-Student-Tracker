@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "../styles/League.module.css";
 import { ClassView } from "../components/League/ClassView";
 import { StudentView } from "../components/League/StudentView";
 import { StaffView } from "../components/League/StaffView";
-import { Class } from "../models";
-import { User } from "../models";
-import { Student } from "../models";
 import { NextApplicationPage } from "./_app";
 import { IncomingAccountRequests } from "../components/League/IncomingAccountRequests";
 
@@ -15,23 +12,6 @@ type Tab = typeof allTabs[number];
 const League: NextApplicationPage = () => {
   const [display, setDisplay] = useState<Tab>(allTabs[0]);
   const [showRequests, setShowRequests] = useState<boolean>(false);
-  const [content, setContent] = useState<{
-    Classes: Class[];
-    Students: Student[];
-    Staff: User[];
-  }>({
-    Classes: [],
-    Students: [],
-    Staff: [],
-  });
-
-  useEffect(() => {
-    setContent({
-      Classes: [],
-      Students: [],
-      Staff: [],
-    });
-  }, []);
 
   // Functionality for income request button on staff view
   const onShowRequests = (): void => {

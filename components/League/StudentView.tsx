@@ -87,7 +87,7 @@ const StudentView: React.FC = () => {
             checked={orderBy.level}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => changeSort(e.target.value)}
           ></input>
-        </div>        
+        </div>
         <h2 className={styles.filterTitle}>Filter By:</h2>
         <ul className={styles.filterList}>
           {filters.map((l, index) => (

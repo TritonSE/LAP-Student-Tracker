@@ -34,7 +34,7 @@ export const StudentScroll: React.FC<StudentScrollProp> = ({
     let selected = false;
     // if a level filter is selected, but students's level is null, return false
     if (!student.level && selectedLevels.size > 0) {
-        selected = false;
+      selected = false;
     }
 
     selectedLevels.forEach((level) => {
@@ -52,17 +52,16 @@ export const StudentScroll: React.FC<StudentScrollProp> = ({
     if (orderBy.alpha) {
       if (a.lastName < b.lastName) {
         return -1;
-      }
-      else if (a.lastName > b.lastName) {
+      } else if (a.lastName > b.lastName) {
         return 1;
       } else {
-          if (a.firstName < b.firstName) {
-            return -1;
-          } else if (a.firstName > b.firstName) {
-            return 1;
-          } else {
-            return 0;
-          }
+        if (a.firstName < b.firstName) {
+          return -1;
+        } else if (a.firstName > b.firstName) {
+          return 1;
+        } else {
+          return 0;
+        }
       }
     }
     // Sort by level, ties in level are settled using account creation date
@@ -89,14 +88,15 @@ export const StudentScroll: React.FC<StudentScrollProp> = ({
   };
 
   const filteredStudents = students
-  .filter(
-    (currStudent) =>
-    (currStudent.firstName.includes(searchQuery) || currStudent.lastName.includes(searchQuery))
-     && checkIfLevelSelected(selectedLevels, currStudent)
-  )
-  .sort((a, b) => {
-    return sortBy(a, b);
-  });
+    .filter(
+      (currStudent) =>
+        (currStudent.firstName.includes(searchQuery) ||
+          currStudent.lastName.includes(searchQuery)) &&
+        checkIfLevelSelected(selectedLevels, currStudent)
+    )
+    .sort((a, b) => {
+      return sortBy(a, b);
+    });
 
   if (students.length == 0) return <Empty userType="Students" />;
 

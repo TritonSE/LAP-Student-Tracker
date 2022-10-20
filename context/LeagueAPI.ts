@@ -152,6 +152,7 @@ class LeagueAPI {
   async getStudents(): Promise<Student[]> {
     const res = await this.client.get("api/students");
     return res.data;
-  }}
+  }
+}
 
 export { LeagueAPI };

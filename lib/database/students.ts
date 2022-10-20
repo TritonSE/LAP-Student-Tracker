@@ -14,22 +14,10 @@ const StudentInClassSchema = t.type({
   pictureId: t.string,
   approved: t.boolean,
   dateCreated: t.string,
-  phoneNumber: t.union([
-      t.string,
-      t.null
-  ]),
-  address: t.union([
-      t.string,
-      t.null
-  ]),
-  level: t.union([
-    t.number,
-    t.null
-  ]),
-  class: t.union([
-    t.string,
-    t.null
-  ]),
+  phoneNumber: t.union([t.string, t.null]),
+  address: t.union([t.string, t.null]),
+  level: t.union([t.number, t.null]),
+  class: t.union([t.string, t.null]),
 });
 
 const StudentInClassArraySchema = array(StudentInClassSchema);
@@ -74,21 +62,20 @@ const getAllStudents = async (): Promise<Student[]> => {
         phoneNumber: studentInClass.phoneNumber,
         address: studentInClass.address,
         level: studentInClass.level,
-        classes: (studentInClass.class) ? [ studentInClass.class ] : []
+        classes: studentInClass.class ? [studentInClass.class] : [],
       };
       idToObject.set(studentInClass.id, student);
     } else {
       const studentAlreadyAdded = idToObject.get(studentInClass.id) as Student;
 
       // add current student object class to old student's array of classes
-      if (studentInClass.class)
-        studentAlreadyAdded.classes.push(studentInClass.class);
+      if (studentInClass.class) studentAlreadyAdded.classes.push(studentInClass.class);
 
       // if current student object level is null, keep the old student objects level. If the current student level is not null but
       // the old student object is null, then keep the current student's level. If both are not null, then return the maximum of both
       studentAlreadyAdded.level =
-      studentInClass.level != null && studentInClass.level != null
-          ? Math.max(studentInClass.level, studentAlreadyAdded.level!!)
+        studentInClass.level != null && studentInClass.level != null
+          ? Math.max(studentInClass.level, studentAlreadyAdded.level)
           : studentInClass.level == null
           ? studentAlreadyAdded.level
           : studentInClass.level;

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass } from "../models";
+import { Class, CreateClass, Module } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
 import { Student } from "../models";
@@ -89,6 +89,7 @@ class LeagueAPI {
   }
   // create an even of type class
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
+    console.log(classEvent);
     const res = await this.client.post("api/events/class", classEvent);
     return res.data;
   }
@@ -170,6 +171,16 @@ class LeagueAPI {
   // Get the students from the backend
   async getStudents(): Promise<Student[]> {
     const res = await this.client.get("api/students");
+    return res.data;
+  }
+
+  async getClassModules(classId: string): Promise<Module[]> {
+    const res = await this.client.get(`api/class/${classId}/modules`);
+    return res.data;
+  }
+
+  async getModuleItems(moduleId: string): Promise<any> {
+    const res = await this.client.get(`api/module/${moduleId}/item`);
     return res.data;
   }
 }

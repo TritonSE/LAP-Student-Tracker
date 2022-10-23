@@ -236,7 +236,6 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       studentIds: selectedStudents,
       checkAvailabilities: !ignoreAvailabilities,
     };
-
     try {
       // Create class event and calendar information
       const classEvent = await client.createClassEvent(createEvent);
@@ -253,6 +252,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
         };
         await client.createClass(createClass);
       } catch (err) {
+
         if (axios.isAxiosError(err) && err.response) setErrMsg(err.response.data);
         else if (err instanceof Error) setErrMsg(err.message);
         else setErrMsg("Error");
@@ -266,6 +266,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       setLoading(false);
       return;
     }
+
+    
 
     setLoading(false);
     handleClose();
@@ -473,7 +475,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
             >
               {loading ? <ClipLoader loading={true} size={30} color={"white"} /> : "Confirm"}
             </button>
-            <div className={styles.errorMsg}>{errMsg}</div>
+            {/* <div className={styles.errorMsg}>{errMsg}</div> */}
           </div>
         </div>
       </div>

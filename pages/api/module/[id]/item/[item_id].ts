@@ -1,9 +1,14 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getModule } from "../../../../../lib/database/modules";
+import { getModule, updateModule } from "../../../../../lib/database/modules";
 import { getItem, deleteItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
+<<<<<<< HEAD
 import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
+=======
+import { Module } from "../../../../../models";
+import { decode } from "io-ts-promise";
+>>>>>>> 162975a (dropdown and patch)
 
 /**
  * @swagger
@@ -70,6 +75,29 @@ export const deleteItemHandler: NextApiHandler = async (
       } catch (e) {
         onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+      }
+    }
+    case "PATCH": {
+      type EditItem = {
+        title?: string;
+        link?: string;
+      };
+
+      let module: Module;
+
+      if ((await getModule(moduleId)) == null)
+        return res.status(StatusCodes.NOT_FOUND).json("Module not found");
+
+      try {
+        module = await decode(Module, req.body);
+      } catch (e) {
+        return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
+      }
+      try {
+        const result = updateModule(moduleId, module.name, module.position);
+        return res.status(StatusCodes.CREATED).json(result);
+      } catch (e) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
 

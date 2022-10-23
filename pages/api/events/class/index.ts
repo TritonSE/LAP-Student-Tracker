@@ -47,7 +47,6 @@ import { logData, logger, onError } from "../../../../logger/logger";
  */
 const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
-    
     case "POST": {
       let newEvent: CreateClassEvent;
       try {

@@ -23,11 +23,14 @@ interface APIModuleItem {
   title: string;
 }
 
-const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => (
-  <AccordionDetails className={styles.dropdownItem}>{lesson.title}</AccordionDetails>
+const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }, enableEditing: boolean) => (
+  <AccordionDetails className={styles.dropdownItem}>
+    {lesson.title}
+    {enableEditing ? Pencil : null}
+  </AccordionDetails>
 );
 
-const AccordionModule = ({ module }: { module: Module }) => {
+const AccordionModule = ({ module }: { module: Module }, enableEditing: boolean) => {
   const api = useContext(APIContext);
 
   const { data: lessons, error } = useSWR<APIModuleItem[]>(`${module.moduleId}`, () =>
@@ -52,7 +55,7 @@ const AccordionModule = ({ module }: { module: Module }) => {
 export const ClassModule: React.FC<ModuleProps> = ({ id, enableEditing }) => {
   const api = useContext(APIContext);
 
-  const { data: modules, error } = useSWR(`api/class/${id}/nishant`, () => api.getClassModules(id));
+  const { data: modules, error } = useSWR(`api/class/${id}/modules`, () => api.getClassModules(id));
 
   if (error) return <CustomError />;
   if (!modules) return <CustomLoader />;
@@ -71,44 +74,3 @@ export const ClassModule: React.FC<ModuleProps> = ({ id, enableEditing }) => {
     </div>
   );
 };
-
-// if (error;
-// if (!modules) return <CustomLoader />;
-
-// const onDropdownClick = (): void => {
-//   setShowModule(!showModule);
-// };
-
-//     <div key={module.name}>
-//   <div className={styles.dropdownHeader}>
-//   <div className={styles.buttonContainer}>
-//     <button className={styles.button} onClick={() => onDropdownClick()}>
-//       <img src={"/downArrow.png"} />
-//     </button>
-//   </div>
-//   <div className={styles.buttonLabel}> {module.name} </div>
-// </div>
-// {showModule && (
-//   <div className={styles.dropdownItemContainer}>
-
-//    {/* <Lessons id={module.moduleId}  /> */}
-//   </div>
-//   )}
-// </div>
-// const [showModule, setShowModule] = useState(true);
-
-// const getModuleItems = (id: string) => {
-
-//   // const fetcher = () => api.getModuleItems(id).then((res) => res);
-
-//   const {data: lessons, error} = useSWR(`api/module/${id}/item`, () => api.getModuleItems(id));
-
-//   if (error) return <CustomError />;
-//   if (!lessons) return <CustomLoader />;
-//   return lessons.map((lesson) => (
-//     <AccordionDetails>
-//       {lesson.name}
-//       </AccordionDetails>
-//     )
-//   )
-// }

@@ -1,15 +1,9 @@
 import React from "react";
 
-type ModuleCardProps = {
-
-}
+type ModuleCardProps = {};
 
 const ModuleCard: React.FC<ModuleCardProps> = ({}) => {
-  return (
-    <div>
-    Hi
-    </div>
-  );
+  return <div>Hi</div>;
 };
 
 export { ModuleCard };

@@ -90,7 +90,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     case "POST": {
       let newItem: CreateItem;
       try {
-        console.log(req.body)
+        console.log(req.body);
         newItem = await decode(CreateItem, req.body);
       } catch (e) {
         onError(e);

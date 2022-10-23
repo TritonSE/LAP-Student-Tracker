@@ -252,7 +252,6 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
         };
         await client.createClass(createClass);
       } catch (err) {
-
         if (axios.isAxiosError(err) && err.response) setErrMsg(err.response.data);
         else if (err instanceof Error) setErrMsg(err.message);
         else setErrMsg("Error");
@@ -266,8 +265,6 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       setLoading(false);
       return;
     }
-
-    
 
     setLoading(false);
     handleClose();

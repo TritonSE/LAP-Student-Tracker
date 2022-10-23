@@ -65,7 +65,7 @@ const Class: NextApplicationPage = () => {
       ) : currentModule == "roster" ? (
         <Roster id={classId} />
       ) : (
-        <ClassModule id={classId}/>
+        <ClassModule id={classId} />
       )}
     </div>
   );

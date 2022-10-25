@@ -78,10 +78,10 @@ export const deleteItemHandler: NextApiHandler = async (
       }
     }
     case "PATCH": {
-      type EditItem = {
-        title?: string;
-        link?: string;
-      };
+      // type EditItem = {
+      //   title?: string;
+      //   link?: string;
+      // };
 
       let module: Module;
 

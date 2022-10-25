@@ -30,3 +30,28 @@
   width: 99%;
   border-radius: 5px;
 }
+
+.editPencil {
+  float: right;
+  cursor: pointer;
+  color: black;
+}
+
+.vericalMenu {
+  float: right;
+  cursor: pointer;
+}
+
+.button {
+  float: right;
+  cursor: pointer;
+  background-color: #5d5fef;
+  border-radius: 10px;
+  text-transform: none;
+  color: white;
+  padding: 5px 25px 5px 25px;
+}
+
+.button:hover {
+  background-color: #5d5fef;
+}

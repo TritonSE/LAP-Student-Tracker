@@ -1,8 +1,6 @@
 import React from "react";
 
-type ModuleCardProps = {};
-
-const ModuleCard: React.FC<ModuleCardProps> = ({}) => {
+const ModuleCard: React.FC = () => {
   return <div>Hi</div>;
 };
 

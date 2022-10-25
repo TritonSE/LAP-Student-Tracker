@@ -89,7 +89,6 @@ class LeagueAPI {
   }
   // create an even of type class
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
-    console.log(classEvent);
     const res = await this.client.post("api/events/class", classEvent);
     return res.data;
   }
@@ -179,6 +178,7 @@ class LeagueAPI {
     return res.data;
   }
 
+  // eslint-disable-next-line
   async getModuleItems(moduleId: string): Promise<any> {
     const res = await this.client.get(`api/module/${moduleId}/item`);
     return res.data;

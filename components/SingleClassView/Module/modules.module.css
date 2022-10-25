@@ -55,3 +55,61 @@
 .button:hover {
   background-color: #5d5fef;
 }
+
+.submit {
+  width: 160px;
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  background: var(--orange);
+
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.cancel {
+  width: 160px;
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  border-color: black;
+  border-width: 2px;
+  background-color: white;
+
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.backgroundDiv {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 10px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: left;
+}
+
+.classInput {
+  width: 754px;
+  border-width: 0px 0px 1px 0px;
+}

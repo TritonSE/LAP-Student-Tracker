@@ -59,20 +59,18 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
   };
 
   const handleMoveUp = () => {
-    if (position < numModules) {
-      setPosition(position + 1);
-    }
-    handleSubmit();
-    handleClose();
-    setUpdate(!update);
-  };
-  const handleMoveDown = () => {
     if (position > 0) {
       setPosition(position - 1);
     }
     handleSubmit();
     handleClose();
-    setUpdate(!update);
+  };
+  const handleMoveDown = () => {
+    if (position < numModules) {
+      setPosition(position + 1);
+    }
+    handleSubmit();
+    handleClose();
   };
 
   return (
@@ -101,7 +99,7 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
         <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
       </Menu>
       {update ? (
-        <div>
+        <div className={styles.backgroundDiv}>
           <div>Update Module</div>
           <input
             className={`${styles.label} ${styles.classInput}`}
@@ -110,12 +108,14 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
             type="text"
             placeholder="Module Name"
           />
-          <button onClick={handleCancel} className={styles.confirmButton}>
-            Cancel
-          </button>
-          <button onClick={handleSubmit} className={styles.confirmButton}>
-            Save
-          </button>
+          <div className={styles.buttonContainer}>
+            <button onClick={handleCancel} className={styles.cancel}>
+              Cancel
+            </button>
+            <button onClick={handleSubmit} className={styles.submit}>
+              Save
+            </button>
+          </div>
         </div>
       ) : null}
     </>
@@ -169,7 +169,7 @@ const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
       {lesson.title}
       <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
       {edit ? (
-        <div>
+        <div className={styles.backgroundDiv}>
           <div>Edit Lesson</div>
           <input
             className={`${styles.label} ${styles.classInput}`}
@@ -185,10 +185,10 @@ const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
             type="text"
             placeholder="Lesson Link"
           />
-          <button onClick={handleCancel} className={styles.confirmButton}>
+          <button onClick={handleCancel} className={styles.cancel}>
             Cancel
           </button>
-          <button onClick={handleSubmit} className={styles.confirmButton}>
+          <button onClick={handleSubmit} className={styles.submit}>
             Save
           </button>
         </div>
@@ -266,7 +266,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
         </Button>
       </div>
       {popup ? (
-        <div>
+        <div className={styles.backgroundDiv}>
           <div>Create Module</div>
           <input
             className={`${styles.label} ${styles.classInput}`}
@@ -275,10 +275,10 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
             type="text"
             placeholder="Module Name"
           />
-          <button onClick={handleCancel} className={styles.confirmButton}>
+          <button onClick={handleCancel} className={styles.cancel}>
             Cancel
           </button>
-          <button onClick={handleSubmit} className={styles.confirmButton}>
+          <button onClick={handleSubmit} className={styles.submit}>
             Save
           </button>
         </div>

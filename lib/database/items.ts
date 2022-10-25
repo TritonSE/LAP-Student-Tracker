@@ -2,7 +2,9 @@ import { client } from "../db";
 import { Item } from "../../models";
 import { decode } from "io-ts-promise";
 import { array } from "io-ts";
+
 const ItemArraySchema = array(Item);
+
 // get all items for a particular module id
 const getModuleItems = async (moduleId: string): Promise<Item[]> => {
   const query = {
@@ -76,4 +78,24 @@ const deleteItem = async (itemId: string): Promise<Item | null> => {
   return item;
 };
 
-export { getModuleItems, getItem, createItem, deleteItem };
+const updateItem = async (itemId: string, title?: string, link?: string): Promise<Item | null> => {
+  const query = {
+    text:
+      "UPDATE module_items " +
+      "SET title = COALESCE($2, title), " +
+      "link = COALESCE($3, link) " +
+      "WHERE item_id = $1",
+    values: [itemId, title, link],
+  };
+
+  try {
+    await client.query(query);
+  } catch (e) {
+    console.log(e);
+    throw Error("CustomError on update module");
+  }
+
+  return getItem(itemId);
+};
+
+export { getModuleItems, getItem, createItem, deleteItem, updateItem };

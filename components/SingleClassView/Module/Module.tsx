@@ -69,27 +69,74 @@ interface APIModuleItem {
   title: string;
 }
 
-const EditLesson: React.FC = () => {
-  return (
-    <div>
-      <div>Edit Module</div>
-    </div>
-  );
+type EditLessonProps = {
+  moduleId: string;
+  itemId: string;
+  in_title: string;
+  in_link: string;
 };
 
 // eslint-disable-next-line
 const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
   const [edit, setEdit] = useState(false);
+  const api = useContext(APIContext);
+  const [title, setTitle] = useState(lesson.title);
+  const [link, setLink] = useState(lesson.link.toString());
+
+  // handles create wizard submit
+  const handleSubmit = async (): Promise<void> => {
+    try {
+      // Create class event and calendar information
+      const item = {
+        title: title,
+        link: link,
+        moduleId: lesson.moduleId,
+        itemId: lesson.itemId,
+      };
+      await api.updateItem(lesson.moduleId, lesson.itemId, item);
+    } catch (e) {}
+  };
+
+  const handleCancel = async (): Promise<void> => {
+    setTitle(lesson.title);
+    setLink(lesson.link.toString());
+    setEdit(false);
+  };
+
   // eslint-disable-next-line
   const pencilClick = () => {
     setEdit(!edit);
-    return <EditLesson />;
   };
 
   return (
     <AccordionDetails className={styles.dropdownItem}>
       {lesson.title}
       <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
+      {edit ? (
+        <div>
+          <div>Edit Lesson</div>
+          <input
+            className={`${styles.label} ${styles.classInput}`}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            type="text"
+            placeholder="Lesson Title"
+          />
+          <input
+            className={`${styles.label} ${styles.classInput}`}
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            type="text"
+            placeholder="Lesson Link"
+          />
+          <button onClick={handleCancel} className={styles.confirmButton}>
+            Cancel
+          </button>
+          <button onClick={handleSubmit} className={styles.confirmButton}>
+            Save
+          </button>
+        </div>
+      ) : null}
     </AccordionDetails>
   );
 };

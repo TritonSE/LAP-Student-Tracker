@@ -1,14 +1,11 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getModule, updateModule } from "../../../../../lib/database/modules";
-import { getItem, deleteItem } from "../../../../../lib/database/items";
+import { getItem, deleteItem, updateItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
-<<<<<<< HEAD
 import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
-=======
-import { Module } from "../../../../../models";
+import { Item, Module } from "../../../../../models";
 import { decode } from "io-ts-promise";
->>>>>>> 162975a (dropdown and patch)
 
 /**
  * @swagger
@@ -78,23 +75,18 @@ export const deleteItemHandler: NextApiHandler = async (
       }
     }
     case "PATCH": {
-      // type EditItem = {
-      //   title?: string;
-      //   link?: string;
-      // };
+      let item: Item;
 
-      let module: Module;
-
-      if ((await getModule(moduleId)) == null)
-        return res.status(StatusCodes.NOT_FOUND).json("Module not found");
+      if ((await getItem(itemId)) == null)
+        return res.status(StatusCodes.NOT_FOUND).json("Item not found");
 
       try {
-        module = await decode(Module, req.body);
+        item = await decode(Item, req.body);
       } catch (e) {
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
-        const result = updateModule(moduleId, module.name, module.position);
+        const result = updateItem(itemId, item.title, item.link);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass, Module } from "../models";
+import { Class, CreateClass, Item, Module } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
 import { Student } from "../models";
@@ -181,6 +181,12 @@ class LeagueAPI {
   // eslint-disable-next-line
   async getModuleItems(moduleId: string): Promise<any> {
     const res = await this.client.get(`api/module/${moduleId}/item`);
+    return res.data;
+  }
+
+  async updateItem(moduleId: string, itemId: string, item: Item): Promise<Item> {
+    const res = await this.client.patch(`/api/module/${moduleId}/item/${itemId}`, item);
+
     return res.data;
   }
 }

@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { getModule, updateModule } from "../../../../../lib/database/modules";
+import { getModule } from "../../../../../lib/database/modules";
 import { getItem, deleteItem, updateItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
 import { withLogging } from "../../../../../middleware/withLogging";

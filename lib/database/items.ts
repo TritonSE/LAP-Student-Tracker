@@ -91,7 +91,6 @@ const updateItem = async (itemId: string, title?: string, link?: string): Promis
   try {
     await client.query(query);
   } catch (e) {
-    console.log(e);
     throw Error("CustomError on update module");
   }
 

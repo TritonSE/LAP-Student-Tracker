@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./modules.module.css";
 import { APIContext } from "../../../context/APIContext";
 import useSWR from "swr";
@@ -13,7 +13,6 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import { positions } from "@mui/system";
 
 type FadeMenuProps = {
   module: Module;
@@ -37,15 +36,13 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
   };
 
   const handleSubmit = async (): Promise<void> => {
-    try {
-      const in_module = {
-        moduleId: module.moduleId,
-        classId: module.classId,
-        name: name,
-        position: position,
-      };
-      await api.updateModule(module.moduleId, in_module);
-    } catch (e) {}
+    const in_module = {
+      moduleId: module.moduleId,
+      classId: module.classId,
+      name: name,
+      position: position,
+    };
+    await api.updateModule(module.moduleId, in_module);
   };
 
   const handleCancel = async (): Promise<void> => {
@@ -53,19 +50,19 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
     setUpdate(false);
   };
 
-  const handleRename = () => {
+  const handleRename: VoidFunction = () => {
     setUpdate(!update);
     handleClose();
   };
 
-  const handleMoveUp = () => {
+  const handleMoveUp: VoidFunction = () => {
     if (position > 0) {
       setPosition(position - 1);
     }
     handleSubmit();
     handleClose();
   };
-  const handleMoveDown = () => {
+  const handleMoveDown: VoidFunction = () => {
     if (position < numModules) {
       setPosition(position + 1);
     }
@@ -142,15 +139,13 @@ const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
   const [link, setLink] = useState(lesson.link.toString());
 
   const handleSubmit = async (): Promise<void> => {
-    try {
-      const item = {
-        title: title,
-        link: link,
-        moduleId: lesson.moduleId,
-        itemId: lesson.itemId,
-      };
-      await api.updateItem(lesson.moduleId, lesson.itemId, item);
-    } catch (e) {}
+    const item = {
+      title: title,
+      link: link,
+      moduleId: lesson.moduleId,
+      itemId: lesson.itemId,
+    };
+    await api.updateItem(lesson.moduleId, lesson.itemId, item);
   };
 
   const handleCancel = async (): Promise<void> => {
@@ -197,7 +192,6 @@ const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
   );
 };
 
-// eslint-disable-next-line
 type AccordionModuleProps = {
   module: Module;
   numModules: number;
@@ -236,21 +230,18 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
   if (error) return <CustomError />;
   if (!modules) return <CustomLoader />;
 
-  const handleClick = () => {
+  const handleClick: VoidFunction = () => {
     setPopup(!popup);
   };
 
   const handleSubmit = async (): Promise<void> => {
-    try {
-      // Create class event and calendar information
-      const module = {
-        classId: id,
-        name: name,
-        position: 0,
-        moduleId: "",
-      };
-      await api.createModule(module);
-    } catch (e) {}
+    const module = {
+      classId: id,
+      name: name,
+      position: 0,
+      moduleId: "",
+    };
+    await api.createModule(module);
   };
 
   const handleCancel = async (): Promise<void> => {

@@ -186,7 +186,16 @@ class LeagueAPI {
 
   async updateItem(moduleId: string, itemId: string, item: Item): Promise<Item> {
     const res = await this.client.patch(`/api/module/${moduleId}/item/${itemId}`, item);
+    return res.data;
+  }
 
+  async createModule(module: Module): Promise<Module> {
+    const res = await this.client.post("api/module/", module);
+    return res.data;
+  }
+
+  async updateModule(moduleId: string, module: Module): Promise<Module> {
+    const res = await this.client.patch(`api/module/${moduleId}`, module);
     return res.data;
   }
 }

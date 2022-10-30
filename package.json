@@ -35,7 +35,7 @@
     "base64-js": "^1.5.1",
     "browser-image-compression": "^2.0.0",
     "color-hash": "^2.0.1",
-    "dotenv": "^16.0.1",
+    "dotenv": "^16.0.3",
     "enhanced-resolve-jest": "^1.1.0",
     "firebase": "^9.6.7",
     "firebase-admin": "^10.2.0",

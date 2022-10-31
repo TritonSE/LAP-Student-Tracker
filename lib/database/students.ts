@@ -5,6 +5,10 @@ import { array, TypeOf } from "io-ts";
 import { decode } from "io-ts-promise";
 import * as t from "io-ts";
 
+// This type is needed since students are stored in the users database,
+// and we need to an intermediate type that contains the class the user is
+// enrolled in and that class's level (given by the event-information table)
+// before creating a Student object
 const StudentInClassSchema = t.type({
   id: t.string,
   firstName: t.string,
@@ -21,7 +25,6 @@ const StudentInClassSchema = t.type({
 });
 
 const StudentInClassArraySchema = array(StudentInClassSchema);
-type studentArray = TypeOf<typeof StudentInClassArraySchema>;
 
 const getAllStudents = async (): Promise<Student[]> => {
   // query returns one object for each class a student is taking (with the classes respective name and id)
@@ -36,7 +39,7 @@ const getAllStudents = async (): Promise<Student[]> => {
   };
 
   const res = await client.query(query);
-  let studentArrayWithDuplicates: studentArray;
+  let studentArrayWithDuplicates: TypeOf<typeof StudentInClassArraySchema>;
   try {
     studentArrayWithDuplicates = await decode(StudentInClassArraySchema, res.rows);
   } catch (e) {
@@ -74,7 +77,7 @@ const getAllStudents = async (): Promise<Student[]> => {
       // if current student object level is null, keep the old student objects level. If the current student level is not null but
       // the old student object is null, then keep the current student's level. If both are not null, then return the maximum of both
       studentAlreadyAdded.level =
-        studentInClass.level != null && studentInClass.level != null
+        studentInClass.level !== null && studentAlreadyAdded.level !== null
           ? Math.max(studentInClass.level, studentAlreadyAdded.level)
           : studentInClass.level == null
           ? studentAlreadyAdded.level

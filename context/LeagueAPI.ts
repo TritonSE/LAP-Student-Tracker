@@ -148,7 +148,7 @@ class LeagueAPI {
     return res.data;
   }
 
-  // Get the staff from the backend
+  // Get the students from the backend
   async getStudents(): Promise<Student[]> {
     const res = await this.client.get("api/students");
     return res.data;

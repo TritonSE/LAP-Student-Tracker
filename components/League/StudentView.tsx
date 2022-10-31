@@ -21,7 +21,7 @@ const filters = [
 
 const StudentView: React.FC = () => {
   const [searchBox, setSearchBox] = useState("");
-  const [orderBy, setOrderBy] = useState<OrderBy>({ alpha: false, level: false });
+  const [orderBy, setOrderBy] = useState<OrderBy>({ alpha: true, level: false });
   const [selectedClassLevels, setSelectedClassLevels] = useState<Set<number>>(new Set());
 
   const onSearchInput = (event: React.ChangeEvent<HTMLInputElement>): void => {

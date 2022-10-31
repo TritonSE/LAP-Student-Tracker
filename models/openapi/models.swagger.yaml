@@ -124,6 +124,7 @@ components:
           nullable: true
         level:
           type: number
+          nullable: true
         classes:
           type: array
           items:

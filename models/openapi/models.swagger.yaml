@@ -583,3 +583,31 @@ components:
         - backgroundColor
         - start
         - end
+    Announcement:
+      title: Announcement
+      type: object
+      properties:
+        eventInformationId:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        id:
+          type: string
+      required:
+        - id
+        - eventInformationId
+        - title
+        - content
+    CreateAnnouncement:
+      title: CreateAnnouncement
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+      required:
+        - title
+        - content

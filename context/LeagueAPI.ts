@@ -5,6 +5,7 @@ import { Staff } from "../models";
 import { CreateUser, UpdateUser, User } from "../models";
 import { Image, UpdateImage } from "../models";
 import { Availability } from "../models";
+import { Announcement, CreateAnnouncement } from "../models";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -145,6 +146,19 @@ class LeagueAPI {
   async getRoster(classId: string): Promise<User[]> {
     const res = await this.client.get(`api/class/${classId}/roster`);
     return res.data;
+  }
+
+  async getAnnouncements(classId: string): Promise<Announcement[]> {
+    const res = await this.client.get(`api/class/${classId}/announcement`);
+    return res.data;
+  }
+
+  async createAnnouncement(classId: string, announcement: CreateAnnouncement): Promise<void> {
+    await this.client.post(`api/class/${classId}/announcement`, announcement);
+  }
+
+  async deleteAnnouncement(classId: string, id: string): Promise<void> {
+    await this.client.delete(`api/class/${classId}/announcement/${id}`);
   }
 }
 

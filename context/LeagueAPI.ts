@@ -153,12 +153,17 @@ class LeagueAPI {
     return res.data;
   }
 
-  async createAnnouncement(classId: string, announcement: CreateAnnouncement): Promise<void> {
-    await this.client.post(`api/class/${classId}/announcement`, announcement);
+  async createAnnouncement(
+    classId: string,
+    announcement: CreateAnnouncement
+  ): Promise<Announcement> {
+    const res = await this.client.post(`api/class/${classId}/announcement`, announcement);
+    return res.data;
   }
 
-  async deleteAnnouncement(classId: string, id: string): Promise<void> {
-    await this.client.delete(`api/class/${classId}/announcement/${id}`);
+  async deleteAnnouncement(classId: string, id: string): Promise<Announcement> {
+    const res = await this.client.delete(`api/class/${classId}/announcement/${id}`);
+    return res.data;
   }
 }
 

@@ -1,7 +1,7 @@
 import { client } from "../db";
 import { Announcement } from "../../models";
 import { decode } from "io-ts-promise";
-import { Any, array } from "io-ts";
+import { array } from "io-ts";
 
 const AnnouncementArraySchema = array(Announcement);
 
@@ -19,13 +19,35 @@ const getAnnouncements = async (classId: string): Promise<Announcement[]> => {
   }
 };
 
+const getAnnouncementById = async (classId: string, id: string): Promise<Announcement | null> => {
+  const query = {
+    text: "SELECT event_information_id, title, content, id FROM announcements WHERE event_information_id = $1 AND id = $2",
+    values: [classId, id],
+  };
+
+  const res = await client.query(query);
+
+  if (res.rows.length == 0) {
+    return null;
+  }
+
+  let announcement: Announcement;
+  try {
+    announcement = await decode(Announcement, res.rows[0]);
+  } catch (e) {
+    throw Error("Fields returned incorrectly in database");
+  }
+
+  return announcement;
+};
+
 const createAnnouncement = async (
   classId: string,
   title: string,
   content: string
-): Promise<Any[]> => {
+): Promise<Announcement | null> => {
   const query = {
-    text: "INSERT INTO announcements(event_information_id, title, content) VALUES($1, $2, $3)",
+    text: "INSERT INTO announcements(event_information_id, title, content) VALUES($1, $2, $3) RETURNING id",
     values: [classId, title, content],
   };
 
@@ -36,14 +58,12 @@ const createAnnouncement = async (
     throw Error("CustomError on inserting announcement into database.");
   }
 
-  return res.rows;
+  return getAnnouncementById(classId, res.rows[0].id);
 };
 
-const deleteAnnouncement = async (classId: string, id: string): Promise<Any[]> => {
+const deleteAnnouncement = async (classId: string, id: string): Promise<Announcement | null> => {
   const query = {
-    //text: "DELETE FROM (event_information INNER JOIN announcements ON event_information.id = announcements.event_information_id) " +
-    //      "WHERE announcements.event_information_id = $1 AND announcements.id = $2",
-    text: "DELETE FROM announcements WHERE event_information_id = $1 AND id = $2",
+    text: "DELETE FROM announcements WHERE event_information_id = $1 AND id = $2 RETURNING *",
     values: [classId, id],
   };
 
@@ -53,7 +73,19 @@ const deleteAnnouncement = async (classId: string, id: string): Promise<Any[]> =
   } catch (e) {
     throw Error("CustomError on delete announcement.");
   }
-  return res.rows;
+
+  if (res.rows.length == 0) {
+    return null;
+  }
+
+  let deletedAnnouncement: Announcement;
+  try {
+    deletedAnnouncement = await decode(Announcement, res.rows[0]);
+  } catch (e) {
+    throw Error("Fields returned incorrectly in database");
+  }
+
+  return deletedAnnouncement;
 };
 
 export { getAnnouncements, createAnnouncement, deleteAnnouncement };

@@ -123,7 +123,8 @@ describe("[POST] /api/class/[id]/announcement", () => {
       "POST",
       expected,
       StatusCodes.CREATED,
-      []
+      expected,
+      ["eventInformationId", "id"]
     );
   });
 });
@@ -132,7 +133,14 @@ describe("[DELETE] /api/class/[id]/announcement/[id]", () => {
   test("create a class announcement", async () => {
     const query = {
       class_id: "e_2",
-      id: "a_3",
+      id: "a_2",
+    };
+
+    const expected: Announcement = {
+      eventInformationId: "e_2",
+      title: "Title 2",
+      content: "Content 2",
+      id: "a_2",
     };
 
     await makeHTTPRequest(
@@ -142,7 +150,7 @@ describe("[DELETE] /api/class/[id]/announcement/[id]", () => {
       "DELETE",
       undefined,
       StatusCodes.ACCEPTED,
-      []
+      expected
     );
   });
 });

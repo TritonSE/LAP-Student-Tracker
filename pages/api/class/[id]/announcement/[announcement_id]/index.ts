@@ -5,17 +5,17 @@ import { withAuth } from "../../../../../../middleware/withAuth";
 
 /**
  * @swagger
- * /api/class/{classId}/announcement/{id}:
+ * /api/class/{id}/announcement/{announcement_id}:
  *  delete:
  *   description: Delete an announcement from the database
  *   parameters:
  *      - in: path
- *        name: classId
+ *        name: id
  *        required: true
  *        schema:
  *          type: string
  *      - in: path
- *        name: id
+ *        name: announcement_id
  *        required: true
  *        schema:
  *          type: string
@@ -36,20 +36,20 @@ export const announcementIdHandler: NextApiHandler = async (
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
-  const classId = req.query.class_id as string;
-  const id = req.query.id as string;
+  const classId = req.query.id as string;
+  const announcementId = req.query.announcement_id as string;
 
   if (!classId) {
     return res.status(400).json("no class id specified");
   }
-  if (!id) {
+  if (!announcementId) {
     return res.status(400).json("no announcement id specified");
   }
 
   switch (req.method) {
     case "DELETE":
       try {
-        const result = await deleteAnnouncement(classId, id);
+        const result = await deleteAnnouncement(classId, announcementId);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

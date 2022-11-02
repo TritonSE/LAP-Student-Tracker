@@ -7,7 +7,7 @@ const AnnouncementArraySchema = array(Announcement);
 
 const getAnnouncements = async (classId: string): Promise<Announcement[]> => {
   const query = {
-    text: "SELECT event_information_id, title, content, id FROM announcements WHERE event_information_id = $1",
+    text: "SELECT event_information_id, title, content, announcement_id FROM announcements WHERE event_information_id = $1",
     values: [classId],
   };
   const res = await client.query(query);
@@ -19,10 +19,10 @@ const getAnnouncements = async (classId: string): Promise<Announcement[]> => {
   }
 };
 
-const getAnnouncementById = async (classId: string, id: string): Promise<Announcement | null> => {
+const getAnnouncementById = async (classId: string, announcementId: string): Promise<Announcement | null> => {
   const query = {
-    text: "SELECT event_information_id, title, content, id FROM announcements WHERE event_information_id = $1 AND id = $2",
-    values: [classId, id],
+    text: "SELECT event_information_id, title, content, announcement_id FROM announcements WHERE event_information_id = $1 AND announcement_id = $2",
+    values: [classId, announcementId],
   };
 
   const res = await client.query(query);
@@ -47,7 +47,7 @@ const createAnnouncement = async (
   content: string
 ): Promise<Announcement | null> => {
   const query = {
-    text: "INSERT INTO announcements(event_information_id, title, content) VALUES($1, $2, $3) RETURNING id",
+    text: "INSERT INTO announcements(event_information_id, title, content) VALUES($1, $2, $3) RETURNING announcement_id",
     values: [classId, title, content],
   };
 
@@ -58,13 +58,16 @@ const createAnnouncement = async (
     throw Error("CustomError on inserting announcement into database.");
   }
 
-  return getAnnouncementById(classId, res.rows[0].id);
+  return getAnnouncementById(classId, res.rows[0].announcementId);
 };
 
-const deleteAnnouncement = async (classId: string, id: string): Promise<Announcement | null> => {
+const deleteAnnouncement = async (
+  classId: string,
+  announcementId: string
+): Promise<Announcement | null> => {
   const query = {
-    text: "DELETE FROM announcements WHERE event_information_id = $1 AND id = $2 RETURNING *",
-    values: [classId, id],
+    text: "DELETE FROM announcements WHERE event_information_id = $1 AND announcement_id = $2 RETURNING *",
+    values: [classId, announcementId],
   };
 
   let res;

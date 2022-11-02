@@ -1,5 +1,5 @@
 import announcementHandler from "../pages/api/class/[id]/announcement";
-import announcementIdHandler from "../pages/api/class/[id]/announcement/[id]";
+import announcementIdHandler from "../pages/api/class/[id]/announcement/[announcement_id]";
 import { client } from "../lib/db";
 import { makeHTTPRequest } from "./__testutils__/testutils.test";
 import { CreateAnnouncement, Announcement } from "../models";
@@ -28,13 +28,13 @@ beforeAll(async () => {
     "INSERT INTO classes(event_information_id, min_level, max_level, rrstring, start_time, end_time, language) VALUES('e_2', 3, 5, 'DTSTART:20220222T093000Z\nRRULE:FREQ=WEEKLY;UNTIL=20230222T093000Z;BYDAY=MO,WE,FR;INTERVAL=1', '07:34Z', '08:34Z', 'Java')"
   );
   await client.query(
-    "INSERT INTO announcements(event_information_id, title, content, id) VALUES('e_1', 'Title 1', 'Content 1', 'a_1')"
+    "INSERT INTO announcements(event_information_id, title, content, announcement_id) VALUES('e_1', 'Title 1', 'Content 1', 'a_1')"
   );
   await client.query(
-    "INSERT INTO announcements(event_information_id, title, content, id) VALUES('e_2', 'Title 2', 'Content 2', 'a_2')"
+    "INSERT INTO announcements(event_information_id, title, content, announcement_id) VALUES('e_2', 'Title 2', 'Content 2', 'a_2')"
   );
   await client.query(
-    "INSERT INTO announcements(event_information_id, title, content, id) VALUES('e_2', 'Title 3', 'Content 3', 'a_3')"
+    "INSERT INTO announcements(event_information_id, title, content, announcement_id) VALUES('e_2', 'Title 3', 'Content 3', 'a_3')"
   );
   await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('44', 'e_1')");
   await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('44', 'e_2')");
@@ -54,7 +54,7 @@ describe("[GET] /api/class/[id]/announcements", () => {
         eventInformationId: "e_1",
         title: "Title 1",
         content: "Content 1",
-        id: "a_1",
+        announcementId: "a_1",
       },
     ];
 
@@ -79,13 +79,13 @@ describe("[GET] /api/class/[id]/announcements", () => {
         eventInformationId: "e_2",
         title: "Title 2",
         content: "Content 2",
-        id: "a_2",
+        announcementId: "a_2",
       },
       {
         eventInformationId: "e_2",
         title: "Title 3",
         content: "Content 3",
-        id: "a_3",
+        announcementId: "a_3",
       },
     ];
 
@@ -124,23 +124,23 @@ describe("[POST] /api/class/[id]/announcement", () => {
       expected,
       StatusCodes.CREATED,
       expected,
-      ["eventInformationId", "id"]
+      ["eventInformationId", "announcementId"]
     );
   });
 });
 
-describe("[DELETE] /api/class/[id]/announcement/[id]", () => {
+describe("[DELETE] /api/class/[id]/announcement/[announcement_id]", () => {
   test("create a class announcement", async () => {
     const query = {
-      class_id: "e_2",
-      id: "a_2",
+      id: "e_2",
+      announcement_id: "a_2",
     };
 
     const expected: Announcement = {
       eventInformationId: "e_2",
       title: "Title 2",
       content: "Content 2",
-      id: "a_2",
+      announcementId: "a_2",
     };
 
     await makeHTTPRequest(

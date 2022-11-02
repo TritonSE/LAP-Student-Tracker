@@ -161,8 +161,8 @@ class LeagueAPI {
     return res.data;
   }
 
-  async deleteAnnouncement(classId: string, id: string): Promise<Announcement> {
-    const res = await this.client.delete(`api/class/${classId}/announcement/${id}`);
+  async deleteAnnouncement(classId: string, announcement_id: string): Promise<Announcement> {
+    const res = await this.client.delete(`api/class/${classId}/announcement/${announcement_id}`);
     return res.data;
   }
 }

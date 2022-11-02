@@ -593,10 +593,10 @@ components:
           type: string
         content:
           type: string
-        id:
+        announcementId:
           type: string
       required:
-        - id
+        - announcementId
         - eventInformationId
         - title
         - content

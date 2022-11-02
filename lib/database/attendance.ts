@@ -8,20 +8,27 @@ const SingleUserAttendanceArraySchema = array(SingleUserAttendance);
 type sessionId = {
   sessionId: string;
   startStr: string;
+  endStr: string;
 };
 
 const getSessions = async (classId: string, time?: string): Promise<sessionId[]> => {
+  let endTime = ""
+  if (time){
+    const startTime = new Date(time);
+    const endTimeDate = startTime.setDate(startTime.getDate() +1);
+    endTime = new Date(endTimeDate).toISOString();
+  }
   const query = time
     ? {
         text:
-          "SELECT session_id, start_str " +
-          "FROM calendar_information WHERE end_str < $1 " +
-          "AND event_information_id = $2",
-        values: [time, classId],
+          "SELECT session_id, start_str, end_str " +
+          "FROM calendar_information WHERE start_str >= $1 " +
+          "AND end_str <= $2 AND event_information_id = $3",
+        values: [time, endTime, classId],
       }
     : {
         text:
-          "SELECT session_id, start_str " +
+          "SELECT session_id, start_str, end_str " +
           "FROM calendar_information " +
           "WHERE event_information_id = $1",
         values: [classId],

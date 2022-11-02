@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import styles from "./attendance.module.css";
 import { AttendanceBox } from "./AttendanceBox";
+import { APIContext } from "../../../context/APIContext";
+import { CustomError } from "../../util/CustomError";
+import { CustomLoader } from "../../util/CustomLoader";
+import useSWR from "swr";
 
-export const Attendance: React.FC = () => {
+type AttendanceProps = {
+  classId: string,
+}
+export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
+  const api = useContext(APIContext);
+  // const curr_time = "1667243796";
+  // const { data: sessionId, error } = useSWR(`api/class/${classId}/attendance`, () => api.getSessions(classId, curr_time));
+  // console.log(sessionId);
+  // if (error) return <CustomError />;
+  // if (!sessionId) return <CustomLoader />;
+  
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>Attendance</div>

@@ -69,18 +69,20 @@ afterAll(async () => {
 type sessionId = {
   sessionId: string;
   startStr: string;
+  endStr: string
 };
 
 describe("[GET] /api/class/[id]/sessions", () => {
-  test("get session ids before specified time", async () => {
+  test("get session ids for specified time", async () => {
     const query = {
       id: "id_a",
-      until: "2022-02-27T17:00:00.000Z",
+      until: "2022-02-27T05:00:00.000Z",
     };
     const expected: sessionId[] = [
       {
         sessionId: "a",
         startStr: "2022-02-27T05:00:00.000Z",
+        endStr: "2022-02-27T05:00:00.000Z",
       },
     ];
     await makeHTTPRequest(
@@ -101,10 +103,12 @@ describe("[GET] /api/class/[id]/sessions", () => {
       {
         sessionId: "a",
         startStr: "2022-02-27T05:00:00.000Z",
+        endStr: "2022-02-27T05:00:00.000Z",
       },
       {
         sessionId: "b",
         startStr: "2022-03-01T05:11:00.000Z",
+        endStr: "2022-03-01T05:11:00.000Z",
       },
     ];
     await makeHTTPRequest(

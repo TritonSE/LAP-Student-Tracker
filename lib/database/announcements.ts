@@ -19,7 +19,10 @@ const getAnnouncements = async (classId: string): Promise<Announcement[]> => {
   }
 };
 
-const getAnnouncementById = async (classId: string, announcementId: string): Promise<Announcement | null> => {
+const getAnnouncementById = async (
+  classId: string,
+  announcementId: string
+): Promise<Announcement | null> => {
   const query = {
     text: "SELECT event_information_id, title, content, announcement_id FROM announcements WHERE event_information_id = $1 AND announcement_id = $2",
     values: [classId, announcementId],

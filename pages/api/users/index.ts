@@ -53,6 +53,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
       try {
         newUser = await decode(CreateUser, req.body);
       } catch (e) {
+        logger.debug(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {

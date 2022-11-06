@@ -2,8 +2,10 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getRoster } from "../../../../../lib/database/roster";
 import { getClass } from "../../../../../lib/database/classes";
+import {logHttpRoute, onError} from "../../../../../lib/util/helpers";
 
 const classRosterHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  logHttpRoute(req)
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
@@ -25,6 +27,7 @@ const classRosterHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         const roster = await getRoster(classId);
         return res.status(StatusCodes.ACCEPTED).json(roster);
       } catch (e) {
+        onError(e)
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

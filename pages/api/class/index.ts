@@ -4,6 +4,7 @@ import { CreateClass } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
+import {logHttpRoute, onError} from "../../../lib/util/helpers";
 //Handles all requests to /api/class
 /**
  * @swagger
@@ -41,30 +42,33 @@ import { withAuth } from "../../../middleware/withAuth";
  */
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newClass: CreateClass;
-  let user_id = "";
+  let userId = "";
+  logHttpRoute(req)
   switch (req.method) {
     case "GET":
       if (req.query && req.query.userId) {
         if (req.query.userId != undefined) {
-          user_id = req.query.userId as string;
+          userId = req.query.userId as string;
         }
       }
       try {
         let result = await getAllClasses();
 
-        if (user_id) {
+        if (userId) {
           result = result.filter((obj) =>
-            JSON.stringify(obj).toLowerCase().includes(user_id.toLowerCase())
+            JSON.stringify(obj).toLowerCase().includes(userId.toLowerCase())
           );
         }
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     case "POST":
       try {
         newClass = await decode(CreateClass, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -79,6 +83,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     default:

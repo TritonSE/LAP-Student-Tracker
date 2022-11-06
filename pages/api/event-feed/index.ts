@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getEventFeed } from "../../../lib/database/calendar-events";
 import { StatusCodes } from "http-status-codes";
+import {logHttpRoute} from "../../../lib/util/helpers";
 
 /**
  * @swagger
@@ -36,6 +37,7 @@ import { StatusCodes } from "http-status-codes";
  * @param res
  */
 const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  logHttpRoute(req)
   switch (req.method) {
     case "GET":
       try {

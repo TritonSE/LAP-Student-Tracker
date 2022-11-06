@@ -5,6 +5,7 @@ import { CreateUser } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import {logger} from "../../../logger/logger";
 
 /**
  * @swagger
@@ -49,11 +50,12 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST": {
+      logger.http("POST /api/users requested with the following body: " + req.body);
       let newUser: CreateUser;
       try {
         newUser = await decode(CreateUser, req.body);
       } catch (e) {
-        logger.debug(e);
+        err
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {

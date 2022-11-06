@@ -3,6 +3,7 @@ import { getAllStaff } from "../../../lib/database/staff";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
 import {logger} from "../../../logger/logger";
+import {logHttpRoute, onError} from "../../../lib/util/helpers";
 
 
 /**
@@ -24,17 +25,14 @@ import {logger} from "../../../logger/logger";
  * @param res
  */
 const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+  logHttpRoute(req);
   switch (req.method) {
     case "GET":
-      logger.http("GET /api/staff requested");
       try {
         const result = await getAllStaff();
-        logger.info("Requested all staff");
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        if (e instanceof Error) {
-          logger.error(e.message);
-        }
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
 

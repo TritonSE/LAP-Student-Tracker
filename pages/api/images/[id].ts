@@ -4,6 +4,7 @@ import { decode } from "io-ts-promise";
 import { getImage, updateImage } from "../../../lib/database/images";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
+import {withLogging} from "../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -103,4 +104,4 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
   }
 };
 
-export default withAuth(imageIDHandler);
+export default withLogging(withAuth(imageIDHandler));

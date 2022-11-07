@@ -4,6 +4,7 @@ import { getModuleItems, createItem } from "../../../../../lib/database/items";
 import { CreateItem } from "../../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
+import {withLogging} from "../../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -103,4 +104,4 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
   }
 };
 
-export default itemHandler;
+export default withLogging(itemHandler);

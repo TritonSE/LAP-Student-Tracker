@@ -4,6 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
 import {logger} from "../../../logger/logger";
 import {logHttpRoute, onError} from "../../../lib/util/helpers";
+import {withLogging} from "../../../middleware/withLogging";
 
 
 /**
@@ -25,7 +26,6 @@ import {logHttpRoute, onError} from "../../../lib/util/helpers";
  * @param res
  */
 const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  logHttpRoute(req);
   switch (req.method) {
     case "GET":
       try {
@@ -41,4 +41,4 @@ const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
   }
 };
 
-export default withAuth(staffHandler);
+export default withLogging(withAuth(staffHandler));

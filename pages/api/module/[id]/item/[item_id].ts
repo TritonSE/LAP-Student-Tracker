@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getModule } from "../../../../../lib/database/modules";
 import { getItem, deleteItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
+import {withLogging} from "../../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -75,4 +76,4 @@ export const deleteItemHandler: NextApiHandler = async (
   }
 };
 
-export default deleteItemHandler;
+export default withLogging(deleteItemHandler);

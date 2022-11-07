@@ -4,6 +4,7 @@ import { getClass } from "../../../lib/database/classes";
 import { CreateModule } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
+import {withLogging} from "../../../middleware/withLogging";
 
 // Handles all requests to /api/module
 /**
@@ -60,4 +61,4 @@ export const createModuleHandler: NextApiHandler = async (
   }
 };
 
-export default createModuleHandler;
+export default withLogging(createModuleHandler);

@@ -42,7 +42,6 @@ const availabilityFeedHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  logHttpRoute(req);
   switch (req.method) {
     case "GET":
       try {

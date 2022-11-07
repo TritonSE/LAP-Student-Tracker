@@ -3,6 +3,7 @@ import { getClass } from "../../../../../lib/database/classes";
 import { getClassModules } from "../../../../../lib/database/modules";
 import { StatusCodes } from "http-status-codes";
 import {logHttpRoute, onError} from "../../../../../lib/util/helpers";
+import {withLogging} from "../../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -28,7 +29,6 @@ export const classModulesHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  logHttpRoute(req)
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
@@ -58,4 +58,4 @@ export const classModulesHandler: NextApiHandler = async (
   }
 };
 
-export default classModulesHandler;
+export default withLogging(classModulesHandler);

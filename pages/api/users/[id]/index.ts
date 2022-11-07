@@ -4,6 +4,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
 import { getUser, updateUser, deleteUser } from "../../../../lib/database/users";
+import {withLogging} from "../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -133,4 +134,4 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
   }
 };
 
-export default withAuth(userIDHandler);
+export default withLogging(withAuth(userIDHandler));

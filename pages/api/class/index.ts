@@ -5,6 +5,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
 import {logHttpRoute, onError} from "../../../lib/util/helpers";
+import {withLogging} from "../../../middleware/withLogging";
 //Handles all requests to /api/class
 /**
  * @swagger
@@ -43,7 +44,6 @@ import {logHttpRoute, onError} from "../../../lib/util/helpers";
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newClass: CreateClass;
   let userId = "";
-  logHttpRoute(req)
   switch (req.method) {
     case "GET":
       if (req.query && req.query.userId) {
@@ -91,4 +91,4 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
   }
 };
 
-export default withAuth(classHandler);
+export default withLogging(withAuth(classHandler));

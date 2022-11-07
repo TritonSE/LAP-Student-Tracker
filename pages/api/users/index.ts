@@ -6,6 +6,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import {logger} from "../../../logger/logger";
+import {withLogging} from "../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -55,7 +56,6 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
       try {
         newUser = await decode(CreateUser, req.body);
       } catch (e) {
-        err
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -107,4 +107,4 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
   }
 };
 
-export default userHandler;
+export default withLogging(userHandler);

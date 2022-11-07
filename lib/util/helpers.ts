@@ -10,12 +10,14 @@ const onError = (e: unknown): void => {
 };
 
 const logHttpRoute = (req:NextApiRequest): void => {
-    if (req.method == "POST") {
-        logger.http(req.method + ": " + req.url + " with body: " + req.body)
+    let logStr = req.method + ": " + req.url + "\n";
+
+    if (req.method == "POST" || req.method == "PATCH") {
+        logStr += "Body: " + JSON.stringify(req.body) + "\n";
     }
-    else {
-        logger.http(req.method + ": " + req.url);
-    }
+
+    logStr += "Query: " + JSON.stringify(req.query);
+    logger.http(logStr);
 };
 
 export { onError, logHttpRoute };

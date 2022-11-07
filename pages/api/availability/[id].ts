@@ -2,10 +2,9 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { Availability } from "../../../models";
-// import { Availability, AvailabilitySchema } from "../../../models/availability";
 import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
 import { withAuth } from "../../../middleware/withAuth";
-import {logger} from "../../../logger/logger";
+import {withLogging} from "../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -66,7 +65,6 @@ export const availabilityIdHandler: NextApiHandler = async (
 
   switch (req.method) {
     case "GET": {
-      logger.http("GET re")
       try {
         const availability = await getAvailabilityById(id);
         if (availability == null)
@@ -107,4 +105,4 @@ export const availabilityIdHandler: NextApiHandler = async (
   }
 };
 
-export default withAuth(availabilityIdHandler);
+export default withLogging(withAuth(availabilityIdHandler));

@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSingleUserAttendanceFromClassID } from "../../../../../lib/database/attendance";
+import {withLogging} from "../../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -58,4 +59,4 @@ export const userAttendanceHandler: NextApiHandler = async (
   }
 };
 
-export default userAttendanceHandler;
+export default withLogging(userAttendanceHandler);

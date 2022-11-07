@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSessions } from "../../../../lib/database/attendance";
 import {logHttpRoute, onError} from "../../../../lib/util/helpers";
+import {withLogging} from "../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -56,4 +57,4 @@ export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: N
   }
 };
 
-export default sessionHandler;
+export default withLogging(sessionHandler);

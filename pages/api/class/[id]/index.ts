@@ -5,6 +5,7 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
 import {logHttpRoute, onError} from "../../../../lib/util/helpers";
+import {withLogging} from "../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -50,7 +51,6 @@ import {logHttpRoute, onError} from "../../../../lib/util/helpers";
  *              $ref: '#/components/schemas/Class'
  */
 export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  logHttpRoute(req)
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
@@ -82,7 +82,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
       try {
         newClass = await decode(UpdateClass, req.body);
       } catch (e) {
-        onError(e)
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -108,4 +108,4 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
   }
 };
 
-export default withAuth(classIDHandler);
+export default withLogging(withAuth(classIDHandler));

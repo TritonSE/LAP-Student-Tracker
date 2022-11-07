@@ -8,6 +8,7 @@ import { StatusCodes } from "http-status-codes";
 import { CreateAttendance } from "../../../../../models";
 import { array } from "io-ts";
 import {logHttpRoute, onError} from "../../../../../lib/util/helpers";
+import {withLogging} from "../../../../../middleware/withLogging";
 const CreateAttendanceArraySchema = array(CreateAttendance);
 /**
  * @swagger
@@ -73,8 +74,6 @@ export const sessionIDHandler: NextApiHandler = async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-
-  logHttpRoute(req)
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
@@ -122,4 +121,4 @@ export const sessionIDHandler: NextApiHandler = async (
   }
 };
 
-export default sessionIDHandler;
+export default withLogging(sessionIDHandler);

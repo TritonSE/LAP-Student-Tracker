@@ -18,6 +18,7 @@ import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
 import { withAuth } from "../../../../middleware/withAuth";
+import {withLogging} from "../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -169,4 +170,4 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
   }
 };
 
-export default withAuth(classEventHandler);
+export default withLogging(withAuth(classEventHandler));

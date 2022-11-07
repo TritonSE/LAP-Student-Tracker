@@ -37,7 +37,6 @@ import {logHttpRoute} from "../../../lib/util/helpers";
  * @param res
  */
 const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  logHttpRoute(req)
   switch (req.method) {
     case "GET":
       try {

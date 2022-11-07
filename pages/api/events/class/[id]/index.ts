@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { deleteClassEvent } from "../../../../../lib/database/events";
 import { StatusCodes } from "http-status-codes";
+import {withLogging} from "../../../../../middleware/withLogging";
 
 // Handles all requests to /api/events/class/{id}
 export const classEventHandler: NextApiHandler = async (
@@ -32,4 +33,4 @@ export const classEventHandler: NextApiHandler = async (
   }
 };
 
-export default classEventHandler;
+export default withLogging(classEventHandler);

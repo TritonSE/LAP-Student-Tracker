@@ -3,9 +3,9 @@ import { StatusCodes } from "http-status-codes";
 import { getRoster } from "../../../../../lib/database/roster";
 import { getClass } from "../../../../../lib/database/classes";
 import {logHttpRoute, onError} from "../../../../../lib/util/helpers";
+import {withLogging} from "../../../../../middleware/withLogging";
 
 const classRosterHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  logHttpRoute(req)
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
@@ -37,4 +37,4 @@ const classRosterHandler: NextApiHandler = async (req: NextApiRequest, res: Next
   }
 };
 
-export default classRosterHandler;
+export default withLogging(classRosterHandler);

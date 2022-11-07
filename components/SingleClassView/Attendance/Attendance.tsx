@@ -11,11 +11,11 @@ type AttendanceProps = {
 }
 export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
   const api = useContext(APIContext);
-  // const curr_time = "1667243796";
-  // const { data: sessionId, error } = useSWR(`api/class/${classId}/attendance`, () => api.getSessions(classId, curr_time));
-  // console.log(sessionId);
-  // if (error) return <CustomError />;
-  // if (!sessionId) return <CustomLoader />;
+  const curr_time = "2022-11-06T05:00:00.000Z";
+  const { data: sessionId, error } = useSWR(`api/class/${classId}/attendance`, () => api.getSessions(classId, curr_time));
+  console.log(sessionId);
+  if (error) return <CustomError />;
+  if (!sessionId) return <CustomLoader />;
   
 
   return (

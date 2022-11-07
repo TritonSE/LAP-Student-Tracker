@@ -8,12 +8,7 @@ const createImage = async (): Promise<string> => {
     text: "INSERT INTO images(img, mime_type) VALUES(NULL, NULL) RETURNING id",
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("Error on insert into image database");
-  }
+  const res = await client.query(query);
 
   return res.rows[0].id;
 };
@@ -33,11 +28,7 @@ const updateImage = async (
     values: [id, b64img, mimeType],
   };
 
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on update image");
-  }
+  await client.query(query);
 
   return getImage(id);
 };
@@ -55,14 +46,7 @@ const getImage = async (id: string): Promise<Image | null> => {
     return null;
   }
 
-  let image: Image;
-  try {
-    image = await decode(Image, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly from database");
-  }
-
-  return image;
+  return await decode(Image, res.rows[0]);
 };
 
 export { createImage, updateImage, getImage };

@@ -4,7 +4,6 @@ import { array, TypeOf } from "io-ts";
 import { decode } from "io-ts-promise";
 
 const StaffArraySchema = array(Staff);
-type staffArray = TypeOf<typeof StaffArraySchema>;
 
 const getAllStaff = async (): Promise<Staff[]> => {
   // query returns one object for each class a teacher is taking (with the classes respective min and max levels) and
@@ -19,12 +18,7 @@ const getAllStaff = async (): Promise<Staff[]> => {
   };
 
   const res = await client.query(query);
-  let staffArrayWithDuplicates: staffArray;
-  try {
-    staffArrayWithDuplicates = await decode(StaffArraySchema, res.rows);
-  } catch (e) {
-    throw Error("Fields returned incorrectly from database");
-  }
+  const staffArrayWithDuplicates: Staff[] = await decode(StaffArraySchema, res.rows);
 
   // map from id to staff objects
   const idToObject = new Map<string, Staff>();

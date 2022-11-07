@@ -8,13 +8,7 @@ const createCommitment = async (userId: string, eventInformationId: string): Pro
     values: [userId, eventInformationId],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on insert into database.");
-  }
-
+  const res = await client.query(query);;
   return res.rows;
 };
 

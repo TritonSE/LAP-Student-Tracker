@@ -37,11 +37,7 @@ const updateAvailability = async (
     values: [id, mon, tue, wed, thu, fri, sat, timeZone],
   };
 
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on update availability");
-  }
+  await client.query(query);
 
   return getAvailabilityById(id);
 };
@@ -56,13 +52,7 @@ const getAvailabilityById = async (id: string): Promise<Availability | null> => 
   if (res.rows.length == 0) {
     return null;
   }
-  let availability: Availability;
-  try {
-    availability = await decode(Availability, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-  return availability;
+  return await decode(Availability, res.rows[0]);
 };
 
 // verifies that a teacher is available for a recurring event

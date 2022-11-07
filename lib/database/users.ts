@@ -14,11 +14,7 @@ const roleSpecificSetup = async (
         text: "INSERT INTO availabilities (user_id, time_zone) VALUES ($1, 	$2)",
         values: [id, "America/Los_Angeles"],
       };
-      try {
-        await client.query(query);
-      } catch (e) {
-        throw Error("CustomError on inserting into availabilities for teachers");
-      }
+      await client.query(query);
       return;
     }
     default:
@@ -48,11 +44,7 @@ const createUser = async (
     text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8 )",
     values: [id, trimmedFirstName, trimmedLastName, email, role, approved, dateCreated, imgId],
   };
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on insert into database");
-  }
+  await client.query(query);
 
   await roleSpecificSetup(id, role);
   return getUser(id);
@@ -83,11 +75,7 @@ const updateUser = async (
     values: [id, firstName, lastName, email, role, approved, address, phone_number],
   };
 
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("Error on update user");
-  }
+  await client.query(query);
 
   return getUser(id);
 };
@@ -105,14 +93,7 @@ const getUser = async (id: string): Promise<User | null> => {
     return null;
   }
 
-  let user: User;
-  try {
-    user = await decode(User, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return user;
+  return await decode(User, res.rows[0]);
 };
 
 const deleteUser = async (id: string): Promise<boolean> => {
@@ -121,11 +102,7 @@ const deleteUser = async (id: string): Promise<boolean> => {
     values: [id],
   };
 
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("Failed to delete user");
-  }
+  await client.query(query);
 
   return true;
 };
@@ -136,15 +113,7 @@ const getAllUsers = async (): Promise<User[]> => {
   };
 
   const res = await client.query(query);
-
-  let allUsers: User[];
-  try {
-    allUsers = await decode(UserArraySchema, res.rows);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return allUsers;
+  return await decode(UserArraySchema, res.rows);
 };
 
 export { createUser, getUser, updateUser, getAllUsers, deleteUser };

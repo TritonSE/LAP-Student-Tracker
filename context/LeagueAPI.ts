@@ -153,6 +153,11 @@ class LeagueAPI {
     const res = await this.client.get("api/students");
     return res.data;
   }
+  
+  async getSessions(classId: string, time?: string): Promise<User[]> {
+    const res = await this.client.get(`api/class/${classId}/sessions?until=${time}`);
+    return res.data;
+  }
 }
 
 export { LeagueAPI };

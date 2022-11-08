@@ -3,9 +3,10 @@ import { StatusCodes } from "http-status-codes";
 import { decode } from "io-ts-promise";
 import { MakeUpLabEvent } from "../../../../models";
 import { CreateMakeUpLabEvent } from "../../../../models";
-import { createEvent } from "../../../../lib/database/events";
+import { createEvent, getTeacherById, NonExistingTeacher, TeacherConflictError, validateTimes } from "../../../../lib/database/events";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
+import { Interval } from "luxon";
 
 /**
  * @swagger
@@ -42,6 +43,10 @@ const labEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApi
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
+        // Verify the teacher exists in the database
+        const teacher = await getTeacherById(createMakeUpLabEvent.teacher);
+        // Verify that teacher doesn't have another event during this make up lab
+        await validateTimes(teacher, [Interval.fromISO(`${createMakeUpLabEvent.start}/${createMakeUpLabEvent.end}`)]);
         // Add the event into the eventInformation table, getting the event ID in return
         const eventInfoId = await createEvent(
           createMakeUpLabEvent.name,
@@ -68,7 +73,11 @@ const labEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApi
         };
         return res.status(StatusCodes.CREATED).json(makeUpLabEvent);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        if (e instanceof NonExistingTeacher || e instanceof TeacherConflictError) {
+          return res.status(StatusCodes.BAD_REQUEST).json(e.message);
+        } else {
+          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        }
       }
     default:
       res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");

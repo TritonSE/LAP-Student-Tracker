@@ -463,70 +463,28 @@ describe("[POST] /api/events/interview", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher UUID 100 does not exist",
+      "Teacher with UUID 100 does not exist",
     );
   });
 
-  test("creates a new interview event", async () => {
-    const start = DateTime.now().toISO();
-    const end = DateTime.now().toISO();
+  test("creates a new interview event with an event conflict", async () => {
     const body: CreateInterviewEvent = {
-      name: "Interview 101",
-      start: start,
-      end: end,
+      name: "Interview 110",
+      start: '2022-01-01T18:45:45.000Z',
+      end: '2022-01-01T19:45:45.000Z',
       color: "blue",
       teacher: "2",
       volunteer: "7"
     };
 
-    const expectedBody: InterviewEvent = {
-      eventInformationId: "",
-      start: start,
-      end: end,
-      name: "Interview 101",
-      color: 'blue',
-    };
     await makeHTTPRequest(
       interviewEventHandler,
       "/api/events/interview",
       undefined,
       "POST",
       body,
-      StatusCodes.CREATED,
-      expectedBody,
-      ['eventInformationId']
-    );
-  });
-
-  test("creates a new class event that fails teacher verification", async () => {
-    const rrule = new RRule({
-      freq: RRule.DAILY,
-      interval: 2,
-      count: 3,
-      dtstart: new Date(2022, 0, 1),
-    });
-    const body: CreateClassEvent = {
-      name: "Math 101",
-      startTime: "10:45",
-      endTime: "11:45",
-      timeZone: "America/Los_Angeles",
-      rrule: rrule.toString(),
-      language: "Java",
-      neverEnding: false,
-      backgroundColor: "blue",
-      teachers: ["teacher@gmail.com"],
-      studentIds: [],
-      checkAvailabilities: false,
-    };
-
-    await makeHTTPRequest(
-      eventHandler,
-      "/api/events/class",
-      undefined,
-      "POST",
-      body,
       StatusCodes.BAD_REQUEST,
-      "Teacher Jane Doe has conflict with class Java Bear"
+      "Teacher Jane Doe has conflict with class Java Bear",
     );
   });
 /**

@@ -45,7 +45,7 @@ const interviewEventHandler: NextApiHandler = async (req: NextApiRequest, res: N
       try {
         // Verify the teacher exists in the database
         const teacher = await getTeacherById(createInterviewEvent.teacher);
-        // Verify that teacher doesn't have another event during this interview 
+        // Verify that teacher doesn't have another event during this interview
         await validateTimes(teacher, [Interval.fromISO(`${createInterviewEvent.start}/${createInterviewEvent.end}`)]);
         // Add the event into the eventInformation table, getting the event ID in return
         const eventInfoId = await createEvent(

@@ -61,7 +61,7 @@ const getTeacherById = async (teacherId: string): Promise<User> => {
   const teacherResult: User[] = res.rows;
   if (teacherResult.length != 1) {
     throw new NonExistingTeacher(
-      `Teacher UUID ${teacherId} does not exist`
+      `Teacher with UUID ${teacherId} does not exist`
     );
   }
 

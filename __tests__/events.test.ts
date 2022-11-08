@@ -6,10 +6,11 @@ import {
   makeEventHTTPRequest,
   makeHTTPRequest,
 } from "./__testutils__/testutils.test";
-import { ClassEvent, CreateClassEvent, CreateInterviewEvent, InterviewEvent } from "../models";
+import { ClassEvent, CreateClassEvent, CreateInterviewEvent, CreateMakeUpLabEvent, InterviewEvent, MakeUpLabEvent } from "../models";
 import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";
 import { DateTime } from "luxon";
+import labEventHandler from "../pages/api/events/lab";
 
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
@@ -434,8 +435,8 @@ describe("[POST] /api/events/interview", () => {
     };
 
     await makeHTTPRequest(
-      eventHandler,
-      "/api/events/class",
+      interviewEventHandler,
+      "/api/events/interview",
       undefined,
       "POST",
       body,
@@ -487,113 +488,100 @@ describe("[POST] /api/events/interview", () => {
       "Teacher Jane Doe has conflict with class Java Bear",
     );
   });
-/**
+});
 
-  test("creates a new class event that passes availability check", async () => {
-    const rrule = new RRule({
-      freq: RRule.DAILY,
-      interval: 2,
-      count: 3,
-      dtstart: new Date(2022, 0, 3),
-    });
-    const body: CreateClassEvent = {
-      name: "Math 101",
-      startTime: "10:00",
-      endTime: "12:00",
-      timeZone: "America/Los_Angeles",
-      rrule: rrule.toString(),
-      language: "Java",
-      neverEnding: false,
-      backgroundColor: "blue",
-      teachers: ["gary@gmail.com"],
-      studentIds: [],
-      checkAvailabilities: true,
+describe("[POST] /api/events/lab", () => {
+  test("creates a new lab event", async () => {
+    const start = DateTime.now().toISO();
+    const end = DateTime.now().toISO();
+    const body: CreateMakeUpLabEvent = {
+      name: "Lab 101",
+      start: start,
+      end: end,
+      color: "blue",
+      teacher: "2",
+      student: "7"
     };
 
-    const expectedBody: ClassEvent = {
+    const expectedBody: MakeUpLabEvent = {
       eventInformationId: "",
-      startTime: convertTimeToISO("10:00", "America/Los_Angeles"),
-      endTime: convertTimeToISO("12:00", "America/Los_Angeles"),
-      timeZone: "America/Los_Angeles",
-      rrule: rrule.toString(),
-      language: "Java",
-      neverEnding: false,
-      backgroundColor: "blue",
+      start: start,
+      end: end,
+      name: "Lab 101",
+      color: 'blue',
     };
-
-    await makeEventHTTPRequest(
-      eventHandler,
-      "/api/events/class",
+    await makeHTTPRequest(
+      labEventHandler,
+      "/api/events/lab",
       undefined,
       "POST",
       body,
       StatusCodes.CREATED,
-      expectedBody
+      expectedBody,
+      ['eventInformationId']
     );
   });
 
-  test("create a new class event for teacher with no availabilities", async () => {
-    const rrule = new RRule({
-      freq: RRule.DAILY,
-      interval: 2,
-      count: 3,
-      dtstart: new Date(2022, 0, 3),
-    });
-    const body: CreateClassEvent = {
-      name: "Math 101",
-      startTime: "10:00",
-      endTime: "12:00",
-      timeZone: "America/Los_Angeles",
-      rrule: rrule.toString(),
-      language: "Java",
-      neverEnding: false,
-      backgroundColor: "blue",
-      teachers: ["ricko@gmail.com"],
-      studentIds: [],
-      checkAvailabilities: true,
+  test("creates a new lab event with bad parameters", async () => {
+    const body = {
+      name: "Lab 101",
+      color: "blue",
+      teacher: "2",
+      student: "7"
     };
 
     await makeHTTPRequest(
-      eventHandler,
-      "/api/events/class",
+      labEventHandler,
+      "/api/events/lab",
       undefined,
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher Rick Ord is not available for class Math 101"
+      FIELDS_NOT_ENTERED_CORRECTLY
     );
   });
 
-  test("create a new class event for teacher with some conflicting availabilities", async () => {
-    const rrule = new RRule({
-      freq: RRule.DAILY,
-      interval: 2,
-      count: 3,
-      dtstart: new Date(2022, 0, 3),
-    });
-    const body: CreateClassEvent = {
-      name: "Math 101",
-      startTime: "10:00",
-      endTime: "12:00",
-      timeZone: "America/Los_Angeles",
-      rrule: rrule.toString(),
-      language: "Java",
-      neverEnding: false,
-      backgroundColor: "blue",
-      teachers: ["miles@gmail.com"],
-      studentIds: [],
-      checkAvailabilities: true,
+  test("creates a new lab event with non-existing teacher", async () => {
+    const start = DateTime.now().toISO();
+    const end = DateTime.now().toISO();
+    const body: CreateMakeUpLabEvent = {
+      name: "Lab 110",
+      start: start,
+      end: end,
+      color: "blue",
+      teacher: "100",
+      student: "7"
     };
 
     await makeHTTPRequest(
-      eventHandler,
-      "/api/events/class",
+      labEventHandler,
+      "/api/events/lab",
       undefined,
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher Miles Jones is not available for class Math 101"
+      "Teacher with UUID 100 does not exist",
     );
   });
-  */
+
+  test("creates a new lab event with an event conflict", async () => {
+    const body: CreateMakeUpLabEvent = {
+      name: "Lab 110",
+      start: '2022-01-01T18:45:45.000Z',
+      end: '2022-01-01T19:45:45.000Z',
+      color: "blue",
+      teacher: "2",
+      student: "7"
+    };
+
+    await makeHTTPRequest(
+      labEventHandler,
+      "/api/events/lab",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "Teacher Jane Doe has conflict with class Java Bear",
+    );
+  });
 });

@@ -661,7 +661,7 @@ components:
           type: string
         teacher:
           type: string
-        volunteer:
+        student:
           type: string
       required:
         - name
@@ -669,4 +669,4 @@ components:
         - start
         - end
         - teacher
-        - volunteer
+        - student

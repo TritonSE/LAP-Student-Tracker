@@ -3,7 +3,13 @@ import { StatusCodes } from "http-status-codes";
 import { decode } from "io-ts-promise";
 import { MakeUpLabEvent } from "../../../../models";
 import { CreateMakeUpLabEvent } from "../../../../models";
-import { createEvent, getTeacherById, NonExistingTeacher, TeacherConflictError, validateTimes } from "../../../../lib/database/events";
+import {
+  createEvent,
+  getTeacherById,
+  NonExistingTeacher,
+  TeacherConflictError,
+  validateTimes,
+} from "../../../../lib/database/events";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
 import { Interval } from "luxon";
@@ -46,7 +52,9 @@ const labEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApi
         // Verify the teacher exists in the database
         const teacher = await getTeacherById(createMakeUpLabEvent.teacher);
         // Verify that teacher doesn't have another event during this make up lab
-        await validateTimes(teacher, [Interval.fromISO(`${createMakeUpLabEvent.start}/${createMakeUpLabEvent.end}`)]);
+        await validateTimes(teacher, [
+          Interval.fromISO(`${createMakeUpLabEvent.start}/${createMakeUpLabEvent.end}`),
+        ]);
         // Add the event into the eventInformation table, getting the event ID in return
         const eventInfoId = await createEvent(
           createMakeUpLabEvent.name,

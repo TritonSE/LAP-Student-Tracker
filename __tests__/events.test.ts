@@ -6,7 +6,14 @@ import {
   makeEventHTTPRequest,
   makeHTTPRequest,
 } from "./__testutils__/testutils.test";
-import { ClassEvent, CreateClassEvent, CreateInterviewEvent, CreateMakeUpLabEvent, InterviewEvent, MakeUpLabEvent } from "../models";
+import {
+  ClassEvent,
+  CreateClassEvent,
+  CreateInterviewEvent,
+  CreateMakeUpLabEvent,
+  InterviewEvent,
+  MakeUpLabEvent,
+} from "../models";
 import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";
 import { DateTime } from "luxon";
@@ -404,7 +411,7 @@ describe("[POST] /api/events/interview", () => {
       end: end,
       color: "blue",
       teacher: "2",
-      volunteer: "7"
+      volunteer: "7",
     };
 
     const expectedBody: InterviewEvent = {
@@ -412,7 +419,7 @@ describe("[POST] /api/events/interview", () => {
       start: start,
       end: end,
       name: "Interview 101",
-      color: 'blue',
+      color: "blue",
     };
     await makeHTTPRequest(
       interviewEventHandler,
@@ -422,7 +429,7 @@ describe("[POST] /api/events/interview", () => {
       body,
       StatusCodes.CREATED,
       expectedBody,
-      ['eventInformationId']
+      ["eventInformationId"]
     );
   });
 
@@ -431,7 +438,7 @@ describe("[POST] /api/events/interview", () => {
       name: "Interview 101",
       color: "blue",
       teacher: "2",
-      volunteer: "7"
+      volunteer: "7",
     };
 
     await makeHTTPRequest(
@@ -454,7 +461,7 @@ describe("[POST] /api/events/interview", () => {
       end: end,
       color: "blue",
       teacher: "100",
-      volunteer: "7"
+      volunteer: "7",
     };
 
     await makeHTTPRequest(
@@ -464,18 +471,18 @@ describe("[POST] /api/events/interview", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher with UUID 100 does not exist",
+      "Teacher with UUID 100 does not exist"
     );
   });
 
   test("creates a new interview event with an event conflict", async () => {
     const body: CreateInterviewEvent = {
       name: "Interview 110",
-      start: '2022-01-01T18:45:45.000Z',
-      end: '2022-01-01T19:45:45.000Z',
+      start: "2022-01-01T18:45:45.000Z",
+      end: "2022-01-01T19:45:45.000Z",
       color: "blue",
       teacher: "2",
-      volunteer: "7"
+      volunteer: "7",
     };
 
     await makeHTTPRequest(
@@ -485,7 +492,7 @@ describe("[POST] /api/events/interview", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher Jane Doe has conflict with class Java Bear",
+      "Teacher Jane Doe has conflict with class Java Bear"
     );
   });
 });
@@ -500,7 +507,7 @@ describe("[POST] /api/events/lab", () => {
       end: end,
       color: "blue",
       teacher: "2",
-      student: "7"
+      student: "7",
     };
 
     const expectedBody: MakeUpLabEvent = {
@@ -508,7 +515,7 @@ describe("[POST] /api/events/lab", () => {
       start: start,
       end: end,
       name: "Lab 101",
-      color: 'blue',
+      color: "blue",
     };
     await makeHTTPRequest(
       labEventHandler,
@@ -518,7 +525,7 @@ describe("[POST] /api/events/lab", () => {
       body,
       StatusCodes.CREATED,
       expectedBody,
-      ['eventInformationId']
+      ["eventInformationId"]
     );
   });
 
@@ -527,7 +534,7 @@ describe("[POST] /api/events/lab", () => {
       name: "Lab 101",
       color: "blue",
       teacher: "2",
-      student: "7"
+      student: "7",
     };
 
     await makeHTTPRequest(
@@ -550,7 +557,7 @@ describe("[POST] /api/events/lab", () => {
       end: end,
       color: "blue",
       teacher: "100",
-      student: "7"
+      student: "7",
     };
 
     await makeHTTPRequest(
@@ -560,18 +567,18 @@ describe("[POST] /api/events/lab", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher with UUID 100 does not exist",
+      "Teacher with UUID 100 does not exist"
     );
   });
 
   test("creates a new lab event with an event conflict", async () => {
     const body: CreateMakeUpLabEvent = {
       name: "Lab 110",
-      start: '2022-01-01T18:45:45.000Z',
-      end: '2022-01-01T19:45:45.000Z',
+      start: "2022-01-01T18:45:45.000Z",
+      end: "2022-01-01T19:45:45.000Z",
       color: "blue",
       teacher: "2",
-      student: "7"
+      student: "7",
     };
 
     await makeHTTPRequest(
@@ -581,7 +588,7 @@ describe("[POST] /api/events/lab", () => {
       "POST",
       body,
       StatusCodes.BAD_REQUEST,
-      "Teacher Jane Doe has conflict with class Java Bear",
+      "Teacher Jane Doe has conflict with class Java Bear"
     );
   });
 });

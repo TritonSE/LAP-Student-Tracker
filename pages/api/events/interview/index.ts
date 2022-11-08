@@ -3,7 +3,13 @@ import { StatusCodes } from "http-status-codes";
 import { decode } from "io-ts-promise";
 import { InterviewEvent } from "../../../../models";
 import { CreateInterviewEvent } from "../../../../models";
-import { createEvent, getTeacherById, NonExistingTeacher, TeacherConflictError, validateTimes } from "../../../../lib/database/events";
+import {
+  createEvent,
+  getTeacherById,
+  NonExistingTeacher,
+  TeacherConflictError,
+  validateTimes,
+} from "../../../../lib/database/events";
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
 import { Interval } from "luxon";
@@ -46,7 +52,9 @@ const interviewEventHandler: NextApiHandler = async (req: NextApiRequest, res: N
         // Verify the teacher exists in the database
         const teacher = await getTeacherById(createInterviewEvent.teacher);
         // Verify that teacher doesn't have another event during this interview
-        await validateTimes(teacher, [Interval.fromISO(`${createInterviewEvent.start}/${createInterviewEvent.end}`)]);
+        await validateTimes(teacher, [
+          Interval.fromISO(`${createInterviewEvent.start}/${createInterviewEvent.end}`),
+        ]);
         // Add the event into the eventInformation table, getting the event ID in return
         const eventInfoId = await createEvent(
           createInterviewEvent.name,
@@ -74,9 +82,9 @@ const interviewEventHandler: NextApiHandler = async (req: NextApiRequest, res: N
         return res.status(StatusCodes.CREATED).json(interviewEvent);
       } catch (e) {
         if (e instanceof NonExistingTeacher || e instanceof TeacherConflictError) {
-            return res.status(StatusCodes.BAD_REQUEST).json(e.message);
+          return res.status(StatusCodes.BAD_REQUEST).json(e.message);
         } else {
-            return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
         }
       }
     default:

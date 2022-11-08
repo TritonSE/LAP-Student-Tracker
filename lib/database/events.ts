@@ -48,7 +48,7 @@ const teachersExist = async (teachers: string[]): Promise<User[]> => {
 const getTeacherById = async (teacherId: string): Promise<User> => {
   const query = {
     text: "SELECT * from users WHERE id = $1 AND role = 'Teacher'",
-    values: [teacherId]
+    values: [teacherId],
   };
 
   let res;
@@ -60,9 +60,7 @@ const getTeacherById = async (teacherId: string): Promise<User> => {
 
   const teacherResult: User[] = res.rows;
   if (teacherResult.length != 1) {
-    throw new NonExistingTeacher(
-      `Teacher with UUID ${teacherId} does not exist`
-    );
+    throw new NonExistingTeacher(`Teacher with UUID ${teacherId} does not exist`);
   }
 
   return teacherResult[0];

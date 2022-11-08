@@ -54,7 +54,12 @@ const makeHTTPRequest = async (
         if (expectedBody.hasOwnProperty(key)) delete expectedBody[key];
       });
     }
-
+    if (expectedBody instanceof Array && resData instanceof Array) {
+      // Add this case so expected values in an array with a different
+      // order but the same elements are still validated correctly.
+      resData.sort();
+      expectedBody.sort();
+    }
     expect(resData).toEqual(expectedBody);
   }
   return res;

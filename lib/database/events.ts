@@ -45,6 +45,29 @@ const teachersExist = async (teachers: string[]): Promise<User[]> => {
   return teacherResult;
 };
 
+const getTeacherById = async (teacherId: string): Promise<User> => {
+  const query = {
+    text: "SELECT * from users WHERE id = $1 AND role = 'Teacher'",
+    values: [teacherId]
+  };
+
+  let res;
+  try {
+    res = await client.query(query);
+  } catch (e) {
+    throw Error("CustomError on select of database.");
+  }
+
+  const teacherResult: User[] = res.rows;
+  if (teacherResult.length != 1) {
+    throw new NonExistingTeacher(
+      `Teacher UUID ${teacherId} does not exist`
+    );
+  }
+
+  return teacherResult[0];
+};
+
 // Checks whether teacher's current schedule conflicts with desired intervals
 const validateTimes = async (teacher: User, intervals: Interval[]): Promise<void> => {
   const query = {
@@ -99,14 +122,15 @@ const validateTimes = async (teacher: User, intervals: Interval[]): Promise<void
 };
 
 // Create an event in the database with given parameters and return id
-const createClassEvent = async (
+const createEvent = async (
   name: string,
   neverEnding: boolean,
+  type: string,
   backgroundColor: string
 ): Promise<string> => {
   const query = {
     text: "INSERT INTO event_information(name, background_color, type, never_ending) VALUES($1, $2, $3, $4) RETURNING id",
-    values: [name, backgroundColor, "Class", neverEnding],
+    values: [name, backgroundColor, type, neverEnding],
   };
 
   let res;
@@ -118,6 +142,15 @@ const createClassEvent = async (
 
   return res.rows[0].id;
 };
+
+const createClassEvent = async (
+  name: string,
+  neverEnding: boolean,
+  backgroundColor: string
+): Promise<string> => {
+  return createEvent(name, neverEnding, "Class", backgroundColor);
+};
+
 const deleteClassEvent = async (id: string): Promise<string | null> => {
   const query = {
     text: "DELETE FROM event_information WHERE id = $1 RETURNING *",
@@ -134,9 +167,11 @@ const deleteClassEvent = async (id: string): Promise<string | null> => {
 };
 
 export {
+  createEvent,
   createClassEvent,
   validateTimes,
   teachersExist,
+  getTeacherById,
   deleteClassEvent,
   NonExistingTeacher,
   TeacherConflictError,

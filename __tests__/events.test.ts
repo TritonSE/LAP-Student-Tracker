@@ -1,13 +1,15 @@
 import eventHandler from "../pages/api/events/class";
+import interviewEventHandler from "../pages/api/events/interview";
 import { client } from "../lib/db";
 import {
   convertTimeToISO,
   makeEventHTTPRequest,
   makeHTTPRequest,
 } from "./__testutils__/testutils.test";
-import { ClassEvent, CreateClassEvent } from "../models";
+import { ClassEvent, CreateClassEvent, CreateInterviewEvent, InterviewEvent } from "../models";
 import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";
+import { DateTime } from "luxon";
 
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
@@ -39,6 +41,9 @@ beforeAll(async () => {
   );
   await client.query(
     "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, date_created, picture_id) VALUES('6', 'Miles', 'Jones', 'miles@gmail.com', 'Teacher', '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
+  );
+  await client.query(
+    "INSERT INTO users(id, first_name, last_name, email, role, address, phone_number, date_created, picture_id) VALUES('7', 'Volunteer', 'Person', 'volunteer@gmail.com', 'Volunteer', '123 Main Street', '1234567890', '5/23/2022, 4:45:03 AM', '1')"
   );
   await client.query(
     "INSERT INTO event_information(id, name, background_color, type, never_ending) VALUES('e_1', 'Java Bear', 'blue', 'Class', false)"
@@ -386,4 +391,251 @@ describe("[POST] /api/events/class", () => {
       "Teacher Miles Jones is not available for class Math 101"
     );
   });
+});
+
+describe("[POST] /api/events/interview", () => {
+  test("creates a new interview event", async () => {
+    const start = DateTime.now().toISO();
+    const end = DateTime.now().toISO();
+    const body: CreateInterviewEvent = {
+      name: "Interview 101",
+      start: start,
+      end: end,
+      color: "blue",
+      teacher: "2",
+      volunteer: "7"
+    };
+
+    const expectedBody: InterviewEvent = {
+      eventInformationId: "",
+      start: start,
+      end: end,
+      name: "Interview 101",
+      color: 'blue',
+    };
+    await makeHTTPRequest(
+      interviewEventHandler,
+      "/api/events/interview",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody,
+      ['eventInformationId']
+    );
+  });
+
+  test("creates a new interview event with bad parameters", async () => {
+    const body = {
+      name: "Interview 101",
+      color: "blue",
+      teacher: "2",
+      volunteer: "7"
+    };
+
+    await makeHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      FIELDS_NOT_ENTERED_CORRECTLY
+    );
+  });
+
+  test("creates a new interview event with non-existing teacher", async () => {
+    const start = DateTime.now().toISO();
+    const end = DateTime.now().toISO();
+    const body: CreateInterviewEvent = {
+      name: "Interview 110",
+      start: start,
+      end: end,
+      color: "blue",
+      teacher: "100",
+      volunteer: "7"
+    };
+
+    await makeHTTPRequest(
+      interviewEventHandler,
+      "/api/events/interview",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "Teacher UUID 100 does not exist",
+    );
+  });
+
+  test("creates a new interview event", async () => {
+    const start = DateTime.now().toISO();
+    const end = DateTime.now().toISO();
+    const body: CreateInterviewEvent = {
+      name: "Interview 101",
+      start: start,
+      end: end,
+      color: "blue",
+      teacher: "2",
+      volunteer: "7"
+    };
+
+    const expectedBody: InterviewEvent = {
+      eventInformationId: "",
+      start: start,
+      end: end,
+      name: "Interview 101",
+      color: 'blue',
+    };
+    await makeHTTPRequest(
+      interviewEventHandler,
+      "/api/events/interview",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody,
+      ['eventInformationId']
+    );
+  });
+
+  test("creates a new class event that fails teacher verification", async () => {
+    const rrule = new RRule({
+      freq: RRule.DAILY,
+      interval: 2,
+      count: 3,
+      dtstart: new Date(2022, 0, 1),
+    });
+    const body: CreateClassEvent = {
+      name: "Math 101",
+      startTime: "10:45",
+      endTime: "11:45",
+      timeZone: "America/Los_Angeles",
+      rrule: rrule.toString(),
+      language: "Java",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["teacher@gmail.com"],
+      studentIds: [],
+      checkAvailabilities: false,
+    };
+
+    await makeHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "Teacher Jane Doe has conflict with class Java Bear"
+    );
+  });
+/**
+
+  test("creates a new class event that passes availability check", async () => {
+    const rrule = new RRule({
+      freq: RRule.DAILY,
+      interval: 2,
+      count: 3,
+      dtstart: new Date(2022, 0, 3),
+    });
+    const body: CreateClassEvent = {
+      name: "Math 101",
+      startTime: "10:00",
+      endTime: "12:00",
+      timeZone: "America/Los_Angeles",
+      rrule: rrule.toString(),
+      language: "Java",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["gary@gmail.com"],
+      studentIds: [],
+      checkAvailabilities: true,
+    };
+
+    const expectedBody: ClassEvent = {
+      eventInformationId: "",
+      startTime: convertTimeToISO("10:00", "America/Los_Angeles"),
+      endTime: convertTimeToISO("12:00", "America/Los_Angeles"),
+      timeZone: "America/Los_Angeles",
+      rrule: rrule.toString(),
+      language: "Java",
+      neverEnding: false,
+      backgroundColor: "blue",
+    };
+
+    await makeEventHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody
+    );
+  });
+
+  test("create a new class event for teacher with no availabilities", async () => {
+    const rrule = new RRule({
+      freq: RRule.DAILY,
+      interval: 2,
+      count: 3,
+      dtstart: new Date(2022, 0, 3),
+    });
+    const body: CreateClassEvent = {
+      name: "Math 101",
+      startTime: "10:00",
+      endTime: "12:00",
+      timeZone: "America/Los_Angeles",
+      rrule: rrule.toString(),
+      language: "Java",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["ricko@gmail.com"],
+      studentIds: [],
+      checkAvailabilities: true,
+    };
+
+    await makeHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "Teacher Rick Ord is not available for class Math 101"
+    );
+  });
+
+  test("create a new class event for teacher with some conflicting availabilities", async () => {
+    const rrule = new RRule({
+      freq: RRule.DAILY,
+      interval: 2,
+      count: 3,
+      dtstart: new Date(2022, 0, 3),
+    });
+    const body: CreateClassEvent = {
+      name: "Math 101",
+      startTime: "10:00",
+      endTime: "12:00",
+      timeZone: "America/Los_Angeles",
+      rrule: rrule.toString(),
+      language: "Java",
+      neverEnding: false,
+      backgroundColor: "blue",
+      teachers: ["miles@gmail.com"],
+      studentIds: [],
+      checkAvailabilities: true,
+    };
+
+    await makeHTTPRequest(
+      eventHandler,
+      "/api/events/class",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "Teacher Miles Jones is not available for class Math 101"
+    );
+  });
+  */
 });

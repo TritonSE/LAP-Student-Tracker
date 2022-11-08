@@ -19,49 +19,28 @@ const getAnnouncements = async (classId: string): Promise<Announcement[]> => {
   }
 };
 
-const getAnnouncementById = async (
-  classId: string,
-  announcementId: string
-): Promise<Announcement | null> => {
-  const query = {
-    text: "SELECT event_information_id, title, content, announcement_id FROM announcements WHERE event_information_id = $1 AND announcement_id = $2",
-    values: [classId, announcementId],
-  };
-
-  const res = await client.query(query);
-
-  if (res.rows.length == 0) {
-    return null;
-  }
-
-  let announcement: Announcement;
-  try {
-    announcement = await decode(Announcement, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return announcement;
-};
-
 const createAnnouncement = async (
   classId: string,
   title: string,
   content: string
 ): Promise<Announcement | null> => {
   const query = {
-    text: "INSERT INTO announcements(event_information_id, title, content) VALUES($1, $2, $3) RETURNING announcement_id",
+    text:
+      "INSERT INTO announcements(event_information_id, title, content) VALUES($1, $2, $3) " +
+      "RETURNING event_information_id, title, content, announcement_id",
     values: [classId, title, content],
   };
 
   let res;
+  let announcement: Announcement;
   try {
     res = await client.query(query);
+    announcement = await decode(Announcement, res.rows[0]);
   } catch (e) {
-    throw Error("CustomError on inserting announcement into database.");
+    throw Error("Error inserting announcement into database.");
   }
 
-  return getAnnouncementById(classId, res.rows[0].announcementId);
+  return announcement;
 };
 
 const deleteAnnouncement = async (
@@ -77,7 +56,7 @@ const deleteAnnouncement = async (
   try {
     res = await client.query(query);
   } catch (e) {
-    throw Error("CustomError on delete announcement.");
+    throw Error("Failed to delete announcement.");
   }
 
   if (res.rows.length == 0) {

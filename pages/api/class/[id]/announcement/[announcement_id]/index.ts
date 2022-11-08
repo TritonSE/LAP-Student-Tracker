@@ -34,7 +34,7 @@ export const announcementIdHandler: NextApiHandler = async (
   res: NextApiResponse
 ) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
   const classId = req.query.id as string;
   const announcementId = req.query.announcement_id as string;

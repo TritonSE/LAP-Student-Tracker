@@ -1,14 +1,40 @@
 import React, { useState } from "react";
 import styles from "./attendance.module.css";
 import { Attendance } from "../../../models/Attendance";
+import { CustomError } from "../../util/CustomError";
+import { AttendanceTypes, CreateAttendance } from "../,,/../../../models";
+import { AttendanceRow } from "./AttendanceRow";
+
 
 type AttendanceBoxProps = {
-    attendances: Attendance[] | null;
+    attendances: Attendance[] | undefined
 };
 
 const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
     attendances,
 }) => {
+    if (!attendances){
+        return <p>This date has no sessions</p>
+    }
+
+    const temp: [string, AttendanceTypes][] = []
+    attendances.forEach(function(attendance, index){
+        temp.push([attendance.userId, attendance.attendance])
+    })
+
+    const [newAttendances, setAttendance] = useState(new Map(temp));
+    const updateAttendances = (key: string, value: AttendanceTypes) => {
+        setAttendance(new Map(newAttendances.set(key, value)));
+    }
+    const names = new Map();
+    attendances.forEach(function(attendance, index){
+        const fullName = attendance.firstName + " " +attendance.lastName;
+        names.set(attendance.userId, fullName);
+    })
+
+    console.log(names);
+    console.log(newAttendances);
+
     const [option, setOption] = useState("");
     const formSubmit = () => {
         
@@ -22,53 +48,16 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
                         <p className={styles.userName}>Name</p>
                         <p>Attendance</p>
                     </div>
-                    <div className={styles.attendanceRow}>
-                        <p className={styles.userName}>Albert Alizi</p>
-                        <div className={styles.userAttendance}>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="present"
-                                    name="select-attendance"
-                                    value="Present"
-                                    onChange={(_) => setOption("Present")}
-                                    className={styles.attendanceButton}
-                                    checked={option == "Present"}
-                                />
-                                <label htmlFor="present" className={styles.positionText}>
-                                    Present
-                                </label>
-                            </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="unexcused"
-                                    name="select-attendance"
-                                    value="Unexcused"
-                                    onChange={(_) => setOption("Unexcused")}
-                                    className={styles.attendanceButton}
-                                    checked={option == "Unexcused"}
-                                />
-                                <label htmlFor="unexcused" className={styles.positionText}>
-                                    Unexcused
-                                </label>
-                            </div>
-                            <div>
-                                <input
-                                    type="radio"
-                                    id="excused"
-                                    name="select-attendance"
-                                    value="Excused"
-                                    onChange={(_) => setOption("Excused")}
-                                    className={styles.attendanceButton}
-                                    checked={option == "Excused"}
-                                />
-                                <label htmlFor="excused" className={styles.positionText}>
-                                    Excused
-                                </label>
-                            </div>
-                        </div>
-                    </div>
+                    {attendances.map(attendance => {
+                        return(
+                            <AttendanceRow
+                                onAttendanceChange={updateAttendances}
+                                name={names.get(attendance.userId)}
+                                userId={attendance.userId}
+                                attendance={newAttendances.has(attendance.userId) ? newAttendances.get(attendance.userId) : null}
+                            ></AttendanceRow>
+                        )
+                    })}
                 </div>
                 <hr></hr>
                 <button className={styles.saveAttendance}>

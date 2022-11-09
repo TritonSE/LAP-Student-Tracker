@@ -120,5 +120,5 @@ export {
   getSessions,
   getAttendanceFromSessionID,
   getSingleUserAttendanceFromClassID,
-  createAttendance,
-};
+  createAttendance
+};  

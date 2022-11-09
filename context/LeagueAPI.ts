@@ -6,6 +6,7 @@ import { Student } from "../models";
 import { CreateUser, UpdateUser, User } from "../models";
 import { Image, UpdateImage } from "../models";
 import { Availability } from "../models";
+import { Attendance } from "../models"
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -154,8 +155,13 @@ class LeagueAPI {
     return res.data;
   }
   
-  async getSessions(classId: string, time?: string): Promise<User[]> {
+  async getSessions(classId: string, time?: string) {
     const res = await this.client.get(`api/class/${classId}/sessions?until=${time}`);
+    return res.data;
+  }
+
+  async getAttendanceFromSessionID(session: string, classId: string): Promise<Attendance[]>  {
+    const res = await this.client.get(`api/class/${classId}/attendance/${session}`);
     return res.data;
   }
 }

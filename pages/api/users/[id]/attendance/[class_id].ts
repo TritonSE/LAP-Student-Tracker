@@ -2,7 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSingleUserAttendanceFromClassID } from "../../../../../lib/database/attendance";
 import {withLogging} from "../../../../../middleware/withLogging";
-import {onError} from "../../../../../lib/util/helpers";
+import {onError} from "../../../../../logger/logger";
 
 /**
  * @swagger

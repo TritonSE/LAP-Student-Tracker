@@ -7,8 +7,8 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { CreateAttendance } from "../../../../../models";
 import { array } from "io-ts";
-import {logHttpRoute, onError} from "../../../../../lib/util/helpers";
 import {withLogging} from "../../../../../middleware/withLogging";
+import {logHttpRoute, onError} from "../../../../../logger/logger";
 const CreateAttendanceArraySchema = array(CreateAttendance);
 /**
  * @swagger

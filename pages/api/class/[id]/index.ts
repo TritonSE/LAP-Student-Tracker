@@ -4,8 +4,8 @@ import { UpdateClass } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
-import {logHttpRoute, onError} from "../../../../lib/util/helpers";
 import {withLogging} from "../../../../middleware/withLogging";
+import {logHttpRoute, onError} from "../../../../logger/logger";
 
 /**
  * @swagger

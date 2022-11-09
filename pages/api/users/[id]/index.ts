@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
 import { getUser, updateUser, deleteUser } from "../../../../lib/database/users";
 import {withLogging} from "../../../../middleware/withLogging";
-import {onError} from "../../../../lib/util/helpers";
+import {onError} from "../../../../logger/logger";
 
 /**
  * @swagger

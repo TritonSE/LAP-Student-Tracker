@@ -5,7 +5,7 @@ import { Availability } from "../../../models";
 import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
 import { withAuth } from "../../../middleware/withAuth";
 import {withLogging} from "../../../middleware/withLogging";
-import {onError} from "../../../lib/util/helpers";
+import {onError} from "../../../logger/logger";
 
 /**
  * @swagger
@@ -73,7 +73,7 @@ export const availabilityIdHandler: NextApiHandler = async (
         return res.status(StatusCodes.ACCEPTED).json(availability);
       } catch (e) {
         onError(e);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
     case "PATCH": {
@@ -100,7 +100,7 @@ export const availabilityIdHandler: NextApiHandler = async (
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         onError(e);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
     default: {

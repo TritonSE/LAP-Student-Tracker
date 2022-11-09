@@ -5,9 +5,8 @@ import { CreateUser } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import {logger} from "../../../logger/logger";
+import {logger, onError} from "../../../logger/logger";
 import {withLogging} from "../../../middleware/withLogging";
-import {onError} from "../../../lib/util/helpers";
 
 /**
  * @swagger

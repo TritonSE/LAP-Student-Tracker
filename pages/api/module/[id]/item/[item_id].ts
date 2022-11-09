@@ -3,7 +3,7 @@ import { getModule } from "../../../../../lib/database/modules";
 import { getItem, deleteItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
 import {withLogging} from "../../../../../middleware/withLogging";
-import {onError} from "../../../../../lib/util/helpers";
+import {onError} from "../../../../../logger/logger";
 
 /**
  * @swagger

@@ -2,8 +2,8 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getRoster } from "../../../../../lib/database/roster";
 import { getClass } from "../../../../../lib/database/classes";
-import {logHttpRoute, onError} from "../../../../../lib/util/helpers";
 import {withLogging} from "../../../../../middleware/withLogging";
+import {logHttpRoute, onError} from "../../../../../logger/logger";
 
 const classRosterHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {

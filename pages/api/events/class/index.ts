@@ -19,7 +19,7 @@ import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
 import { withAuth } from "../../../../middleware/withAuth";
 import {withLogging} from "../../../../middleware/withLogging";
-import {onError} from "../../../../lib/util/helpers";
+import {onError} from "../../../../logger/logger";
 
 /**
  * @swagger

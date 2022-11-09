@@ -1,8 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSessions } from "../../../../lib/database/attendance";
-import {logHttpRoute, onError} from "../../../../lib/util/helpers";
 import {withLogging} from "../../../../middleware/withLogging";
+import {logHttpRoute, onError} from "../../../../logger/logger";
 
 /**
  * @swagger

@@ -2,8 +2,8 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getClass } from "../../../../../lib/database/classes";
 import { getClassModules } from "../../../../../lib/database/modules";
 import { StatusCodes } from "http-status-codes";
-import {logHttpRoute, onError} from "../../../../../lib/util/helpers";
 import {withLogging} from "../../../../../middleware/withLogging";
+import {logHttpRoute, onError} from "../../../../../logger/logger";
 
 /**
  * @swagger

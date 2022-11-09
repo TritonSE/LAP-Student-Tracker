@@ -2,8 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getAllStaff } from "../../../lib/database/staff";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
-import {logger} from "../../../logger/logger";
-import {logHttpRoute, onError} from "../../../lib/util/helpers";
+import {logger, logHttpRoute, onError} from "../../../logger/logger";
 import {withLogging} from "../../../middleware/withLogging";
 
 

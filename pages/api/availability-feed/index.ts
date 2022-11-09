@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getAvailabilityFeed } from "../../../lib/database/availability-feed";
-import {logHttpRoute, onError} from "../../../lib/util/helpers";
+import {logHttpRoute, onError} from "../../../logger/logger";
 
 /**
  * @swagger

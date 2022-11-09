@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getEventFeed } from "../../../lib/database/calendar-events";
 import { StatusCodes } from "http-status-codes";
-import {logHttpRoute, onError} from "../../../lib/util/helpers";
+import {logHttpRoute, onError} from "../../../logger/logger";
 
 /**
  * @swagger

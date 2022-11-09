@@ -4,7 +4,7 @@ import { UpdateModule } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import {withLogging} from "../../../../middleware/withLogging";
-import {onError} from "../../../../lib/util/helpers";
+import {onError} from "../../../../logger/logger";
 
 // Handles all requests to /api/module/[id]
 /**

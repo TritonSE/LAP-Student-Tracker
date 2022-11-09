@@ -7,6 +7,7 @@ import { StatusCodes } from "http-status-codes";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import {logger} from "../../../logger/logger";
 import {withLogging} from "../../../middleware/withLogging";
+import {onError} from "../../../lib/util/helpers";
 
 /**
  * @swagger
@@ -51,11 +52,11 @@ import {withLogging} from "../../../middleware/withLogging";
 const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case "POST": {
-      logger.http("POST /api/users requested with the following body: " + req.body);
       let newUser: CreateUser;
       try {
         newUser = await decode(CreateUser, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -70,6 +71,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -98,6 +100,7 @@ const userHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResp
           result = result.filter((user) => user.approved == approvalStatus);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }

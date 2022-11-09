@@ -5,6 +5,7 @@ import { CreateItem } from "../../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import {withLogging} from "../../../../../middleware/withLogging";
+import {onError} from "../../../../../lib/util/helpers";
 
 /**
  * @swagger
@@ -70,6 +71,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       return res.status(StatusCodes.NOT_FOUND).json("module not found");
     }
   } catch (e) {
+    onError(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
@@ -79,6 +81,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         const modules = await getModuleItems(moduleId);
         return res.status(StatusCodes.ACCEPTED).json(modules);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -88,12 +91,14 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       try {
         newItem = await decode(CreateItem, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
         const result = await createItem(moduleId, newItem.title, newItem.link);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }

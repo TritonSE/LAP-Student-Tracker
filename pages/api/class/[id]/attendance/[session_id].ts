@@ -94,7 +94,7 @@ export const sessionIDHandler: NextApiHandler = async (
         const attendanceArray = await getAttendanceFromSessionID(sessionId, classId);
         return res.status(StatusCodes.ACCEPTED).json(attendanceArray);
       } catch (e) {
-        onError(e)
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
@@ -104,14 +104,14 @@ export const sessionIDHandler: NextApiHandler = async (
       try {
         newAttendance = await decode(CreateAttendanceArraySchema, req.body);
       } catch (e) {
-        onError(e)
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
         const result = await createAttendance(sessionId, classId, newAttendance);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        onError(e)
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

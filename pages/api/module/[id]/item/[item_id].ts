@@ -3,6 +3,7 @@ import { getModule } from "../../../../../lib/database/modules";
 import { getItem, deleteItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
 import {withLogging} from "../../../../../middleware/withLogging";
+import {onError} from "../../../../../lib/util/helpers";
 
 /**
  * @swagger
@@ -57,6 +58,7 @@ export const deleteItemHandler: NextApiHandler = async (
       return res.status(StatusCodes.NOT_FOUND).json("item not found");
     }
   } catch (e) {
+    onError(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
@@ -66,6 +68,7 @@ export const deleteItemHandler: NextApiHandler = async (
         const result = await deleteItem(itemId);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }

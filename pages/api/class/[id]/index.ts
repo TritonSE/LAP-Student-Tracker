@@ -68,7 +68,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
         }
         return res.status(StatusCodes.ACCEPTED).json(classes);
       } catch (e) {
-        onError(e)
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -97,7 +97,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        onError(e)
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }

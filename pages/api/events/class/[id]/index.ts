@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { deleteClassEvent } from "../../../../../lib/database/events";
 import { StatusCodes } from "http-status-codes";
 import {withLogging} from "../../../../../middleware/withLogging";
+import {onError} from "../../../../../lib/util/helpers";
 
 // Handles all requests to /api/events/class/{id}
 export const classEventHandler: NextApiHandler = async (
@@ -23,7 +24,8 @@ export const classEventHandler: NextApiHandler = async (
         const result = await deleteClassEvent(eventId);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        onError(e);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
 

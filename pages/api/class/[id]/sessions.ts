@@ -33,7 +33,7 @@ import {withLogging} from "../../../../middleware/withLogging";
  *                    description: The session id (determined when creating the event by postgres)
  */
 export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  logHttpRoute(req)
+  logHttpRoute(req);
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
@@ -49,7 +49,7 @@ export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: N
       const sessions = await getSessions(id, until);
       return res.status(StatusCodes.ACCEPTED).json(sessions);
     } catch (e) {
-      onError(e)
+      onError(e);
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
     }
   } else {

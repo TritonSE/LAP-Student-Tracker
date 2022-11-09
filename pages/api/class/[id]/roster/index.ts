@@ -27,7 +27,7 @@ const classRosterHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         const roster = await getRoster(classId);
         return res.status(StatusCodes.ACCEPTED).json(roster);
       } catch (e) {
-        onError(e)
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

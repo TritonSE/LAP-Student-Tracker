@@ -19,6 +19,7 @@ import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
 import { withAuth } from "../../../../middleware/withAuth";
 import {withLogging} from "../../../../middleware/withLogging";
+import {onError} from "../../../../lib/util/helpers";
 
 /**
  * @swagger
@@ -51,6 +52,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
       try {
         newEvent = await decode(CreateClassEvent, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -110,6 +112,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
             }
           }
         } catch (e) {
+          onError(e);
           if (e instanceof TeacherConflictError)
             return res.status(StatusCodes.BAD_REQUEST).json(e.message);
           else if (e instanceof TeacherAvailabilityError) {
@@ -130,6 +133,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
             await createCalendarEvent(result, interval.start.toISO(), interval.end.toISO());
           }
         } catch (e) {
+          onError(e);
           return res.status(StatusCodes.BAD_REQUEST).json("Calendar information is incorrect");
         }
 
@@ -143,6 +147,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
             await createCommitment(studentId, result);
           }
         } catch (e) {
+          onError(e);
           return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");
         }
 
@@ -159,6 +164,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
 
         return res.status(StatusCodes.CREATED).json(responseBody);
       } catch (e) {
+        onError(e);
         if (e instanceof NonExistingTeacher)
           return res.status(StatusCodes.BAD_REQUEST).json(e.message);
         else return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");

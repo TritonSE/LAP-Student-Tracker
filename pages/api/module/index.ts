@@ -5,6 +5,7 @@ import { CreateModule } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import {withLogging} from "../../../middleware/withLogging";
+import {onError} from "../../../lib/util/helpers";
 
 // Handles all requests to /api/module
 /**
@@ -41,6 +42,7 @@ export const createModuleHandler: NextApiHandler = async (
       try {
         newModule = await decode(CreateModule, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -51,6 +53,7 @@ export const createModuleHandler: NextApiHandler = async (
         const result = await createModule(newModule.classId, newModule.name, newModule.position);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }

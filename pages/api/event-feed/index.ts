@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getEventFeed } from "../../../lib/database/calendar-events";
 import { StatusCodes } from "http-status-codes";
-import {logHttpRoute} from "../../../lib/util/helpers";
+import {logHttpRoute, onError} from "../../../lib/util/helpers";
 
 /**
  * @swagger
@@ -55,7 +55,8 @@ const eventFeedHandler: NextApiHandler = async (req: NextApiRequest, res: NextAp
         const result = await getEventFeed(start, end, userId);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        onError(e)
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
 
     default:

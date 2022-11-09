@@ -5,6 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
 import { getUser, updateUser, deleteUser } from "../../../../lib/database/users";
 import {withLogging} from "../../../../middleware/withLogging";
+import {onError} from "../../../../lib/util/helpers";
 
 /**
  * @swagger
@@ -86,6 +87,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
         }
         return res.status(StatusCodes.ACCEPTED).json(user);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -99,6 +101,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
       try {
         newUser = await decode(UpdateUser, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -115,6 +118,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -124,6 +128,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
         const result = await deleteUser(id);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

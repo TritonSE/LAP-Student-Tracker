@@ -5,6 +5,7 @@ import { Availability } from "../../../models";
 import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
 import { withAuth } from "../../../middleware/withAuth";
 import {withLogging} from "../../../middleware/withLogging";
+import {onError} from "../../../lib/util/helpers";
 
 /**
  * @swagger
@@ -71,6 +72,7 @@ export const availabilityIdHandler: NextApiHandler = async (
           return res.status(StatusCodes.NOT_FOUND).json("Availability of user not found");
         return res.status(StatusCodes.ACCEPTED).json(availability);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -81,6 +83,7 @@ export const availabilityIdHandler: NextApiHandler = async (
       try {
         availability = await decode(Availability, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -96,6 +99,7 @@ export const availabilityIdHandler: NextApiHandler = async (
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }

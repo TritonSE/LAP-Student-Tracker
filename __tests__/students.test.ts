@@ -41,20 +41,6 @@ describe("[GET] /api/students", () => {
   test("look for all student", async () => {
     const expected: Student[] = [
       {
-        id: "2",
-        firstName: "Jane",
-        lastName: "Doe",
-        email: "jane@gmail.com",
-        role: "Student",
-        pictureId: "1",
-        approved: false,
-        dateCreated: "5/23/2022, 4:45:03 AM",
-        phoneNumber: "1234567890",
-        address: "123 Main Street",
-        level: 5,
-        classes: ["Test Event"],
-      },
-      {
         id: "1",
         firstName: "John",
         lastName: "Doe",
@@ -67,6 +53,20 @@ describe("[GET] /api/students", () => {
         address: "123 Main Street",
         level: null,
         classes: [],
+      },
+      {
+        id: "2",
+        firstName: "Jane",
+        lastName: "Doe",
+        email: "jane@gmail.com",
+        role: "Student",
+        pictureId: "1",
+        approved: false,
+        dateCreated: "5/23/2022, 4:45:03 AM",
+        phoneNumber: "1234567890",
+        address: "123 Main Street",
+        level: 5,
+        classes: ["Test Event"],
       },
     ];
     await makeHTTPRequest(

@@ -25,7 +25,7 @@ type LogHttp = {
 export const logger = pino({
   customLevels: levels,
   useOnlyCustomLevels: true,
-  level: "http",
+  level: process.env.NODE_ENV == "test" ? "fatal" : "http",
   transport: {
     target: "pino-pretty",
     options: {

@@ -23,12 +23,7 @@ const teachersExist = async (teachers: string[]): Promise<User[]> => {
     values: [teachers],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on select of database.");
-  }
+  const res = await client.query(query);
 
   const teacherResult: User[] = res.rows;
   if (teacherResult.length != teachers.length) {
@@ -78,12 +73,7 @@ const validateTimes = async (teacher: User, intervals: Interval[]): Promise<void
   };
 
   // fetch all calendar start-end times teacher is committed to from db
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on select of database.");
-  }
+  const res = await client.query(query);
 
   // helper function for sorting intervals
   const compareIntervals = (a: [string, Interval], b: [string, Interval]): number => {
@@ -131,12 +121,7 @@ const createEvent = async (
     values: [name, backgroundColor, type, neverEnding],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on insert into database.");
-  }
+  const res = await client.query(query);
 
   return res.rows[0].id;
 };
@@ -155,12 +140,7 @@ const deleteClassEvent = async (id: string): Promise<string | null> => {
     values: [id],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on delete event.");
-  }
+  const res = await client.query(query);
   return res.rows[0].id;
 };
 

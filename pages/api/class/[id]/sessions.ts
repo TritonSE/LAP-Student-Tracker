@@ -1,6 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSessions } from "../../../../lib/database/attendance";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, onError } from "../../../../logger/logger";
 
 /**
  * @swagger
@@ -44,8 +46,10 @@ export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: N
   if (req.method == "GET") {
     try {
       const sessions = await getSessions(id, until);
+      logData("Sessions", sessions);
       return res.status(StatusCodes.ACCEPTED).json(sessions);
     } catch (e) {
+      onError(e);
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
     }
   } else {
@@ -53,4 +57,4 @@ export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: N
   }
 };
 
-export default sessionHandler;
+export default withLogging(sessionHandler);

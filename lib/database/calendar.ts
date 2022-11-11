@@ -13,12 +13,7 @@ const createCalendarEvent = async (
     values: [id, startString, endString],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on insert into database.");
-  }
+  const res = await client.query(query);
 
   return res.rows;
 };

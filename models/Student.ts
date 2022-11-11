@@ -18,7 +18,10 @@ export const Student = t.type({
         t.string,
         t.null
     ]),
-    level: t.number,
+    level: t.union([
+        t.number,
+        t.null
+    ]),
     classes: t.array(t.string)
 })
 
@@ -41,6 +44,10 @@ export interface Student {
         | string
         | null
     ),
-    level: number,
+    level:
+    (
+        | number
+        | null
+    ),
     classes: Array<string>
 }

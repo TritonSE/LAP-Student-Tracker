@@ -2,8 +2,8 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getClass } from "../../../../../lib/database/classes";
 import { getClassModules } from "../../../../../lib/database/modules";
 import { StatusCodes } from "http-status-codes";
-import {withLogging} from "../../../../../middleware/withLogging";
-import {logHttpRoute, onError} from "../../../../../logger/logger";
+import { withLogging } from "../../../../../middleware/withLogging";
+import { logData, onError } from "../../../../../logger/logger";
 
 /**
  * @swagger
@@ -45,6 +45,7 @@ export const classModulesHandler: NextApiHandler = async (
           return res.status(StatusCodes.NOT_FOUND).json("class not found");
         }
         const modules = await getClassModules(classId);
+        logData("Modules", modules);
         return res.status(StatusCodes.ACCEPTED).json(modules);
       } catch (e) {
         onError(e);

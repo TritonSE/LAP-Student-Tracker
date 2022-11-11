@@ -41,7 +41,7 @@ const createModule = async (
     values: [classId, name, position],
   };
 
- const res = await client.query(query)
+  const res = await client.query(query);
 
   return getModule(res.rows[0].moduleId);
 };
@@ -61,7 +61,7 @@ const updateModule = async (
     values: [moduleId, name, position],
   };
 
-    await client.query(query);
+  await client.query(query);
 
   return getModule(moduleId);
 };
@@ -80,7 +80,6 @@ const deleteModule = async (moduleId: string): Promise<Module | null> => {
   }
 
   return await decode(Module, res.rows[0]);
-
 };
 
 export { getClassModules, getModule, createModule, updateModule, deleteModule };

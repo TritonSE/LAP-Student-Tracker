@@ -2,8 +2,8 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getModule } from "../../../../../lib/database/modules";
 import { getItem, deleteItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
-import {withLogging} from "../../../../../middleware/withLogging";
-import {onError} from "../../../../../logger/logger";
+import { withLogging } from "../../../../../middleware/withLogging";
+import { logData, onError } from "../../../../../logger/logger";
 
 /**
  * @swagger
@@ -52,8 +52,8 @@ export const deleteItemHandler: NextApiHandler = async (
     if (moduleObj == null) {
       return res.status(StatusCodes.NOT_FOUND).json("module not found");
     }
-
     const item = await getItem(itemId);
+    logData("Item", item);
     if (item == null) {
       return res.status(StatusCodes.NOT_FOUND).json("item not found");
     }

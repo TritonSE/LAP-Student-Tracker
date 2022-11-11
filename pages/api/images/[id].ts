@@ -4,8 +4,8 @@ import { decode } from "io-ts-promise";
 import { getImage, updateImage } from "../../../lib/database/images";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
-import {withLogging} from "../../../middleware/withLogging";
-import {onError} from "../../../logger/logger";
+import { withLogging } from "../../../middleware/withLogging";
+import { logData, onError } from "../../../logger/logger";
 
 /**
  * @swagger
@@ -92,6 +92,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
       }
       try {
         const result = await updateImage(id, newImage.img || null, newImage.mimeType || "");
+        logData("Image Data After Update", result);
         if (result == null) {
           return res.status(StatusCodes.NOT_FOUND).json("image not found");
         }

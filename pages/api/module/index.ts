@@ -4,8 +4,8 @@ import { getClass } from "../../../lib/database/classes";
 import { CreateModule } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import {withLogging} from "../../../middleware/withLogging";
-import {onError} from "../../../logger/logger";
+import { withLogging } from "../../../middleware/withLogging";
+import { logData, onError } from "../../../logger/logger";
 
 // Handles all requests to /api/module
 /**
@@ -51,6 +51,7 @@ export const createModuleHandler: NextApiHandler = async (
           return res.status(StatusCodes.NOT_FOUND).json("class not found");
         }
         const result = await createModule(newModule.classId, newModule.name, newModule.position);
+        logData("Created Module", result);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         onError(e);

@@ -4,8 +4,8 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
 import { getUser, updateUser, deleteUser } from "../../../../lib/database/users";
-import {withLogging} from "../../../../middleware/withLogging";
-import {onError} from "../../../../logger/logger";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, onError } from "../../../../logger/logger";
 
 /**
  * @swagger
@@ -85,6 +85,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
         if (user == null) {
           return res.status(StatusCodes.NOT_FOUND).json("user not found");
         }
+        logData("User", user);
         return res.status(StatusCodes.ACCEPTED).json(user);
       } catch (e) {
         onError(e);
@@ -116,6 +117,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
           newUser.address,
           newUser.phoneNumber
         );
+        logData("Updated User", user);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         onError(e);
@@ -126,6 +128,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
     case "DELETE": {
       try {
         const result = await deleteUser(id);
+        logData("Deleted User", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         onError(e);

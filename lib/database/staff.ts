@@ -1,6 +1,6 @@
 import { client } from "../db";
 import { Staff } from "../../models";
-import { array, TypeOf } from "io-ts";
+import { array } from "io-ts";
 import { decode } from "io-ts-promise";
 
 const StaffArraySchema = array(Staff);

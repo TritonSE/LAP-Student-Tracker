@@ -7,8 +7,8 @@ import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { CreateAttendance } from "../../../../../models";
 import { array } from "io-ts";
-import {withLogging} from "../../../../../middleware/withLogging";
-import {logHttpRoute, onError} from "../../../../../logger/logger";
+import { withLogging } from "../../../../../middleware/withLogging";
+import { logData, onError } from "../../../../../logger/logger";
 const CreateAttendanceArraySchema = array(CreateAttendance);
 /**
  * @swagger
@@ -92,6 +92,7 @@ export const sessionIDHandler: NextApiHandler = async (
     case "GET": {
       try {
         const attendanceArray = await getAttendanceFromSessionID(sessionId, classId);
+        logData("Attendance for Session", attendanceArray);
         return res.status(StatusCodes.ACCEPTED).json(attendanceArray);
       } catch (e) {
         onError(e);
@@ -109,6 +110,7 @@ export const sessionIDHandler: NextApiHandler = async (
       }
       try {
         const result = await createAttendance(sessionId, classId, newAttendance);
+        logData("Attendance Stored in Database", result);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         onError(e);

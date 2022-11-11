@@ -2,9 +2,8 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getAllStaff } from "../../../lib/database/staff";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
-import {logger, logHttpRoute, onError} from "../../../logger/logger";
-import {withLogging} from "../../../middleware/withLogging";
-
+import { logData, onError } from "../../../logger/logger";
+import { withLogging } from "../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -29,6 +28,7 @@ const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
     case "GET":
       try {
         const result = await getAllStaff();
+        logData("All Staff", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         onError(e);

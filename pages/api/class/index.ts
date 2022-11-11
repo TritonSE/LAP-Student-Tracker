@@ -4,8 +4,8 @@ import { CreateClass } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
-import {withLogging} from "../../../middleware/withLogging";
-import {logHttpRoute, onError} from "../../../logger/logger";
+import { withLogging } from "../../../middleware/withLogging";
+import { logData, onError } from "../../../logger/logger";
 //Handles all requests to /api/class
 /**
  * @swagger
@@ -53,12 +53,14 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
       }
       try {
         let result = await getAllClasses();
+        logData("All Classes", result);
 
         if (userId) {
           result = result.filter((obj) =>
             JSON.stringify(obj).toLowerCase().includes(userId.toLowerCase())
           );
         }
+        logData("All Classes After Filtering By User", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         onError(e);

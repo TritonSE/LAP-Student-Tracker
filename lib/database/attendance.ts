@@ -1,7 +1,7 @@
-import {client} from "../db";
-import {Attendance, CreateAttendance, SingleUserAttendance} from "../../models";
-import {decode} from "io-ts-promise";
-import {array} from "io-ts";
+import { client } from "../db";
+import { Attendance, CreateAttendance, SingleUserAttendance } from "../../models";
+import { decode } from "io-ts-promise";
+import { array } from "io-ts";
 
 const AttendanceArraySchema = array(Attendance);
 const SingleUserAttendanceArraySchema = array(SingleUserAttendance);

@@ -4,8 +4,8 @@ import { StatusCodes } from "http-status-codes";
 import { Availability } from "../../../models";
 import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
 import { withAuth } from "../../../middleware/withAuth";
-import {withLogging} from "../../../middleware/withLogging";
-import {onError} from "../../../logger/logger";
+import { withLogging } from "../../../middleware/withLogging";
+import { logData, onError } from "../../../logger/logger";
 
 /**
  * @swagger
@@ -68,6 +68,7 @@ export const availabilityIdHandler: NextApiHandler = async (
     case "GET": {
       try {
         const availability = await getAvailabilityById(id);
+        logData("Availability", availability);
         if (availability == null)
           return res.status(StatusCodes.NOT_FOUND).json("Availability of user not found");
         return res.status(StatusCodes.ACCEPTED).json(availability);
@@ -97,6 +98,7 @@ export const availabilityIdHandler: NextApiHandler = async (
           availability.sat,
           availability.timeZone
         );
+        logData("Updated Availability", availability);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         onError(e);

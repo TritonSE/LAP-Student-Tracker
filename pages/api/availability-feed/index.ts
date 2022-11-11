@@ -1,7 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getAvailabilityFeed } from "../../../lib/database/availability-feed";
-import {logHttpRoute, onError} from "../../../logger/logger";
+import { logData, onError } from "../../../logger/logger";
 
 /**
  * @swagger
@@ -62,6 +62,7 @@ const availabilityFeedHandler: NextApiHandler = async (
         }
 
         const result = await getAvailabilityFeed(start, end, userId);
+        logData("Availability Feed", result);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
         onError(e);

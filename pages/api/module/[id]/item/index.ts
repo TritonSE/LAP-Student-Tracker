@@ -4,8 +4,8 @@ import { getModuleItems, createItem } from "../../../../../lib/database/items";
 import { CreateItem } from "../../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import {withLogging} from "../../../../../middleware/withLogging";
-import {onError} from "../../../../../logger/logger";
+import { withLogging } from "../../../../../middleware/withLogging";
+import { logData, onError } from "../../../../../logger/logger";
 
 /**
  * @swagger
@@ -79,6 +79,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     case "GET": {
       try {
         const modules = await getModuleItems(moduleId);
+        logData("All Modules", modules);
         return res.status(StatusCodes.ACCEPTED).json(modules);
       } catch (e) {
         onError(e);
@@ -96,6 +97,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       }
       try {
         const result = await createItem(moduleId, newItem.title, newItem.link);
+        logData("Created Item", result);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         onError(e);

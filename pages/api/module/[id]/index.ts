@@ -3,8 +3,8 @@ import { getModule, updateModule, deleteModule } from "../../../../lib/database/
 import { UpdateModule } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
-import {withLogging} from "../../../../middleware/withLogging";
-import {onError} from "../../../../logger/logger";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, onError } from "../../../../logger/logger";
 
 // Handles all requests to /api/module/[id]
 /**
@@ -67,6 +67,7 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       }
       try {
         const result = await updateModule(moduleId, updateModuleObj.name, updateModuleObj.position);
+        logData("Updated Module", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         onError(e);
@@ -77,6 +78,7 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
     case "DELETE": {
       try {
         const result = await deleteModule(moduleId);
+        logData("Deleted Module", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         onError(e);

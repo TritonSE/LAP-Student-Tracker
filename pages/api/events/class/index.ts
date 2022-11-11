@@ -18,8 +18,8 @@ import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
 import { withAuth } from "../../../../middleware/withAuth";
-import {withLogging} from "../../../../middleware/withLogging";
-import {onError} from "../../../../logger/logger";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, logger, onError } from "../../../../logger/logger";
 
 /**
  * @swagger
@@ -58,9 +58,11 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
       try {
         // verify the teachers exist in the database
         const teachers = await teachersExist(newEvent.teachers);
+        logData("Teachers For Creating Class", teachers);
 
         const ruleObj = rrulestr(newEvent.rrule);
         const initialDate = ruleObj.all()[0];
+        logger.info("Initial Date: " + initialDate.toDateString());
         const yearInAdvanceDate = ruleObj.all()[0];
         yearInAdvanceDate.setFullYear(initialDate.getFullYear() + 1);
         // Get all date instances unless never-ending is true, then only get occurrences within the first year
@@ -68,12 +70,18 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           ? ruleObj.between(initialDate, yearInAdvanceDate)
           : ruleObj.all();
 
+        logger.info("End Date: " + allDates[allDates.length - 1].toDateString());
+
         const startTime = DateTime.fromFormat(newEvent.startTime, "HH:mm", {
           zone: newEvent.timeZone,
         });
+
+        logger.info("Start Time: " + startTime.toISOTime());
         const endTime = DateTime.fromFormat(newEvent.endTime, "HH:mm", {
           zone: newEvent.timeZone,
         });
+
+        logger.info("End Time: " + endTime.toISOTime());
 
         const intervals: Interval[] = [];
 
@@ -127,6 +135,8 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           newEvent.backgroundColor
         );
 
+        logData("Class Event", result);
+
         // insert all date intervals into calendar_information table
         try {
           for (const interval of intervals) {
@@ -161,6 +171,8 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           neverEnding: newEvent.neverEnding,
           backgroundColor: newEvent.backgroundColor,
         };
+
+        logData("Create Class Response", responseBody);
 
         return res.status(StatusCodes.CREATED).json(responseBody);
       } catch (e) {

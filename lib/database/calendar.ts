@@ -13,7 +13,6 @@ const createCalendarEvent = async (
     values: [id, startString, endString],
   };
 
-
   const res = await client.query(query);
 
   return res.rows;

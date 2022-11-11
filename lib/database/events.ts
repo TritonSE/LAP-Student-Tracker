@@ -52,7 +52,7 @@ const validateTimes = async (teacher: User, intervals: Interval[]): Promise<void
   };
 
   // fetch all calendar start-end times teacher is committed to from db
-    const res = await client.query(query);
+  const res = await client.query(query);
 
   // helper function for sorting intervals
   const compareIntervals = (a: [string, Interval], b: [string, Interval]): number => {

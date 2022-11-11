@@ -1,8 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSessions } from "../../../../lib/database/attendance";
-import {withLogging} from "../../../../middleware/withLogging";
-import {logHttpRoute, onError} from "../../../../logger/logger";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, onError } from "../../../../logger/logger";
 
 /**
  * @swagger
@@ -33,7 +33,6 @@ import {logHttpRoute, onError} from "../../../../logger/logger";
  *                    description: The session id (determined when creating the event by postgres)
  */
 export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-  logHttpRoute(req);
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
@@ -47,6 +46,7 @@ export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: N
   if (req.method == "GET") {
     try {
       const sessions = await getSessions(id, until);
+      logData("Sessions", sessions);
       return res.status(StatusCodes.ACCEPTED).json(sessions);
     } catch (e) {
       onError(e);

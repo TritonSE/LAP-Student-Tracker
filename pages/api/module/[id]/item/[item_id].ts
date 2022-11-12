@@ -6,6 +6,8 @@ import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
 import { Item, Module } from "../../../../../models";
 import { decode } from "io-ts-promise";
+import { logData, onError } from "../../../../../logger/logger";
+import { withLogging } from "../../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -37,7 +39,7 @@ export const deleteItemHandler: NextApiHandler = async (
   res: NextApiResponse
 ) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 
   const moduleId = req.query.id as string;

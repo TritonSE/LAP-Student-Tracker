@@ -36,13 +36,14 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
   };
 
   const handleSubmit = async (): Promise<void> => {
-    const in_module = {
+    const inModule = {
       moduleId: module.moduleId,
       classId: module.classId,
       name: name,
       position: position,
     };
-    await api.updateModule(module.moduleId, in_module);
+    await api.updateModule(module.moduleId, inModule);
+    setUpdate(!update);
   };
 
   const handleCancel = async (): Promise<void> => {
@@ -124,12 +125,12 @@ type ModuleProps = {
   enableEditing: boolean;
 };
 
-interface APIModuleItem {
+type APIModuleItem = {
   itemId: string;
   link: URL;
   moduleId: string;
   title: string;
-}
+};
 
 // eslint-disable-next-line
 const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
@@ -146,6 +147,7 @@ const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
       itemId: lesson.itemId,
     };
     await api.updateItem(lesson.moduleId, lesson.itemId, item);
+    setEdit(false);
   };
 
   const handleCancel = async (): Promise<void> => {
@@ -242,6 +244,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
       moduleId: "",
     };
     await api.createModule(module);
+    setPopup(false);
   };
 
   const handleCancel = async (): Promise<void> => {
@@ -257,21 +260,25 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
         </Button>
       </div>
       {popup ? (
-        <div className={styles.backgroundDiv}>
-          <div>Create Module</div>
-          <input
-            className={`${styles.label} ${styles.classInput}`}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            type="text"
-            placeholder="Module Name"
-          />
-          <button onClick={handleCancel} className={styles.cancel}>
-            Cancel
-          </button>
-          <button onClick={handleSubmit} className={styles.submit}>
-            Save
-          </button>
+        <div className={styles.popupBackground}>
+          <div className={styles.popupContainer}>
+            <div className={styles.popupTitle}>Create Module</div>
+            <input
+              className={`${styles.label} ${styles.classInput}`}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              type="text"
+              placeholder="Module Name"
+            />
+            <div className={styles.buttonContainer}>
+              <button onClick={handleCancel} className={styles.cancel}>
+                Cancel
+              </button>
+              <button onClick={handleSubmit} className={styles.submit}>
+                Save
+              </button>
+            </div>
+          </div>
         </div>
       ) : null}
       <div className={styles.spacer} />

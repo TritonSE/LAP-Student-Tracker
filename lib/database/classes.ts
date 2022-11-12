@@ -46,11 +46,7 @@ const createClass = async (
     values: [eventInformationId, minLevel, maxLevel, rrstring, timeStart, timeEnd, language],
   };
 
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("Error on POST in create class");
-  }
+  await client.query(query);
 
   return getClass(eventInformationId);
 };
@@ -78,11 +74,7 @@ const updateClass = async (
     values: [eventInformationId, minLevel, maxLevel, rrstring, startTime, endTime, language],
   };
 
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on update class");
-  }
+  await client.query(query);
 
   return getClass(eventInformationId);
 };
@@ -103,12 +95,7 @@ const getClass = async (id: string): Promise<Class | null> => {
     return null;
   }
 
-  let classesWithUserInformation: ClassWithUserInformation[];
-  try {
-    classesWithUserInformation = await decode(ClassWithUserInformationArraySchema, res.rows);
-  } catch {
-    throw Error("Fields returned incorrectly in database");
-  }
+  const classesWithUserInformation = await decode(ClassWithUserInformationArraySchema, res.rows);
 
   const classInfo: Class = {
     name: classesWithUserInformation[0].name,

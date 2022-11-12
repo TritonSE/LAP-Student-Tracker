@@ -33,15 +33,7 @@ const getEventFeed = async (
   }
 
   const res = await client.query(query);
-  let calendarEventArray: CalendarEvent[];
-
-  try {
-    calendarEventArray = await decode(CalendarEventArraySchema, res.rows);
-  } catch (e) {
-    throw Error("CustomError getting calendar event feed from database.");
-  }
-
-  return calendarEventArray;
+  return await decode(CalendarEventArraySchema, res.rows);
 };
 
 export { getEventFeed };

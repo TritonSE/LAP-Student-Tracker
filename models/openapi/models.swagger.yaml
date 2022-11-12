@@ -124,6 +124,7 @@ components:
           nullable: true
         level:
           type: number
+          nullable: true
         classes:
           type: array
           items:
@@ -563,26 +564,6 @@ components:
         - userId
         - attendance
         - start
-    CalendarEvent:
-      title: CalendarEvent
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        backgroundColor:
-          type: string
-        start:
-          type: string
-        end:
-          type: string
-      required:
-        - id
-        - title
-        - backgroundColor
-        - start
-        - end
     Announcement:
       title: Announcement
       type: object
@@ -611,3 +592,109 @@ components:
       required:
         - title
         - content
+    CalendarEvent:
+      title: CalendarEvent
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        backgroundColor:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+      required:
+        - id
+        - title
+        - backgroundColor
+        - start
+        - end
+    InterviewEvent:
+      title: InterviewEvent
+      type: object
+      properties:
+        eventInformationId:
+          type: string
+        name:
+          type: string
+        color:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+      required:
+        - eventInformationId
+        - name
+        - color
+        - start
+        - end
+    CreateInterviewEvent:
+      title: CreateInterviewEvent
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+        teacher:
+          type: string
+        volunteer:
+          type: string
+      required:
+        - name
+        - color
+        - start
+        - end
+        - teacher
+        - volunteer
+    MakeUpLabEvent:
+      title: InterviewEvent
+      type: object
+      properties:
+        eventInformationId:
+          type: string
+        name:
+          type: string
+        color:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+      required:
+        - eventInformationId
+        - name
+        - color
+        - start
+        - end
+    CreateMakeUpLabEvent:
+      title: CreateInterviewEvent
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+        teacher:
+          type: string
+        student:
+          type: string
+      required:
+        - name
+        - color
+        - start
+        - end
+        - teacher
+        - student

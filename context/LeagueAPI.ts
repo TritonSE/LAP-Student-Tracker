@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { Class, CreateClass } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
+import { Student } from "../models";
 import { CreateUser, UpdateUser, User } from "../models";
 import { Image, UpdateImage } from "../models";
 import { Availability } from "../models";
@@ -163,6 +164,10 @@ class LeagueAPI {
 
   async deleteAnnouncement(classId: string, announcement_id: string): Promise<Announcement> {
     const res = await this.client.delete(`api/class/${classId}/announcement/${announcement_id}`);
+
+// Get the students from the backend
+  async getStudents(): Promise<Student[]> {
+    const res = await this.client.get("api/students");
     return res.data;
   }
 }

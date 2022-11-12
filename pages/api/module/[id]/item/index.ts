@@ -4,6 +4,8 @@ import { getModuleItems, createItem } from "../../../../../lib/database/items";
 import { CreateItem } from "../../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
+import { withLogging } from "../../../../../middleware/withLogging";
+import { logData, onError } from "../../../../../logger/logger";
 
 /**
  * @swagger
@@ -69,6 +71,7 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       return res.status(StatusCodes.NOT_FOUND).json("module not found");
     }
   } catch (e) {
+    onError(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
@@ -76,8 +79,10 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
     case "GET": {
       try {
         const modules = await getModuleItems(moduleId);
+        logData("All Modules", modules);
         return res.status(StatusCodes.ACCEPTED).json(modules);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -87,12 +92,15 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       try {
         newItem = await decode(CreateItem, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
         const result = await createItem(moduleId, newItem.title, newItem.link);
+        logData("Created Item", result);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -103,4 +111,4 @@ export const itemHandler: NextApiHandler = async (req: NextApiRequest, res: Next
   }
 };
 
-export default itemHandler;
+export default withLogging(itemHandler);

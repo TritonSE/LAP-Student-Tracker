@@ -1,6 +1,7 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getAvailabilityFeed } from "../../../lib/database/availability-feed";
+import { logData, onError } from "../../../logger/logger";
 
 /**
  * @swagger
@@ -45,7 +46,7 @@ const availabilityFeedHandler: NextApiHandler = async (
     case "GET":
       try {
         if (!req.query) {
-          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+          return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
         }
 
         const start = req.query.start as string;
@@ -61,9 +62,11 @@ const availabilityFeedHandler: NextApiHandler = async (
         }
 
         const result = await getAvailabilityFeed(start, end, userId);
+        logData("Availability Feed", result);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        onError(e);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
 
     default:

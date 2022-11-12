@@ -3,6 +3,8 @@ import { getModule, updateModule, deleteModule } from "../../../../lib/database/
 import { UpdateModule } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, onError } from "../../../../logger/logger";
 
 // Handles all requests to /api/module/[id]
 /**
@@ -50,7 +52,8 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       return res.status(StatusCodes.NOT_FOUND).json("module not found");
     }
   } catch (e) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+    onError(e);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 
   switch (req.method) {
@@ -59,12 +62,15 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       try {
         updateModuleObj = await decode(UpdateModule, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
         const result = await updateModule(moduleId, updateModuleObj.name, updateModuleObj.position);
+        logData("Updated Module", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -72,8 +78,10 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
     case "DELETE": {
       try {
         const result = await deleteModule(moduleId);
+        logData("Deleted Module", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -84,4 +92,4 @@ export const moduleHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
   }
 };
 
-export default moduleHandler;
+export default withLogging(moduleHandler);

@@ -4,6 +4,8 @@ import { CreateClass } from "../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
+import { withLogging } from "../../../middleware/withLogging";
+import { logData, onError } from "../../../logger/logger";
 //Handles all requests to /api/class
 /**
  * @swagger
@@ -41,30 +43,34 @@ import { withAuth } from "../../../middleware/withAuth";
  */
 export const classHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   let newClass: CreateClass;
-  let user_id = "";
+  let userId = "";
   switch (req.method) {
     case "GET":
       if (req.query && req.query.userId) {
         if (req.query.userId != undefined) {
-          user_id = req.query.userId as string;
+          userId = req.query.userId as string;
         }
       }
       try {
         let result = await getAllClasses();
+        logData("All Classes", result);
 
-        if (user_id) {
+        if (userId) {
           result = result.filter((obj) =>
-            JSON.stringify(obj).toLowerCase().includes(user_id.toLowerCase())
+            JSON.stringify(obj).toLowerCase().includes(userId.toLowerCase())
           );
         }
+        logData("All Classes After Filtering By User", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     case "POST":
       try {
         newClass = await decode(CreateClass, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -79,6 +85,7 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
         );
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     default:
@@ -86,4 +93,4 @@ export const classHandler: NextApiHandler = async (req: NextApiRequest, res: Nex
   }
 };
 
-export default withAuth(classHandler);
+export default withLogging(withAuth(classHandler));

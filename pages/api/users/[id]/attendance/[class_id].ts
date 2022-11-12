@@ -1,6 +1,8 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
 import { getSingleUserAttendanceFromClassID } from "../../../../../lib/database/attendance";
+import { withLogging } from "../../../../../middleware/withLogging";
+import { logData, onError } from "../../../../../logger/logger";
 
 /**
  * @swagger
@@ -49,8 +51,10 @@ export const userAttendanceHandler: NextApiHandler = async (
   if (req.method == "GET") {
     try {
       const attendance = await getSingleUserAttendanceFromClassID(userId, classId);
+      logData("Attendance for One User", attendance);
       return res.status(StatusCodes.ACCEPTED).json(attendance);
     } catch (e) {
+      onError(e);
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
     }
   } else {
@@ -58,4 +62,4 @@ export const userAttendanceHandler: NextApiHandler = async (
   }
 };
 
-export default userAttendanceHandler;
+export default withLogging(userAttendanceHandler);

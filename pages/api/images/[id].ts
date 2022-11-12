@@ -4,6 +4,8 @@ import { decode } from "io-ts-promise";
 import { getImage, updateImage } from "../../../lib/database/images";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
+import { withLogging } from "../../../middleware/withLogging";
+import { logData, onError } from "../../../logger/logger";
 
 /**
  * @swagger
@@ -71,6 +73,7 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
         }
         return res.status(StatusCodes.ACCEPTED).json(image);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -84,15 +87,18 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
       try {
         newImage = await decode(UpdateImage, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
         const result = await updateImage(id, newImage.img || null, newImage.mimeType || "");
+        logData("Image Data After Update", result);
         if (result == null) {
           return res.status(StatusCodes.NOT_FOUND).json("image not found");
         }
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -103,4 +109,4 @@ const imageIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiR
   }
 };
 
-export default withAuth(imageIDHandler);
+export default withLogging(withAuth(imageIDHandler));

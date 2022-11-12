@@ -164,8 +164,10 @@ class LeagueAPI {
 
   async deleteAnnouncement(classId: string, announcement_id: string): Promise<Announcement> {
     const res = await this.client.delete(`api/class/${classId}/announcement/${announcement_id}`);
+    return res.data;
+  }
 
-// Get the students from the backend
+  // Get the students from the backend
   async getStudents(): Promise<Student[]> {
     const res = await this.client.get("api/students");
     return res.data;

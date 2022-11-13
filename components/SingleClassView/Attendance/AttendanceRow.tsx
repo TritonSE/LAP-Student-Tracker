@@ -8,7 +8,7 @@ type AttendanceRowProps = {
     onAttendanceChange: (userId: string, newAttendance: AttendanceTypes) => void;
     name: string,
     userId: string,
-    attendance: AttendanceTypes,
+    attendance: AttendanceTypes | undefined,
 };
 
 const AttendanceRow: React.FC<AttendanceRowProps> =  ({

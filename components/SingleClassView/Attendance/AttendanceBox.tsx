@@ -17,11 +17,11 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
         return <p>This date has no sessions</p>
     }
 
+    //get userIds and initial attendances from database
     const temp: [string, AttendanceTypes][] = []
     attendances.forEach(function(attendance, index){
         temp.push([attendance.userId, attendance.attendance])
     })
-
     const [newAttendances, setAttendance] = useState(new Map(temp));
     const updateAttendances = (key: string, value: AttendanceTypes) => {
         setAttendance(new Map(newAttendances.set(key, value)));
@@ -35,7 +35,6 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
     console.log(names);
     console.log(newAttendances);
 
-    const [option, setOption] = useState("");
     const formSubmit = () => {
         
     }

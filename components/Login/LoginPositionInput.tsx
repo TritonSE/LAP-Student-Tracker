@@ -62,13 +62,13 @@ const LoginPositionInput: React.FC<LoginPositionInputProps> = ({
           </label>
           <br></br>
           <input
-              type="radio"
-              id="teacher"
-              name="select-position"
-              value="Volunteer"
-              onChange={(_) => onContentChange("Volunteer")}
-              className={styles.radioBox}
-              checked={currPosition == "Volunteer"}
+            type="radio"
+            id="teacher"
+            name="select-position"
+            value="Volunteer"
+            onChange={(_) => onContentChange("Volunteer")}
+            className={styles.radioBox}
+            checked={currPosition == "Volunteer"}
           />
           <label htmlFor="teacher" className={styles.positionText}>
             Volunteer

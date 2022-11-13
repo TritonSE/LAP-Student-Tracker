@@ -12,11 +12,7 @@ const getAnnouncements = async (classId: string): Promise<Announcement[]> => {
   };
   const res = await client.query(query);
 
-  try {
-    return await decode(AnnouncementArraySchema, res.rows);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database.");
-  }
+  return await decode(AnnouncementArraySchema, res.rows);
 };
 
 const createAnnouncement = async (
@@ -31,14 +27,8 @@ const createAnnouncement = async (
     values: [classId, title, content],
   };
 
-  let res;
-  let announcement: Announcement;
-  try {
-    res = await client.query(query);
-    announcement = await decode(Announcement, res.rows[0]);
-  } catch (e) {
-    throw Error("Error inserting announcement into database.");
-  }
+  const res = await client.query(query);
+  const announcement = await decode(Announcement, res.rows[0]);
 
   return announcement;
 };
@@ -52,23 +42,13 @@ const deleteAnnouncement = async (
     values: [classId, announcementId],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("Failed to delete announcement.");
-  }
+  const res = await client.query(query);
 
   if (res.rows.length == 0) {
     return null;
   }
 
-  let deletedAnnouncement: Announcement;
-  try {
-    deletedAnnouncement = await decode(Announcement, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
+  const deletedAnnouncement = await decode(Announcement, res.rows[0]);
 
   return deletedAnnouncement;
 };

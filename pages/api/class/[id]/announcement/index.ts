@@ -5,6 +5,7 @@ import { getClass } from "../../../../../lib/database/classes";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../../middleware/withAuth";
+import { withLogging } from "../../../../../middleware/withLogging";
 
 //Handles all requests to /api/class/[id]/announcement
 /**
@@ -100,4 +101,4 @@ export const announcementHandler: NextApiHandler = async (
   }
 };
 
-export default withAuth(announcementHandler);
+export default withLogging(withAuth(announcementHandler));

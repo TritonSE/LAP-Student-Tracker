@@ -2,6 +2,7 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { deleteAnnouncement } from "../../../../../../lib/database/announcements";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../../../middleware/withAuth";
+import { withLogging } from "../../../../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -60,4 +61,4 @@ export const announcementIdHandler: NextApiHandler = async (
   }
 };
 
-export default withAuth(announcementIdHandler);
+export default withLogging(withAuth(announcementIdHandler));

@@ -133,7 +133,7 @@ type APIModuleItem = {
 };
 
 // eslint-disable-next-line
-const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
+const AccordionItem = ({ lesson }: { lesson: APIModuleItem }) => {
   const [edit, setEdit] = useState(false);
   const api = useContext(APIContext);
   const [title, setTitle] = useState(lesson.title);
@@ -221,7 +221,7 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
         <FadeMenu module={module} numModules={numModules} />
       </AccordionSummary>
       {lessons.map((lesson, idx) => (
-        <AccordionLesson lesson={lesson} key={`${lesson.title}-${idx}`} />
+        <AccordionItem lesson={lesson} key={`${lesson.title}-${idx}`} />
       ))}
     </Accordion>
   );

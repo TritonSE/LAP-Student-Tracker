@@ -166,28 +166,33 @@ const AccordionLesson = ({ lesson }: { lesson: APIModuleItem }) => {
       {lesson.title}
       <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
       {edit ? (
-        <div className={styles.backgroundDiv}>
-          <div>Edit Lesson</div>
-          <input
-            className={`${styles.label} ${styles.classInput}`}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            type="text"
-            placeholder="Lesson Title"
-          />
-          <input
-            className={`${styles.label} ${styles.classInput}`}
-            value={link}
-            onChange={(e) => setLink(e.target.value)}
-            type="text"
-            placeholder="Lesson Link"
-          />
-          <button onClick={handleCancel} className={styles.cancel}>
-            Cancel
-          </button>
-          <button onClick={handleSubmit} className={styles.submit}>
-            Save
-          </button>
+        <div className={styles.popupBackground}>
+          <div className={styles.popupContainer}>
+            <div className={styles.popupTitle}>Edit Lesson</div>
+            <input
+              className={`${styles.label} ${styles.classInput}`}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              type="text"
+              placeholder="Lesson Title"
+            />
+            <br />
+            <input
+              className={`${styles.label} ${styles.classInput}`}
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              type="text"
+              placeholder="Lesson Link"
+            />
+            <div className={styles.buttonContainer}>
+              <button onClick={handleCancel} className={styles.cancel}>
+                Cancel
+              </button>
+              <button onClick={handleSubmit} className={styles.submit}>
+                Save
+              </button>
+            </div>
+          </div>
         </div>
       ) : null}
     </AccordionDetails>

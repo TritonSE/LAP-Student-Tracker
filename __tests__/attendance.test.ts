@@ -76,7 +76,7 @@ describe("[GET] /api/class/[id]/sessions", () => {
   test("get session ids for specified time", async () => {
     const query = {
       id: "id_a",
-      until: "2022-02-27T05:00:00.000Z",
+      date: "2022-02-27T05:00:00.000Z",
     };
     const expected: sessionId[] = [
       {
@@ -87,7 +87,7 @@ describe("[GET] /api/class/[id]/sessions", () => {
     ];
     await makeHTTPRequest(
       sessionHandler,
-      "/api/class/id_a/sessions/?until=2022-02-27T17:00:00.000Z",
+      "/api/class/id_a/sessions/?date=2022-02-27T17:00:00.000Z",
       query,
       "GET",
       undefined,

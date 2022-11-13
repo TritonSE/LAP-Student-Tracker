@@ -36,14 +36,14 @@ export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: N
   }
 
   const id = req.query.id as string;
-  const until = req.query.until as string;
+  const date = req.query.date as string;
   if (!id) {
     return res.status(StatusCodes.BAD_REQUEST).json("No id specified");
   }
 
   if (req.method == "GET") {
     try {
-      const sessions = await getSessions(id, until);
+      const sessions = await getSessions(id, date);
       return res.status(StatusCodes.ACCEPTED).json(sessions);
     } catch (e) {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

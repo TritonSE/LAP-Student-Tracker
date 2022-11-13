@@ -156,7 +156,7 @@ class LeagueAPI {
   }
   
   async getSessions(classId: string, time?: string) {
-    const res = await this.client.get(`api/class/${classId}/sessions?until=${time}`);
+    const res = await this.client.get(`api/class/${classId}/sessions?date=${time}`);
     return res.data;
   }
 

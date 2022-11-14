@@ -49,7 +49,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
   const [valid, setValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  // eslint-disable-next-line
+
   const [errMsg, setErrMsg] = useState<string>("");
 
   // saved repeat modal states

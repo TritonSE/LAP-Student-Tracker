@@ -13,8 +13,6 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
-import { SocketAddress } from "net";
-import { setDefaultResultOrder } from "dns";
 
 type FadeMenuProps = {
   module: Module;

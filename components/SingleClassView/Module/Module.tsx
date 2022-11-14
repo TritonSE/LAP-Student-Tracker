@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./modules.module.css";
 import { APIContext } from "../../../context/APIContext";
 import useSWR from "swr";
@@ -305,12 +305,17 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
 
 export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
   const api = useContext(APIContext);
+  const [modules, setModules] = useState<Module[]>([]);
   const [popup, setPopup] = useState(false);
   const [name, setName] = useState("");
 
-  const { data: modules, error } = useSWR(`api/class/${id}/modules`, () => api.getClassModules(id));
+  useEffect(() => {
+    (async () => {
+      const res = await api.getClassModules(id);
+      setModules(res);
+    })();
+  }, []);
 
-  if (error) return <CustomError />;
   if (!modules) return <CustomLoader />;
 
   const handleClick: VoidFunction = () => {

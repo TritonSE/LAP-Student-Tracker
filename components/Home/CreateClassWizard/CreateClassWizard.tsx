@@ -473,7 +473,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
             >
               {loading ? <ClipLoader loading={true} size={30} color={"white"} /> : "Confirm"}
             </button>
-            {/* <div className={styles.errorMsg}>{errMsg}</div> */}
+            <div className={styles.errorMsg}>{errMsg}</div>
           </div>
         </div>
       </div>

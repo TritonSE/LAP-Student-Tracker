@@ -198,6 +198,15 @@ class LeagueAPI {
     const res = await this.client.patch(`api/module/${moduleId}`, module);
     return res.data;
   }
+
+  async createItem(moduleId: string, item: Item): Promise<Item> {
+    const res = await this.client.post(`api/module/${moduleId}/item`, item);
+    return res.data;
+  }
+
+  async deleteItem(moduleId: string, itemId: string): Promise<void> {
+    await this.client.delete(`api/module/${moduleId}/item/${itemId}`);
+  }
 }
 
 export { LeagueAPI };

@@ -35,6 +35,16 @@
   float: right;
   cursor: pointer;
   color: black;
+  padding-top: 0.2rem;
+  width: 1rem;
+}
+
+.trash {
+  float: right;
+  width: 1rem;
+  cursor: pointer;
+  color: black;
+  padding-top: 0.2rem;
 }
 
 .vericalMenu {

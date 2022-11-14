@@ -31,8 +31,6 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
   const [add, setAdd] = useState(false);
   const [itemName, setItemName] = useState("");
   const [itemLink, setItemLink] = useState("");
-  const [deleteItem, setDeleteItem] = useState(false);
-  const [delItemName, setDelItemName] = useState("");
   // eslint-disable-next-line
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -79,22 +77,6 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
     setAdd(!add);
   };
 
-  const handleDelete: VoidFunction = async () => {
-    setDeleteItem(!deleteItem);
-    handleClose();
-  };
-
-  const handleDeleteSubmit: VoidFunction = async () => {
-    const res = await api.getModuleItems(module.moduleId);
-    const items = res.data;
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].title === itemName) {
-        await api.deleteItem(module.moduleId, items[i].itemId);
-        break;
-      }
-    setDeleteItem(!deleteItem);
-  };
-
   const handleMoveUp: VoidFunction = () => {
     if (position > 0) {
       setPosition(position - 1);
@@ -133,7 +115,6 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
       >
         <MenuItem onClick={handleRename}>Rename</MenuItem>
         <MenuItem onClick={handleAdd}>Add Item</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
         <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
         <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
       </Menu>
@@ -189,28 +170,6 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
           </div>
         </div>
       ) : null}
-      {deleteItem ? (
-        <div className={styles.popupBackground}>
-          <div className={styles.popupContainer}>
-            <div className={styles.popupTitle}>Delete Lesson</div>
-            <input
-              className={`${styles.label} ${styles.classInput}`}
-              value={""}
-              onChange={(e) => setDelItemName(e.target.value)}
-              type="text"
-              placeholder="Lesson Title"
-            />
-            <div className={styles.buttonContainer}>
-              <button onClick={handleCancel} className={styles.cancel}>
-                Cancel
-              </button>
-              <button onClick={handleDeleteSubmit} className={styles.submit}>
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
     </>
   );
 };
@@ -233,6 +192,7 @@ const AccordionItem = ({ lesson }: { lesson: APIModuleItem }) => {
   const api = useContext(APIContext);
   const [title, setTitle] = useState(lesson.title);
   const [link, setLink] = useState(lesson.link.toString());
+  const [deleteItem, setDeleteItem] = useState(false);
 
   const handleSubmit = async (): Promise<void> => {
     const item = {
@@ -251,6 +211,11 @@ const AccordionItem = ({ lesson }: { lesson: APIModuleItem }) => {
     setEdit(false);
   };
 
+  const handleYes = async (): Promise<void> => {
+    await api.deleteItem(lesson.moduleId, lesson.itemId);
+    setDeleteItem(false);
+  };
+
   // eslint-disable-next-line
   const pencilClick = () => {
     setEdit(!edit);
@@ -260,6 +225,7 @@ const AccordionItem = ({ lesson }: { lesson: APIModuleItem }) => {
     <AccordionDetails className={styles.dropdownItem}>
       {lesson.title}
       <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
+      <img src="/Trash.svg" className={styles.trash} onClick={() => setDeleteItem(true)} />
       {edit ? (
         <div className={styles.popupBackground}>
           <div className={styles.popupContainer}>
@@ -285,6 +251,23 @@ const AccordionItem = ({ lesson }: { lesson: APIModuleItem }) => {
               </button>
               <button onClick={handleSubmit} className={styles.submit}>
                 Save
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {deleteItem ? (
+        <div className={styles.popupBackground}>
+          <div className={styles.popupContainer}>
+            <div className={styles.popupTitle}>
+              Do you want to delete the following lesson: {lesson.title}?
+            </div>
+            <div className={styles.buttonContainer}>
+              <button onClick={handleCancel} className={styles.cancel}>
+                Cancel
+              </button>
+              <button onClick={handleYes} className={styles.submit}>
+                Yes
               </button>
             </div>
           </div>

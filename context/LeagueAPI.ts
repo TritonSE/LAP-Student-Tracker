@@ -148,6 +148,11 @@ class LeagueAPI {
     return res.data;
   }
 
+  async getClassModules(classId: string): Promise<Module[]> {
+    const res = await this.client.get(`api/class/${classId}/modules`);
+    return res.data;
+  }
+
   async getAnnouncements(classId: string): Promise<Announcement[]> {
     const res = await this.client.get(`api/class/${classId}/announcement`);
     return res.data;

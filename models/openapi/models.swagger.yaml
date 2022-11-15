@@ -564,6 +564,34 @@ components:
         - userId
         - attendance
         - start
+    Announcement:
+      title: Announcement
+      type: object
+      properties:
+        eventInformationId:
+          type: string
+        title:
+          type: string
+        content:
+          type: string
+        announcementId:
+          type: string
+      required:
+        - announcementId
+        - eventInformationId
+        - title
+        - content
+    CreateAnnouncement:
+      title: CreateAnnouncement
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+      required:
+        - title
+        - content
     CalendarEvent:
       title: CalendarEvent
       type: object

@@ -177,13 +177,7 @@ class LeagueAPI {
     return res.data;
   }
 
-  async getClassModules(classId: string): Promise<Module[]> {
-    const res = await this.client.get(`api/class/${classId}/modules`);
-    return res.data;
-  }
-
-  // eslint-disable-next-line
-  async getModuleItems(moduleId: string): Promise<any> {
+  async getModuleItems(moduleId: string): Promise<Item[]> {
     const res = await this.client.get(`api/module/${moduleId}/item`);
     return res.data;
   }

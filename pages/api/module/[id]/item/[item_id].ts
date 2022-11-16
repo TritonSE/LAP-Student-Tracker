@@ -4,7 +4,7 @@ import { getItem, deleteItem, updateItem } from "../../../../../lib/database/ite
 import { StatusCodes } from "http-status-codes";
 import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
-import { Item, Module } from "../../../../../models";
+import { Item } from "../../../../../models";
 import { decode } from "io-ts-promise";
 
 /**

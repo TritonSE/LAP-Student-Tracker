@@ -1,10 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./modules.module.css";
 import { APIContext } from "../../../context/APIContext";
-import useSWR from "swr";
-import { CustomError } from "../../util/CustomError";
 import { CustomLoader } from "../../util/CustomLoader";
-import { Module } from "../../../models";
+import { Item, Module } from "../../../models";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -177,15 +175,8 @@ type ModuleProps = {
   enableEditing: boolean;
 };
 
-type APIModuleItem = {
-  itemId: string;
-  link: URL;
-  moduleId: string;
-  title: string;
-};
-
 // eslint-disable-next-line
-const AccordionItem = ({ lesson }: { lesson: APIModuleItem }) => {
+const AccordionItem = ({ lesson }: { lesson: Item }) => {
   const [edit, setEdit] = useState(false);
   const api = useContext(APIContext);
   const [title, setTitle] = useState(lesson.title);
@@ -282,12 +273,15 @@ type AccordionModuleProps = {
 
 const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules }) => {
   const api = useContext(APIContext);
+  const [lessons, setLessons] = useState<Item[]>([]);
 
-  const { data: lessons, error } = useSWR<APIModuleItem[]>(`${module.moduleId}`, () =>
-    api.getModuleItems(module.moduleId)
-  );
+  useEffect(() => {
+    (async () => {
+      const res = await api.getModuleItems(module.moduleId);
+      setLessons(res);
+    })();
+  }, []);
 
-  if (error) return <CustomError />;
   if (!lessons) return <CustomLoader />;
 
   return (

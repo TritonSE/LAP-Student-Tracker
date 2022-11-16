@@ -6,8 +6,6 @@ import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
 import { Item, Module } from "../../../../../models";
 import { decode } from "io-ts-promise";
-import { logData, onError } from "../../../../../logger/logger";
-import { withLogging } from "../../../../../middleware/withLogging";
 
 /**
  * @swagger

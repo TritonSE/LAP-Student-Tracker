@@ -50,32 +50,28 @@ const oneOffEventHandler: NextApiHandler = async (req: NextApiRequest, res: Next
       try {
         // Add the event into the eventInformation table, getting the event ID in return
         const eventInfoId = await createEvent(
-            createOneOffEvent.name,
-            false,
-            "One-off Event",
-            createOneOffEvent.color
-          );
-        // We use a for ... of loop here instead of forEach because we want to 
+          createOneOffEvent.name,
+          false,
+          "One-off Event",
+          createOneOffEvent.color
+        );
+        // We use a for ... of loop here instead of forEach because we want to
         // break immediately and stop execution if an error occurs.
         for (const attendee of createOneOffEvent.attendees) {
-            if (attendee.role === "Teacher") {
-                // Verify the teacher exists in the database
-                const teacher = await getTeacherById(attendee.userId);
-                // Verify that teacher doesn't have another event during this interview
-                await validateTimes(teacher, [
-                Interval.fromISO(`${createOneOffEvent.start}/${createOneOffEvent.end}`),
-                ]);
-            }
-            // Add the attendee into the commitments table with the event ID
-            await createCommitment(attendee.userId, eventInfoId);
+          if (attendee.role === "Teacher") {
+            // Verify the teacher exists in the database
+            const teacher = await getTeacherById(attendee.userId);
+            // Verify that teacher doesn't have another event during this interview
+            await validateTimes(teacher, [
+              Interval.fromISO(`${createOneOffEvent.start}/${createOneOffEvent.end}`),
+            ]);
+          }
+          // Add the attendee into the commitments table with the event ID
+          await createCommitment(attendee.userId, eventInfoId);
         }
-        
+
         // Add the event into the calendarInformation table
-        await createCalendarEvent(
-          eventInfoId,
-          createOneOffEvent.start,
-          createOneOffEvent.end
-        );
+        await createCalendarEvent(eventInfoId, createOneOffEvent.start, createOneOffEvent.end);
         // Return the OneOffEvent payload
         const oneOffEvent: OneOffEvent = {
           eventInformationId: eventInfoId,

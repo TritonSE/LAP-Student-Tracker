@@ -3,6 +3,7 @@ import { AdminCalendar } from "./Calendar/AdminCalendar";
 import { EventsView } from "./EventsView/EventsView";
 import homePageStyles from "./OveralHomePage.module.css";
 import { CreateClassWizard } from "./CreateClassWizard/CreateClassWizard";
+import { CreateOptions } from "./CreateOptions/CreateOptions";
 
 const AdminHomePage: React.FC<object> = () => {
   const [showWizard, setShowWizard] = useState(false);
@@ -23,10 +24,7 @@ const AdminHomePage: React.FC<object> = () => {
         <div>
           <div className={homePageStyles.buttonWrapper}>
             <div className={homePageStyles.createBtnWrapper}>
-              <button className={homePageStyles.createBtn} onClick={() => setShowWizard(true)}>
-                Create
-                <img className={homePageStyles.addIcon} src="/AddIcon.png" />
-              </button>
+              <CreateOptions />
             </div>
             <button
               className={homePageStyles.manageBtn}

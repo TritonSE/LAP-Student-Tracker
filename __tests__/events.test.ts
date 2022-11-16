@@ -5,12 +5,7 @@ import {
   makeEventHTTPRequest,
   makeHTTPRequest,
 } from "./__testutils__/testutils.test";
-import {
-  ClassEvent,
-  CreateClassEvent,
-  CreateOneOffEvent,
-  OneOffEvent,
-} from "../models";
+import { ClassEvent, CreateClassEvent, CreateOneOffEvent, OneOffEvent } from "../models";
 import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";
 import { DateTime } from "luxon";
@@ -409,14 +404,14 @@ describe("[POST] /api/events/event", () => {
       color: "blue",
       attendees: [
         {
-          role: 'Teacher',
-          userId: '2',
+          role: "Teacher",
+          userId: "2",
         },
         {
-          role: 'Volunteer',
-          userId: '7',
-        }
-      ]
+          role: "Volunteer",
+          userId: "7",
+        },
+      ],
     };
 
     const expectedBody: OneOffEvent = {
@@ -467,14 +462,14 @@ describe("[POST] /api/events/event", () => {
       color: "blue",
       attendees: [
         {
-          role: 'Teacher',
-          userId: '100',
+          role: "Teacher",
+          userId: "100",
         },
         {
-          role: 'Volunteer',
-          userId: '7',
-        }
-      ]
+          role: "Volunteer",
+          userId: "7",
+        },
+      ],
     };
 
     await makeHTTPRequest(
@@ -496,14 +491,14 @@ describe("[POST] /api/events/event", () => {
       color: "blue",
       attendees: [
         {
-          role: 'Teacher',
-          userId: '2',
+          role: "Teacher",
+          userId: "2",
         },
         {
-          role: 'Volunteer',
-          userId: '7',
-        }
-      ]
+          role: "Volunteer",
+          userId: "7",
+        },
+      ],
     };
 
     await makeHTTPRequest(

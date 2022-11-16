@@ -1,5 +1,4 @@
 import eventHandler from "../pages/api/events/class";
-import interviewEventHandler from "../pages/api/events/interview";
 import { client } from "../lib/db";
 import {
   convertTimeToISO,
@@ -9,15 +8,13 @@ import {
 import {
   ClassEvent,
   CreateClassEvent,
-  CreateInterviewEvent,
-  CreateMakeUpLabEvent,
-  InterviewEvent,
-  MakeUpLabEvent,
+  CreateOneOffEvent,
+  OneOffEvent,
 } from "../models";
 import { StatusCodes } from "http-status-codes";
 import RRule from "rrule";
 import { DateTime } from "luxon";
-import labEventHandler from "../pages/api/events/lab";
+import oneOffEventHandler from "../pages/api/events/event";
 
 const FIELDS_NOT_ENTERED_CORRECTLY = "Fields are not correctly entered";
 
@@ -401,20 +398,28 @@ describe("[POST] /api/events/class", () => {
   });
 });
 
-describe("[POST] /api/events/interview", () => {
-  test("creates a new interview event", async () => {
+describe("[POST] /api/events/event", () => {
+  test("creates a new one-off event", async () => {
     const start = DateTime.now().toISO();
     const end = DateTime.now().toISO();
-    const body: CreateInterviewEvent = {
+    const body: CreateOneOffEvent = {
       name: "Interview 101",
       start: start,
       end: end,
       color: "blue",
-      teacher: "2",
-      volunteer: "7",
+      attendees: [
+        {
+          role: 'Teacher',
+          userId: '2',
+        },
+        {
+          role: 'Volunteer',
+          userId: '7',
+        }
+      ]
     };
 
-    const expectedBody: InterviewEvent = {
+    const expectedBody: OneOffEvent = {
       eventInformationId: "",
       start: start,
       end: end,
@@ -422,8 +427,8 @@ describe("[POST] /api/events/interview", () => {
       color: "blue",
     };
     await makeHTTPRequest(
-      interviewEventHandler,
-      "/api/events/interview",
+      oneOffEventHandler,
+      "/api/events/event",
       undefined,
       "POST",
       body,
@@ -433,7 +438,7 @@ describe("[POST] /api/events/interview", () => {
     );
   });
 
-  test("creates a new interview event with bad parameters", async () => {
+  test("creates a new one-off event with bad parameters", async () => {
     const body = {
       name: "Interview 101",
       color: "blue",
@@ -442,8 +447,8 @@ describe("[POST] /api/events/interview", () => {
     };
 
     await makeHTTPRequest(
-      interviewEventHandler,
-      "/api/events/interview",
+      oneOffEventHandler,
+      "/api/events/event",
       undefined,
       "POST",
       body,
@@ -452,21 +457,29 @@ describe("[POST] /api/events/interview", () => {
     );
   });
 
-  test("creates a new interview event with non-existing teacher", async () => {
+  test("creates a new one-off event with non-existing teacher", async () => {
     const start = DateTime.now().toISO();
     const end = DateTime.now().toISO();
-    const body: CreateInterviewEvent = {
+    const body: CreateOneOffEvent = {
       name: "Interview 110",
       start: start,
       end: end,
       color: "blue",
-      teacher: "100",
-      volunteer: "7",
+      attendees: [
+        {
+          role: 'Teacher',
+          userId: '100',
+        },
+        {
+          role: 'Volunteer',
+          userId: '7',
+        }
+      ]
     };
 
     await makeHTTPRequest(
-      interviewEventHandler,
-      "/api/events/interview",
+      oneOffEventHandler,
+      "/api/events/event",
       undefined,
       "POST",
       body,
@@ -475,115 +488,27 @@ describe("[POST] /api/events/interview", () => {
     );
   });
 
-  test("creates a new interview event with an event conflict", async () => {
-    const body: CreateInterviewEvent = {
+  test("creates a new one-off event with an event conflict", async () => {
+    const body: CreateOneOffEvent = {
       name: "Interview 110",
       start: "2022-01-01T18:45:45.000Z",
       end: "2022-01-01T19:45:45.000Z",
       color: "blue",
-      teacher: "2",
-      volunteer: "7",
+      attendees: [
+        {
+          role: 'Teacher',
+          userId: '2',
+        },
+        {
+          role: 'Volunteer',
+          userId: '7',
+        }
+      ]
     };
 
     await makeHTTPRequest(
-      interviewEventHandler,
-      "/api/events/interview",
-      undefined,
-      "POST",
-      body,
-      StatusCodes.BAD_REQUEST,
-      "Teacher Jane Doe has conflict with class Java Bear"
-    );
-  });
-});
-
-describe("[POST] /api/events/lab", () => {
-  test("creates a new lab event", async () => {
-    const start = DateTime.now().toISO();
-    const end = DateTime.now().toISO();
-    const body: CreateMakeUpLabEvent = {
-      name: "Lab 101",
-      start: start,
-      end: end,
-      color: "blue",
-      teacher: "2",
-      student: "7",
-    };
-
-    const expectedBody: MakeUpLabEvent = {
-      eventInformationId: "",
-      start: start,
-      end: end,
-      name: "Lab 101",
-      color: "blue",
-    };
-    await makeHTTPRequest(
-      labEventHandler,
-      "/api/events/lab",
-      undefined,
-      "POST",
-      body,
-      StatusCodes.CREATED,
-      expectedBody,
-      ["eventInformationId"]
-    );
-  });
-
-  test("creates a new lab event with bad parameters", async () => {
-    const body = {
-      name: "Lab 101",
-      color: "blue",
-      teacher: "2",
-      student: "7",
-    };
-
-    await makeHTTPRequest(
-      labEventHandler,
-      "/api/events/lab",
-      undefined,
-      "POST",
-      body,
-      StatusCodes.BAD_REQUEST,
-      FIELDS_NOT_ENTERED_CORRECTLY
-    );
-  });
-
-  test("creates a new lab event with non-existing teacher", async () => {
-    const start = DateTime.now().toISO();
-    const end = DateTime.now().toISO();
-    const body: CreateMakeUpLabEvent = {
-      name: "Lab 110",
-      start: start,
-      end: end,
-      color: "blue",
-      teacher: "100",
-      student: "7",
-    };
-
-    await makeHTTPRequest(
-      labEventHandler,
-      "/api/events/lab",
-      undefined,
-      "POST",
-      body,
-      StatusCodes.BAD_REQUEST,
-      "Teacher with UUID 100 does not exist"
-    );
-  });
-
-  test("creates a new lab event with an event conflict", async () => {
-    const body: CreateMakeUpLabEvent = {
-      name: "Lab 110",
-      start: "2022-01-01T18:45:45.000Z",
-      end: "2022-01-01T19:45:45.000Z",
-      color: "blue",
-      teacher: "2",
-      student: "7",
-    };
-
-    await makeHTTPRequest(
-      labEventHandler,
-      "/api/events/lab",
+      oneOffEventHandler,
+      "/api/events/event",
       undefined,
       "POST",
       body,

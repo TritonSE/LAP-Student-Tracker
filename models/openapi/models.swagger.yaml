@@ -584,8 +584,8 @@ components:
         - backgroundColor
         - start
         - end
-    InterviewEvent:
-      title: InterviewEvent
+    OneOffEvent:
+      title: OneOffEvent
       type: object
       properties:
         eventInformationId:
@@ -599,13 +599,12 @@ components:
         end:
           type: string
       required:
-        - eventInformationId
         - name
         - color
         - start
         - end
-    CreateInterviewEvent:
-      title: CreateInterviewEvent
+    CreateOneOffEvent:
+      title: CreateOneOffEvent
       type: object
       properties:
         name:
@@ -616,57 +615,22 @@ components:
           type: string
         end:
           type: string
-        teacher:
-          type: string
-        volunteer:
-          type: string
-      required:
-        - name
-        - color
-        - start
-        - end
-        - teacher
-        - volunteer
-    MakeUpLabEvent:
-      title: InterviewEvent
-      type: object
-      properties:
-        eventInformationId:
-          type: string
-        name:
-          type: string
-        color:
-          type: string
-        start:
-          type: string
-        end:
-          type: string
+        attendees:
+          type: array
+          items:
+            type: object
+            properties:
+              role:
+                type: string
+              userId:
+                type: string
+            required:
+              - role
+              - userId
       required:
         - eventInformationId
         - name
         - color
         - start
         - end
-    CreateMakeUpLabEvent:
-      title: CreateInterviewEvent
-      type: object
-      properties:
-        name:
-          type: string
-        color:
-          type: string
-        start:
-          type: string
-        end:
-          type: string
-        teacher:
-          type: string
-        student:
-          type: string
-      required:
-        - name
-        - color
-        - start
-        - end
-        - teacher
-        - student
+        - attendees

@@ -412,7 +412,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
-      checkAvailabilities: false
+      checkAvailabilities: false,
     };
 
     const expectedBody: OneOffEvent = {
@@ -471,7 +471,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
-      checkAvailabilities: false
+      checkAvailabilities: false,
     };
 
     await makeHTTPRequest(
@@ -501,7 +501,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
-      checkAvailabilities: false
+      checkAvailabilities: false,
     };
 
     await makeHTTPRequest(
@@ -516,8 +516,8 @@ describe("[POST] /api/events/event", () => {
   });
 
   test("creates a new one-off event that passes availability check", async () => {
-    const start = '2022-01-04T10:00:00.000-08:00';
-    const end = '2022-01-04T12:00:00.000-08:00';
+    const start = "2022-01-04T10:00:00.000-08:00";
+    const end = "2022-01-04T12:00:00.000-08:00";
     const body: CreateOneOffEvent = {
       name: "Interview 101",
       start: start,
@@ -533,7 +533,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
-      checkAvailabilities: true
+      checkAvailabilities: true,
     };
 
     const expectedBody: OneOffEvent = {
@@ -543,7 +543,7 @@ describe("[POST] /api/events/event", () => {
       name: "Interview 101",
       color: "blue",
     };
-    
+
     await makeHTTPRequest(
       oneOffEventHandler,
       "/api/events/event",
@@ -572,7 +572,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
-      checkAvailabilities: true
+      checkAvailabilities: true,
     };
 
     await makeHTTPRequest(
@@ -587,8 +587,8 @@ describe("[POST] /api/events/event", () => {
   });
 
   test("creates a new one-off event with some conflicting availabilities", async () => {
-    const start = '2022-01-03T10:00:00.000Z';
-    const end = '2022-01-03T12:00:00.000Z';
+    const start = "2022-01-03T10:00:00.000Z";
+    const end = "2022-01-03T12:00:00.000Z";
     const body: CreateOneOffEvent = {
       name: "Interview 101",
       start: start,
@@ -604,7 +604,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
-      checkAvailabilities: true
+      checkAvailabilities: true,
     };
 
     await makeHTTPRequest(

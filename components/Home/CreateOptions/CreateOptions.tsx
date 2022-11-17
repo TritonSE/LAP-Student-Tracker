@@ -59,8 +59,15 @@ const StyledMenuItem = styled(MenuItemUnstyled)(
   }
   `
 );
+type CreateOptionProps = {
+  handleClickClass: (state: boolean) => void;
+  handleClickOneOffEvent: (state: boolean) => void;
+};
 
-const CreateOptions: React.FC = () => {
+const CreateOptions: React.FC<CreateOptionProps> = ({
+  handleClickClass,
+  handleClickOneOffEvent,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const isOpen = Boolean(anchorEl);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -91,13 +98,6 @@ const CreateOptions: React.FC = () => {
     }
   };
 
-  const createHandleMenuClick = (menuItem: string) => {
-    return () => {
-      console.log(`Clicked on ${menuItem}`);
-      close();
-    };
-  };
-
   return (
     <div>
       <button
@@ -120,10 +120,8 @@ const CreateOptions: React.FC = () => {
         onClose={close}
         anchorEl={anchorEl}
       >
-        <StyledMenuItem onClick={createHandleMenuClick("Class")}>Class</StyledMenuItem>
-        <StyledMenuItem onClick={createHandleMenuClick("One-off Event")}>
-          One-off Event
-        </StyledMenuItem>
+        <StyledMenuItem onClick={() => handleClickClass(true)}>Class</StyledMenuItem>
+        <StyledMenuItem onClick={() => handleClickOneOffEvent(true)}>One-off Event</StyledMenuItem>
       </MenuUnstyled>
     </div>
   );

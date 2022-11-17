@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import { AdminCalendar } from "./Calendar/AdminCalendar";
 import { EventsView } from "./EventsView/EventsView";
 import homePageStyles from "./OveralHomePage.module.css";
-import { CreateClassWizard } from "./CreateClassWizard/CreateClassWizard";
 import { CreateOptions } from "./CreateOptions/CreateOptions";
+import { CreateClassWizard } from "./CreateClassWizard/CreateClassWizard";
+import { CreateEventWizard } from "./CreateEventWizard/CreateEventWizard";
 
 const AdminHomePage: React.FC<object> = () => {
-  const [showWizard, setShowWizard] = useState(false);
+  const [showClassWizard, setShowClassWizard] = useState(false);
+  const [showEventWizard, setShowEventWizard] = useState(false);
   const [showManageClassesView, setShowManageClassesViewView] = useState(false);
   const [showMainScreenButtons, setShowMainScreenButtons] = useState(true);
 
   const handleClose = (): void => {
-    setShowWizard(false);
+    setShowClassWizard(false);
+    setShowEventWizard(false);
   };
 
   useEffect(() => {
@@ -24,7 +27,10 @@ const AdminHomePage: React.FC<object> = () => {
         <div>
           <div className={homePageStyles.buttonWrapper}>
             <div className={homePageStyles.createBtnWrapper}>
-              <CreateOptions />
+              <CreateOptions
+                handleClickClass={setShowClassWizard}
+                handleClickOneOffEvent={setShowEventWizard}
+              />
             </div>
             <button
               className={homePageStyles.manageBtn}
@@ -35,7 +41,8 @@ const AdminHomePage: React.FC<object> = () => {
           </div>
         </div>
       )}
-      {showWizard ? <CreateClassWizard handleClose={handleClose} /> : null}
+      {showClassWizard ? <CreateClassWizard handleClose={handleClose} /> : null}
+      {showEventWizard ? <CreateEventWizard handleClose={handleClose} /> : null}
 
       {showManageClassesView ? (
         <EventsView setShowEventsViewPage={setShowManageClassesViewView} />

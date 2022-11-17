@@ -126,6 +126,7 @@ const CreateEventWizard: React.FC<CreateEventWizardProps> = ({ handleClose }) =>
       end: startDate.set({ hour: endTime.hour, minute: endTime.minute }).toISO(),
       color: colorMap[color],
       attendees: attendees,
+      checkAvailabilities: !ignoreAvailabilities,
     };
 
     try {

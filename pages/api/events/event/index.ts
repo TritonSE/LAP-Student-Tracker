@@ -12,6 +12,7 @@ import {
 import { createCalendarEvent } from "../../../../lib/database/calendar";
 import { createCommitment } from "../../../../lib/database/commitments";
 import { Interval } from "luxon";
+import { TeacherAvailabilityError, validateAvailabilities } from "../../../../lib/database/availability";
 
 /**
  * @swagger
@@ -62,9 +63,13 @@ const oneOffEventHandler: NextApiHandler = async (req: NextApiRequest, res: Next
             // Verify the teacher exists in the database
             const teacher = await getTeacherById(attendee.userId);
             // Verify that teacher doesn't have another event during this interview
-            await validateTimes(teacher, [
+            const intervals = [
               Interval.fromISO(`${createOneOffEvent.start}/${createOneOffEvent.end}`),
-            ]);
+            ];
+            await validateTimes(teacher, intervals);
+            if (createOneOffEvent.checkAvailabilities) {
+              await validateAvailabilities(teacher, intervals, createOneOffEvent.name);
+            }
           }
           // Add the attendee into the commitments table with the event ID
           await createCommitment(attendee.userId, eventInfoId);
@@ -82,7 +87,7 @@ const oneOffEventHandler: NextApiHandler = async (req: NextApiRequest, res: Next
         };
         return res.status(StatusCodes.CREATED).json(oneOffEvent);
       } catch (e) {
-        if (e instanceof NonExistingTeacher || e instanceof TeacherConflictError) {
+        if (e instanceof TeacherAvailabilityError || e instanceof NonExistingTeacher || e instanceof TeacherConflictError) {
           return res.status(StatusCodes.BAD_REQUEST).json(e.message);
         } else {
           return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

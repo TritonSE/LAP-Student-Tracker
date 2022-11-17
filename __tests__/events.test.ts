@@ -59,7 +59,7 @@ beforeAll(async () => {
   );
   await client.query("INSERT INTO commitments(user_id, event_information_id) VALUES('2', 'e_1')");
   await client.query(
-    "INSERT INTO availabilities (user_id, mon, wed, fri, time_zone) VALUES ('4', ARRAY[['10:00', '12:00']], ARRAY[['10:00', '12:00']], ARRAY[['10:00', '12:00']], 'America/Los_Angeles')"
+    "INSERT INTO availabilities (user_id, mon, tue, wed, fri, time_zone) VALUES ('4', ARRAY[['10:00', '12:00']], ARRAY[['10:00', '12:00']], ARRAY[['10:00', '12:00']], ARRAY[['10:00', '12:00']], 'America/Los_Angeles')"
   );
   await client.query(
     "INSERT INTO availabilities (user_id, mon, wed, fri, time_zone) VALUES ('6', ARRAY[['10:00', '12:00']], ARRAY[['10:00', '12:00']], ARRAY[['11:00', '12:00']], 'America/Los_Angeles')"
@@ -412,6 +412,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
+      checkAvailabilities: false
     };
 
     const expectedBody: OneOffEvent = {
@@ -470,6 +471,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
+      checkAvailabilities: false
     };
 
     await makeHTTPRequest(
@@ -499,6 +501,7 @@ describe("[POST] /api/events/event", () => {
           userId: "7",
         },
       ],
+      checkAvailabilities: false
     };
 
     await makeHTTPRequest(
@@ -509,6 +512,109 @@ describe("[POST] /api/events/event", () => {
       body,
       StatusCodes.BAD_REQUEST,
       "Teacher Jane Doe has conflict with class Java Bear"
+    );
+  });
+
+  test("creates a new one-off event that passes availability check", async () => {
+    const start = '2022-01-04T10:00:00.000-08:00';
+    const end = '2022-01-04T12:00:00.000-08:00';
+    const body: CreateOneOffEvent = {
+      name: "Interview 101",
+      start: start,
+      end: end,
+      color: "blue",
+      attendees: [
+        {
+          role: "Teacher",
+          userId: "4",
+        },
+        {
+          role: "Volunteer",
+          userId: "7",
+        },
+      ],
+      checkAvailabilities: true
+    };
+
+    const expectedBody: OneOffEvent = {
+      eventInformationId: "",
+      start: start,
+      end: end,
+      name: "Interview 101",
+      color: "blue",
+    };
+    
+    await makeHTTPRequest(
+      oneOffEventHandler,
+      "/api/events/event",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.CREATED,
+      expectedBody,
+      ["eventInformationId"]
+    );
+  });
+
+  test("creates a new one-off event for teacher with no availabilities", async () => {
+    const body: CreateOneOffEvent = {
+      name: "Interview 110",
+      start: "2022-01-01T18:45:45.000Z",
+      end: "2022-01-01T19:45:45.000Z",
+      color: "blue",
+      attendees: [
+        {
+          role: "Teacher",
+          userId: "5",
+        },
+        {
+          role: "Volunteer",
+          userId: "7",
+        },
+      ],
+      checkAvailabilities: true
+    };
+
+    await makeHTTPRequest(
+      oneOffEventHandler,
+      "/api/events/event",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "Teacher Rick Ord is not available for class Interview 110"
+    );
+  });
+
+  test("creates a new one-off event with some conflicting availabilities", async () => {
+    const start = '2022-01-03T10:00:00.000Z';
+    const end = '2022-01-03T12:00:00.000Z';
+    const body: CreateOneOffEvent = {
+      name: "Interview 101",
+      start: start,
+      end: end,
+      color: "blue",
+      attendees: [
+        {
+          role: "Teacher",
+          userId: "6",
+        },
+        {
+          role: "Volunteer",
+          userId: "7",
+        },
+      ],
+      checkAvailabilities: true
+    };
+
+    await makeHTTPRequest(
+      oneOffEventHandler,
+      "/api/events/event",
+      undefined,
+      "POST",
+      body,
+      StatusCodes.BAD_REQUEST,
+      "Teacher Miles Jones is not available for class Interview 101"
     );
   });
 });

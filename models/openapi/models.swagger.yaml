@@ -627,6 +627,8 @@ components:
             required:
               - role
               - userId
+        checkAvailabilities:
+          type: boolean
       required:
         - eventInformationId
         - name
@@ -634,3 +636,4 @@ components:
         - start
         - end
         - attendees
+        - checkAvailabilities

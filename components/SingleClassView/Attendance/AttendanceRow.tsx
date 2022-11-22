@@ -17,14 +17,15 @@ const AttendanceRow: React.FC<AttendanceRowProps> =  ({
     userId,
     attendance,
 }) => {
+    console.log(attendance, name);
     return (
         <div className={styles.attendanceRow}>
             <p className={styles.userName}>{name}</p>
             <div className={styles.userAttendance}>
                 <div>
                     <input
-                        type="radio"
-                        id="present"
+                        type="checkbox"
+                        id={"present"+userId}
                         name="select-attendance"
                         value="Present"
                         onChange={(_) => onAttendanceChange(userId, "Present")}
@@ -37,8 +38,8 @@ const AttendanceRow: React.FC<AttendanceRowProps> =  ({
                 </div>
                 <div>
                     <input
-                        type="radio"
-                        id="unexcused"
+                        type="checkbox"
+                        id={"unexcused"+userId}
                         name="select-attendance"
                         value="Unexcused"
                         onChange={(_) => onAttendanceChange(userId, "Unexcused")}
@@ -51,8 +52,8 @@ const AttendanceRow: React.FC<AttendanceRowProps> =  ({
                 </div>
                 <div>
                     <input
-                        type="radio"
-                        id="excused"
+                        type="checkbox"
+                        id={"excused"+userId}
                         name="select-attendance"
                         value="Excused"
                         onChange={(_) => onAttendanceChange(userId, "Excused")}

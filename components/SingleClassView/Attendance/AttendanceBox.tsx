@@ -1,22 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState , useEffect } from "react";
 import styles from "./attendance.module.css";
 import { Attendance } from "../../../models/Attendance";
 import { CustomError } from "../../util/CustomError";
 import { AttendanceTypes, CreateAttendance } from "../,,/../../../models";
 import { AttendanceRow } from "./AttendanceRow";
+import { APIContext } from "../../../context/APIContext";
 
 
 type AttendanceBoxProps = {
-    attendances: Attendance[] | undefined
+    attendances: Attendance[] | undefined,
+    sessionId: string,
+    classId: string
 };
 
 const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
     attendances,
+    sessionId,
+    classId,
 }) => {
     if (!attendances){
         return <p>This date has no sessions</p>
     }
-
+    const api = useContext(APIContext);
     //get userIds and initial attendances from database
     const temp: [string, AttendanceTypes][] = []
     attendances.forEach(function(attendance, index){
@@ -31,17 +36,24 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
         const fullName = attendance.firstName + " " +attendance.lastName;
         names.set(attendance.userId, fullName);
     })
-
-    console.log(names);
-    console.log(newAttendances);
-
-    const formSubmit = () => {
-        
-    }
+    const [saveAttendances, setSaveAttendances] = useState<boolean>(true);
+    useEffect( () => {
+        (async () => {
+            let attendanceArray: CreateAttendance[] = [];
+            newAttendances.forEach(function(attendance, userId) {
+                const createAttendance: CreateAttendance = {
+                    userId: userId,
+                    attendance: attendance,
+                };
+                attendanceArray.push(createAttendance);
+            })
+            const res = await api.createAttendance(sessionId, classId, attendanceArray);
+        })();
+      }, [saveAttendances])
     
     return (
         <div className={styles.boxContainer}>
-            <form onSubmit={formSubmit}>
+            <form>
                 <div className={styles.attendanceList}>
                     <div className={styles.attendanceRow}>
                         <p className={styles.userName}>Name</p>
@@ -59,7 +71,7 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
                     })}
                 </div>
                 <hr></hr>
-                <button className={styles.saveAttendance}>
+                <button className={styles.saveAttendance} onClick={() => {setSaveAttendances(!saveAttendances)}}>
                     Save Attendance
                 </button>
             </form>

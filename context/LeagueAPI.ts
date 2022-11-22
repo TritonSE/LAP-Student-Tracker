@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass } from "../models";
+import { Class, CreateAttendance, CreateClass } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
 import { Student } from "../models";
@@ -162,6 +162,22 @@ class LeagueAPI {
 
   async getAttendanceFromSessionID(session: string, classId: string): Promise<Attendance[]>  {
     const res = await this.client.get(`api/class/${classId}/attendance/${session}`);
+    return res.data;
+  }
+
+  async getAttendanceFromDate(classId: string, date?: string): Promise<Attendance[]> {
+    const sessions = await this.client.get(`api/class/${classId}/sessions?date=${date}`);
+    const session = sessions.data
+    if (session === undefined || session.length == 0) {
+      return session
+    }
+    const sessionId = session[0].sessionId
+    const res = await this.client.get(`api/class/${classId}/attendance/${sessionId}`);
+    return res.data;
+  }
+
+  async createAttendance(sessionId: string, classId: string, attendanceArray: CreateAttendance[]): Promise<Attendance[]> {
+    const res = await this.client.post(`api/class/${classId}/attendence/${sessionId}`, attendanceArray);
     return res.data;
   }
 }

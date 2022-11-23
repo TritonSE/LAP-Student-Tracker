@@ -61,6 +61,41 @@
   border: none;
 }
 
+.uncheckedButton {
+  composes: labelLarge from "../../../styles/globals.css";
+  width: 182px;
+  height: 40px;
+  border: 1px solid #1B1C1D;
+  border-radius: 10px;
+}
+
+.presentButton {
+  width: 182px;
+  height: 40px;
+  border: 1px solid #1B1C1D;
+  border-radius: 10px;
+  background: #46D5B3;
+  font-size: 17px;
+}
+
+.unexcusedButton {
+  width: 182px;
+  height: 40px;
+  border: 1px solid #1B1C1D;
+  border-radius: 10px;
+  background:#EF5DA8;
+  font-size: 17px;
+}
+
+.excusedButton {
+  width: 182px;
+  height: 40px;
+  border: 1px solid #1B1C1D;
+  border-radius: 10px;
+  background: #FFC702;
+  font-size: 17px;
+}
+
 .attendanceButton:hover {
   opacity: 0.6;
 }
@@ -71,6 +106,7 @@
   background: #5D5FEF;
   border-radius: 10px;
   color: white;
+  width: 180px;
   margin-right: 2rem;
   margin-bottom: 1rem;
   margin-top: 1rem;

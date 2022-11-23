@@ -22,48 +22,36 @@ const AttendanceRow: React.FC<AttendanceRowProps> =  ({
         <div className={styles.attendanceRow}>
             <p className={styles.userName}>{name}</p>
             <div className={styles.userAttendance}>
-                <div>
-                    <input
-                        type="checkbox"
-                        id={"present"+userId}
-                        name="select-attendance"
-                        value="Present"
-                        onChange={(_) => onAttendanceChange(userId, "Present")}
-                        className={styles.attendanceButton}
-                        checked={attendance == "Present"}
-                    />
-                    <label htmlFor="present" className={styles.positionText}>
-                        Present
-                    </label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        id={"unexcused"+userId}
-                        name="select-attendance"
-                        value="Unexcused"
-                        onChange={(_) => onAttendanceChange(userId, "Unexcused")}
-                        className={styles.attendanceButton}
-                        checked={attendance == "Unexcused"}
-                    />
-                    <label htmlFor="unexcused" className={styles.positionText}>
-                        Unexcused
-                    </label>
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        id={"excused"+userId}
-                        name="select-attendance"
-                        value="Excused"
-                        onChange={(_) => onAttendanceChange(userId, "Excused")}
-                        className={styles.attendanceButton}
-                        checked={attendance == "Excused"}
-                    />
-                    <label htmlFor="excused" className={styles.positionText}>
-                        Excused
-                    </label>
-                </div>
+                {attendance == "Present" ? (
+                    <button
+                        className={styles.presentButton}
+                    >Present</button>
+                ): (
+                    <button
+                        onClick={(_) => onAttendanceChange(userId, "Present")}
+                        className={styles.uncheckedButton}
+                    >Present</button>
+                )}
+                {attendance == "Excused" ? (
+                    <button
+                        className={styles.excusedButton}
+                    >Excused</button>
+                ): (
+                    <button
+                        onClick={(_) => onAttendanceChange(userId, "Excused")}
+                        className={styles.uncheckedButton}
+                    >Excused</button>
+                )}
+                {attendance == "Unexcused" ? (
+                    <button
+                        className={styles.unexcusedButton}
+                    >Unexcused</button>
+                ): (
+                    <button
+                        onClick={(_) => onAttendanceChange(userId, "Unexcused")}
+                        className={styles.uncheckedButton}
+                    >Unexcused</button>
+                )}
             </div>
         </div>
     )

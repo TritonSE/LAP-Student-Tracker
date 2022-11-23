@@ -2,6 +2,7 @@ import React, { useContext, useState , useEffect } from "react";
 import styles from "./attendance.module.css";
 import { Attendance } from "../../../models/Attendance";
 import { CustomError } from "../../util/CustomError";
+import { CustomLoader } from "../../util/CustomLoader";
 import { AttendanceTypes, CreateAttendance } from "../,,/../../../models";
 import { AttendanceRow } from "./AttendanceRow";
 import { APIContext } from "../../../context/APIContext";
@@ -10,7 +11,7 @@ import { APIContext } from "../../../context/APIContext";
 type AttendanceBoxProps = {
     attendances: Attendance[] | undefined,
     sessionId: string,
-    classId: string
+    classId: string,
 };
 
 const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
@@ -37,8 +38,10 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
         names.set(attendance.userId, fullName);
     })
     const [saveAttendances, setSaveAttendances] = useState<boolean>(true);
+    const [loadingSave, setLoadingSave] = useState<boolean>(false);
     useEffect( () => {
         (async () => {
+            setLoadingSave(true);
             let attendanceArray: CreateAttendance[] = [];
             newAttendances.forEach(function(attendance, userId) {
                 const createAttendance: CreateAttendance = {
@@ -48,12 +51,13 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
                 attendanceArray.push(createAttendance);
             })
             const res = await api.createAttendance(sessionId, classId, attendanceArray);
+            setLoadingSave(false);
         })();
       }, [saveAttendances])
     
     return (
         <div className={styles.boxContainer}>
-            <form>
+            <div>
                 <div className={styles.attendanceList}>
                     <div className={styles.attendanceRow}>
                         <p className={styles.userName}>Name</p>
@@ -72,9 +76,13 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
                 </div>
                 <hr></hr>
                 <button className={styles.saveAttendance} onClick={() => {setSaveAttendances(!saveAttendances)}}>
-                    Save Attendance
+                    {loadingSave ? (
+                        <CustomLoader></CustomLoader>
+                    ): (
+                        "Save Attendance"
+                    )}   
                 </button>
-            </form>
+            </div>
         </div>
     );
 };

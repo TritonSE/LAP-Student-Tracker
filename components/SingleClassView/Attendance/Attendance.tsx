@@ -8,7 +8,6 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import { getAttendanceFromSessionID } from "../../../lib/database/attendance";
 
 type AttendanceProps = {
   classId: string,
@@ -19,30 +18,22 @@ export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
   const [date, setDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
   const [loading, setLoading] = useState<boolean>(true);
   const [attendances, setAttendance] = useState<any>();
-  let sessionId = "";
+  const [sessionID, setSessionID] = useState<string>("");
 
   useEffect( () => {
     (async () => {
-      setLoading(true)
+      setLoading(true);
       const sessions = await api.getSessions(classId, date.set({ hour: 0, minute: 0 }).toUTC().toISO());
-      const session = sessions.data
-      if (session === undefined || session.length == 0) {
+      console.log(sessions)
+      if (sessions === undefined || sessions.length == 0) {
         setAttendance(null);
         setLoading(false);
         return (<p>This date has no sessions</p>);
       }
-      sessionId = session[0].sessionId;
-      const attendances = await getAttendanceFromSessionID(sessionId, classId);
+      setSessionID(sessions[0].sessionId);
+      const sessionId = sessions[0].sessionId;
+      const attendances = await api.getAttendanceFromSessionID(sessionId, classId);
       setAttendance(attendances);
-      // const attendances = await api.getAttendanceFromDate(classId, date.set({ hour: 0, minute: 0 }).toUTC().toISO())
-      // if (attendances === undefined || attendances.length == 0) {
-      //   setAttendance(null);
-      //   setLoading(false);
-      //   return (<p>This date has no sessions</p>);
-      // }
-      // else{
-      //   setAttendance(attendances);
-      // }
       setLoading(false);
     })();
   }, [date])
@@ -66,7 +57,7 @@ export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
       {loading ? (
         <CustomLoader></CustomLoader>
       ): (
-        <AttendanceBox attendances={attendances} classId={classId} sessionId={sessionId}></AttendanceBox>
+        <AttendanceBox attendances={attendances} classId={classId} sessionId={sessionID}></AttendanceBox>
       )}
     </div>
   );

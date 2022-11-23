@@ -176,8 +176,8 @@ class LeagueAPI {
     return res.data;
   }
 
-  async createAttendance(sessionId: string, classId: string, attendanceArray: CreateAttendance[]): Promise<Attendance[]> {
-    const res = await this.client.post(`api/class/${classId}/attendence/${sessionId}`, attendanceArray);
+  async createAttendance(session: string, classId: string, attendanceArray: CreateAttendance[]): Promise<Attendance[]> {
+    const res = await this.client.post(`api/class/${classId}/attendance/${session}`, attendanceArray);
     return res.data;
   }
 }

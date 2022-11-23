@@ -153,6 +153,16 @@ class LeagueAPI {
     const res = await this.client.get("api/students");
     return res.data;
   }
+
+  async createCommitment(classId: string, studentId: string): Promise<void> {
+    await this.client.post(`api/class/${classId}/student`, {
+      studentId: studentId,
+    });
+  }
+
+  async deleteCommitment(classId: string, studentId: string): Promise<void> {
+    await this.client.delete(`api/class/${classId}/student/${studentId}`);
+  }
 }
 
 export { LeagueAPI };

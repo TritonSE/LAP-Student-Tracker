@@ -3,7 +3,9 @@
   flex-direction: column;
   justify-content: flex-start;
   width: 100%;
+  padding-right: 4rem;
   padding-top: 2rem;
+  align-self: left;
 }
 
 .title {
@@ -12,10 +14,12 @@
   position: relative;
   align-self: left;
   padding: 1rem;
+  float: left;
 }
 
 .spacer {
   height: 42px;
+  width: 100%;
 }
 
 .buttonContainer {
@@ -83,4 +87,139 @@
   font-weight: 500;
   font-size: 18px;
   line-height: 20px;
+}
+
+.editButtonContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  float: right;
+  margin-right: 0.75em;
+}
+
+.editButton {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 24px 32px;
+  gap: 10px;
+  width: 126px;
+  background: #ffffff;
+  box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.18);
+  border-radius: 32px;
+
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.editDropdown {
+  display: none;
+  position: absolute;
+  margin-top: 68px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 24px 32px;
+  gap: 12px;
+  width: 126px;
+
+  background: #ffffff;
+  box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.18);
+  border-radius: 32px;
+}
+
+.editButtonContainer:hover .editDropdown {
+  display: flex;
+}
+
+.editDropdown button {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 20px;
+  background: #ffffff;
+}
+
+.modalWrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 4;
+  left: 0;
+  top: 0;
+  overflow: auto;
+  backdrop-filter: brightness(80%);
+}
+
+.modalContent {
+  width: 512px;
+  height: 277px;
+  background: #ffffff;
+  border-radius: 16px;
+  margin: 15% auto;
+  padding: 30px 36px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modalTitle {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+  color: #1b1c1d;
+}
+
+.searchContainer {
+  height: 40px;
+  width: 100%;
+  background: #e1e2e4;
+  border-radius: 8px;
+}
+
+.modalButtonContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 39px;
+}
+
+.cancelButton {
+  width: 160px;
+  height: 48px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 48px;
+  text-align: center;
+  border: 1px solid #000000;
+  border-radius: 10px;
+}
+
+.addButton {
+  width: 160px;
+  height: 48px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 48px;
+  text-align: center;
+  background: #f26522;
+  border-radius: 10px;
+}
+
+.deleteButton {
+  background: #ffffff;
 }

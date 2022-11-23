@@ -32,13 +32,15 @@ export const TeacherTableView: React.FC<TeacherTableViewProps> = ({ teachers }) 
 
   return (
     <table className={styles.table}>
-      <tr className={styles.tableHeader}>
-        <th>First</th>
-        <th>Last</th>
-        <th>Position</th>
-        <th>Info</th>
-      </tr>
-      {tableRows}
+      <tbody>
+        <tr className={styles.tableHeader}>
+          <th>First</th>
+          <th>Last</th>
+          <th>Position</th>
+          <th>Info</th>
+        </tr>
+        {tableRows}
+      </tbody>
     </table>
   );
 };

@@ -18,6 +18,8 @@ import { StatusCodes } from "http-status-codes";
 import { rrulestr } from "rrule";
 import { DateTime, Interval } from "luxon";
 import { withAuth } from "../../../../middleware/withAuth";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, logger, onError } from "../../../../logger/logger";
 
 /**
  * @swagger
@@ -50,14 +52,17 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
       try {
         newEvent = await decode(CreateClassEvent, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
         // verify the teachers exist in the database
         const teachers = await teachersExist(newEvent.teachers);
+        logData("Teachers For Creating Class", teachers);
 
         const ruleObj = rrulestr(newEvent.rrule);
         const initialDate = ruleObj.all()[0];
+        logger.info("Initial Date: " + initialDate.toDateString());
         const yearInAdvanceDate = ruleObj.all()[0];
         yearInAdvanceDate.setFullYear(initialDate.getFullYear() + 1);
         // Get all date instances unless never-ending is true, then only get occurrences within the first year
@@ -65,12 +70,18 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           ? ruleObj.between(initialDate, yearInAdvanceDate)
           : ruleObj.all();
 
+        logger.info("End Date: " + allDates[allDates.length - 1].toDateString());
+
         const startTime = DateTime.fromFormat(newEvent.startTime, "HH:mm", {
           zone: newEvent.timeZone,
         });
+
+        logger.info("Start Time: " + startTime.toISOTime());
         const endTime = DateTime.fromFormat(newEvent.endTime, "HH:mm", {
           zone: newEvent.timeZone,
         });
+
+        logger.info("End Time: " + endTime.toISOTime());
 
         const intervals: Interval[] = [];
 
@@ -109,6 +120,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
             }
           }
         } catch (e) {
+          onError(e);
           if (e instanceof TeacherConflictError)
             return res.status(StatusCodes.BAD_REQUEST).json(e.message);
           else if (e instanceof TeacherAvailabilityError) {
@@ -123,12 +135,15 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           newEvent.backgroundColor
         );
 
+        logData("Class Event", result);
+
         // insert all date intervals into calendar_information table
         try {
           for (const interval of intervals) {
             await createCalendarEvent(result, interval.start.toISO(), interval.end.toISO());
           }
         } catch (e) {
+          onError(e);
           return res.status(StatusCodes.BAD_REQUEST).json("Calendar information is incorrect");
         }
 
@@ -142,6 +157,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
             await createCommitment(studentId, result);
           }
         } catch (e) {
+          onError(e);
           return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");
         }
 
@@ -156,8 +172,11 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           backgroundColor: newEvent.backgroundColor,
         };
 
+        logData("Create Class Response", responseBody);
+
         return res.status(StatusCodes.CREATED).json(responseBody);
       } catch (e) {
+        onError(e);
         if (e instanceof NonExistingTeacher)
           return res.status(StatusCodes.BAD_REQUEST).json(e.message);
         else return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
@@ -169,4 +188,4 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
   }
 };
 
-export default withAuth(classEventHandler);
+export default withLogging(withAuth(classEventHandler));

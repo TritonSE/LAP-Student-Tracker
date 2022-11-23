@@ -12,14 +12,7 @@ const getModuleItems = async (moduleId: string): Promise<Item[]> => {
 
   const res = await client.query(query);
 
-  let moduleItems: Item[];
-  try {
-    moduleItems = await decode(ItemArraySchema, res.rows);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return moduleItems;
+  return await decode(ItemArraySchema, res.rows);
 };
 
 // get item from database by item_id
@@ -35,14 +28,7 @@ const getItem = async (itemId: string): Promise<Item | null> => {
     return null;
   }
 
-  let item: Item;
-  try {
-    item = await decode(Item, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return item;
+  return await decode(Item, res.rows[0]);
 };
 
 // create a module item with the given parameters

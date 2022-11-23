@@ -2,9 +2,10 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { Availability } from "../../../models";
-// import { Availability, AvailabilitySchema } from "../../../models/availability";
 import { getAvailabilityById, updateAvailability } from "../../../lib/database/availability";
 import { withAuth } from "../../../middleware/withAuth";
+import { withLogging } from "../../../middleware/withLogging";
+import { logData, onError } from "../../../logger/logger";
 
 /**
  * @swagger
@@ -67,11 +68,13 @@ export const availabilityIdHandler: NextApiHandler = async (
     case "GET": {
       try {
         const availability = await getAvailabilityById(id);
+        logData("Availability", availability);
         if (availability == null)
           return res.status(StatusCodes.NOT_FOUND).json("Availability of user not found");
         return res.status(StatusCodes.ACCEPTED).json(availability);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        onError(e);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
     case "PATCH": {
@@ -81,6 +84,7 @@ export const availabilityIdHandler: NextApiHandler = async (
       try {
         availability = await decode(Availability, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -94,9 +98,11 @@ export const availabilityIdHandler: NextApiHandler = async (
           availability.sat,
           availability.timeZone
         );
+        logData("Updated Availability", availability);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        onError(e);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
     default: {
@@ -105,4 +111,4 @@ export const availabilityIdHandler: NextApiHandler = async (
   }
 };
 
-export default withAuth(availabilityIdHandler);
+export default withLogging(withAuth(availabilityIdHandler));

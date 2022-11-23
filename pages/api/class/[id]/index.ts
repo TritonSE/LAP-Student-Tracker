@@ -4,6 +4,8 @@ import { UpdateClass } from "../../../../models";
 import { decode } from "io-ts-promise";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../middleware/withAuth";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, onError } from "../../../../logger/logger";
 
 /**
  * @swagger
@@ -60,12 +62,14 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
   switch (req.method) {
     case "GET": {
       try {
-        const classes = await getClass(id);
-        if (classes == null) {
+        const returnedClass = await getClass(id);
+        logData("Class", returnedClass);
+        if (returnedClass == null) {
           return res.status(StatusCodes.NOT_FOUND).json("class not found");
         }
-        return res.status(StatusCodes.ACCEPTED).json(classes);
+        return res.status(StatusCodes.ACCEPTED).json(returnedClass);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -79,6 +83,7 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
       try {
         newClass = await decode(UpdateClass, req.body);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
       }
       try {
@@ -91,8 +96,10 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
           newClass.endTime,
           newClass.language
         );
+        logData("Class After Update", result);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -103,4 +110,4 @@ export const classIDHandler: NextApiHandler = async (req: NextApiRequest, res: N
   }
 };
 
-export default withAuth(classIDHandler);
+export default withLogging(withAuth(classIDHandler));

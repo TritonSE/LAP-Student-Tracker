@@ -2,6 +2,8 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getAllStaff } from "../../../lib/database/staff";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../middleware/withAuth";
+import { logData, onError } from "../../../logger/logger";
+import { withLogging } from "../../../middleware/withLogging";
 
 /**
  * @swagger
@@ -26,8 +28,10 @@ const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
     case "GET":
       try {
         const result = await getAllStaff();
+        logData("All Staff", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
 
@@ -36,4 +40,4 @@ const staffHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRes
   }
 };
 
-export default withAuth(staffHandler);
+export default withLogging(withAuth(staffHandler));

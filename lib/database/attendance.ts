@@ -2,6 +2,7 @@ import { client } from "../db";
 import { Attendance, CreateAttendance, SingleUserAttendance } from "../../models";
 import { decode } from "io-ts-promise";
 import { array } from "io-ts";
+
 const AttendanceArraySchema = array(Attendance);
 const SingleUserAttendanceArraySchema = array(SingleUserAttendance);
 //get session_ids of events that occur before a given time: GET api/class/[id]/sessions
@@ -55,16 +56,8 @@ const getAttendanceFromSessionID = async (
     values: [session, classId],
   };
 
-  let attendanceArray: Attendance[];
-
-  try {
-    const res = await client.query(query);
-    attendanceArray = await decode(AttendanceArraySchema, res.rows);
-  } catch (e) {
-    throw Error("Error getting attendance from session id");
-  }
-
-  return attendanceArray;
+  const res = await client.query(query);
+  return await decode(AttendanceArraySchema, res.rows);
 };
 
 //get single user attendance array from class id (GET:/api/users/[id]/attendence/[class_id])
@@ -83,14 +76,8 @@ const getSingleUserAttendanceFromClassID = async (
     values: [classId, userId],
   };
 
-  let singleUserArray: SingleUserAttendance[];
-  try {
-    const res = await client.query(query);
-    singleUserArray = await decode(SingleUserAttendanceArraySchema, res.rows);
-  } catch (e) {
-    throw Error("Error getting single user's attendance from database.");
-  }
-  return singleUserArray;
+  const res = await client.query(query);
+  return await decode(SingleUserAttendanceArraySchema, res.rows);
 };
 
 //add attendance of array os user_ids with attendance for a session id (POST:/api/class/[id]/attendence/[session_id])
@@ -107,11 +94,7 @@ const createAttendance = async (
         "on conflict (session_id, user_id) do update set attendance = $2",
       values: [sessionId, createAttendanceObj.attendance, classId, createAttendanceObj.userId],
     };
-    try {
-      await client.query(query);
-    } catch (e) {
-      throw Error("Error on insert into database");
-    }
+    await client.query(query);
   }
   return getAttendanceFromSessionID(sessionId, classId);
 };

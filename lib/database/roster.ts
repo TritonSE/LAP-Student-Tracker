@@ -15,14 +15,7 @@ const getRoster = async (classId: string): Promise<User[]> => {
   };
 
   const res = await client.query(query);
-  let users: User[];
-  try {
-    users = await decode(userArraySchema, res.rows);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return users;
+  return await decode(userArraySchema, res.rows);
 };
 
 export { getRoster };

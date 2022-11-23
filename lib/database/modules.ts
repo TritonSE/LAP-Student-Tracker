@@ -11,15 +11,7 @@ const getClassModules = async (classId: string): Promise<Module[]> => {
   };
 
   const res = await client.query(query);
-
-  let classModules: Module[];
-  try {
-    classModules = await decode(ModuleArraySchema, res.rows);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return classModules;
+  return await decode(ModuleArraySchema, res.rows);
 };
 
 // get module from database by module_id
@@ -35,14 +27,7 @@ const getModule = async (moduleId: string): Promise<Module | null> => {
     return null;
   }
 
-  let classModule: Module;
-  try {
-    classModule = await decode(Module, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return classModule;
+  return await decode(Module, res.rows[0]);
 };
 
 // create a module with the given parameters
@@ -56,12 +41,7 @@ const createModule = async (
     values: [classId, name, position],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on insert into database");
-  }
+  const res = await client.query(query);
 
   return getModule(res.rows[0].moduleId);
 };
@@ -81,11 +61,7 @@ const updateModule = async (
     values: [moduleId, name, position],
   };
 
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on update module");
-  }
+  await client.query(query);
 
   return getModule(moduleId);
 };
@@ -97,25 +73,13 @@ const deleteModule = async (moduleId: string): Promise<Module | null> => {
     values: [moduleId],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on delete module");
-  }
+  const res = await client.query(query);
 
   if (res.rows.length == 0) {
     return null;
   }
 
-  let deletedModule: Module;
-  try {
-    deletedModule = await decode(Module, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return deletedModule;
+  return await decode(Module, res.rows[0]);
 };
 
 export { getClassModules, getModule, createModule, updateModule, deleteModule };

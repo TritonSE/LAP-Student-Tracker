@@ -2,6 +2,8 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getModule } from "../../../../../lib/database/modules";
 import { getItem, deleteItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
+import { withLogging } from "../../../../../middleware/withLogging";
+import { logData, onError } from "../../../../../logger/logger";
 
 /**
  * @swagger
@@ -50,12 +52,13 @@ export const deleteItemHandler: NextApiHandler = async (
     if (moduleObj == null) {
       return res.status(StatusCodes.NOT_FOUND).json("module not found");
     }
-
     const item = await getItem(itemId);
+    logData("Item", item);
     if (item == null) {
       return res.status(StatusCodes.NOT_FOUND).json("item not found");
     }
   } catch (e) {
+    onError(e);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
 
@@ -65,6 +68,7 @@ export const deleteItemHandler: NextApiHandler = async (
         const result = await deleteItem(itemId);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
       }
     }
@@ -75,4 +79,4 @@ export const deleteItemHandler: NextApiHandler = async (
   }
 };
 
-export default deleteItemHandler;
+export default withLogging(deleteItemHandler);

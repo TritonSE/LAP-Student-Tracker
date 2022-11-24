@@ -151,3 +151,8 @@
   padding-left: 0.5rem;
   border-radius: 5px;
 }
+
+.accordionHeader {
+  background-color: #46d5b3;
+  border-radius: 5px;
+}

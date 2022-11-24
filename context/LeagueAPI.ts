@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios";
+import { deleteModule } from "../lib/database/modules";
 import {
   Class,
   CreateClass,
@@ -207,6 +208,11 @@ class LeagueAPI {
 
   async updateModule(moduleId: string, module: Module): Promise<Module> {
     const res = await this.client.patch(`api/module/${moduleId}`, module);
+    return res.data;
+  }
+
+  async deleteModule(moduleId: string): Promise<void> {
+    const res = await this.client.delete(`api/module/${moduleId}`);
     return res.data;
   }
 

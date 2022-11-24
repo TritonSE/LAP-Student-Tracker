@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import { deleteModule } from "../lib/database/modules";
 import {
   Class,
   CreateClass,
@@ -191,16 +190,6 @@ class LeagueAPI {
     return res.data;
   }
 
-  async getModuleItems(moduleId: string): Promise<Item[]> {
-    const res = await this.client.get(`api/module/${moduleId}/item`);
-    return res.data;
-  }
-
-  async updateItem(moduleId: string, itemId: string, item: Item): Promise<Item> {
-    const res = await this.client.patch(`/api/module/${moduleId}/item/${itemId}`, item);
-    return res.data;
-  }
-
   async createModule(module: Module): Promise<Module> {
     const res = await this.client.post("api/module/", module);
     return res.data;
@@ -210,7 +199,6 @@ class LeagueAPI {
     const res = await this.client.patch(`api/module/${moduleId}`, module);
     return res.data;
   }
-
   async deleteModule(moduleId: string): Promise<void> {
     const res = await this.client.delete(`api/module/${moduleId}`);
     return res.data;
@@ -218,6 +206,16 @@ class LeagueAPI {
 
   async createItem(moduleId: string, item: Item): Promise<Item> {
     const res = await this.client.post(`api/module/${moduleId}/item`, item);
+    return res.data;
+  }
+
+  async getModuleItems(moduleId: string): Promise<Item[]> {
+    const res = await this.client.get(`api/module/${moduleId}/item`);
+    return res.data;
+  }
+
+  async updateItem(moduleId: string, itemId: string, item: Item): Promise<Item> {
+    const res = await this.client.patch(`/api/module/${moduleId}/item/${itemId}`, item);
     return res.data;
   }
 

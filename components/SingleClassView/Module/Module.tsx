@@ -221,7 +221,8 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
             aria-expanded={open ? "true" : undefined}
             onClick={handleClick}
           >
-            <img src="/VerticalMenu.svg" className={styles.verticalMenu} />
+            Edit Module
+            {/* <img src="/VerticalMenu.svg" className={styles.verticalMenu} /> */}
           </Button>
           <Menu
             id="fade-menu"

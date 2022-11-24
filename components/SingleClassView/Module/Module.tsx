@@ -275,7 +275,7 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
             <div className={styles.popupTitle}>Add Lesson</div>
             <input
               className={`${styles.label} ${styles.classInput}`}
-              value={""}
+              value={itemName}
               onChange={(e) => setItemName(e.target.value)}
               type="text"
               placeholder="Lesson Title"
@@ -283,7 +283,7 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
             <br />
             <input
               className={`${styles.label} ${styles.classInput}`}
-              value={""}
+              value={itemLink}
               onChange={(e) => setItemLink(e.target.value)}
               type="text"
               placeholder="Lesson Link"

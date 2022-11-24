@@ -21,16 +21,22 @@
 }
 
 .dropdownHeader {
-  height: 48px;
+  height: 3rem;
   width: 100%;
   background-color: #46d5b3;
   border-radius: 5px;
+  padding-left: 2rem;
+  padding-top: 0.75rem;
+  align-items: center;
+  justify-content: center;
 }
 
 .dropdownItem {
-  height: 48px;
+  height: 3rem;
   width: 100%;
+  padding-left: 2rem;
   border-radius: 5px;
+  border-width: 5px;
 }
 
 .editPencil {
@@ -153,7 +159,6 @@
 }
 
 .accordionHeader {
-  background-color: #46d5b3;
   border-radius: 5px;
   margin-top: 1rem;
 }

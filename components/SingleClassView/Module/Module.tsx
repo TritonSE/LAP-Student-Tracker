@@ -53,7 +53,7 @@ const AccordionItem = ({ lesson }: { lesson: Item }) => {
   };
 
   return (
-    <AccordionDetails className={styles.dropdownItem}>
+    <div className={styles.dropdownItem}>
       {lesson.title}
       <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
       <img src="/Trash.svg" className={styles.trash} onClick={() => setDeleteItem(true)} />
@@ -104,7 +104,7 @@ const AccordionItem = ({ lesson }: { lesson: Item }) => {
           </div>
         </div>
       ) : null}
-    </AccordionDetails>
+    </div>
   );
 };
 
@@ -208,45 +208,47 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
   };
 
   return (
-    <div className={styles.accordionHeader}>
-      <Accordion>
-        <AccordionSummary className={styles.dropdownHeader} expandIcon={<ExpandMoreIcon />}>
-          {module.name}
-        </AccordionSummary>
-        <>
-          <Button
-            id="fade-button"
-            aria-controls={open ? "fade-menu" : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? "true" : undefined}
-            onClick={handleClick}
-          >
-            Edit Module
-            {/* <img src="/VerticalMenu.svg" className={styles.verticalMenu} /> */}
-          </Button>
-          <Menu
-            id="fade-menu"
-            MenuListProps={{
-              "aria-labelledby": "fade-button",
-            }}
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            TransitionComponent={Fade}
-          >
-            <MenuItem onClick={handleRename}>Rename Module</MenuItem>
-            <MenuItem onClick={handleDelete}>Delete Module</MenuItem>
-            <MenuItem onClick={handleAdd}>Add Item</MenuItem>
-            <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
-            <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
-          </Menu>
-        </>
-        <AccordionDetails>
+    <div>
+      <div className={styles.accordionHeader}>
+        <div>
+          <div className={styles.dropdownHeader}>
+            {module.name}
+            <>
+              <Button
+                id="fade-button"
+                aria-controls={open ? "fade-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+              >
+                {/* Edit Module */}
+                <img src="/VerticalMenu.svg" className={styles.verticalMenu} />
+              </Button>
+              <Menu
+                id="fade-menu"
+                MenuListProps={{
+                  "aria-labelledby": "fade-button",
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                TransitionComponent={Fade}
+              >
+                <MenuItem onClick={handleRename}>Rename Module</MenuItem>
+                <MenuItem onClick={handleDelete}>Delete Module</MenuItem>
+                <MenuItem onClick={handleAdd}>Add Item</MenuItem>
+                <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
+                <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
+              </Menu>
+            </>
+          </div>
+        </div>
+        <div>
           {lessons.map((lesson, idx) => (
             <AccordionItem lesson={lesson} key={`${lesson.title}-${idx}`} />
           ))}
-        </AccordionDetails>
-      </Accordion>
+        </div>
+      </div>
       {update ? (
         <div className={styles.popupBackground}>
           <div className={styles.popupContainer}>

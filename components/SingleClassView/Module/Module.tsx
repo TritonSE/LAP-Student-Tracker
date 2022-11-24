@@ -36,6 +36,8 @@ const FadeMenu: React.FC<FadeMenuProps> = ({ module, numModules }) => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {}, [update]);
+
   const handleSubmit = async (): Promise<void> => {
     const inModule = {
       moduleId: module.moduleId,
@@ -274,6 +276,7 @@ type AccordionModuleProps = {
 const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules }) => {
   const api = useContext(APIContext);
   const [lessons, setLessons] = useState<Item[]>([]);
+  const [activeKey, setActiveKey] = useState<string | number | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -282,11 +285,22 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
     })();
   }, []);
 
+  useEffect(() => {}, [lessons]);
+
   if (!lessons) return <CustomLoader />;
+
+  const handleSelect = () => {
+    setActiveKey(1);
+  };
 
   return (
     <Accordion>
-      <AccordionSummary className={styles.dropdownHeader} expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary
+        className={styles.dropdownHeader}
+        expandIcon={<ExpandMoreIcon />}
+        activeKey={activeKey}
+        onSelect={handleSelect}
+      >
         {module.name}
         <FadeMenu module={module} numModules={numModules} />
       </AccordionSummary>

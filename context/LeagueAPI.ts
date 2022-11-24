@@ -1,5 +1,13 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass, Item, Module, Student, CreateOneOffEvent, OneOffEvent } from "../models";
+import {
+  Class,
+  CreateClass,
+  Item,
+  Module,
+  Student,
+  CreateOneOffEvent,
+  OneOffEvent,
+} from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
 import { CreateUser, UpdateUser, User } from "../models";

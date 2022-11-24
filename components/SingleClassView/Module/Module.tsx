@@ -209,7 +209,7 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
         <div>
           <div className={styles.dropdownHeader}>
             {module.name}
-            <>
+            <div className={styles.verticalMenu}>
               <Button
                 id="fade-button"
                 aria-controls={open ? "fade-menu" : undefined}
@@ -218,7 +218,7 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
                 onClick={handleClick}
               >
                 {/* Edit Module */}
-                <img src="/VerticalMenu.svg" className={styles.verticalMenu} />
+                <img src="/VerticalMenu.svg" />
               </Button>
               <Menu
                 id="fade-menu"
@@ -236,7 +236,7 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
                 <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
                 <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
               </Menu>
-            </>
+            </div>
           </div>
         </div>
         <div>

@@ -173,6 +173,7 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
   const handleCancel = async (): Promise<void> => {
     setName(module.name);
     setUpdate(false);
+    setAdd(false);
   };
 
   const handleDeleteSubmit: VoidFunction = async () => {
@@ -196,7 +197,6 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
     if (position > 0) {
       setPosition(position - 1);
     }
-    handleSubmit();
     handleClose();
   };
 
@@ -204,7 +204,6 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
     if (position < numModules) {
       setPosition(position + 1);
     }
-    handleSubmit();
     handleClose();
   };
 
@@ -234,11 +233,11 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
             onClose={handleClose}
             TransitionComponent={Fade}
           >
-            <MenuItem onClick={handleRename}>Rename</MenuItem>
+            <MenuItem onClick={handleRename}>Rename Module</MenuItem>
+            <MenuItem onClick={handleDelete}>Delete Module</MenuItem>
             <MenuItem onClick={handleAdd}>Add Item</MenuItem>
             <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
             <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
-            <MenuItem onClick={handleDelete}>Delete</MenuItem>
           </Menu>
         </>
         <AccordionDetails>

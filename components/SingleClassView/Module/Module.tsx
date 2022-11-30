@@ -195,6 +195,8 @@ const AccordionModule: React.FC<AccordionModuleProps> = ({ module, numModules })
     await api.createItem(module.moduleId, lesson);
     setAdd(!add);
     setLessons([...lessons, lesson]);
+    setItemName("");
+    setItemLink("");
   };
 
   const handleMoveUp: VoidFunction = () => {
@@ -353,6 +355,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
     await api.createModule(module);
     setPopup(false);
     setModules([...modules, module]);
+    setName("");
   };
 
   const handleCancel = async (): Promise<void> => {

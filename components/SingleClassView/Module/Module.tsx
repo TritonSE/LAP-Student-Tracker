@@ -13,8 +13,11 @@ type ModuleProps = {
   enableEditing: boolean;
 };
 
-// eslint-disable-next-line
-const AccordionItem = ({ lesson }: { lesson: Item }) => {
+type AccordionItemProps = {
+  lesson: Item;
+};
+
+const AccordionItem: React.FC<AccordionItemProps> = ({ lesson }) => {
   const [edit, setEdit] = useState(false);
   const api = useContext(APIContext);
   const [title, setTitle] = useState(lesson.title);
@@ -49,10 +52,13 @@ const AccordionItem = ({ lesson }: { lesson: Item }) => {
   };
 
   return (
-    <div className={styles.dropdownItem}>
-      {lesson.title}
-      <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
-      <img src="/Trash.svg" className={styles.trash} onClick={() => setDeleteItem(true)} />
+    <div>
+      <div className={styles.dropdownItem}>
+        <a href={lesson.link}>{lesson.title}</a>
+        <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
+        <img src="/Trash.svg" className={styles.trash} onClick={() => setDeleteItem(true)} />
+      </div>
+
       {edit ? (
         <div className={styles.popupBackground}>
           <div className={styles.popupContainer}>

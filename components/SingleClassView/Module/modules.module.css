@@ -39,6 +39,10 @@
   border-top: solid #bfc1c4 0.5px;
 }
 
+.dropdownItem:hover {
+  text-decoration: underline;
+}
+
 .editPencil {
   float: right;
   cursor: pointer;

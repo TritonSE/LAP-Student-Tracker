@@ -61,7 +61,7 @@ export const deleteItemHandler: NextApiHandler = async (
     }
   } catch (e) {
     onError(e);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 
   switch (req.method) {
@@ -71,7 +71,7 @@ export const deleteItemHandler: NextApiHandler = async (
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         onError(e);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
     case "PATCH": {

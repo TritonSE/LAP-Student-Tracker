@@ -32,6 +32,8 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ lesson }) => {
       itemId: lesson.itemId,
     };
     await api.updateItem(lesson.moduleId, lesson.itemId, item);
+    setTitle(title);
+    setLink(link);
     setEdit(false);
   };
 
@@ -54,7 +56,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ lesson }) => {
   return (
     <div>
       <div className={styles.dropdownItem}>
-        <a href={lesson.link}>{lesson.title}</a>
+        <a href={link}>{title}</a>
         <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
         <img src="/Trash.svg" className={styles.trash} onClick={() => setDeleteItem(true)} />
       </div>

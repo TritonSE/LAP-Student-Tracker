@@ -24,7 +24,6 @@ export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
     (async () => {
       setLoading(true);
       const sessions = await api.getSessions(classId, date.set({ hour: 0, minute: 0 }).toUTC().toISO());
-      console.log(sessions)
       if (sessions === undefined || sessions.length == 0) {
         setAttendance(null);
         setLoading(false);

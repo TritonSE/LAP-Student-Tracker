@@ -24,16 +24,16 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
     }
     const api = useContext(APIContext);
     //get userIds and initial attendances from database
-    const temp: [string, AttendanceTypes][] = []
-    attendances.forEach(function(attendance, index){
-        temp.push([attendance.userId, attendance.attendance])
+    const userIdToAttendance: [string, AttendanceTypes][] = [];
+    attendances.forEach((attendance) => {
+        userIdToAttendance.push([attendance.userId, attendance.attendance])
     })
-    const [newAttendances, setAttendance] = useState(new Map(temp));
+    const [newAttendances, setAttendance] = useState(new Map(userIdToAttendance));
     const updateAttendances = (key: string, value: AttendanceTypes) => {
         setAttendance(new Map(newAttendances.set(key, value)));
     }
     const names = new Map();
-    attendances.forEach(function(attendance, index){
+    attendances.forEach(function(attendance) {
         const fullName = attendance.firstName + " " +attendance.lastName;
         names.set(attendance.userId, fullName);
     })
@@ -42,18 +42,17 @@ const AttendanceBox: React.FC<AttendanceBoxProps> =  ({
     useEffect( () => {
         (async () => {
             setLoadingSave(true);
-            let attendanceArray: CreateAttendance[] = [];
-            newAttendances.forEach(function(attendance, userId) {
-                const createAttendance: CreateAttendance = {
+            const attendanceArray: CreateAttendance[] = [];
+            newAttendances.forEach((attendance, userId) => {
+                attendanceArray.push({
                     userId: userId,
                     attendance: attendance,
-                };
-                attendanceArray.push(createAttendance);
-            })
-            const res = await api.createAttendance(sessionId, classId, attendanceArray);
+                });
+            });
+            await api.createAttendance(sessionId, classId, attendanceArray);
             setLoadingSave(false);
         })();
-      }, [saveAttendances])
+      }, [saveAttendances]);
     
     return (
         <div className={styles.boxContainer}>

@@ -45,7 +45,7 @@ export const sessionHandler: NextApiHandler = async (req: NextApiRequest, res: N
 
   if (req.method == "GET") {
     try {
-      const sessions = await getSessions(id, until);
+      const sessions = await getSessions(id, date);
       logData("Sessions", sessions);
       return res.status(StatusCodes.ACCEPTED).json(sessions);
     } catch (e) {

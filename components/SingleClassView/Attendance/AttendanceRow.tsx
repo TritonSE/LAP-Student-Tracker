@@ -17,7 +17,6 @@ const AttendanceRow: React.FC<AttendanceRowProps> =  ({
     userId,
     attendance,
 }) => {
-    console.log(attendance, name);
     return (
         <div className={styles.attendanceRow}>
             <p className={styles.userName}>{name}</p>

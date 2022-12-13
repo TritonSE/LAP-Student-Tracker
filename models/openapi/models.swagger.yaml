@@ -665,3 +665,17 @@ components:
         - end
         - attendees
         - checkAvailabilities
+    SessionInformation:
+      title: SessionInformation
+      type: object
+      properties:
+        sessionId:
+          type: string
+        startStr:
+          type: string
+        endStr:
+          type: string
+      required:
+        - sessionId
+        - startStr
+        - endStr

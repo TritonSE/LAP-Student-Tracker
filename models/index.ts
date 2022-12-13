@@ -18,6 +18,7 @@ export * from "./Item";
 export * from "./Module";
 export * from "./OneOffEvent";
 export * from "./Roles";
+export * from "./SessionInformation";
 export * from "./SingleUserAttendance";
 export * from "./Staff";
 export * from "./Student";

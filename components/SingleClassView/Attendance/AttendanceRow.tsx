@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./attendance.module.css";
-import { Attendance } from "../../../models/Attendance";
-import { CustomError } from "../../util/CustomError";
-import { AttendanceTypes, CreateAttendance } from "../,,/../../../models";
+import { AttendanceTypes } from "../../../models";
 
 type AttendanceRowProps = {
   onAttendanceChange: (userId: string, newAttendance: AttendanceTypes) => void;

@@ -1,11 +1,12 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass } from "../models";
+import { Class, CreateClass, CreateOneOffEvent, OneOffEvent } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
 import { Student } from "../models";
 import { CreateUser, UpdateUser, User } from "../models";
 import { Image, UpdateImage } from "../models";
 import { Availability } from "../models";
+import { Announcement, CreateAnnouncement } from "../models";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -92,6 +93,11 @@ class LeagueAPI {
     return res.data;
   }
 
+  async createOneOffEvent(oneOffEvent: CreateOneOffEvent): Promise<OneOffEvent> {
+    const res = await this.client.post("api/events/event", oneOffEvent);
+    return res.data;
+  }
+
   // create a class entry
   async createClass(classObj: CreateClass): Promise<Class> {
     const res = await this.client.post("api/class", classObj);
@@ -145,6 +151,24 @@ class LeagueAPI {
 
   async getRoster(classId: string): Promise<User[]> {
     const res = await this.client.get(`api/class/${classId}/roster`);
+    return res.data;
+  }
+
+  async getAnnouncements(classId: string): Promise<Announcement[]> {
+    const res = await this.client.get(`api/class/${classId}/announcement`);
+    return res.data;
+  }
+
+  async createAnnouncement(
+    classId: string,
+    announcement: CreateAnnouncement
+  ): Promise<Announcement> {
+    const res = await this.client.post(`api/class/${classId}/announcement`, announcement);
+    return res.data;
+  }
+
+  async deleteAnnouncement(classId: string, announcement_id: string): Promise<Announcement> {
+    const res = await this.client.delete(`api/class/${classId}/announcement/${announcement_id}`);
     return res.data;
   }
 

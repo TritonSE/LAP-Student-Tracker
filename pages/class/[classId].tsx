@@ -61,7 +61,7 @@ const Class: NextApplicationPage = () => {
         </ul>
       </nav>
       {currentModule == "attendance" ? (
-        <Attendance  classId={classId}/>
+        <Attendance classId={classId} />
       ) : currentModule == "roster" ? (
         <Roster id={classId} />
       ) : (

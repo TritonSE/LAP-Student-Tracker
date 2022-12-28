@@ -1,5 +1,10 @@
 import { client } from "../db";
-import {Attendance, CreateAttendance, SessionInformation, SingleUserAttendance} from "../../models";
+import {
+  Attendance,
+  CreateAttendance,
+  SessionInformation,
+  SingleUserAttendance,
+} from "../../models";
 import { decode } from "io-ts-promise";
 import { array } from "io-ts";
 
@@ -7,10 +12,10 @@ const AttendanceArraySchema = array(Attendance);
 const SingleUserAttendanceArraySchema = array(SingleUserAttendance);
 //get session_ids of events that occur before a given time: GET api/class/[id]/sessions
 const getSessions = async (classId: string, time?: string): Promise<SessionInformation[]> => {
-  let endTime = ""
-  if (time){
+  let endTime = "";
+  if (time) {
     const startTime = new Date(time);
-    const endTimeDate = startTime.setDate(startTime.getDate() +1);
+    const endTimeDate = startTime.setDate(startTime.getDate() + 1);
     endTime = new Date(endTimeDate).toISOString();
   }
   const query = time
@@ -97,5 +102,5 @@ export {
   getSessions,
   getAttendanceFromSessionID,
   getSingleUserAttendanceFromClassID,
-  createAttendance
-};  
+  createAttendance,
+};

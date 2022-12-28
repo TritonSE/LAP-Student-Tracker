@@ -69,7 +69,7 @@ afterAll(async () => {
 type sessionId = {
   sessionId: string;
   startStr: string;
-  endStr: string
+  endStr: string;
 };
 
 describe("[GET] /api/class/[id]/sessions", () => {

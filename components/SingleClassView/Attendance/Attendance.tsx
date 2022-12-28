@@ -1,4 +1,4 @@
-import React, { useContext, useState , useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styles from "./attendance.module.css";
 import { AttendanceBox } from "./AttendanceBox";
 import { APIContext } from "../../../context/APIContext";
@@ -10,8 +10,8 @@ import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 
 type AttendanceProps = {
-  classId: string,
-}
+  classId: string;
+};
 export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
   const api = useContext(APIContext);
 
@@ -20,14 +20,17 @@ export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
   const [attendances, setAttendance] = useState<any>();
   const [sessionID, setSessionID] = useState<string>("");
 
-  useEffect( () => {
+  useEffect(() => {
     (async () => {
       setLoading(true);
-      const sessions = await api.getSessions(classId, date.set({ hour: 0, minute: 0 }).toUTC().toISO());
+      const sessions = await api.getSessions(
+        classId,
+        date.set({ hour: 0, minute: 0 }).toUTC().toISO()
+      );
       if (sessions === undefined || sessions.length == 0) {
         setAttendance(null);
         setLoading(false);
-        return (<p>This date has no sessions</p>);
+        return <p>This date has no sessions</p>;
       }
       setSessionID(sessions[0].sessionId);
       const sessionId = sessions[0].sessionId;
@@ -35,8 +38,8 @@ export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
       setAttendance(attendances);
       setLoading(false);
     })();
-  }, [date])
-  
+  }, [date]);
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>Attendance</div>
@@ -55,8 +58,12 @@ export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
       </div>
       {loading ? (
         <CustomLoader></CustomLoader>
-      ): (
-        <AttendanceBox attendances={attendances} classId={classId} sessionId={sessionID}></AttendanceBox>
+      ) : (
+        <AttendanceBox
+          attendances={attendances}
+          classId={classId}
+          sessionId={sessionID}
+        ></AttendanceBox>
       )}
     </div>
   );

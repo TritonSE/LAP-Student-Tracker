@@ -665,3 +665,22 @@ components:
         - end
         - attendees
         - checkAvailabilities
+    CreateParentStudentLink:
+      title: CreateParentStudentLink
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+        - email
+    ParentStudentLink:
+      title: ParentStudentLink
+      type: object
+      properties:
+        parentId:
+          type: string
+        studentId:
+          type: string
+      required:
+        - parentId
+        - studentId

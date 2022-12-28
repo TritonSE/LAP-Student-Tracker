@@ -96,6 +96,21 @@ const getUser = async (id: string): Promise<User | null> => {
   return await decode(User, res.rows[0]);
 };
 
+const getUserByEmail = async (email: string): Promise<User | null> => {
+  const query = {
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id, approved, date_created FROM users WHERE email = $1",
+    values: [email],
+  };
+
+  const res = await client.query(query);
+
+  if (res.rows.length == 0) {
+    return null;
+  }
+
+  return await decode(User, res.rows[0]);
+};
+
 const deleteUser = async (id: string): Promise<boolean> => {
   const query = {
     text: "delete from users where id = $1",
@@ -116,4 +131,4 @@ const getAllUsers = async (): Promise<User[]> => {
   return await decode(UserArraySchema, res.rows);
 };
 
-export { createUser, getUser, updateUser, getAllUsers, deleteUser };
+export { createUser, getUser, getUserByEmail, updateUser, getAllUsers, deleteUser };

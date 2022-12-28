@@ -1,18 +1,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   width: 100%;
   padding-right: 4rem;
-  padding-top: 2rem;
-  align-self: left;
+  padding-top: 20px;
 }
 
 .title {
   composes: headlineLarge from "../../../styles/globals.css";
-  padding-bottom: 2rem;
-  position: relative;
-  align-self: left;
   padding: 1rem;
   float: left;
 }
@@ -44,21 +39,10 @@
 .buttonLabel {
   composes: labelLarge from "../../../styles/globals.css";
   display: inline-block;
-  /*padding: 10px;*/
 }
 
 .tableRow {
   composes: labelLarge from "../../../styles/globals.css";
-  text-align: center;
-  height: 48px;
-}
-
-.tableHeader {
-  font-family: "Inter";
-  font-weight: 500;
-  font-style: normal;
-  font-size: 18px;
-  line-height: 24px;
   text-align: center;
   height: 48px;
 }
@@ -74,13 +58,16 @@
   width: 100%;
 }
 
+.rotate {
+  transform: rotate(180deg);
+}
+
 .profileButton {
   box-sizing: border-box;
   border: 1.5px solid #f37121;
   filter: drop-shadow(0px 2px 14px rgba(0, 0, 0, 0.25));
   border-radius: 10px;
   height: 40px;
-  length: 182px;
 
   font-family: "Inter";
   font-style: normal;
@@ -222,4 +209,8 @@
 
 .deleteButton {
   background: #ffffff;
+}
+
+.deleteCol {
+  width: 15px;
 }

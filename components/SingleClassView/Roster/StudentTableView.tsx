@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./roster.module.css";
 import { User } from "../../../models";
 import { useRouter } from "next/router";
@@ -14,51 +14,48 @@ export const StudentTableView: React.FC<StudentTableViewProps> = ({
   isDeleteEnabled,
   handleDelete,
 }) => {
-  const [tableRows, setTableRows] = useState<JSX.Element[]>([]);
+  // const [tableRows, setTableRows] = useState<JSX.Element[]>([]);
   const router = useRouter();
 
   const onProfileClick = (id: string): void => {
     router.push(`/profile/${id}`);
   };
 
-  useEffect(() => {
-    const rows = students.map((user) => {
-      return (
-        <tr className={styles.tableRow} key={user.id}>
-          {isDeleteEnabled && (
-            <td>
-              <button className={styles.deleteButton} onClick={() => handleDelete(user.id)}>
-                <img src={"/DeleteIcon.png"} />
-              </button>
-            </td>
-          )}
-          <td>{user.firstName}</td>
-          <td>{user.lastName}</td>
-          <td>{user.role}</td>
-          <td>
-            <button className={styles.profileButton} onClick={() => onProfileClick(user.id)}>
-              {" "}
-              View Profile
+  const tableRows = students.map((user) => {
+    return (
+      <tr className={styles.tableRow} key={user.id}>
+        {isDeleteEnabled ? (
+          <td className={styles.deleteCol}>
+            <button className={styles.deleteButton} onClick={() => handleDelete(user.id)}>
+              <img src={"/DeleteIcon.png"} />
             </button>
           </td>
-        </tr>
-      );
-    });
-    setTableRows(rows);
-  }, [students]);
+        ) : (
+          <td className={styles.deleteCol}> </td>
+        )}
+        <td>{user.firstName}</td>
+        <td>{user.lastName}</td>
+        <td>{user.role}</td>
+        <td>
+          <button className={styles.profileButton} onClick={() => onProfileClick(user.id)}>
+            {" "}
+            View Profile
+          </button>
+        </td>
+      </tr>
+    );
+  });
 
   return (
     <table className={styles.table}>
-      <tbody>
-        <tr className={styles.tableHeader}>
-          {isDeleteEnabled && <th></th>}
-          <th>First</th>
-          <th>Last</th>
-          <th>Position</th>
-          <th>Info</th>
-        </tr>
-        {tableRows}
-      </tbody>
+      <tr className={styles.tableRow}>
+        <td className={styles.deleteCol}> </td>
+        <td>First</td>
+        <td>Last</td>
+        <td>Position</td>
+        <td>Info</td>
+      </tr>
+      <tbody>{tableRows}</tbody>
     </table>
   );
 };

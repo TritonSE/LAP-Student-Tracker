@@ -17,6 +17,7 @@ export const TeacherTableView: React.FC<TeacherTableViewProps> = ({ teachers }) 
   const tableRows = teachers.map((user) => {
     return (
       <tr className={styles.tableRow} key={user.id}>
+        <td className={styles.deleteCol}> </td>
         <td>{user.firstName}</td>
         <td>{user.lastName}</td>
         <td>{user.role}</td>
@@ -32,15 +33,14 @@ export const TeacherTableView: React.FC<TeacherTableViewProps> = ({ teachers }) 
 
   return (
     <table className={styles.table}>
-      <tbody>
-        <tr className={styles.tableHeader}>
-          <th>First</th>
-          <th>Last</th>
-          <th>Position</th>
-          <th>Info</th>
-        </tr>
-        {tableRows}
-      </tbody>
+      <tr className={styles.tableRow}>
+        <td> </td>
+        <td>First</td>
+        <td>Last</td>
+        <td>Position</td>
+        <td>Info</td>
+      </tr>
+      <tbody>{tableRows}</tbody>
     </table>
   );
 };

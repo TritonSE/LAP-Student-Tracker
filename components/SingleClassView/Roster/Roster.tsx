@@ -4,7 +4,7 @@ import { TeacherTableView } from "./TeacherTableView";
 import { StudentTableView } from "./StudentTableView";
 import { AddStudentModal } from "./AddStudentModal";
 import { APIContext } from "../../../context/APIContext";
-import { User } from "../../../models/User";
+import { User } from "../../../models";
 
 type RosterProps = {
   id: string;
@@ -91,7 +91,11 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
         <div className={styles.dropdownHeader}>
           <div className={styles.buttonContainer}>
             <button className={styles.button} onClick={() => onTeacherDropdownClick()}>
-              <img src={"/downArrow.png"} />
+              {showTeacher ? (
+                <img className={styles.rotate} src={"/downArrow.png"} />
+              ) : (
+                <img src={"/downArrow.png"} />
+              )}
             </button>
           </div>
           <div className={styles.buttonLabel}> Teachers </div>
@@ -103,7 +107,11 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
         <div className={styles.dropdownHeader}>
           <div className={styles.buttonContainer}>
             <button className={styles.button} onClick={() => onStudentDropdownClick()}>
-              <img src={"/downArrow.png"} />
+              {showStudent ? (
+                <img className={styles.rotate} src={"/downArrow.png"} />
+              ) : (
+                <img src={"/downArrow.png"} />
+              )}
             </button>
           </div>
           <div className={styles.buttonLabel}> Students </div>

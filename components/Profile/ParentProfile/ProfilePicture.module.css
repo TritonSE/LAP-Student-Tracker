@@ -9,8 +9,8 @@
 }
 
 .dropZoneContentDisabled {
-  height: 200px;
-  width: 200px;
+  height: 180px;
+  width: 180px;
   background-color: #bbb;
   border-radius: 50%;
   cursor: auto;
@@ -32,8 +32,8 @@
 }
 
 .circle {
-  height: 200px;
-  width: 200px;
+  height: 180px;
+  width: 180px;
   background-color: #bbb;
   border-radius: 50%;
 }

@@ -85,8 +85,8 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
     return {
       sx: {
         bgcolor: stringToColor(name),
-        width: 200,
-        height: 200,
+        width: 180,
+        height: 180,
         fontSize: 80,
       },
       children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
@@ -107,7 +107,7 @@ export const ProfilePicture: React.FC<ProfilePictureProps> = ({
           <Avatar
             alt={firstName + " " + lastName}
             src={previewUrl}
-            sx={{ width: 200, height: 200 }}
+            sx={{ width: 180, height: 180 }}
           />
         ) : (
           <Avatar {...stringAvatar(firstName + " " + lastName)} />

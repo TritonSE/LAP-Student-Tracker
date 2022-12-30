@@ -25,8 +25,8 @@ import { getUserByEmail } from "../../../../../lib/database/users";
  * @param res
  */
 const parentStudentHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
-    let createParentStudentLink: CreateParentStudentLink;
-    switch (req.method) {
+  let createParentStudentLink: CreateParentStudentLink;
+  switch (req.method) {
     case "POST":
       try {
         createParentStudentLink = await decode(CreateParentStudentLink, req.body);
@@ -36,17 +36,17 @@ const parentStudentHandler: NextApiHandler = async (req: NextApiRequest, res: Ne
       try {
         const parentId = req.query.id as string;
         if (!parentId) {
-            return res.status(StatusCodes.BAD_REQUEST).json("Parent id not specified");
+          return res.status(StatusCodes.BAD_REQUEST).json("Parent id not specified");
         }
         const studentEmail = createParentStudentLink.email;
         const student = await getUserByEmail(studentEmail);
         if (!student || student.role !== "Student") {
-            return res.status(StatusCodes.NOT_FOUND).json("Student not found");
+          return res.status(StatusCodes.NOT_FOUND).json("Student not found");
         }
         await linkParentAndStudent(parentId, student.id);
         const parentStudentLink: ParentStudentLink = {
-            parentId: parentId,
-            studentId: student.id,
+          parentId: parentId,
+          studentId: student.id,
         };
         return res.status(StatusCodes.ACCEPTED).json(parentStudentLink);
       } catch (e) {

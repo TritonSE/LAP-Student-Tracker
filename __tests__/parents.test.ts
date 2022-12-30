@@ -34,14 +34,14 @@ afterAll(async () => {
 describe("[POST] /api/parents/[id]/student", () => {
   test("Create a valid parent-student link", async () => {
     const body: CreateParentStudentLink = {
-        email: "john@gmail.com"
+      email: "john@gmail.com",
     };
     const query = {
-        id: "2"
+      id: "2",
     };
     const expected: ParentStudentLink = {
-        parentId: "2",
-        studentId: "1"
+      parentId: "2",
+      studentId: "1",
     };
     await makeHTTPRequest(
       parentStudentHandler,
@@ -55,36 +55,36 @@ describe("[POST] /api/parents/[id]/student", () => {
   });
   test("Create an invalid link between a parent and a non-student", async () => {
     const body: CreateParentStudentLink = {
-        email: "teacher@gmail.com"
+      email: "teacher@gmail.com",
     };
     const query = {
-        id: "2"
+      id: "2",
     };
     await makeHTTPRequest(
-        parentStudentHandler,
-        "/api/parents/2/student",
-        query,
-        "POST",
-        body,
-        StatusCodes.NOT_FOUND,
-        STUDENT_NOT_FOUND_ERROR
-      );
+      parentStudentHandler,
+      "/api/parents/2/student",
+      query,
+      "POST",
+      body,
+      StatusCodes.NOT_FOUND,
+      STUDENT_NOT_FOUND_ERROR
+    );
   });
   test("Create an invalid link between a parent and a nonexistent user", async () => {
     const body: CreateParentStudentLink = {
-        email: "notAnEmail@gmail.com"
+      email: "notAnEmail@gmail.com",
     };
     const query = {
-        id: "2"
+      id: "2",
     };
     await makeHTTPRequest(
-        parentStudentHandler,
-        "/api/parents/2/student",
-        query,
-        "POST",
-        body,
-        StatusCodes.NOT_FOUND,
-        STUDENT_NOT_FOUND_ERROR
-      );
+      parentStudentHandler,
+      "/api/parents/2/student",
+      query,
+      "POST",
+      body,
+      StatusCodes.NOT_FOUND,
+      STUDENT_NOT_FOUND_ERROR
+    );
   });
 });

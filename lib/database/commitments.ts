@@ -16,4 +16,15 @@ const createCommitment = async (userId: string, eventInformationId: string): Pro
   return res.rows;
 };
 
-export { createCommitment };
+const deleteCommitment = async (userId: string, eventInformationId: string): Promise<Any[]> => {
+  const query = {
+    text: "DELETE FROM commitments WHERE user_id = $1 AND event_information_id = $2",
+    values: [userId, eventInformationId],
+  };
+
+  const res = await client.query(query);
+
+  return res.rows;
+};
+
+export { createCommitment, deleteCommitment };

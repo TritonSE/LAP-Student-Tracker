@@ -4,7 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import styles from "../../styles/class.module.css";
 import { Roster } from "../../components/SingleClassView/Roster/Roster";
 import { useRouter } from "next/router";
-import { Attendance } from "../../components/SingleClassView/Attendance/Attendance";
+import { AttendanceComponent } from "../../components/SingleClassView/Attendance/AttendanceComponent";
 import { Module } from "../../components/SingleClassView/Modules/Module";
 import { APIContext } from "../../context/APIContext";
 import { BackButton } from "../../components/util/BackButton";
@@ -61,7 +61,7 @@ const Class: NextApplicationPage = () => {
         </ul>
       </nav>
       {currentModule == "attendance" ? (
-        <Attendance />
+        <AttendanceComponent classId={classId} />
       ) : currentModule == "roster" ? (
         <Roster id={classId} />
       ) : (

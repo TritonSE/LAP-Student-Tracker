@@ -1,11 +1,12 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass, CreateOneOffEvent, OneOffEvent } from "../models";
+import { Class, CreateClass, CreateOneOffEvent, OneOffEvent, SessionInformation } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
 import { Student } from "../models";
 import { CreateUser, UpdateUser, User } from "../models";
 import { Image, UpdateImage } from "../models";
 import { Availability } from "../models";
+import { Attendance, CreateAttendance } from "../models";
 import { Announcement, CreateAnnouncement } from "../models";
 
 // LeagueAPI class to connect front and backend
@@ -178,6 +179,27 @@ class LeagueAPI {
     return res.data;
   }
 
+  async getSessions(classId: string, time?: string): Promise<SessionInformation[]> {
+    const res = await this.client.get(`api/class/${classId}/sessions?date=${time}`);
+    return res.data;
+  }
+
+  async getAttendanceFromSessionID(session: string, classId: string): Promise<Attendance[]> {
+    const res = await this.client.get(`api/class/${classId}/attendance/${session}`);
+    return res.data;
+  }
+
+  async createAttendance(
+    session: string,
+    classId: string,
+    attendanceArray: CreateAttendance[]
+  ): Promise<Attendance[]> {
+    const res = await this.client.post(
+      `api/class/${classId}/attendance/${session}`,
+      attendanceArray
+    );
+    return res.data;
+  }
   async createCommitment(classId: string, studentId: string): Promise<void> {
     await this.client.post(`api/class/${classId}/student`, {
       studentId: studentId,

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import "firebase/compat/auth";
 import firebase from "firebase/compat/app";
 import { FirebaseError } from "@firebase/util";
 import { Roles, UpdateUser, User } from "../models";
@@ -80,7 +81,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       apiKey: process.env.NEXT_PUBLIC_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
       authDomain:
         process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-      projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "demo-test",
+      projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-student-tracker-staging",
       appId: process.env.NEXT_PUBLIC_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
     };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);

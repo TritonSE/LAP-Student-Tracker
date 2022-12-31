@@ -8,16 +8,17 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
+import {Attendance} from "../../../models";
 
-type AttendanceProps = {
+type AttendanceComponentProps = {
   classId: string;
 };
-export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
+export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classId }) => {
   const api = useContext(APIContext);
 
   const [date, setDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
   const [loading, setLoading] = useState<boolean>(true);
-  const [attendances, setAttendance] = useState<any>();
+  const [attendances, setAttendance] = useState<Attendance[]>([]);
   const [sessionID, setSessionID] = useState<string>("");
 
   useEffect(() => {
@@ -27,8 +28,8 @@ export const Attendance: React.FC<AttendanceProps> = ({ classId }) => {
         classId,
         date.set({ hour: 0, minute: 0 }).toUTC().toISO()
       );
-      if (sessions === undefined || sessions.length == 0) {
-        setAttendance(null);
+      if (sessions.length == 0) {
+        setAttendance([]);
         setLoading(false);
         return <p>This date has no sessions</p>;
       }

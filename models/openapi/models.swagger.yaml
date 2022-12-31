@@ -517,7 +517,7 @@ components:
         - Present
       nullable: true
     Attendance:
-      title: Attendance
+      title: AttendanceComponent
       type: object
       properties:
         sessionId:

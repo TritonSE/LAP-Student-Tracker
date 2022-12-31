@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import {Attendance} from "../../../models";
+import { Attendance } from "../../../models";
 
 type AttendanceComponentProps = {
   classId: string;

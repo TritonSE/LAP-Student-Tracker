@@ -1,7 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./attendance.module.css";
-import { Attendance } from "../../../models/Attendance";
-import { CustomError } from "../../util/CustomError";
+import { Attendance } from "../../../models";
 import { CustomLoader } from "../../util/CustomLoader";
 import { AttendanceTypes, CreateAttendance } from "../,,/../../../models";
 import { AttendanceRow } from "./AttendanceRow";
@@ -27,11 +26,11 @@ const AttendanceBox: React.FC<AttendanceBoxProps> = ({ attendances, sessionId, c
   attendances.forEach((attendance) => {
     userIdToAttendance.push([attendance.userId, attendance.attendance]);
   });
-  const updateAttendances = (key: string, value: AttendanceTypes) => {
+  const updateAttendances = (key: string, value: AttendanceTypes): void => {
     setAttendance(new Map(newAttendances.set(key, value)));
   };
   const idToFirstName = new Map();
-  attendances.forEach((attendance)  => {
+  attendances.forEach((attendance) => {
     const fullName = attendance.firstName + " " + attendance.lastName;
     idToFirstName.set(attendance.userId, fullName);
   });
@@ -71,6 +70,7 @@ const AttendanceBox: React.FC<AttendanceBoxProps> = ({ attendances, sessionId, c
                     ? newAttendances.get(attendance.userId)
                     : null
                 }
+                key={attendance.userId}
               ></AttendanceRow>
             );
           })}

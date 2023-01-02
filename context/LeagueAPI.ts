@@ -13,6 +13,7 @@ import { Staff } from "../models";
 import { CreateUser, UpdateUser, User } from "../models";
 import { Image, UpdateImage } from "../models";
 import { Availability } from "../models";
+import { Attendance, CreateAttendance } from "../models";
 import { Announcement, CreateAnnouncement } from "../models";
 
 // LeagueAPI class to connect front and backend
@@ -221,6 +222,37 @@ class LeagueAPI {
 
   async deleteItem(moduleId: string, itemId: string): Promise<void> {
     await this.client.delete(`api/module/${moduleId}/item/${itemId}`);
+  }
+
+  async getSessions(classId: string, time?: string): Promise<SessionInformation[]> {
+    const res = await this.client.get(`api/class/${classId}/sessions?date=${time}`);
+    return res.data;
+  }
+
+  async getAttendanceFromSessionID(session: string, classId: string): Promise<Attendance[]> {
+    const res = await this.client.get(`api/class/${classId}/attendance/${session}`);
+    return res.data;
+  }
+
+  async createAttendance(
+    session: string,
+    classId: string,
+    attendanceArray: CreateAttendance[]
+  ): Promise<Attendance[]> {
+    const res = await this.client.post(
+      `api/class/${classId}/attendance/${session}`,
+      attendanceArray
+    );
+    return res.data;
+  }
+  async createCommitment(classId: string, studentId: string): Promise<void> {
+    await this.client.post(`api/class/${classId}/student`, {
+      studentId: studentId,
+    });
+  }
+
+  async deleteCommitment(classId: string, studentId: string): Promise<void> {
+    await this.client.delete(`api/class/${classId}/student/${studentId}`);
   }
 }
 

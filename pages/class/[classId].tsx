@@ -5,7 +5,7 @@ import styles from "../../styles/class.module.css";
 import { Roster } from "../../components/SingleClassView/Roster/Roster";
 import { useRouter } from "next/router";
 import { Attendance } from "../../components/SingleClassView/Attendance/Attendance";
-import { ClassModule } from "../../components/SingleClassView/Module/Module";
+import { ClassModule } from "../../components/SingleClassView/Module/ClassModule";
 import { APIContext } from "../../context/APIContext";
 import { BackButton } from "../../components/util/BackButton";
 import { CustomError } from "../../components/util/CustomError";

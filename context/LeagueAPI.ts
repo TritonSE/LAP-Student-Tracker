@@ -6,7 +6,7 @@ import {
   Module,
   Student,
   CreateOneOffEvent,
-  OneOffEvent,
+  OneOffEvent, SessionInformation,
 } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";

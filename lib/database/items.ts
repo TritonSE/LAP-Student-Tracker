@@ -40,12 +40,7 @@ const createItem = async (moduleId: string, title: string, link: string): Promis
     values: [moduleId, title, link],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on insert into database");
-  }
+  const res = await client.query(query);
 
   return getItem(res.rows[0].itemId);
 };
@@ -57,25 +52,12 @@ const deleteItem = async (itemId: string): Promise<Item | null> => {
     values: [itemId],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on delete item");
-  }
+  const res = await client.query(query);
 
   if (res.rows.length == 0) {
     return null;
   }
-
-  let item: Item;
-  try {
-    item = await decode(Item, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return item;
+  return await decode(Item, res.rows[0]);
 };
 
 const updateItem = async (itemId: string, title?: string, link?: string): Promise<Item | null> => {
@@ -88,11 +70,7 @@ const updateItem = async (itemId: string, title?: string, link?: string): Promis
     values: [itemId, title, link],
   };
 
-  try {
-    await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on update module");
-  }
+  await client.query(query);
 
   return getItem(itemId);
 };

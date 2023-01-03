@@ -1,8 +1,16 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass, CreateOneOffEvent, OneOffEvent, SessionInformation } from "../models";
+import {
+  Class,
+  CreateClass,
+  Item,
+  Module,
+  Student,
+  CreateOneOffEvent,
+  OneOffEvent,
+  SessionInformation,
+} from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
-import { Student } from "../models";
 import { CreateUser, UpdateUser, User } from "../models";
 import { Image, UpdateImage } from "../models";
 import { Availability } from "../models";
@@ -155,6 +163,11 @@ class LeagueAPI {
     return res.data;
   }
 
+  async getClassModules(classId: string): Promise<Module[]> {
+    const res = await this.client.get(`api/class/${classId}/modules`);
+    return res.data;
+  }
+
   async getAnnouncements(classId: string): Promise<Announcement[]> {
     const res = await this.client.get(`api/class/${classId}/announcement`);
     return res.data;
@@ -177,6 +190,39 @@ class LeagueAPI {
   async getStudents(): Promise<Student[]> {
     const res = await this.client.get("api/students");
     return res.data;
+  }
+
+  async createModule(module: Module): Promise<Module> {
+    const res = await this.client.post("api/module/", module);
+    return res.data;
+  }
+
+  async updateModule(moduleId: string, module: Module): Promise<Module> {
+    const res = await this.client.patch(`api/module/${moduleId}`, module);
+    return res.data;
+  }
+  async deleteModule(moduleId: string): Promise<void> {
+    const res = await this.client.delete(`api/module/${moduleId}`);
+    return res.data;
+  }
+
+  async createItem(moduleId: string, item: Item): Promise<Item> {
+    const res = await this.client.post(`api/module/${moduleId}/item`, item);
+    return res.data;
+  }
+
+  async getModuleItems(moduleId: string): Promise<Item[]> {
+    const res = await this.client.get(`api/module/${moduleId}/item`);
+    return res.data;
+  }
+
+  async updateItem(moduleId: string, itemId: string, item: Item): Promise<Item> {
+    const res = await this.client.patch(`/api/module/${moduleId}/item/${itemId}`, item);
+    return res.data;
+  }
+
+  async deleteItem(moduleId: string, itemId: string): Promise<void> {
+    await this.client.delete(`api/module/${moduleId}/item/${itemId}`);
   }
 
   async getSessions(classId: string, time?: string): Promise<SessionInformation[]> {

@@ -49,6 +49,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
   const [valid, setValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
   const [errMsg, setErrMsg] = useState<string>("");
 
   // saved repeat modal states
@@ -236,7 +237,6 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       studentIds: selectedStudents,
       checkAvailabilities: !ignoreAvailabilities,
     };
-
     try {
       // Create class event and calendar information
       const classEvent = await client.createClassEvent(createEvent);

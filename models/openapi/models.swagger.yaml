@@ -679,3 +679,15 @@ components:
         - sessionId
         - startStr
         - endStr
+    MissingAttendance:
+      title: MissingAttendance
+      type: object
+      properties:
+        sessionId:
+          type: string
+        startStr:
+          type: string
+      required:
+        - sessionId
+        - startStr
+

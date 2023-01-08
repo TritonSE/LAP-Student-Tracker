@@ -10,22 +10,29 @@ type AttendanceBoxProps = {
   attendances: Attendance[];
   sessionId: string;
   classId: string;
+  refreshMissingAttendanceList: () => Promise<void>;
 };
 
-const AttendanceBox: React.FC<AttendanceBoxProps> = ({ attendances, sessionId, classId }) => {
+const AttendanceBox: React.FC<AttendanceBoxProps> = ({
+  attendances,
+  sessionId,
+  classId,
+  refreshMissingAttendanceList,
+}) => {
   if (attendances.length == 0) {
     return <p>This date has no sessions</p>;
   }
   const api = useContext(APIContext);
   //get userIds and initial attendances from database
   const userIdToAttendance: [string, AttendanceTypes][] = [];
-  // map of new attendance values, in case we have to update
-  const [newAttendances, setAttendance] = useState(new Map(userIdToAttendance));
-  const [loadingSave, setLoadingSave] = useState<boolean>(false);
 
   attendances.forEach((attendance) => {
     userIdToAttendance.push([attendance.userId, attendance.attendance]);
   });
+  // map of new attendance values, in case we have to update
+  const [newAttendances, setAttendance] = useState(new Map(userIdToAttendance));
+  const [loadingSave, setLoadingSave] = useState<boolean>(false);
+
   const updateAttendances = (key: string, value: AttendanceTypes): void => {
     setAttendance(new Map(newAttendances.set(key, value)));
   };
@@ -49,6 +56,7 @@ const AttendanceBox: React.FC<AttendanceBoxProps> = ({ attendances, sessionId, c
 
     await api.createAttendance(sessionId, classId, attendanceArray);
     setLoadingSave(false);
+    await refreshMissingAttendanceList();
   };
 
   return (
@@ -82,7 +90,7 @@ const AttendanceBox: React.FC<AttendanceBoxProps> = ({ attendances, sessionId, c
             await updateAttendance();
           }}
         >
-          {loadingSave ? <CustomLoader></CustomLoader> : "Save AttendanceComponent"}
+          {loadingSave ? <CustomLoader></CustomLoader> : "Save Attendance  "}
         </button>
       </div>
     </div>

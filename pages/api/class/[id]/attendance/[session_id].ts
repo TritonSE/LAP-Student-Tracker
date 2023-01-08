@@ -110,7 +110,7 @@ export const sessionIDHandler: NextApiHandler = async (
       }
       try {
         const result = await createAttendance(sessionId, classId, newAttendance);
-        logData("AttendanceComponent Stored in Database", result);
+        logData("Attendance Stored in Database", result);
         return res.status(StatusCodes.CREATED).json(result);
       } catch (e) {
         onError(e);

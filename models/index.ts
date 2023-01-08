@@ -15,6 +15,7 @@ export * from "./CreateOneOffEvent";
 export * from "./CreateUser";
 export * from "./Image";
 export * from "./Item";
+export * from "./MissingAttendance";
 export * from "./Module";
 export * from "./OneOffEvent";
 export * from "./Roles";

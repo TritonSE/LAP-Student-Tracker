@@ -132,4 +132,51 @@
   padding: 3px;
   width: 350px;
   margin-bottom: 1rem;
+  padding-right: 40px;
+}
+
+.dateAndMissingAttendanceContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  height: 370px;
+}
+
+.missingAttendance {
+  border: 1px solid #85888c;
+  border-radius: 10px;
+  padding: 3px;
+  width: 350px;
+  margin-bottom: 1rem;
+  flex-grow: 2;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.missingAttendanceHeader {
+  composes: titleMedium from "../../../styles/globals.css";
+  padding-bottom: 20px;
+}
+
+.missingAttendanceContainer {
+  margin: 20px 30px;
+}
+
+.missedAttendanceRow {
+  height: 40px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.viewButton {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  color: var(--orange);
+  text-decoration: underline;
 }

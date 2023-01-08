@@ -683,11 +683,10 @@ components:
       title: MissingAttendance
       type: object
       properties:
-        sessionId:
+        eventInformationId:
           type: string
         startStr:
           type: string
       required:
         - sessionId
         - startStr
-

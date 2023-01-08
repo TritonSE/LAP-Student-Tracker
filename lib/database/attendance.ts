@@ -1,12 +1,18 @@
-import {client} from "../db";
-import {Attendance, CreateAttendance, MissingAttendance, SessionInformation, SingleUserAttendance,} from "../../models";
-import {decode} from "io-ts-promise";
-import {array} from "io-ts";
-import {DateTime} from "luxon";
+import { client } from "../db";
+import {
+  Attendance,
+  CreateAttendance,
+  MissingAttendance,
+  SessionInformation,
+  SingleUserAttendance,
+} from "../../models";
+import { decode } from "io-ts-promise";
+import { array } from "io-ts";
+import { DateTime } from "luxon";
 
 const AttendanceArraySchema = array(Attendance);
 const SingleUserAttendanceArraySchema = array(SingleUserAttendance);
-const MissingAttendanceArraySchema = array(MissingAttendance)
+const MissingAttendanceArraySchema = array(MissingAttendance);
 //get session_ids of events that occur before a given time: GET api/class/[id]/sessions
 const getSessions = async (classId: string, time?: string): Promise<SessionInformation[]> => {
   let endTime = "";
@@ -94,8 +100,8 @@ const createAttendance = async (
   }
 
   const attendanceQuery = {
-    text: "INSERT INTO calendar_information (attendance_taken) values (true) where session_id = $1",
-    values: [sessionId]
+    text: "UPDATE calendar_information SET attendance_taken = true where session_id = $1",
+    values: [sessionId],
   };
 
   await client.query(attendanceQuery);
@@ -103,20 +109,23 @@ const createAttendance = async (
   return getAttendanceFromSessionID(sessionId, classId);
 };
 
-const getAllSessionsWithoutAttendance = async (classId: string, until: DateTime): Promise<MissingAttendance[]> => {
+const getAllSessionsWithoutAttendance = async (
+  classId: string,
+  until: DateTime
+): Promise<MissingAttendance[]> => {
   const query = {
-    text: "SELECT sessionId, startStr FROM calendar_information WHERE attendance_taken = FALSE AND class_id = $1 AND start_str <= $3",
-    values: [classId, until.toISO()]
+    text: "SELECT session_id, TO_JSON(start_str) AS start_str FROM calendar_information WHERE attendance_taken = FALSE AND event_information_id = $1 AND start_str <= $2",
+    values: [classId, until.toISO()],
   };
 
   const res = await client.query(query);
   return await decode(MissingAttendanceArraySchema, res.rows);
-}
+};
 
 export {
   getSessions,
   getAttendanceFromSessionID,
   getSingleUserAttendanceFromClassID,
   createAttendance,
-  getAllSessionsWithoutAttendance
+  getAllSessionsWithoutAttendance,
 };

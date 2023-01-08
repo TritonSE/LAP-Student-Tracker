@@ -8,6 +8,7 @@ import {
   CreateOneOffEvent,
   OneOffEvent,
   SessionInformation,
+  MissingAttendance,
 } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
@@ -254,6 +255,11 @@ class LeagueAPI {
 
   async deleteCommitment(classId: string, studentId: string): Promise<void> {
     await this.client.delete(`api/class/${classId}/student/${studentId}`);
+  }
+
+  async getMissingAttednance(classId: string): Promise<MissingAttendance[]> {
+    const res = await this.client.get(`api/class/${classId}/missing_attendance`);
+    return res.data;
   }
 }
 

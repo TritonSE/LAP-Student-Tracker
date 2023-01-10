@@ -6,7 +6,7 @@
 }
 
 .buttonWrapper {
-  width: 438px;
+  width: 100%;
   padding-top: 65px;
   padding-bottom: 40px;
   display: flex;
@@ -19,9 +19,6 @@
 }
 
 .manageBtn {
-  display: inline-block;
-  align-items: center;
-  justify-content: space-around;
   width: 185px;
   height: 44px;
   border-radius: 32px;
@@ -30,4 +27,8 @@
   border: none;
   cursor: pointer;
   composes: labelLarge from "../../styles/globals.css";
+}
+
+.availabilitySpacing {
+  width: 50px;
 }

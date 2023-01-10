@@ -10,6 +10,7 @@ type AvailabilityCalendarProps = {
 
 const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ userId }) => {
   const _ = dayGridPlugin;
+  // if no user id present, dont render calendar
   if (!userId) {
     return null;
   }

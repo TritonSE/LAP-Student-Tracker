@@ -4,9 +4,15 @@ import Calendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 
-// using daygrid plugin to allow time grid plugin to load
-const AdminCalendar: React.FC = () => {
+type AvailabilityCalendarProps = {
+  userId: string | undefined;
+};
+
+const AvailabilityCalendar: React.FC<AvailabilityCalendarProps> = ({ userId }) => {
   const _ = dayGridPlugin;
+  if (!userId) {
+    return null;
+  }
   return (
     <div className={styles.calendarContainer}>
       <Calendar
@@ -18,18 +24,16 @@ const AdminCalendar: React.FC = () => {
         expandRows={true}
         eventSources={[
           {
-            url: "/api/event-feed/",
+            url: "/api/availability-feed/?userId=" + userId,
             method: "GET",
-            color: "blue",
-            textColor: "black",
+            textColor: "white",
           },
         ]}
         eventColor="blue"
-        eventTextColor="black"
         scrollTime="06:00:00"
       />
     </div>
   );
 };
 
-export { AdminCalendar };
+export { AvailabilityCalendar };

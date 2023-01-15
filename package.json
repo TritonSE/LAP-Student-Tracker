@@ -40,7 +40,7 @@
     "dotenv": "^16.0.1",
     "enhanced-resolve-jest": "^1.1.0",
     "firebase": "^9.6.7",
-    "firebase-admin": "^10.2.0",
+    "firebase-admin": "^11.4.1",
     "fp-ts": "^2.11.8",
     "http-status-codes": "^2.2.0",
     "io-ts": "^2.2.16",

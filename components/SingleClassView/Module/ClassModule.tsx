@@ -5,6 +5,8 @@ import { CustomLoader } from "../../util/CustomLoader";
 import { Module } from "../../../models";
 import Button from "@mui/material/Button";
 import { AccordionModule } from "./AccordionModule";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomError } from "../../util/CustomError";
 
 type ModuleProps = {
   id: string;
@@ -13,6 +15,9 @@ type ModuleProps = {
 
 export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
   const api = useContext(APIContext);
+  const { user } = useContext(AuthContext);
+
+  if (user == null) return <CustomError />;
   const [modules, setModules] = useState<Module[]>([]);
   const [popup, setPopup] = useState(false);
   const [name, setName] = useState("");
@@ -65,9 +70,11 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
     <div className={styles.container}>
       <div className={styles.title}>
         Modules{" "}
-        <Button className={styles.button} onClick={handleClick}>
-          Add module
-        </Button>
+        {(user.role == "Teacher" || user.role == "Admin") && (
+          <Button className={styles.button} onClick={handleClick}>
+            Add module
+          </Button>
+        )}
       </div>
       {popup ? (
         <div className={styles.popupBackground}>

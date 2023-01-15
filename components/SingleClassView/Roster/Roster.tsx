@@ -5,12 +5,18 @@ import { StudentTableView } from "./StudentTableView";
 import { AddStudentModal } from "./AddStudentModal";
 import { APIContext } from "../../../context/APIContext";
 import { User } from "../../../models";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomError } from "../../util/CustomError";
 
 type RosterProps = {
   id: string;
 };
 export const Roster: React.FC<RosterProps> = ({ id }) => {
   const api = useContext(APIContext);
+  const { user } = useContext(AuthContext);
+
+  if (user == null) return <CustomError />;
+  
   const [showTeacher, setShowTeacher] = useState(true);
   const [showStudent, setShowStudent] = useState(true);
   const [showAddStudentPopup, setShowAddStudentPopup] = useState(false);
@@ -55,6 +61,7 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
     getUsers();
   }, [rosterChange]);
 
+
   return (
     <>
       {showAddStudentPopup && (
@@ -68,7 +75,8 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
       <div className={styles.container}>
         <div>
           <div className={styles.title}>Roster</div>
-          <div className={styles.editButtonContainer}>
+          {(user.role == "Teacher" || user.role == "Admin") && (
+            <div className={styles.editButtonContainer}>
             {showDeleteStudents ? (
               <button className={styles.editButton} onClick={() => setShowDeleteStudents(false)}>
                 Done
@@ -86,6 +94,7 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
               </>
             )}
           </div>
+          )}
         </div>
         <div className={styles.spacer} />
         <div className={styles.dropdownHeader}>

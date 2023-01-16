@@ -1,19 +1,30 @@
-import axios, { AxiosInstance } from "axios";
+import axios, {AxiosInstance} from "axios";
 import {
+  Announcement,
+  Attendance,
+  Availability,
   Class,
+  ClassEvent,
+  CreateAnnouncement,
+  CreateAttendance,
   CreateClass,
+  CreateClassEvent,
   CreateOneOffEvent,
   CreateParentStudentLink,
+  CreateUser,
+  Image,
+  Item,
+  MissingAttendance,
+  Module,
   OneOffEvent,
   ParentStudentLink,
+  SessionInformation,
+  Staff,
+  Student,
+  UpdateImage,
+  UpdateUser,
+  User,
 } from "../models";
-import { ClassEvent, CreateClassEvent } from "../models";
-import { Staff } from "../models";
-import { Student } from "../models";
-import { CreateUser, UpdateUser, User } from "../models";
-import { Image, UpdateImage } from "../models";
-import { Availability } from "../models";
-import { Announcement, CreateAnnouncement } from "../models";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -161,6 +172,11 @@ class LeagueAPI {
     return res.data;
   }
 
+  async getClassModules(classId: string): Promise<Module[]> {
+    const res = await this.client.get(`api/class/${classId}/modules`);
+    return res.data;
+  }
+
   async getAnnouncements(classId: string): Promise<Announcement[]> {
     const res = await this.client.get(`api/class/${classId}/announcement`);
     return res.data;
@@ -185,6 +201,60 @@ class LeagueAPI {
     return res.data;
   }
 
+  async createModule(module: Module): Promise<Module> {
+    const res = await this.client.post("api/module/", module);
+    return res.data;
+  }
+
+  async updateModule(moduleId: string, module: Module): Promise<Module> {
+    const res = await this.client.patch(`api/module/${moduleId}`, module);
+    return res.data;
+  }
+  async deleteModule(moduleId: string): Promise<void> {
+    const res = await this.client.delete(`api/module/${moduleId}`);
+    return res.data;
+  }
+
+  async createItem(moduleId: string, item: Item): Promise<Item> {
+    const res = await this.client.post(`api/module/${moduleId}/item`, item);
+    return res.data;
+  }
+
+  async getModuleItems(moduleId: string): Promise<Item[]> {
+    const res = await this.client.get(`api/module/${moduleId}/item`);
+    return res.data;
+  }
+
+  async updateItem(moduleId: string, itemId: string, item: Item): Promise<Item> {
+    const res = await this.client.patch(`/api/module/${moduleId}/item/${itemId}`, item);
+    return res.data;
+  }
+
+  async deleteItem(moduleId: string, itemId: string): Promise<void> {
+    await this.client.delete(`api/module/${moduleId}/item/${itemId}`);
+  }
+
+  async getSessions(classId: string, time?: string): Promise<SessionInformation[]> {
+    const res = await this.client.get(`api/class/${classId}/sessions?date=${time}`);
+    return res.data;
+  }
+
+  async getAttendanceFromSessionID(session: string, classId: string): Promise<Attendance[]> {
+    const res = await this.client.get(`api/class/${classId}/attendance/${session}`);
+    return res.data;
+  }
+
+  async createAttendance(
+    session: string,
+    classId: string,
+    attendanceArray: CreateAttendance[]
+  ): Promise<Attendance[]> {
+    const res = await this.client.post(
+      `api/class/${classId}/attendance/${session}`,
+      attendanceArray
+    );
+    return res.data;
+  }
   async createCommitment(classId: string, studentId: string): Promise<void> {
     await this.client.post(`api/class/${classId}/student`, {
       studentId: studentId,
@@ -205,6 +275,11 @@ class LeagueAPI {
 
   async getStudentsLinkedToParent(parentId: string): Promise<User[]> {
     const res = await this.client.get(`api/parents/${parentId}/student`);
+    return res.data
+  }
+
+  async getMissingAttednance(classId: string): Promise<MissingAttendance[]> {
+    const res = await this.client.get(`api/class/${classId}/missing_attendance`);
     return res.data;
   }
 }

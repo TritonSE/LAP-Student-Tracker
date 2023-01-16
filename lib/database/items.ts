@@ -2,7 +2,9 @@ import { client } from "../db";
 import { Item } from "../../models";
 import { decode } from "io-ts-promise";
 import { array } from "io-ts";
+
 const ItemArraySchema = array(Item);
+
 // get all items for a particular module id
 const getModuleItems = async (moduleId: string): Promise<Item[]> => {
   const query = {
@@ -38,12 +40,7 @@ const createItem = async (moduleId: string, title: string, link: string): Promis
     values: [moduleId, title, link],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on insert into database");
-  }
+  const res = await client.query(query);
 
   return getItem(res.rows[0].itemId);
 };
@@ -55,25 +52,27 @@ const deleteItem = async (itemId: string): Promise<Item | null> => {
     values: [itemId],
   };
 
-  let res;
-  try {
-    res = await client.query(query);
-  } catch (e) {
-    throw Error("CustomError on delete item");
-  }
+  const res = await client.query(query);
 
   if (res.rows.length == 0) {
     return null;
   }
-
-  let item: Item;
-  try {
-    item = await decode(Item, res.rows[0]);
-  } catch (e) {
-    throw Error("Fields returned incorrectly in database");
-  }
-
-  return item;
+  return await decode(Item, res.rows[0]);
 };
 
-export { getModuleItems, getItem, createItem, deleteItem };
+const updateItem = async (itemId: string, title?: string, link?: string): Promise<Item | null> => {
+  const query = {
+    text:
+      "UPDATE module_items " +
+      "SET title = COALESCE($2, title), " +
+      "link = COALESCE($3, link) " +
+      "WHERE item_id = $1",
+    values: [itemId, title, link],
+  };
+
+  await client.query(query);
+
+  return getItem(itemId);
+};
+
+export { getModuleItems, getItem, createItem, deleteItem, updateItem };

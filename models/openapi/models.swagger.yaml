@@ -517,7 +517,7 @@ components:
         - Present
       nullable: true
     Attendance:
-      title: Attendance
+      title: AttendanceComponent
       type: object
       properties:
         sessionId:
@@ -684,3 +684,28 @@ components:
       required:
         - parentId
         - studentId
+    SessionInformation:
+      title: SessionInformation
+      type: object
+      properties:
+        sessionId:
+          type: string
+        startStr:
+          type: string
+        endStr:
+          type: string
+      required:
+        - sessionId
+        - startStr
+        - endStr
+    MissingAttendance:
+      title: MissingAttendance
+      type: object
+      properties:
+        eventInformationId:
+          type: string
+        startStr:
+          type: string
+      required:
+        - sessionId
+        - startStr

@@ -1,28 +1,37 @@
 import { client } from "../db";
-import { Attendance, CreateAttendance, SingleUserAttendance } from "../../models";
+import {
+  Attendance,
+  CreateAttendance,
+  MissingAttendance,
+  SessionInformation,
+  SingleUserAttendance,
+} from "../../models";
 import { decode } from "io-ts-promise";
 import { array } from "io-ts";
+import { DateTime } from "luxon";
 
 const AttendanceArraySchema = array(Attendance);
 const SingleUserAttendanceArraySchema = array(SingleUserAttendance);
+const MissingAttendanceArraySchema = array(MissingAttendance);
 //get session_ids of events that occur before a given time: GET api/class/[id]/sessions
-type sessionId = {
-  sessionId: string;
-  startStr: string;
-};
-
-const getSessions = async (classId: string, time?: string): Promise<sessionId[]> => {
+const getSessions = async (classId: string, time?: string): Promise<SessionInformation[]> => {
+  let endTime = "";
+  if (time) {
+    const startTime = new Date(time);
+    const endTimeDate = startTime.setDate(startTime.getDate() + 1);
+    endTime = new Date(endTimeDate).toISOString();
+  }
   const query = time
     ? {
         text:
-          "SELECT session_id, start_str " +
-          "FROM calendar_information WHERE end_str < $1 " +
-          "AND event_information_id = $2",
-        values: [time, classId],
+          "SELECT session_id, start_str, end_str " +
+          "FROM calendar_information WHERE start_str >= $1 " +
+          "AND end_str <= $2 AND event_information_id = $3",
+        values: [time, endTime, classId],
       }
     : {
         text:
-          "SELECT session_id, start_str " +
+          "SELECT session_id, start_str, end_str " +
           "FROM calendar_information " +
           "WHERE event_information_id = $1",
         values: [classId],
@@ -41,7 +50,7 @@ const getAttendanceFromSessionID = async (
       "select b.session_id, b.user_id, b.first_name, b.last_name, a.attendance  " +
       "from ( (select user_id, c.event_information_id, first_name, last_name, session_id from " +
       "( (select user_id, event_information_id, first_name, last_name from " +
-      "(commitments as comm left outer join users as u on comm.user_id = u.id)) as c " +
+      "(commitments as comm inner join (select * from users where role='Student') as u on comm.user_id = u.id)) as c " +
       "inner join calendar_information as ci on c.event_information_id = ci.event_information_id )) " +
       "as b left outer join attendance a on a.user_id = b.user_id and b.event_information_id = a.class_id " +
       "and a.session_id = b.session_id ) " +
@@ -89,7 +98,28 @@ const createAttendance = async (
     };
     await client.query(query);
   }
+
+  const attendanceQuery = {
+    text: "UPDATE calendar_information SET attendance_taken = true where session_id = $1",
+    values: [sessionId],
+  };
+
+  await client.query(attendanceQuery);
+
   return getAttendanceFromSessionID(sessionId, classId);
+};
+
+const getAllSessionsWithoutAttendance = async (
+  classId: string,
+  until: DateTime
+): Promise<MissingAttendance[]> => {
+  const query = {
+    text: "SELECT session_id, TO_JSON(start_str) AS start_str FROM calendar_information WHERE attendance_taken = FALSE AND event_information_id = $1 AND start_str <= $2",
+    values: [classId, until.toISO()],
+  };
+
+  const res = await client.query(query);
+  return await decode(MissingAttendanceArraySchema, res.rows);
 };
 
 export {
@@ -97,4 +127,5 @@ export {
   getAttendanceFromSessionID,
   getSingleUserAttendanceFromClassID,
   createAttendance,
+  getAllSessionsWithoutAttendance,
 };

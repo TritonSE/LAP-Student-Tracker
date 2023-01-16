@@ -51,7 +51,7 @@ export const userAttendanceHandler: NextApiHandler = async (
   if (req.method == "GET") {
     try {
       const attendance = await getSingleUserAttendanceFromClassID(userId, classId);
-      logData("Attendance for One User", attendance);
+      logData("AttendanceComponent for One User", attendance);
       return res.status(StatusCodes.ACCEPTED).json(attendance);
     } catch (e) {
       onError(e);

@@ -35,7 +35,7 @@ const CreateAttendanceArraySchema = array(CreateAttendance);
  *              type: array
  *              items:
  *                type: object
- *                $ref: '#/components/schemas/Attendance'
+ *                $ref: '#/components/schemas/AttendanceComponent'
  *  post:
  *    description: Add attendance records for multiple students in this session. Will overwrite or create attendance records for each student
  *    parameters:
@@ -61,14 +61,14 @@ const CreateAttendanceArraySchema = array(CreateAttendance);
  *              $ref: '#/components/schemas/CreateAttendance'
  *    responses:
  *      201:
- *        description: Attendance created/updated successfully
+ *        description: AttendanceComponent created/updated successfully
  *        content:
  *          application/json:
  *            schema:
  *              type: array
  *              items:
  *                type: object
- *                $ref: '#/components/schemas/Attendance'
+ *                $ref: '#/components/schemas/AttendanceComponent'
  */
 export const sessionIDHandler: NextApiHandler = async (
   req: NextApiRequest,
@@ -92,7 +92,7 @@ export const sessionIDHandler: NextApiHandler = async (
     case "GET": {
       try {
         const attendanceArray = await getAttendanceFromSessionID(sessionId, classId);
-        logData("Attendance for Session", attendanceArray);
+        logData("AttendanceComponent for Session", attendanceArray);
         return res.status(StatusCodes.ACCEPTED).json(attendanceArray);
       } catch (e) {
         onError(e);

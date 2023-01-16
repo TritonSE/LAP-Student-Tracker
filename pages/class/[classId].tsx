@@ -1,16 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import type { NextApplicationPage } from "../_app";
 import { AuthContext } from "../../context/AuthContext";
 import styles from "../../styles/class.module.css";
 import { Roster } from "../../components/SingleClassView/Roster/Roster";
 import { useRouter } from "next/router";
-import { Attendance } from "../../components/SingleClassView/Attendance/Attendance";
-import { Module } from "../../components/SingleClassView/Modules/Module";
 import { APIContext } from "../../context/APIContext";
 import { BackButton } from "../../components/util/BackButton";
 import { CustomError } from "../../components/util/CustomError";
 import useSWR from "swr";
 import { CustomLoader } from "../../components/util/CustomLoader";
+import { AttendanceComponent } from "../../components/SingleClassView/Attendance/AttendanceComponent";
+import { ClassModule } from "../../components/SingleClassView/Module/ClassModule";
 
 const Class: NextApplicationPage = () => {
   const router = useRouter();
@@ -61,11 +61,11 @@ const Class: NextApplicationPage = () => {
         </ul>
       </nav>
       {currentModule == "attendance" ? (
-        <Attendance />
+        <AttendanceComponent classId={classId} />
       ) : currentModule == "roster" ? (
         <Roster id={classId} />
       ) : (
-        <Module />
+        <ClassModule enableEditing={user.role == "Student" ? false : true} id={classId} />
       )}
     </div>
   );

@@ -1,9 +1,11 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getModule } from "../../../../../lib/database/modules";
-import { getItem, deleteItem } from "../../../../../lib/database/items";
+import { getItem, deleteItem, updateItem } from "../../../../../lib/database/items";
 import { StatusCodes } from "http-status-codes";
 import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
+import { Item } from "../../../../../models";
+import { decode } from "io-ts-promise";
 
 /**
  * @swagger
@@ -35,7 +37,7 @@ export const deleteItemHandler: NextApiHandler = async (
   res: NextApiResponse
 ) => {
   if (!req.query) {
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 
   const moduleId = req.query.id as string;
@@ -59,7 +61,7 @@ export const deleteItemHandler: NextApiHandler = async (
     }
   } catch (e) {
     onError(e);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
 
   switch (req.method) {
@@ -69,7 +71,25 @@ export const deleteItemHandler: NextApiHandler = async (
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         onError(e);
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+      }
+    }
+    case "PATCH": {
+      let item: Item;
+
+      if ((await getItem(itemId)) == null)
+        return res.status(StatusCodes.NOT_FOUND).json("Item not found");
+
+      try {
+        item = await decode(Item, req.body);
+      } catch (e) {
+        return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
+      }
+      try {
+        const result = updateItem(itemId, item.title, item.link);
+        return res.status(StatusCodes.CREATED).json(result);
+      } catch (e) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }
 

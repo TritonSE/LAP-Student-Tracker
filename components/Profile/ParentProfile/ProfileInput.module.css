@@ -1,0 +1,9 @@
+.font {
+  composes: titleSmall from "../../../styles/globals.css";
+}
+
+.textBoxPadding {
+  width: 80%;
+  display: block;
+  margin: 0.5rem 0 0.5rem 0;
+}

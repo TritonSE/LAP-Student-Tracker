@@ -5,13 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 export const Navbar: React.FC = ({ children }) => {
   const router = useRouter();
-  // let authUser = null;
-  // try {
   const { user } = useContext(AuthContext);
-  //   authUser = user;
-  // } catch {
-  //   return null;
-  // }
 
   if (user == null) return null;
   return (
@@ -41,7 +35,7 @@ export const Navbar: React.FC = ({ children }) => {
                 </a>
               </li>
 
-              {user.role != "Student" ? (
+              {user.role != "Student" && user.role != "Parent" ? (
                 <li className={styles.navitem}>
                   <a
                     className={router.pathname == "/league" ? styles.clicked : styles.navlink}

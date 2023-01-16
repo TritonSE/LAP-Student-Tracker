@@ -1,0 +1,74 @@
+.container {
+  display: block;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.profilePictureContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+}
+
+.circlePadding {
+  height: 1rem;
+  flex-basis: 100%;
+}
+.padding {
+  flex-basis: 100%;
+  height: 0.5rem;
+}
+
+.divider {
+  border: 1px solid #85888c;
+  width: 80%;
+  height: 0;
+  margin-bottom: 1rem;
+}
+
+.name {
+  font-size: 2rem;
+  text-align: center;
+  flex-basis: 100%;
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+.inputContainerDefault,
+.inputContainerWithPassword {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+}
+
+.errorMessage {
+  color: red;
+  height: 15px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 15px;
+  width: 80%;
+  flex-basis: 100%;
+  text-align: center;
+}
+
+.buttonContainer {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+}
+
+.backButton,
+.editButton,
+.signOutButton {
+  text-transform: none;
+}

@@ -1,0 +1,47 @@
+.currentStudentContainer {
+  margin: 24px 32px 32px;
+}
+
+.nameAndArrowContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.studentsText {
+  font-family: "Inter";
+  font-weight: bold;
+  font-size: 24px;
+  color: black;
+  padding-bottom: 16px;
+}
+
+.studentInfoContainer {
+  margin-left: 8px;
+}
+
+.studentName {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 22px;
+  padding-bottom: 16px;
+}
+
+.phoneText {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
+  padding-bottom: 9px;
+}
+
+.phoneVal {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 18px;
+  padding-bottom: 16px;
+}

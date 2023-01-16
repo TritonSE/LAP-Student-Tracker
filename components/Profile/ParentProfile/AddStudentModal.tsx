@@ -8,6 +8,7 @@ type AddStudentModalProps = {
   linkParentAndStudent: (studentEmail: string) => Promise<void>;
   errorMsg: string;
 };
+// modal to add students
 export const AddStudentModal: React.FC<AddStudentModalProps> = ({
   setShowModalState,
   linkParentAndStudent,

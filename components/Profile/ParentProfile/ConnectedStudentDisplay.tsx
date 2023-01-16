@@ -10,6 +10,8 @@ type ConnectedStudentDisplayProps = {
   incrementStudent: () => void;
   decrementStudent: () => void;
 };
+// displays the linked students to the parent. This is for one student, we use
+// an array of these and switch between them in the profile view
 export const ConnectedStudentDisplay: React.FC<ConnectedStudentDisplayProps> = ({
   student,
   incrementStudent,

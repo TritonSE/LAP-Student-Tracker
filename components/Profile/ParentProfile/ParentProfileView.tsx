@@ -46,6 +46,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
     }
   };
 
+  // function to handle going right in the cards of linked students
   const incrementStudent = (): void => {
     const newIndex = currentStudentIndex + 1;
     if (newIndex < allStudents.length) {
@@ -60,6 +61,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
     }
   };
 
+  // function to handle going left on the cards of linked students
   const decrementStudent = (): void => {
     const newIndex = currentStudentIndex - 1;
 
@@ -72,6 +74,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
     }
   };
 
+  // array of rendered student cards (we flip between these when hitting left/right arrows)
   const renderStudentCards = allStudents.map((student) => (
     <ConnectedStudentDisplay
       key={student.id}

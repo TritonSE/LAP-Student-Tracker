@@ -1,4 +1,4 @@
-import axios, {AxiosInstance} from "axios";
+import axios, { AxiosInstance } from "axios";
 import {
   Announcement,
   Attendance,
@@ -275,7 +275,7 @@ class LeagueAPI {
 
   async getStudentsLinkedToParent(parentId: string): Promise<User[]> {
     const res = await this.client.get(`api/parents/${parentId}/student`);
-    return res.data
+    return res.data;
   }
 
   async getMissingAttednance(classId: string): Promise<MissingAttendance[]> {

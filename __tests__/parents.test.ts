@@ -49,7 +49,7 @@ describe("[POST] /api/parents/[id]/student", () => {
       query,
       "POST",
       body,
-      StatusCodes.ACCEPTED,
+      StatusCodes.OK,
       expected
     );
   });

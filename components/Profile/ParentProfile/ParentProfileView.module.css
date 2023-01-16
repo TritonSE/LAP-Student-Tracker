@@ -31,9 +31,19 @@
 
 .middlePanel {
   width: 40%;
+  height: 245px;
   margin: 0 1rem 0 1rem;
 }
 
 .rightPanel {
   width: 35%;
+}
+
+.addStudentButton {
+  width: 90px;
+  height: 90px;
+}
+
+.MuiSvgIcon-root {
+  height: 89px !important;
 }

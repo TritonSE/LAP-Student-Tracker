@@ -1,5 +1,12 @@
 import axios, { AxiosInstance } from "axios";
-import { Class, CreateClass, CreateOneOffEvent, OneOffEvent } from "../models";
+import {
+  Class,
+  CreateClass,
+  CreateOneOffEvent,
+  CreateParentStudentLink,
+  OneOffEvent,
+  ParentStudentLink,
+} from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
 import { Student } from "../models";
@@ -186,6 +193,19 @@ class LeagueAPI {
 
   async deleteCommitment(classId: string, studentId: string): Promise<void> {
     await this.client.delete(`api/class/${classId}/student/${studentId}`);
+  }
+
+  async createParentStudentLink(
+    parentId: string,
+    createParentStudentLink: CreateParentStudentLink
+  ): Promise<ParentStudentLink> {
+    const res = await this.client.post(`api/parents/${parentId}/student`, createParentStudentLink);
+    return res.data;
+  }
+
+  async getStudentsLinkedToParent(parentId: string): Promise<User[]> {
+    const res = await this.client.get(`api/parents/${parentId}/student`);
+    return res.data;
   }
 }
 

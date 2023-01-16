@@ -33,7 +33,7 @@ const createUser = async (
 ): Promise<User | null> => {
   const approved = process.env.ALWAYS_APPROVE
     ? process.env.ALWAYS_APPROVE == "true"
-    : !(role == "Admin" || role == "Teacher");
+    : !(role == "Admin" || role == "Teacher" || role == "Student");
   const currentDate = new Date();
   const dateCreated = currentDate.toLocaleString("en-US", {
     timeZone: "America/Los_Angeles",

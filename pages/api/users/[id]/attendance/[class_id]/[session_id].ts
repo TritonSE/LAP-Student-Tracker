@@ -1,12 +1,13 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { StatusCodes } from "http-status-codes";
-import { getSingleUserAttendanceFromClassID } from "../../../../../lib/database/attendance";
-import { withLogging } from "../../../../../middleware/withLogging";
-import { logData, onError } from "../../../../../logger/logger";
+import { getSingleUserAttendanceFromSessionID } from "../../../../../../lib/database/attendance";
+import { withLogging } from "../../../../../../middleware/withLogging";
+import { logData, onError } from "../../../../../../logger/logger";
+import { classIDHandler } from "../../../../class/[id]";
 
 /**
  * @swagger
- * /api/users/{id}/attendance/{classId}:
+ * /api/users/{id}/attendance/{classId}/{sessionId}:
  *  get:
  *    description: Get single user's attendance
  *    parameters:
@@ -16,7 +17,7 @@ import { logData, onError } from "../../../../../logger/logger";
  *        schema:
  *          type: string
  *      - in: path
- *        name: classId
+ *        name: sessionId
  *        required: true
  *        schema:
  *          type: string
@@ -40,17 +41,21 @@ export const userAttendanceHandler: NextApiHandler = async (
 
   const userId = req.query.id as string;
   const classId = req.query.class_id as string;
+  const sessionId = req.query.session_id as string;
 
   if (!userId) {
     return res.status(StatusCodes.BAD_REQUEST).json("No id specified");
   }
   if (!classId) {
-    return res.status(StatusCodes.BAD_REQUEST).json("No class id specified");
+    return res.status(StatusCodes.BAD_REQUEST).json("No clas id specified");
+  }
+  if (!sessionId) {
+    return res.status(StatusCodes.BAD_REQUEST).json("No session id specified");
   }
 
   if (req.method == "GET") {
     try {
-      const attendance = await getSingleUserAttendanceFromClassID(userId, classId);
+      const attendance = await getSingleUserAttendanceFromSessionID(userId, classId, sessionId);
       logData("AttendanceComponent for One User", attendance);
       return res.status(StatusCodes.ACCEPTED).json(attendance);
     } catch (e) {

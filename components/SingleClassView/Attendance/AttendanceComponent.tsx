@@ -8,18 +8,24 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-import { Attendance, MissingAttendance } from "../../../models";
+import { Attendance, MissingAttendance, SingleUserAttendance } from "../../../models";
 import { MissingAttendanceComponent } from "./MissingAttendance";
+import { AuthContext } from "../../../context/AuthContext";
+import moment from "moment";
+import { StudentAttendanceBox } from "./StudentAttendanceBox";
 
 type AttendanceComponentProps = {
   classId: string;
 };
 export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classId }) => {
   const api = useContext(APIContext);
+  const { user } = useContext(AuthContext);
+
 
   const [date, setDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
   const [loading, setLoading] = useState<boolean>(true);
   const [attendances, setAttendance] = useState<Attendance[]>([]);
+  const [studentAttendance, setStudentAttendance] = useState<SingleUserAttendance[]>([]);
   const [sessionID, setSessionID] = useState<string>("");
   const [missingAttendance, setMissingAttendance] = useState<MissingAttendance[]>([]);
   const [loadMissingAttendance, setLoadMissingAttendance] = useState<boolean>(false);
@@ -33,13 +39,22 @@ export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classI
       );
       if (sessions.length == 0) {
         setAttendance([]);
+        setStudentAttendance([]);
         setLoading(false);
         return <p>This date has no sessions</p>;
       }
       setSessionID(sessions[0].sessionId);
       const sessionId = sessions[0].sessionId;
-      const attendances = await api.getAttendanceFromSessionID(sessionId, classId);
-      setAttendance(attendances);
+      if (user){
+        if (user.role == "Teacher" || user.role == "Admin"){
+          const attendances = await api.getAttendanceFromSessionID(sessionId, classId);
+          setAttendance(attendances);
+        }
+        else{
+          const studentAttendance = await api.getSingleUserAttendanceFromSessionID(user.id, sessionId, classId);
+          setStudentAttendance(studentAttendance);
+        }
+      }
       setLoading(false);
     })();
   }, [date]);
@@ -91,14 +106,18 @@ export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classI
       </div>
       {loading ? (
         <CustomLoader></CustomLoader>
-      ) : (
+        ) : (user && (user.role == "Teacher" || user.role == "Admin") ? (
         <AttendanceBox
           attendances={attendances}
           classId={classId}
           sessionId={sessionID}
           refreshMissingAttendanceList={refreshMissingAttendanceList}
         ></AttendanceBox>
-      )}
+        ) : (
+        <StudentAttendanceBox
+          studentAttendance={studentAttendance}
+        ></StudentAttendanceBox>
+      ))}
     </div>
   );
 };

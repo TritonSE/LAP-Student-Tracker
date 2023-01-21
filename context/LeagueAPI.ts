@@ -9,6 +9,7 @@ import {
   OneOffEvent,
   SessionInformation,
   MissingAttendance,
+  SingleUserAttendance,
 } from "../models";
 import { ClassEvent, CreateClassEvent } from "../models";
 import { Staff } from "../models";
@@ -233,6 +234,11 @@ class LeagueAPI {
 
   async getAttendanceFromSessionID(session: string, classId: string): Promise<Attendance[]> {
     const res = await this.client.get(`api/class/${classId}/attendance/${session}`);
+    return res.data;
+  }
+
+  async getSingleUserAttendanceFromSessionID(userId: string, session: string, classId: string): Promise<SingleUserAttendance[]> {
+    const res = await this.client.get(`api/users/${userId}/attendance/${classId}/${session}`);
     return res.data;
   }
 

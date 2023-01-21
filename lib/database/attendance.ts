@@ -63,19 +63,20 @@ const getAttendanceFromSessionID = async (
 };
 
 //get single user attendance array from class id (GET:/api/users/[id]/attendence/[class_id])
-const getSingleUserAttendanceFromClassID = async (
+const getSingleUserAttendanceFromSessionID = async (
   userId: string,
-  classId: string
+  classId: string,
+  sessionId: string
 ): Promise<SingleUserAttendance[]> => {
   const query = {
     text:
-      "select b.session_id, b.user_id, a.attendance, TO_JSON(b.start_str) as start " +
-      "from ( (select user_id, com.event_information_id, session_id, start_str " +
-      "from (commitments as com inner join calendar_information as c " +
+      "select b.session_id, b.user_id, a.attendance, TO_JSON(b.start_str) as start, " +
+      "TO_JSON(b.end_str) as end from ( (select user_id, com.event_information_id, session_id, " +
+      "start_str, end_str from (commitments as com inner join calendar_information as c " +
       "on com.event_information_id = c.event_information_id)) as b left outer join attendance " +
       "as a on b.user_id = a.user_id and b.event_information_id = a.class_id and a.session_id = b.session_id) " +
-      "where b.event_information_id = $1 and b.user_id = $2",
-    values: [classId, userId],
+      "where b.event_information_id = $1 and b.session_id = $2 and b.user_id = $3",
+    values: [classId, sessionId, userId],
   };
 
   const res = await client.query(query);
@@ -125,7 +126,7 @@ const getAllSessionsWithoutAttendance = async (
 export {
   getSessions,
   getAttendanceFromSessionID,
-  getSingleUserAttendanceFromClassID,
+  getSingleUserAttendanceFromSessionID,
   createAttendance,
   getAllSessionsWithoutAttendance,
 };

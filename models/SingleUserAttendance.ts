@@ -5,12 +5,14 @@ export const SingleUserAttendance = t.type({
     sessionId: t.string,
     userId: t.string,
     attendance: AttendanceTypes,
-    start: t.string
+    start: t.string,
+    end: t.string
 })
 
 export interface SingleUserAttendance {
     sessionId: string,
     userId: string,
     attendance: AttendanceTypes,
-    start: string
+    start: string,
+    end: string
 }

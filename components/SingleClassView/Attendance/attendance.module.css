@@ -46,9 +46,30 @@
   flex-basis: 20%;
 }
 
+.classDate {
+  flex-basis: 15%;
+  
+}
+
+.classTime {
+  flex-basis: 20%;
+}
+
+.attendanceBoxtext {
+  flex-basis: 60%;
+  padding-left: 1rem;
+}
+
 .userAttendance {
   display: flex;
   width: 80%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.userAttendanceStudent {
+  display: flex;
+  width: 60%;
   padding-left: 1rem;
   align-items: center;
   justify-content: space-between;

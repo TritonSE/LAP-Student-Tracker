@@ -93,16 +93,18 @@ export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classI
             />
           </LocalizationProvider>
         </div>
-        <div className={styles.missingAttendance}>
-          {loadMissingAttendance ? (
-            <CustomLoader></CustomLoader>
-          ) : (
-            <MissingAttendanceComponent
-              changeDate={changeDate}
-              missingAttendance={missingAttendance}
-            />
-          )}
-        </div>
+        {(user && (user.role == "Teacher" || user.role == "Admin")) && (
+           <div className={styles.missingAttendance}>
+           {loadMissingAttendance ? (
+             <CustomLoader></CustomLoader>
+           ) : (
+             <MissingAttendanceComponent
+               changeDate={changeDate}
+               missingAttendance={missingAttendance}
+             />
+           )}
+         </div>
+        )}
       </div>
       {loading ? (
         <CustomLoader></CustomLoader>

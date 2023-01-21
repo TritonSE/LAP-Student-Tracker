@@ -5,7 +5,7 @@ import { FirebaseError } from "@firebase/util";
 import { Roles, UpdateUser, User } from "../models";
 import { APIContext } from "./APIContext";
 
-type AuthState = {
+export type AuthState = {
   user: User | null;
   error: Error | null;
   initializing: boolean;
@@ -27,7 +27,8 @@ type AuthState = {
     currPassword: string,
     newEmail: string,
     newNumber?: string | null,
-    newPassword?: string
+    newPassword?: string,
+    newAddress?: string | null
   ) => Promise<boolean>;
 };
 
@@ -283,7 +284,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     currPassword: string,
     newEmail: string,
     newNumber?: string | null,
-    newPassword?: string
+    newPassword?: string,
+    newAddress?: string | null
   ): Promise<boolean> => {
     try {
       if (currPassword === "") {
@@ -308,6 +310,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       const updateUser: UpdateUser = {
         phoneNumber: newNumber,
         email: newEmail,
+        address: newAddress,
       };
       const newUser = await api.updateUser(updateUser, id);
       setUser(newUser);

@@ -1,23 +1,35 @@
 import axios, { AxiosInstance } from "axios";
 import {
+  Announcement,
+  Attendance,
+  Availability,
   Class,
+  ClassEvent,
+  CreateAnnouncement,
+  CreateAttendance,
   CreateClass,
-  Item,
-  Module,
-  Student,
+  CreateClassEvent,
   CreateOneOffEvent,
+  CreateParentStudentLink,
+  CreateUser,
+  Image,
+  Item,
+  MissingAttendance,
+  Module,
   OneOffEvent,
+  ParentStudentLink,
   SessionInformation,
+<<<<<<< HEAD
   MissingAttendance,
   SingleUserAttendance,
+=======
+  Staff,
+  Student,
+  UpdateImage,
+  UpdateUser,
+  User,
+>>>>>>> 201899aa4a19fe89694ae1ee5426594ff59dcc10
 } from "../models";
-import { ClassEvent, CreateClassEvent } from "../models";
-import { Staff } from "../models";
-import { CreateUser, UpdateUser, User } from "../models";
-import { Image, UpdateImage } from "../models";
-import { Availability } from "../models";
-import { Attendance, CreateAttendance } from "../models";
-import { Announcement, CreateAnnouncement } from "../models";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -261,6 +273,19 @@ class LeagueAPI {
 
   async deleteCommitment(classId: string, studentId: string): Promise<void> {
     await this.client.delete(`api/class/${classId}/student/${studentId}`);
+  }
+
+  async createParentStudentLink(
+    parentId: string,
+    createParentStudentLink: CreateParentStudentLink
+  ): Promise<ParentStudentLink> {
+    const res = await this.client.post(`api/parents/${parentId}/student`, createParentStudentLink);
+    return res.data;
+  }
+
+  async getStudentsLinkedToParent(parentId: string): Promise<User[]> {
+    const res = await this.client.get(`api/parents/${parentId}/student`);
+    return res.data;
   }
 
   async getMissingAttednance(classId: string): Promise<MissingAttendance[]> {

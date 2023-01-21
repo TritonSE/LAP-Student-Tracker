@@ -1,0 +1,26 @@
+.createStudentContainer {
+  margin-bottom: 59px;
+}
+
+.connectStudentContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24px 32px 32px;
+}
+
+.connectStudentText {
+  font-family: "Inter";
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  vertical-align: Top;
+  color: #959595;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}

@@ -1,0 +1,51 @@
+.modalContainer {
+  width: 509.31px;
+  height: 261px;
+  z-index: 3;
+  border: 3px solid;
+  opacity: 100;
+  border-color: var(--orange);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  border-radius: 11px;
+  background-color: white;
+}
+
+.modalContainerInside {
+  margin: 40.8px 64px 31px;
+}
+
+.textStyle {
+  font-size: 21.83px;
+  line-height: 28px;
+  vertical-align: top;
+  font-family: "Inter";
+
+  padding-bottom: 25px;
+}
+
+.input {
+  width: 100%;
+}
+
+.textButtonSpacing {
+  height: 39.21px;
+}
+
+.modalButtonContainer {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.button {
+  width: 143px;
+}
+
+.errorMsg {
+  padding-top: 15px;
+  color: red;
+}

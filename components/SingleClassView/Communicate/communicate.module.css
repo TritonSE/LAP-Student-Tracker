@@ -61,6 +61,7 @@
   border-top: solid #bfc1c4 0.5px;
   padding: 1rem 1rem 1rem 5rem;
   color: #373a37;
+  white-space: pre-wrap;
 }
 
 .trash {

@@ -51,7 +51,7 @@ export const CommunicateItem: React.FC<CommunicateItemProps> = ({
       </div>
       {showContent && (
         <div className={styles.dropdownDropdownItem} key={`${announcement.title}-${idx}`}>
-          {announcement.content}
+          {announcement.content.trimEnd()}
         </div>
       )}
 

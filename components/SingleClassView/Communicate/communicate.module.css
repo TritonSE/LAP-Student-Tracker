@@ -1,0 +1,203 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  padding-right: 2rem;
+  padding-top: 2rem;
+}
+
+.title {
+  composes: headlineLarge from "../../../styles/globals.css";
+  padding-bottom: 2rem;
+  position: relative;
+  align-self: left;
+  padding: 1rem;
+}
+
+.spacer {
+  height: 30px;
+}
+
+.line {
+  background: #000000;
+  height: 2px;
+  width: 100%;
+}
+
+.dropdownHeader {
+  height: 3rem;
+  width: 100%;
+  background-color: #46d5b3;
+  border-radius: 5px 5px 0px 0px;
+  padding-left: 2rem;
+  padding-top: 0.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdownItem {
+  height: 3rem;
+  width: 100%;
+  padding-left: 2rem;
+  padding-top: 1rem;
+  border: solid #bfc1c4 1px;
+  border-top: solid #bfc1c4 0.5px;
+}
+
+.dropdownItemText {
+  float: left;
+  cursor: pointer;
+}
+
+.dropdownItemText:hover {
+  text-decoration: underline;
+}
+
+.dropdownDropdownItem {
+  height: 100%;
+  width: 100%;
+  border: solid #bfc1c4 1px;
+  border-top: solid #bfc1c4 0.5px;
+  padding: 1rem 1rem 1rem 5rem;
+  color: #373a37;
+  white-space: pre-wrap;
+}
+
+.trash {
+  float: right;
+  width: 1rem;
+  cursor: pointer;
+  color: black;
+  margin-right: 1rem;
+  padding-top: 0.2rem;
+  text-align: 50%;
+}
+
+.button {
+  float: right;
+  cursor: pointer;
+  background-color: #dadada;
+  border-radius: 10px;
+  text-transform: none;
+  color: black;
+  font-weight: bold;
+  padding: 5px 25px 5px 25px;
+  width: 135px;
+}
+
+.button:hover {
+  background-color: #dadada;
+}
+
+.submit {
+  width: 160px;
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  background: var(--orange);
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.cancel {
+  width: 160px;
+  height: 48px;
+  border: none;
+  border-radius: 10px;
+  border-color: black;
+  border-style: solid;
+  border-width: 2px;
+  background-color: white;
+  font-family: Inter;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  padding-top: 2rem;
+  align-items: center;
+  justify-content: space-evenly;
+  z-index: 1;
+}
+
+.popupBackground {
+  position: fixed;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: 1;
+  background-color: rgba(73, 76, 78, 0.24);
+}
+
+.popupContainer {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  margin: 0.5rem;
+}
+
+.popupTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding-bottom: 0.5rem;
+  text-align: center;
+}
+
+.titleInput {
+  display: block;
+  width: 850px;
+  border-width: 0px 0px 1px 0px;
+  background-color: #e1e2e4;
+  height: 40px;
+  margin: 0.5rem 3rem 0 3rem;
+  padding-left: 0.5rem;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+.contentInput {
+  display: block;
+  width: 850px;
+  border-width: 0px 0px 1px 0px;
+  background-color: #e1e2e4;
+  height: 275px;
+  margin: 1.5rem 3rem 0 3rem;
+  padding-left: 0.5rem;
+  padding-top: 0.5rem;
+  border: 1px solid #c4c4c4;
+  border-radius: 5px;
+  resize: none;
+  font-size: 20px;
+  font-family: "Inter";
+}
+
+.popupError {
+  color: red;
+  margin-top: 20px;
+}
+
+.accordionHeader {
+  border-radius: 5px;
+}

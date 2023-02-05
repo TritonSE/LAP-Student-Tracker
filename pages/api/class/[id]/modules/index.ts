@@ -102,36 +102,6 @@ export const classModulesHandler: NextApiHandler = async (
       }
     }
 
-    // case "PATCH": {
-    //   let newClass: UpdateClass;
-    //   if ((await getClass(id)) == null) {
-    //     return res.status(StatusCodes.NOT_FOUND).json("class not found");
-    //   }
-
-    //   try {
-    //     newClass = await decode(UpdateClass, req.body);
-    //   } catch (e) {
-    //     onError(e);
-    //     return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
-    //   }
-    //   try {
-    //     const result = await updateClass(
-    //       id,
-    //       newClass.minLevel,
-    //       newClass.maxLevel,
-    //       newClass.rrstring,
-    //       newClass.startTime,
-    //       newClass.endTime,
-    //       newClass.language
-    //     );
-    //     logData("Class After Update", result);
-    //     return res.status(StatusCodes.CREATED).json(result);
-    //   } catch (e) {
-    //     onError(e);
-    //     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
-    //   }
-    // }
-
     default: {
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
     }

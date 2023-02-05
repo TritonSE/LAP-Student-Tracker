@@ -14,6 +14,14 @@ const getClassModules = async (classId: string): Promise<Module[]> => {
   return await decode(ModuleArraySchema, res.rows);
 };
 
+// const updateClassModules = async (
+//   classId: string,
+//   name: string,
+//   position: number
+// ): Promise<Module[]> => {
+
+// };
+
 // get module from database by module_id
 const getModule = async (moduleId: string): Promise<Module | null> => {
   const query = {

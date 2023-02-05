@@ -34,13 +34,21 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
   const [itemLink, setItemLink] = useState("");
   const [refresh, setRefresh] = useState(false);
 
+  const [modules, setModules] = useState<Module[]>([]);
+
   useEffect(() => {
     (async () => {
       const res = await api.getModuleItems(module.moduleId);
       setLessons(res);
+
+      const res2 = await api.getClassModules(module.classId);
+      await setModules(res2);
     })();
   }, [refresh]);
 
+  console.log("-----");
+  console.log(modules);
+  console.log("-----");
   if (!lessons) return <CustomLoader />;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
@@ -117,16 +125,46 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
 
   // TODO: work on implementing this
   const handleMoveUp: VoidFunction = () => {
-    if (position > 0) {
-      setPosition(position - 1);
+    if (position - 1 > 0) {
+      // account for position not being zero indexed
+      let new_modules = modules.slice(0, position - 1 - 1);
+      new_modules = new_modules.concat(modules[position - 1]);
+      new_modules = new_modules.concat(modules[position - 1 - 1]);
+      new_modules = new_modules.concat(modules.slice(position - 1 + 1));
+
+      console.log("~~~~~");
+      console.log(new_modules);
+      console.log(modules);
+      console.log(position);
+      console.log("~~~~~");
+
+      let temp = new_modules[position - 1].position;
+      new_modules[position - 1].position = new_modules[position - 1 - 1].position;
+      new_modules[position - 1 - 1].position = temp;
+      setModules(new_modules);
     }
     handleClose();
   };
 
   // TODO: work on implementing this
   const handleMoveDown: VoidFunction = () => {
-    if (position < numModules) {
+    if (position - 1 < numModules) {
+      // account for position not being zero indexed
+      // [start, position - 1] + position + 1 + position + [position + 2, end]
+      let new_modules = modules.slice(0, position - 1);
+      new_modules = new_modules.concat(modules[position - 1 + 1]);
+      new_modules = new_modules.concat(modules[position - 1]);
+      new_modules = new_modules.concat(modules.slice(position - 1 + 2));
+
       setPosition(position + 1);
+
+      // swap positions
+
+      let temp = new_modules[position].position;
+      new_modules[position].position = new_modules[position - 1].position;
+      new_modules[position - 1].position = temp;
+
+      setModules(new_modules);
     }
     handleClose();
   };

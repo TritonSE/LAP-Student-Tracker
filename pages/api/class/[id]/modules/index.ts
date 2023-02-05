@@ -53,6 +53,13 @@ export const classModulesHandler: NextApiHandler = async (
       }
     }
 
+    case "PATCH": {
+      try {
+      } catch (e) {
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+      }
+    }
+
     default: {
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
     }

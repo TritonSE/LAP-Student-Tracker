@@ -140,7 +140,7 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
       new_modules = new_modules.concat(modules[position - 1 - 1]);
       new_modules = new_modules.concat(modules.slice(position - 1 + 1));
 
-      let temp = new_modules[position - 1].position;
+      const temp = new_modules[position - 1].position;
       new_modules[position - 1].position = new_modules[position - 1 - 1].position;
       new_modules[position - 1 - 1].position = temp;
       setModules(new_modules);
@@ -164,7 +164,7 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
 
       // swap positions
 
-      let temp = new_modules[position].position;
+      const temp = new_modules[position].position;
       new_modules[position].position = new_modules[position - 1].position;
       new_modules[position - 1].position = temp;
 

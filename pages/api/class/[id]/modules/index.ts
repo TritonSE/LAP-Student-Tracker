@@ -4,11 +4,7 @@ import { getClassModules, updateClassModules } from "../../../../../lib/database
 import { StatusCodes } from "http-status-codes";
 import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
-import { P } from "pino";
-import { decode } from "punycode";
 import { Module } from "../../../../../models";
-import { STATUS_CODES } from "http";
-import { stat } from "fs";
 
 /**
  * @swagger
@@ -102,7 +98,6 @@ export const classModulesHandler: NextApiHandler = async (
         const result = await updateClassModules(classId, new_modules);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
-        console.log(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

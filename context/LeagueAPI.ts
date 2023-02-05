@@ -177,6 +177,11 @@ class LeagueAPI {
     return res.data;
   }
 
+  async updateClassModules(classId: string, modules: Module[]): Promise<Module[]> {
+    const res = await this.client.patch(`api/class/${classId}/modules`, modules);
+    return res.data;
+  }
+
   async getAnnouncements(classId: string): Promise<Announcement[]> {
     const res = await this.client.get(`api/class/${classId}/announcement`);
     return res.data;

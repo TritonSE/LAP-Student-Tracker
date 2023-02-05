@@ -33,22 +33,23 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
   const [deleteItemModal, setDeleteItemModal] = useState(false);
   const [itemLink, setItemLink] = useState("");
   const [refresh, setRefresh] = useState(false);
-
+  const [save, setSave] = useState(false);
   const [modules, setModules] = useState<Module[]>([]);
 
   useEffect(() => {
     (async () => {
       const res = await api.getModuleItems(module.moduleId);
       setLessons(res);
-
-      const res2 = await api.getClassModules(module.classId);
-      await setModules(res2);
     })();
   }, [refresh]);
 
-  console.log("-----");
-  console.log(modules);
-  console.log("-----");
+  useEffect(() => {
+    (async () => {
+      const res2 = await api.getClassModules(module.classId);
+      await setModules(res2);
+    })();
+  }, []);
+
   if (!lessons) return <CustomLoader />;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
@@ -123,20 +124,21 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     setItemLink("");
   };
 
+  const handleSave: VoidFunction = async () => {
+    await api.updateClassModules(module.classId, modules);
+    setSave(false);
+  };
+
   // TODO: work on implementing this
   const handleMoveUp: VoidFunction = () => {
     if (position - 1 > 0) {
+      setSave(true);
+
       // account for position not being zero indexed
       let new_modules = modules.slice(0, position - 1 - 1);
       new_modules = new_modules.concat(modules[position - 1]);
       new_modules = new_modules.concat(modules[position - 1 - 1]);
       new_modules = new_modules.concat(modules.slice(position - 1 + 1));
-
-      console.log("~~~~~");
-      console.log(new_modules);
-      console.log(modules);
-      console.log(position);
-      console.log("~~~~~");
 
       let temp = new_modules[position - 1].position;
       new_modules[position - 1].position = new_modules[position - 1 - 1].position;
@@ -148,7 +150,9 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
 
   // TODO: work on implementing this
   const handleMoveDown: VoidFunction = () => {
-    if (position - 1 < numModules) {
+    if (position - 1 < numModules - 1) {
+      setSave(true);
+
       // account for position not being zero indexed
       // [start, position - 1] + position + 1 + position + [position + 2, end]
       let new_modules = modules.slice(0, position - 1);
@@ -171,6 +175,11 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
 
   return (
     <div>
+      {save ? (
+        <Button id="save-button" onClick={handleSave}>
+          Save
+        </Button>
+      ) : null}
       <div className={styles.accordionHeader}>
         <div>
           <div className={styles.dropdownHeader}>

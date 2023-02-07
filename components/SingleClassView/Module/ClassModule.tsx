@@ -23,7 +23,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
     (async () => {
       const res = await api.getClassModules(id);
       res.sort((a, b) => {
-        return a > b ? -1 : 1;
+        return a.position < b.position ? -1 : 1;
       });
       setModules(res);
     })();

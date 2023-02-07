@@ -27,13 +27,13 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
   modules,
   setModules,
 }) => {
+  const position = module.position;
   const api = useContext(APIContext);
   const [lessons, setLessons] = useState<Item[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [updatePopUp, setUpdatePopUp] = useState(false);
   const [name, setName] = useState(module.name);
-  const [position, setPosition] = useState(module.position);
   const [addModal, setAddModal] = useState(false);
   const [itemName, setItemName] = useState("");
   const [deleteItemModal, setDeleteItemModal] = useState(false);
@@ -45,7 +45,7 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
       const res = await api.getModuleItems(module.moduleId);
       setLessons(res);
     })();
-  }, [refresh]);
+  }, [refresh, modules]);
 
   if (!lessons) return <CustomLoader />;
 
@@ -122,44 +122,55 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
   };
 
   const handleMoveUp: VoidFunction = () => {
-    if (position - 1 > 0) {
+    // account for position not being zero indexed
+    const currentModuleIndex = position - 1;
+
+    if (currentModuleIndex > 0) {
       setSave(true);
 
-      // account for position not being zero indexed
-      let new_modules = modules.slice(0, position - 1 - 1);
-      new_modules = new_modules.concat(modules[position - 1]);
-      new_modules = new_modules.concat(modules[position - 1 - 1]);
-      new_modules = new_modules.concat(modules.slice(position - 1 + 1));
+      // move module up
+      setModules((previousModules) => {
+        const newModules = [...previousModules];
 
-      setPosition((x) => x - 1);
+        // swap module with item above it
+        const currentModule = previousModules[currentModuleIndex];
+        const aboveModule = previousModules[currentModuleIndex - 1];
+        const newPosition = aboveModule.position;
+        newModules[currentModuleIndex - 1].position = currentModule.position;
+        newModules[currentModuleIndex].position = newPosition;
 
-      const temp = new_modules[position - 1].position;
-      new_modules[position - 1].position = new_modules[position - 1 - 1].position;
-      new_modules[position - 1 - 1].position = temp;
-      setModules(new_modules);
+        // resort array in order
+        newModules.sort((a, b) => a.position - b.position);
+
+        return newModules;
+      });
     }
     handleClose();
   };
 
   const handleMoveDown: VoidFunction = () => {
-    if (position - 1 < numModules - 1) {
+    // account for position not being zero indexed
+    const currentModuleIndex = position - 1;
+
+    if (currentModuleIndex < numModules - 1) {
       setSave(true);
 
-      // account for position not being zero indexed
-      let new_modules = modules.slice(0, position - 1);
-      new_modules = new_modules.concat(modules[position - 1 + 1]);
-      new_modules = new_modules.concat(modules[position - 1]);
-      new_modules = new_modules.concat(modules.slice(position - 1 + 2));
+      // move module down
+      setModules((previousModules) => {
+        const newModules = [...previousModules];
 
-      setPosition((x) => x + 1);
+        // swap module with item below it
+        const currentModule = previousModules[currentModuleIndex];
+        const belowModule = previousModules[currentModuleIndex + 1];
+        const newPosition = belowModule.position;
+        newModules[currentModuleIndex + 1].position = currentModule.position;
+        newModules[currentModuleIndex].position = newPosition;
 
-      // swap positions
+        // resort array in order
+        newModules.sort((a, b) => a.position - b.position);
 
-      const temp = new_modules[position].position;
-      new_modules[position].position = new_modules[position - 1].position;
-      new_modules[position - 1].position = temp;
-
-      setModules(new_modules);
+        return newModules;
+      });
     }
     handleClose();
   };

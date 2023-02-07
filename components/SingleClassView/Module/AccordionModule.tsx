@@ -1,5 +1,5 @@
 import { Item, Module } from "../../../models";
-import React, { useContext, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { APIContext } from "../../../context/APIContext";
 import { CustomLoader } from "../../util/CustomLoader";
 import styles from "./modules.module.css";
@@ -14,12 +14,18 @@ type AccordionModuleProps = {
   numModules: number;
   deleteModuleWithinState: (id: string) => void;
   triggerClassModuleRefresh: () => void;
+  setSave: Dispatch<SetStateAction<boolean>>;
+  modules: Module[];
+  setModules: Dispatch<SetStateAction<Module[]>>;
 };
 export const AccordionModule: React.FC<AccordionModuleProps> = ({
   module,
   numModules,
   deleteModuleWithinState,
   triggerClassModuleRefresh,
+  setSave,
+  modules,
+  setModules,
 }) => {
   const api = useContext(APIContext);
   const [lessons, setLessons] = useState<Item[]>([]);
@@ -33,8 +39,6 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
   const [deleteItemModal, setDeleteItemModal] = useState(false);
   const [itemLink, setItemLink] = useState("");
   const [refresh, setRefresh] = useState(false);
-  const [save, setSave] = useState(false);
-  const [modules, setModules] = useState<Module[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -42,13 +46,6 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
       setLessons(res);
     })();
   }, [refresh]);
-
-  useEffect(() => {
-    (async () => {
-      const res2 = await api.getClassModules(module.classId);
-      await setModules(res2);
-    })();
-  }, []);
 
   if (!lessons) return <CustomLoader />;
 
@@ -124,11 +121,6 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     setItemLink("");
   };
 
-  const handleSave: VoidFunction = async () => {
-    await api.updateClassModules(module.classId, modules);
-    setSave(false);
-  };
-
   // TODO: work on implementing this
   const handleMoveUp: VoidFunction = () => {
     if (position - 1 > 0) {
@@ -139,6 +131,8 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
       new_modules = new_modules.concat(modules[position - 1]);
       new_modules = new_modules.concat(modules[position - 1 - 1]);
       new_modules = new_modules.concat(modules.slice(position - 1 + 1));
+
+      setPosition((x) => x - 1);
 
       const temp = new_modules[position - 1].position;
       new_modules[position - 1].position = new_modules[position - 1 - 1].position;
@@ -160,7 +154,7 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
       new_modules = new_modules.concat(modules[position - 1]);
       new_modules = new_modules.concat(modules.slice(position - 1 + 2));
 
-      setPosition(position + 1);
+      setPosition((x) => x + 1);
 
       // swap positions
 
@@ -175,11 +169,6 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
 
   return (
     <div>
-      {save ? (
-        <Button id="save-button" onClick={handleSave}>
-          Save
-        </Button>
-      ) : null}
       <div className={styles.accordionHeader}>
         <div>
           <div className={styles.dropdownHeader}>

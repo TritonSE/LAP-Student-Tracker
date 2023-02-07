@@ -11,6 +11,7 @@ import useSWR from "swr";
 import { CustomLoader } from "../../components/util/CustomLoader";
 import { AttendanceComponent } from "../../components/SingleClassView/Attendance/AttendanceComponent";
 import { ClassModule } from "../../components/SingleClassView/Module/ClassModule";
+import { Communicate } from "../../components/SingleClassView/Communicate/Communicate";
 
 const Class: NextApplicationPage = () => {
   const router = useRouter();
@@ -58,14 +59,25 @@ const Class: NextApplicationPage = () => {
               Modules
             </a>
           </li>
+          <li className={styles.navitem}>
+            <a
+              id="communicate"
+              className={currentModule == "communicate" ? styles.clicked : styles.navlink}
+              onClick={() => setCurrentModule("communicate")}
+            >
+              Communicate
+            </a>
+          </li>
         </ul>
       </nav>
       {currentModule == "attendance" ? (
         <AttendanceComponent classId={classId} />
       ) : currentModule == "roster" ? (
         <Roster id={classId} />
-      ) : (
+      ) : currentModule == "modules" ? (
         <ClassModule enableEditing={user.role == "Student" ? false : true} id={classId} />
+      ) : (
+        <Communicate id={classId} />
       )}
     </div>
   );

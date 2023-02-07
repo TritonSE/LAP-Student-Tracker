@@ -121,7 +121,6 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     setItemLink("");
   };
 
-  // TODO: work on implementing this
   const handleMoveUp: VoidFunction = () => {
     if (position - 1 > 0) {
       setSave(true);
@@ -142,13 +141,11 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     handleClose();
   };
 
-  // TODO: work on implementing this
   const handleMoveDown: VoidFunction = () => {
     if (position - 1 < numModules - 1) {
       setSave(true);
 
       // account for position not being zero indexed
-      // [start, position - 1] + position + 1 + position + [position + 2, end]
       let new_modules = modules.slice(0, position - 1);
       new_modules = new_modules.concat(modules[position - 1 + 1]);
       new_modules = new_modules.concat(modules[position - 1]);

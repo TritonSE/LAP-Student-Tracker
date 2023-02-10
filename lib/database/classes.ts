@@ -31,6 +31,17 @@ type ClassWithoutTeacherInfo = {
   endTime: string;
   language: string;
 };
+const ClassWithoutTeacherInfoSchema = t.type({
+  name: t.string,
+  eventInformationId: t.string,
+  minLevel: t.number,
+  maxLevel: t.number,
+  rrstring: t.string,
+  startTime: t.string,
+  endTime: t.string,
+  language: t.string,
+});
+const ClassWithoutTeacherInfoArraySchema = array(ClassWithoutTeacherInfoSchema);
 
 const createClass = async (
   eventInformationId: string,
@@ -196,4 +207,39 @@ const getAllClasses = async (): Promise<Class[]> => {
   return classesArray;
 };
 
-export { createClass, getClass, updateClass, getAllClasses };
+const getClassesByUser = async (id: string): Promise<Class[]> => {
+  const query = {
+    text:
+      "SELECT cl.min_level, cl.max_level, cl.rrstring, cl.start_time, cl.end_time, cl.language, cl.event_information_id, e.name " +
+      "FROM ((event_information e INNER JOIN classes cl ON e.id = cl.event_information_id) " +
+      "INNER JOIN commitments ON commitments.event_information_id = e.id) " +
+      "WHERE commitments.user_id  = $1",
+    values: [id],
+  };
+  const res = await client.query(query);
+  let classesWithoutTeacher: TypeOf<typeof ClassWithoutTeacherInfoArraySchema>;
+  try {
+    classesWithoutTeacher = await decode(ClassWithoutTeacherInfoArraySchema, res.rows);
+  } catch (e) {
+    throw Error("Fields returned incorrectly from database");
+  }
+
+  const classesArray: Class[] = [];
+  classesWithoutTeacher.forEach((singleClass) => {
+    const currClass = {
+      name: singleClass.name,
+      eventInformationId: singleClass.eventInformationId,
+      minLevel: singleClass.minLevel,
+      maxLevel: singleClass.maxLevel,
+      rrstring: singleClass.rrstring,
+      startTime: singleClass.startTime,
+      endTime: singleClass.endTime,
+      language: singleClass.language,
+      teachers: [],
+    };
+    classesArray.push(currClass);
+  });
+  return classesArray;
+};
+
+export { createClass, getClass, updateClass, getAllClasses, getClassesByUser };

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import styles from "./attendance.module.css";
 import { SingleUserAttendance } from "../../../models";
 import moment from "moment";
+import { DateTime } from "luxon";
 import { CustomLoader } from "../../util/CustomLoader";
 import { AttendanceTypes, CreateAttendance } from "../,,/../../../models";
 import { AttendanceRow } from "./AttendanceRow";
@@ -26,10 +27,10 @@ const StudentAttendanceBox: React.FC<StudentAttendanceBoxProps> = ({
                     <p className={styles.attendanceBoxtext}>Attendance</p>
                 </div>
                 {studentAttendance.map((singleAttendance) => {
-                    let date = moment.utc(singleAttendance.start).format("MM/DD dddd");
-                    let start_time = moment.utc(singleAttendance.start).format("hh:mm A");
-                    let end_time = moment.utc(singleAttendance.end).format("hh:mm A");
-                    let time = start_time + " " + end_time;
+                    const startTimeISO = DateTime.fromISO(singleAttendance.start).toLocal().toFormat("h:mm a");
+                    const endTimeISO = DateTime.fromISO(singleAttendance.end).toLocal().toFormat("h:mm a");
+                    const time = startTimeISO + " - " + endTimeISO;
+                    let date = DateTime.fromISO(singleAttendance.end).toLocal().toFormat("MM/dd EEEE");
                     return (
                         <div className={styles.attendanceRow}>
                             <p className={styles.classDate}>{date}</p>

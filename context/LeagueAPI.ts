@@ -19,16 +19,12 @@ import {
   OneOffEvent,
   ParentStudentLink,
   SessionInformation,
-<<<<<<< HEAD
-  MissingAttendance,
   SingleUserAttendance,
-=======
   Staff,
   Student,
   UpdateImage,
   UpdateUser,
   User,
->>>>>>> 201899aa4a19fe89694ae1ee5426594ff59dcc10
 } from "../models";
 
 // LeagueAPI class to connect front and backend

@@ -3,6 +3,7 @@ import { APIContext } from "../../../context/APIContext";
 import styles from "./StudentClasses.module.css";
 import React, { useContext, useEffect, useState } from "react";
 import RRule from "rrule";
+import { DateTime } from "luxon";
 import {
   Accordion,
   AccordionItem,
@@ -16,16 +17,6 @@ import School from "@mui/icons-material/School";
 
 type StudentClassesProps = {
   id: string;
-};
-
-const getFormattedTime: string = (time: string) => {
-  const hours24 = parseInt(time.substring(0, 2));
-  const hours = ((hours24 + 11) % 12) + 1;
-  const hoursText = hours < 10 ? "0" + hours.toString() : hours.toString();
-  const amPm = hours24 > 11 ? " pm" : " am";
-  const minutes = time.substring(3, 5);
-
-  return hoursText + ":" + minutes + amPm;
 };
 
 const monthNames = [
@@ -80,19 +71,25 @@ const StudentClasses: React.FC<StudentClassesProps> = ({ id }) => {
             <AccordionItemPanel className={styles.panel}>
               <AccessTime />{" "}
               <div className={styles.info}>
-                {getFormattedTime(Class.startTime)} - {getFormattedTime(Class.endTime)}
+                {DateTime.fromFormat(Class.startTime, "HH:mm:ss.SSSZZ").toFormat("t") +
+                  " - " +
+                  DateTime.fromFormat(Class.endTime, "HH:mm:ss.SSSZZ").toFormat("t")}
               </div>
               <br />
               <CalendarMonth />{" "}
               <div className={styles.info}>
-                {RRule.fromString(Class.rrstring).toText().charAt(0).toUpperCase() +
-                  RRule.fromString(Class.rrstring).toText().slice(1) +
-                  ", start " +
-                  monthNames[RRule.fromString(Class.rrstring).options.dtstart.getMonth()] +
-                  " " +
-                  RRule.fromString(Class.rrstring).options.dtstart.getDate() +
-                  ", " +
-                  RRule.fromString(Class.rrstring).options.dtstart.getFullYear()}
+                {
+                  // Capitalize the first letter of the occurrence + start the occurrence string
+                  // at the second char + month number to month name + day of month + full year
+                  RRule.fromString(Class.rrstring).toText().charAt(0).toUpperCase() +
+                    RRule.fromString(Class.rrstring).toText().slice(1) +
+                    ", start " +
+                    monthNames[RRule.fromString(Class.rrstring).options.dtstart.getMonth()] +
+                    " " +
+                    RRule.fromString(Class.rrstring).options.dtstart.getDate() +
+                    ", " +
+                    RRule.fromString(Class.rrstring).options.dtstart.getFullYear()
+                }
               </div>
               <br />
               <School />{" "}

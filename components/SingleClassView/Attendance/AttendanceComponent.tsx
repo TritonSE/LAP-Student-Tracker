@@ -106,6 +106,10 @@ export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classI
          </div>
         )}
       </div>
+      {/* Show all attendances for Teacher and Admin. Fot students only show that student's attendance 
+          AttendanceBox --> renders all attendances
+          StudentAttendanceBox --> renders single student attendance
+      */}
       {loading ? (
         <CustomLoader></CustomLoader>
         ) : (user && (user.role == "Teacher" || user.role == "Admin") ? (

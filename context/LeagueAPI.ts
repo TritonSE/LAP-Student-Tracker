@@ -282,6 +282,11 @@ class LeagueAPI {
     const res = await this.client.get(`api/class/${classId}/missing_attendance`);
     return res.data;
   }
+
+  async refreshClassSessions(classId: string): Promise<void> {
+    await this.client.patch(`/api/class/${classId}/refresh`);
+    return;
+  }
 }
 
 export { LeagueAPI };

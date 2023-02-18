@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import type { NextApplicationPage } from "../_app";
 import { AuthContext } from "../../context/AuthContext";
 import styles from "../../styles/class.module.css";
@@ -20,6 +20,10 @@ const Class: NextApplicationPage = () => {
   const { user } = useContext(AuthContext);
   const classId = router.query.classId as string;
   const { data: currClass } = useSWR("/api/class" + classId, () => client.getClass(classId));
+
+  useEffect( () => {
+    client.refreshClassSessions(classId).then(() => console.log("DINE"));
+  })
 
   const [currentModule, setCurrentModule] = useState<string>("roster");
 

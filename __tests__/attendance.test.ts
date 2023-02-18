@@ -250,8 +250,8 @@ describe("[GET] /api/users/[id]/attendance/[class_id]/[session_id]", () => {
         sessionId: "a",
         userId: "1",
         attendance: "Present",
-        start: "2022-02-26T21:00:00-08:00",
-        end: "2022-02-26T21:00:00-08:00"
+        start: "2022-02-27T05:00:00.000Z",
+        end: "2022-02-27T05:00:00.000Z"
       },
     ];
     await makeSingleUserAttendanceHTTPRequest(

@@ -19,21 +19,6 @@ type StudentClassesProps = {
   id: string;
 };
 
-const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
 const StudentClasses: React.FC<StudentClassesProps> = ({ id }) => {
   const api = useContext(APIContext);
   const [classes, setClasses] = useState<Class[]>([]);
@@ -79,16 +64,13 @@ const StudentClasses: React.FC<StudentClassesProps> = ({ id }) => {
               <CalendarMonth />{" "}
               <div className={styles.info}>
                 {
-                  // Capitalize the first letter of the occurrence + start the occurrence string
-                  // at the second char + month number to month name + day of month + full year
+                  // Capitalize the first letter of the sentence
                   RRule.fromString(Class.rrstring).toText().charAt(0).toUpperCase() +
                     RRule.fromString(Class.rrstring).toText().slice(1) +
                     ", start " +
-                    monthNames[RRule.fromString(Class.rrstring).options.dtstart.getMonth()] +
-                    " " +
-                    RRule.fromString(Class.rrstring).options.dtstart.getDate() +
-                    ", " +
-                    RRule.fromString(Class.rrstring).options.dtstart.getFullYear()
+                    DateTime.fromJSDate(RRule.fromString(Class.rrstring).options.dtstart).toFormat(
+                      "DDD"
+                    )
                 }
               </div>
               <br />

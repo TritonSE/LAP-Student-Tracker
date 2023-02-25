@@ -3,11 +3,10 @@ import { Class } from "../../models";
 import { decode } from "io-ts-promise";
 import { array, TypeOf } from "io-ts";
 import * as t from "io-ts";
-import {DateTime, Interval} from "luxon";
-import {logger, onError} from "../../logger/logger";
+import { DateTime, Interval } from "luxon";
+import { logger } from "../../logger/logger";
 import RRule from "rrule";
-import {createCalendarEvent} from "./calendar";
-import {StatusCodes} from "http-status-codes";
+import { createCalendarEvent } from "./calendar";
 
 const ClassWithUserInformationSchema = t.type({
   name: t.string,
@@ -201,69 +200,75 @@ const getAllClasses = async (): Promise<Class[]> => {
   return classesArray;
 };
 
-const addDatesToUnlimitedClass = async (eventInformationId: string):Promise<void> => {
+const addDatesToUnlimitedClass = async (eventInformationId: string): Promise<void> => {
   const query = {
-    text: "SELECT cl.rrstring, to_json(ci.start_str) as start_str_tmp, to_json(ci.end_str), ci.event_information_id, ci.session_id FROM " +
-        "((event_information ei INNER JOIN calendar_information ci on ei.id = ci.event_information_id) INNER JOIN classes cl ON cl.event_information_id = ei.id)  WHERE ci.event_information_id = $1 AND ei.never_ending = true ORDER  BY start_str DESC LIMIT 1",
-    values: [eventInformationId]
-  }
-
-  logger.debug("HERE BABY");
-
-
+    text:
+      "SELECT cl.rrstring, to_json(ci.start_str) as start_str_tmp, to_json(ci.end_str) as end_str_tmp, ci.event_information_id, ci.session_id FROM " +
+      "((event_information ei INNER JOIN calendar_information ci on ei.id = ci.event_information_id) INNER JOIN classes cl ON cl.event_information_id = ei.id)  WHERE ci.event_information_id = $1 AND ei.never_ending = true ORDER  BY start_str DESC LIMIT 1",
+    values: [eventInformationId],
+  };
   const res = await client.query(query);
-  logger.debug("QUERYING CLIENT")
   const rows = res.rows;
 
   if (rows.length == 0) {
-    logger.debug("NO ROWS")
+    logger.debug("NO ROWS");
     return;
   }
 
-  console.log(rows)
-
-  const lastDate = DateTime.fromISO(rows[0].startStrTmp);
-  const dateThreeMonthsBefore = lastDate.set({month: lastDate.month - 3});
+  const lastDateStart = DateTime.fromISO(rows[0].startStrTmp);
+  // calculate date 3 months before the last date in the database
+  const dateThreeMonthsBefore = lastDateStart.set({ month: lastDateStart.month - 3 });
   if (DateTime.now() < dateThreeMonthsBefore) {
-    logger.debug("Date of last event is still 3 months await");
-    return
+    logger.debug("Date of last event is still 3 months away");
+    return;
   }
 
+  const lastDateEnd = DateTime.fromISO(rows[0].endStrTmp);
+
   const rrule = RRule.fromString(rows[0].rrstring);
-  const yearInAdvance =  lastDate.set({year: lastDate.year + 1});
-  console.log(yearInAdvance.year)
-
-  console.log("ADVANCE:::")
-  console.log(yearInAdvance)
-  const allDates = rrule.between(lastDate.toJSDate(), yearInAdvance.toJSDate());
-
-  let intervals: Interval[] = []
+  const yearInAdvance = lastDateStart.set({ year: lastDateStart.year + 1 });
+  // get next 20 dates
+  const allDates = rrule.between(
+    rrule.after(lastDateStart.toJSDate(), false),
+    yearInAdvance.toJSDate(),
+    false,
+    (_, idx) => idx < 20
+  );
+  const intervals: Interval[] = [];
 
   for (const date of allDates) {
     const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
     const dateStart = DateTime.fromJSDate(dateWithoutTime)
-        .set({
-          hour: lastDate.hour,
-          minute: lastDate.minute,
-          second: lastDate.second,
-        })
-        .setZone(lastDate.zone, {keepLocalTime: true});
+      .set({
+        hour: lastDateStart.hour,
+        minute: lastDateStart.minute,
+        second: lastDateStart.second,
+      })
+      .setZone(lastDateStart.zone, { keepLocalTime: true });
 
     const dateEnd = DateTime.fromJSDate(dateWithoutTime)
-        .set({
-          hour: lastDate.hour,
-          minute: lastDate.minute,
-          second: lastDate.second,
-        })
-        .setZone(lastDate.zone, {keepLocalTime: true});
+      .set({
+        hour: lastDateEnd.hour,
+        minute: lastDateEnd.minute,
+        second: lastDateEnd.second,
+      })
+      .setZone(lastDateStart.zone, { keepLocalTime: true });
 
     intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
   }
 
+  const promises: Promise<void>[] = [];
+
   for (const interval of intervals) {
-    await createCalendarEvent(rows[0].eventInformationId, interval.start.toISO(), interval.end.toISO());
+    promises.push(
+      createCalendarEvent(rows[0].eventInformationId, interval.start.toISO(), interval.end.toISO())
+    );
   }
+
+  await Promise.all(promises);
+
+  return;
 };
 
 export { createClass, getClass, updateClass, getAllClasses, addDatesToUnlimitedClass };

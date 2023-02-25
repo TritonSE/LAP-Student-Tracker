@@ -63,12 +63,10 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
         const ruleObj = rrulestr(newEvent.rrule);
         const initialDate = ruleObj.all()[0];
         logger.info("Initial Date: " + initialDate.toDateString());
-        const yearInAdvanceDate = ruleObj.all()[0];
-        yearInAdvanceDate.setFullYear(initialDate.getFullYear() + 1);
-        // Get all date instances unless never-ending is true, then only get occurrences within the first year
-        const allDates = newEvent.neverEnding
-          ? ruleObj.between(initialDate, yearInAdvanceDate)
-          : ruleObj.all();
+        // const yearInAdvanceDate = ruleObj.all()[0];
+        // yearInAdvanceDate.setFullYear(initialDate.getFullYear() + 1);
+        // Get all date instances unless never-ending is true, then only get the first 20 occurrences
+        const allDates = newEvent.neverEnding ? ruleObj.all((_, idx) => idx < 20) : ruleObj.all();
 
         logger.info("End Date: " + allDates[allDates.length - 1].toDateString());
 
@@ -108,17 +106,19 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
         }
 
+        const validateTimesPromises: Promise<void>[] = [];
         // verify scheduling for each teacher
         try {
           for (const teacher of teachers) {
             // verify that teacher doesn't have another event during this class
-            await validateTimes(teacher, intervals);
+            validateTimesPromises.push(validateTimes(teacher, intervals));
 
             // verify that teacher has availability set during this class time
             if (newEvent.checkAvailabilities) {
-              await validateAvailabilities(teacher, intervals, newEvent.name);
+              validateTimesPromises.push(validateAvailabilities(teacher, intervals, newEvent.name));
             }
           }
+          await Promise.all(validateTimesPromises);
         } catch (e) {
           onError(e);
           if (e instanceof TeacherConflictError)
@@ -137,25 +137,32 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
 
         logData("Class Event", result);
 
+        const calenderInformationInsertPromises: Promise<void>[] = [];
         // insert all date intervals into calendar_information table
         try {
           for (const interval of intervals) {
-            await createCalendarEvent(result, interval.start.toISO(), interval.end.toISO());
+            calenderInformationInsertPromises.push(
+              createCalendarEvent(result, interval.start.toISO(), interval.end.toISO())
+            );
           }
+          await Promise.all(calenderInformationInsertPromises);
         } catch (e) {
           onError(e);
           return res.status(StatusCodes.BAD_REQUEST).json("Calendar information is incorrect");
         }
 
         // Loops through teachers and inserts into commitments table
+        const commitmentPromises: Promise<void>[] = [];
         try {
           for (const teacher of teachers) {
-            await createCommitment(teacher.id, result);
+            commitmentPromises.push(createCommitment(teacher.id, result));
           }
 
           for (const studentId of newEvent.studentIds) {
-            await createCommitment(studentId, result);
+            commitmentPromises.push(createCommitment(studentId, result));
           }
+
+          await Promise.all(commitmentPromises);
         } catch (e) {
           onError(e);
           return res.status(StatusCodes.BAD_REQUEST).json("Commitment information is incorrect");

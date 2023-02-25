@@ -98,6 +98,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const endTimeValid = endTime != null;
   const startBeforeEndTime = startTimeValid && endTimeValid && startTime < endTime;
   const startBeforeEndDate = startDate <= endDate || endType != "on";
+  const countValid = count < 20;
 
   useEffect(() => {
     setValid(
@@ -108,7 +109,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
         startTimeValid &&
         endTimeValid &&
         startBeforeEndDate &&
-        startBeforeEndTime
+        startBeforeEndTime &&
+        countValid
     );
     const errorMessage = fetchTeacherError
       ? fetchTeacherError.message
@@ -130,6 +132,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       ? "Please ensure that the end date is after the start date"
       : !startBeforeEndTime
       ? "Please ensure that the start time is before the end time"
+      : !countValid
+      ? "Please only have 20 repeat occurrences of an event "
       : "";
     setErrMsg(errorMessage);
   }, [
@@ -141,6 +145,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     endTimeValid,
     startBeforeEndDate,
     startBeforeEndTime,
+    countValid,
   ]);
 
   // force max level to exceed min level

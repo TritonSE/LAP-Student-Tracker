@@ -317,4 +317,11 @@ const getClassesByUser = async (id: string): Promise<Class[]> => {
   return classesArray;
 };
 
-export { createClass, getClass, updateClass, getAllClasses, getClassesByUser, addDatesToUnlimitedClass };
+export {
+  createClass,
+  getClass,
+  updateClass,
+  getAllClasses,
+  getClassesByUser,
+  addDatesToUnlimitedClass,
+};

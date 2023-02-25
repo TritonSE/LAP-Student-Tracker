@@ -101,6 +101,12 @@ class LeagueAPI {
     const res = await this.client.get("api/class", { params: { userId: userId } });
     return res.data;
   }
+
+  async getClassesByUser(userId: string): Promise<Class[]> {
+    const res = await this.client.get(`api/users/${userId}/classes`);
+    return res.data;
+  }
+
   async deleteClassEvent(userId: string): Promise<Class> {
     const res = await this.client.delete(`api/events/class/${userId}`);
     return res.data;

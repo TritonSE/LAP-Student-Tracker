@@ -1,0 +1,109 @@
+.headerContainer {
+    padding-left: 2rem;
+    padding-top: 2rem;
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    margin-top:0%;
+    width:100%;
+}
+
+.progressContainer{
+    width: 35%;
+}
+
+.contentContainer{
+    width: 65%;
+}
+
+.title {
+    color: #1b1c1d;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 37px;
+    line-height: 44.78px;
+  }
+
+.text {
+    composes: headlineSmall from "./globals.css";
+}
+
+.divider{
+    border: 1.5px solid #F37121;
+}
+
+.progress{
+    margin-top: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 330px;
+    height:260px;
+}
+
+.progressItems{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.circleOrange {
+    position:relative;
+    background: #F37121;
+    border-radius: 50%;
+    width: 51px;
+    height: 51px;
+    align-items: center;
+    text-align: center;
+}
+
+.circleGray {
+    position:relative;
+    background: #C4C4C4;
+    border-radius: 50%;
+    width: 51px;
+    height: 51px;
+    align-items: center;
+    text-align: center;
+  }
+  
+.checkmark {
+    position: absolute;
+    transform: rotate(45deg) translate(-50%, -50%);
+    left: 35%;
+    top: 45%;
+    height: 20px;
+    width: 10px;
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+}
+
+.stageNumber{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 33px;
+    padding-top: 7px;
+    float:center;
+    color: #000000;
+}
+
+.verticalDivider{
+    border-left: 5px solid #F37121;
+    height: 100%;
+}
+
+.stagesText{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 28px;
+    line-height: 10px;
+    color: #000000;
+}

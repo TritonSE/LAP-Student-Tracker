@@ -84,7 +84,6 @@
 }
 
 .stageNumber{
-    font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
     font-size: 28px;
@@ -106,4 +105,55 @@
     font-size: 28px;
     line-height: 10px;
     color: #000000;
+}
+
+.firstStageContainer{
+    margin-top: 3rem;
+}
+
+.secondStageContainer{
+    margin-top: 3rem;
+}
+
+.nextButton {
+    margin-top: 2rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    height: 67px;
+    background: #F37121;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 34px;
+    text-align: center;
+    color: #000000;
+    float: right;
+}
+
+.questionPrompt{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    color: #6C6B6B;
+}
+
+.availabilityButton {
+    margin-top: 6rem;
+    width: 443px;
+    height: 66px;
+    background: #F37121;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 34px;
+    text-align: center;
+    color: #000000;
+    margin-left: 20%;
 }

@@ -97,6 +97,7 @@ describe("[POST] /api/events/class", () => {
       backgroundColor: "blue",
       teachers: ["teacher@gmail.com"],
       studentIds: [],
+      volunteerIds: [],
       checkAvailabilities: false,
     };
 
@@ -134,6 +135,7 @@ describe("[POST] /api/events/class", () => {
       backgroundColor: "blue",
       teachers: ["teacher@gmail.com"],
       studentIds: [],
+      volunteerIds: [],
       checkAvailabilities: false,
     };
 
@@ -171,6 +173,7 @@ describe("[POST] /api/events/class", () => {
       backgroundColor: "blue",
       teachers: ["random123@gmail.com"],
       studentIds: [],
+      volunteerIds: [],
       checkAvailabilities: false,
     };
 
@@ -228,6 +231,7 @@ describe("[POST] /api/events/class", () => {
       backgroundColor: "blue",
       teachers: ["teacher@gmail.com"],
       studentIds: [],
+      volunteerIds: [],
       checkAvailabilities: false,
     };
 
@@ -271,6 +275,7 @@ describe("[POST] /api/events/class", () => {
       backgroundColor: "blue",
       teachers: ["teacher@gmail.com"],
       studentIds: [],
+      volunteerIds: [],
       checkAvailabilities: false,
     };
 
@@ -303,6 +308,7 @@ describe("[POST] /api/events/class", () => {
       backgroundColor: "blue",
       teachers: ["gary@gmail.com"],
       studentIds: [],
+      volunteerIds: [],
       checkAvailabilities: true,
     };
 
@@ -346,6 +352,7 @@ describe("[POST] /api/events/class", () => {
       backgroundColor: "blue",
       teachers: ["ricko@gmail.com"],
       studentIds: [],
+      volunteerIds: [],
       checkAvailabilities: true,
     };
 
@@ -378,6 +385,7 @@ describe("[POST] /api/events/class", () => {
       backgroundColor: "blue",
       teachers: ["miles@gmail.com"],
       studentIds: [],
+      volunteerIds: [],
       checkAvailabilities: true,
     };
 

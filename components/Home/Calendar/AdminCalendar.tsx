@@ -3,10 +3,11 @@ import styles from "./CalendarViews.module.css";
 import Calendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import { router } from "next/client";
+import { useRouter } from "next/router";
 
 // using daygrid plugin to allow time grid plugin to load
 const AdminCalendar: React.FC = () => {
+  const router = useRouter();
   const _ = dayGridPlugin;
   return (
     <div className={styles.calendarContainer}>

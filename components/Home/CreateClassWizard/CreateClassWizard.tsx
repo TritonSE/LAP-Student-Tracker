@@ -45,6 +45,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
   // selected students from dropdown (sting of id's)
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
+  // selected volunteers from dropdown (string of id's)
+  const [selectedVolunteers, setSelectedVolunteers] = useState<string[]>([]);
   const [ignoreAvailabilities, setIgnoreAvailabilities] = useState(false);
 
   const [valid, setValid] = useState<boolean>(false);
@@ -74,9 +76,15 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     client.getAllUsers("Student")
   );
 
+  const { data: allVolunteers, error: fetchVolunteerError } = useSWR(
+    "/api/users?filter=Volunteer",
+    () => client.getAllUsers("Volunteer")
+  );
+
   // since all teachers can be undefined, check here and use an empty array if it is
   const teachers = allTeachers ? allTeachers : [];
   const students = allStudents ? allStudents : [];
+  const volunteers = allVolunteers ? allVolunteers : [];
 
   const client = useContext(APIContext);
 
@@ -116,6 +124,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       ? fetchTeacherError.message
       : fetchStudentError
       ? fetchTeacherError.message
+      : fetchVolunteerError
+      ? fetchVolunteerError.message
       : !nameValid
       ? "Please enter a name for the class"
       : !teachersValid
@@ -200,29 +210,26 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     let rrule;
     if (endType === "on") {
       rrule = new RRule({
-        dtstart: startDate.setZone("UTC", { keepLocalTime: true }).toJSDate(),
+        dtstart: startDate.set({ hour: 0, minute: 0 }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays,
         until: endDate.toJSDate(),
-        tzid: "America/Los_Angeles",
       });
     } else if (endType === "after") {
       rrule = new RRule({
-        dtstart: startDate.setZone("UTC", { keepLocalTime: true }).toJSDate(),
+        dtstart: startDate.set({ hour: 0, minute: 0 }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays.sort(),
         count: count,
-        tzid: "America/Los_Angeles",
       });
     } else {
       rrule = new RRule({
-        dtstart: startDate.setZone("UTC", { keepLocalTime: true }).toJSDate(),
+        dtstart: startDate.set({ hour: 0, minute: 0 }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays.sort(),
-        tzid: "America/Los_Angeles",
       });
     }
     const rruleStr = rrule.toString();
@@ -243,6 +250,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       backgroundColor: colorMap[color],
       teachers: selectedTeachers,
       studentIds: selectedStudents,
+      volunteerIds: selectedVolunteers,
       checkAvailabilities: !ignoreAvailabilities,
     };
     try {
@@ -459,6 +467,26 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                 sx={{ width: 750 }}
               />
             </div>
+
+            <div className={styles.row}>
+              <img className={styles.teacherIcon} src="TeacherIcon.png" />
+              <div className={styles.spacing} />
+
+              <Autocomplete
+                multiple
+                limitTags={10}
+                id="volunteer-input"
+                options={volunteers}
+                onChange={(event, value) => setSelectedVolunteers(value.map((user) => user.id))}
+                getOptionLabel={(vol) => vol.firstName + " " + vol.lastName}
+                renderInput={(params) => (
+                  <TextField {...params} label="Volunteers" placeholder="Volunteers" />
+                )}
+                isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
+                sx={{ width: 750 }}
+              />
+            </div>
+
             <div className={styles.availabilityWrapper}>
               <input
                 className={styles.checkbox}

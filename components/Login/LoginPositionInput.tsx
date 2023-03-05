@@ -1,6 +1,7 @@
 import styles from "./LoginViews.module.css";
 import React from "react";
 import { Roles } from "../../models";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 type LoginPositionInputProps = {
   onContentChange: (newPosition: Roles) => void;
@@ -21,72 +22,25 @@ const LoginPositionInput: React.FC<LoginPositionInputProps> = ({
       </div>
       <div className={styles.positionContainer}>
         <h2 className={styles.title}>Select your position:</h2>
-        <form>
-          <input
-            type="radio"
-            id="admin"
-            name="select-position"
-            value="Admin"
-            onChange={(_) => onContentChange("Admin")}
-            className={styles.radioBox}
-            checked={currPosition == "Admin"}
-          />
-          <label htmlFor="admin" className={styles.positionText}>
-            Admin
-          </label>
-          <br></br>
-          <input
-            type="radio"
-            id="teacher"
-            name="select-position"
-            value="Teacher"
-            onChange={(_) => onContentChange("Teacher")}
-            className={styles.radioBox}
-            checked={currPosition == "Teacher"}
-          />
-          <label htmlFor="teacher" className={styles.positionText}>
-            Teacher
-          </label>
-          <br></br>
-          <input
-            type="radio"
-            id="student"
-            name="select-position"
-            value="Student"
-            onChange={(_) => onContentChange("Student")}
-            className={styles.radioBox}
-            checked={currPosition == "Student"}
-          />
-          <label htmlFor="student" className={styles.positionText}>
-            Student
-          </label>
-          <br></br>
-          <input
-            type="radio"
-            id="volunteer"
-            name="select-position"
-            value="Volunteer"
-            onChange={(_) => onContentChange("Volunteer")}
-            className={styles.radioBox}
-            checked={currPosition == "Volunteer"}
-          />
-          <label htmlFor="volunteer" className={styles.positionText}>
-            Volunteer
-          </label>
-          <br></br>
-          <input
-            type="radio"
-            id="parent"
-            name="select-position"
-            value="Parent"
-            onChange={(_) => onContentChange("Parent")}
-            className={styles.radioBox}
-            checked={currPosition == "Parent"}
-          />
-          <label htmlFor="parent" className={styles.positionText}>
-            Parent
-          </label>
-        </form>
+
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Role</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={currPosition}
+            label="Role"
+            onChange={(event) => {
+              onContentChange(event.target.value as Roles);
+            }}
+          >
+            <MenuItem value={"Admin"}>Admin</MenuItem>
+            <MenuItem value={"Parent"}>Parent</MenuItem>
+            <MenuItem value={"Student"}>Student</MenuItem>
+            <MenuItem value={"Teacher"}>Teacher</MenuItem>
+            <MenuItem value={"Volunteer"}>Volunteer</MenuItem>
+          </Select>
+        </FormControl>
       </div>
     </div>
   );

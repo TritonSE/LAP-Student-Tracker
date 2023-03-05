@@ -240,7 +240,7 @@ const addDatesToUnlimitedClass = async (eventInformationId: string): Promise<voi
   const yearInAdvance = lastDateStart.set({ year: lastDateStart.year + 1 });
   // get next 20 dates
   const allDates = rrule.between(
-    rrule.after(lastDateStart.toJSDate(), false),
+    lastDateStart.toJSDate(),
     yearInAdvance.toJSDate(),
     false,
     (_, idx) => idx < 20

@@ -196,34 +196,33 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       return;
     }
 
-
     // construct rrule object
     let rrule;
     if (endType === "on") {
       rrule = new RRule({
-        dtstart:startDate.setZone("UTC", {keepLocalTime: true}).toJSDate(),
+        dtstart: startDate.setZone("UTC", { keepLocalTime: true }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays,
         until: endDate.toJSDate(),
-        tzid: 'America/Los_Angeles'
+        tzid: "America/Los_Angeles",
       });
     } else if (endType === "after") {
       rrule = new RRule({
-        dtstart: startDate.setZone("UTC", {keepLocalTime: true}).toJSDate(),
+        dtstart: startDate.setZone("UTC", { keepLocalTime: true }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays.sort(),
         count: count,
-        tzid: 'America/Los_Angeles'
+        tzid: "America/Los_Angeles",
       });
     } else {
       rrule = new RRule({
-        dtstart: startDate.setZone("UTC", {keepLocalTime: true}).toJSDate(),
+        dtstart: startDate.setZone("UTC", { keepLocalTime: true }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays.sort(),
-        tzid: 'America/Los_Angeles'
+        tzid: "America/Los_Angeles",
       });
     }
     const rruleStr = rrule.toString();

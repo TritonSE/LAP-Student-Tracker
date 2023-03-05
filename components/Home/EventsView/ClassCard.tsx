@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import style from "./ClassCard.module.css";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
@@ -8,8 +8,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { APIContext } from "../../../context/APIContext";
 import Link from "next/link";
-import {EditEventModal} from "./EditEventModal";
-import {UpdateEvent} from "../../../models";
+import { EditEventModal } from "./EditEventModal";
+import { UpdateEvent } from "../../../models";
 
 type HomePageClassCard = {
   showEditButtons: boolean;
@@ -81,31 +81,35 @@ const ClassCard: React.FC<HomePageClassCard> = ({
     handleClose();
   };
 
-  const [showEventModal, setShowEventModal] = useState(false)
+  const [showEventModal, setShowEventModal] = useState(false);
 
-  const onEventEdit = () => {
-    handleClose()
+  const onEventEdit = (): void => {
+    handleClose();
     setShowEventModal(true);
   };
 
-  const closeEventModal = () => {
-    setShowEventModal(false)
+  const closeEventModal = (): void => {
+    setShowEventModal(false);
   };
 
   const saveChanges = async (newName: string): Promise<void> => {
     const updateEvent: UpdateEvent = {
-      name: newName
+      name: newName,
     };
 
     await client.updateEvent(eventInformationId, updateEvent);
     await refreshClassList();
   };
 
-
-
   return (
     <div>
-      { showEventModal ? <EditEventModal modalOpen={true} closeModal={closeEventModal} saveChanges={saveChanges}></EditEventModal> : null}
+      {showEventModal ? (
+        <EditEventModal
+          modalOpen={true}
+          closeModal={closeEventModal}
+          saveChanges={saveChanges}
+        ></EditEventModal>
+      ) : null}
       <div className={style.card}>
         <div className={style.title}>
           <div className={style.titleSpacing} />
@@ -153,23 +157,27 @@ const ClassCard: React.FC<HomePageClassCard> = ({
               },
             }}
           >
-            {options.map((option) => (
-              option == "Delete" ? <MenuItem
-                key={option}
-                selected={option === "Delete"}
-                onClick={async () => {
-                  await onDeleteEvent();
-                }}
-              >
-                {option}
-              </MenuItem> : <MenuItem
+            {options.map((option) =>
+              option == "Delete" ? (
+                <MenuItem
+                  key={option}
+                  selected={option === "Delete"}
+                  onClick={async () => {
+                    await onDeleteEvent();
+                  }}
+                >
+                  {option}
+                </MenuItem>
+              ) : (
+                <MenuItem
                   key={option}
                   selected={option === "Edit Name"}
-                  onClick={ () => onEventEdit()}
-              >
-                {option}
-              </MenuItem>
-            ))}
+                  onClick={() => onEventEdit()}
+                >
+                  {option}
+                </MenuItem>
+              )
+            )}
           </Menu>
         </>
       ) : null}

@@ -1,13 +1,13 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { APIContext } from "../../../context/APIContext";
-import {Autocomplete, Dialog, DialogContent} from "@mui/material";
+import { Autocomplete, Dialog, DialogContent } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import useSWR from "swr";
 import { User } from "../../../models";
-import {ModalActions, ModalHeader} from "../../util/ModalComponents";
+import { ModalActions, ModalHeader } from "../../util/ModalComponents";
 
 type AddStudentModalProps = {
-  showModal: boolean
+  showModal: boolean;
   handleClose: () => void;
   setRosterChange: (changed: boolean) => void;
   classId: string;
@@ -15,7 +15,7 @@ type AddStudentModalProps = {
 };
 
 const AddStudentModal: React.FC<AddStudentModalProps> = ({
-    showModal,
+  showModal,
   handleClose,
   setRosterChange,
   classId,
@@ -29,7 +29,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
   );
 
   const students = allStudents ? allStudents : [];
-  const onConfirmClick = async ():Promise<void> => {
+  const onConfirmClick = async (): Promise<void> => {
     for (const idx in selectedStudents) {
       await addStudent(selectedStudents[idx]);
     }
@@ -45,37 +45,41 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
       await client.createCommitment(classId, studentId).then(() => setRosterChange(true));
   };
 
-
   return (
-
-      <Dialog PaperProps={{
-        style: { borderRadius: 10, width: 500}
-      }} open={showModal} onClose={handleClose}>
-        {showConfirm ? (
-            <>
-            <ModalHeader title={"Are you sure?"}/>
-            <ModalActions handleSubmit={onConfirmClick} handleCancel={onConfirmClick}/>
-            </>
-        ): <>
-          <ModalHeader title={"Add Students"}/>
-            <DialogContent>
-              <Autocomplete
-                  multiple
-                  limitTags={10}
-                  id="student-input"
-                  options={students}
-                  onChange={(event, value) => setSelectedStudents(value.map((user) => user.id))}
-                  getOptionLabel={(student) => student.firstName + " " + student.lastName}
-                  renderInput={(params) => (
-                      <TextField {...params} label="Students" placeholder="Students" />
-                  )}
-                  isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
-                  sx={{ width: 435 }}
-              />
-            </DialogContent>
-          <ModalActions handleSubmit={() => setShowConfirm(true)} handleCancel={handleClose}/>
-        </>}
-      </Dialog>
+    <Dialog
+      PaperProps={{
+        style: { borderRadius: 10, width: 500 },
+      }}
+      open={showModal}
+      onClose={handleClose}
+    >
+      {showConfirm ? (
+        <>
+          <ModalHeader title={"Are you sure?"} />
+          <ModalActions handleSubmit={onConfirmClick} handleCancel={onConfirmClick} />
+        </>
+      ) : (
+        <>
+          <ModalHeader title={"Add Students"} />
+          <DialogContent>
+            <Autocomplete
+              multiple
+              limitTags={10}
+              id="student-input"
+              options={students}
+              onChange={(event, value) => setSelectedStudents(value.map((user) => user.id))}
+              getOptionLabel={(student) => student.firstName + " " + student.lastName}
+              renderInput={(params) => (
+                <TextField {...params} label="Students" placeholder="Students" />
+              )}
+              isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
+              sx={{ width: 435 }}
+            />
+          </DialogContent>
+          <ModalActions handleSubmit={() => setShowConfirm(true)} handleCancel={handleClose} />
+        </>
+      )}
+    </Dialog>
   );
 };
 

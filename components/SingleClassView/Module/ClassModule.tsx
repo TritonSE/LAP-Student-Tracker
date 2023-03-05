@@ -5,8 +5,8 @@ import { CustomLoader } from "../../util/CustomLoader";
 import { Module } from "../../../models";
 import Button from "@mui/material/Button";
 import { AccordionModule } from "./AccordionModule";
-import {Dialog, DialogContent, Modal, TextField} from "@mui/material";
-import {ModalActions, ModalHeader} from "../../util/ModalComponents";
+import { Dialog, DialogContent, TextField } from "@mui/material";
+import { ModalActions, ModalHeader } from "../../util/ModalComponents";
 
 type ModuleProps = {
   id: string;
@@ -72,24 +72,28 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
         </Button>
       </div>
       {popup ? (
-          <Dialog PaperProps={{
-            style: {borderRadius: 10, width: 450}
-          }} open={popup} onClose={handleCancel}>
+        <Dialog
+          PaperProps={{
+            style: { borderRadius: 10, width: 450 },
+          }}
+          open={popup}
+          onClose={handleCancel}
+        >
+          <ModalHeader title={"Create Module"} />
 
-            <ModalHeader title={"Create Module"}/>
-
-            <DialogContent>
-              <TextField
-                  autoFocus
-                  margin="dense"
-                  id="ModuleName"
-                  label="Module Name"
-                  fullWidth
-                  variant="standard"
-                  onChange={(e) => setName(e.target.value)}/>
-            </DialogContent>
-            <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel}/>
-          </Dialog>
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="ModuleName"
+              label="Module Name"
+              fullWidth
+              variant="standard"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </DialogContent>
+          <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} />
+        </Dialog>
       ) : null}
       <div className={styles.spacer} />
       {modules.length === 0 ? (

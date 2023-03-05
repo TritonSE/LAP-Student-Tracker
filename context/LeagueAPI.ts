@@ -20,7 +20,8 @@ import {
   ParentStudentLink,
   SessionInformation,
   Staff,
-  Student, UpdateClass, UpdateEvent,
+  Student,
+  UpdateEvent,
   UpdateImage,
   UpdateUser,
   User,
@@ -112,7 +113,7 @@ class LeagueAPI {
     return res.data;
   }
 
-  async updateEvent(id: string, updatedEvent: UpdateEvent ): Promise<void> {
+  async updateEvent(id: string, updatedEvent: UpdateEvent): Promise<void> {
     const res = await this.client.patch(`api/events/${id}`, updatedEvent);
     return res.data;
   }
@@ -122,7 +123,6 @@ class LeagueAPI {
     const res = await this.client.post("api/events/class", classEvent);
     return res.data;
   }
-
 
   async createOneOffEvent(oneOffEvent: CreateOneOffEvent): Promise<OneOffEvent> {
     const res = await this.client.post("api/events/event", oneOffEvent);

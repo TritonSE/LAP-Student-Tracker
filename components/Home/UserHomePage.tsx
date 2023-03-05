@@ -47,7 +47,6 @@ const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
                 <img className={homeStyles.addIcon} src="/AddIcon.png" />
               </button>
             </div>
-
           </div>
         </div>
       )}

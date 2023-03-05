@@ -2,14 +2,14 @@ import { Item, Module } from "../../../models";
 import React, { useContext, useEffect, useState } from "react";
 import { APIContext } from "../../../context/APIContext";
 import { CustomLoader } from "../../util/CustomLoader";
-import {Dialog, DialogContent, TextField} from "@mui/material";
+import { Dialog, DialogContent, TextField } from "@mui/material";
 import styles from "./modules.module.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Fade from "@mui/material/Fade";
 import MenuItem from "@mui/material/MenuItem";
 import { AccordionItem } from "./AccordionItem";
-import {ModalActions, ModalHeader} from "../../util/ModalComponents";
+import { ModalActions, ModalHeader } from "../../util/ModalComponents";
 
 type AccordionModuleProps = {
   module: Module;
@@ -70,7 +70,7 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     setName(module.name);
     setUpdatePopUp(false);
     setAddModal(false);
-    setDeleteItemModal(false)
+    setDeleteItemModal(false);
   };
 
   // shows delete pop up
@@ -181,60 +181,74 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
         </div>
       </div>
       {updatePopUp ? (
+        <Dialog
+          PaperProps={{
+            style: { borderRadius: 10, width: 450 },
+          }}
+          open={updatePopUp}
+          onClose={handleCancel}
+        >
+          <ModalHeader title={"Update Module"} />
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="ModuleName"
+              label="Module Name"
+              fullWidth
+              variant="standard"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </DialogContent>
 
-          <Dialog PaperProps={{
-            style: {borderRadius: 10, width: 450}
-          }} open={updatePopUp} onClose={handleCancel}>
-            <ModalHeader title={"Update Module"}/>
-              <DialogContent>
-              <TextField
-                  autoFocus
-                  margin="dense"
-                  id="ModuleName"
-                  label="Module Name"
-                  fullWidth
-                  variant="standard"
-                  onChange={(e) => setName(e.target.value)}              />
-            </DialogContent>
-
-            <ModalActions handleSubmit={handleAddSubmit} handleCancel={handleCancel}/>
-          </Dialog>
+          <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} />
+        </Dialog>
       ) : null}
       {addModal ? (
-          <Dialog PaperProps={{
-            style: {borderRadius: 10, width: 450}
-          }} open={addModal}>
-            <ModalHeader title={"Add Item"}/>
-            <DialogContent>
-              <TextField
-                autoFocus
-                margin = "dense"
-                id="addModal"
-                label="Lesson Title"
-                fullWidth
-                variant="standard"
-                onChange={(e) => setItemName(e.target.value)}
-                ></TextField>
-              <TextField
-                  margin = "dense"
-                  id="itemLink"
-                  label="Lesson Link"
-                  fullWidth
-                  variant="standard"
-                  onChange={(e) => setItemLink(e.target.value)}              ></TextField>
-            </DialogContent>
-            <ModalActions handleSubmit={handleAddSubmit} handleCancel={handleCancel}/>
-          </Dialog>
+        <Dialog
+          PaperProps={{
+            style: { borderRadius: 10, width: 450 },
+          }}
+          open={addModal}
+        >
+          <ModalHeader title={"Add Item"} />
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="addModal"
+              label="Lesson Title"
+              fullWidth
+              variant="standard"
+              onChange={(e) => setItemName(e.target.value)}
+            ></TextField>
+            <TextField
+              margin="dense"
+              id="itemLink"
+              label="Lesson Link"
+              fullWidth
+              variant="standard"
+              onChange={(e) => setItemLink(e.target.value)}
+            ></TextField>
+          </DialogContent>
+          <ModalActions handleSubmit={handleAddSubmit} handleCancel={handleCancel} />
+        </Dialog>
       ) : null}
       {deleteItemModal ? (
-          <Dialog PaperProps={{
-            style: {borderRadius: 10, width: 450}
-          }} open={deleteItemModal} onClose={handleCancel}>
+        <Dialog
+          PaperProps={{
+            style: { borderRadius: 10, width: 450 },
+          }}
+          open={deleteItemModal}
+          onClose={handleCancel}
+        >
+          <ModalHeader
+            title={"Delete Module"}
+            description={"Are you sure you would like to delete this module?"}
+          />
 
-            <ModalHeader title={"Delete Module"} description={"Are you sure you would like to delete this module?"}/>
-
-            <ModalActions handleSubmit={handleDeleteSubmit} handleCancel={handleCancel}/>
-          </Dialog>
+          <ModalActions handleSubmit={handleDeleteSubmit} handleCancel={handleCancel} />
+        </Dialog>
       ) : null}
     </div>
   );

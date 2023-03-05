@@ -3,7 +3,7 @@ import styles from "./CalendarViews.module.css";
 import Calendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import {router} from "next/client";
+import { router } from "next/client";
 
 // using daygrid plugin to allow time grid plugin to load
 const AdminCalendar: React.FC = () => {
@@ -28,8 +28,8 @@ const AdminCalendar: React.FC = () => {
         eventColor="blue"
         eventTextColor="black"
         scrollTime="06:00:00"
-        eventClick={ (eventClickInfo) => {
-            router.push(`/class/${eventClickInfo.event.id}`);
+        eventClick={(eventClickInfo) => {
+          router.push(`/class/${eventClickInfo.event.id}`);
         }}
       />
     </div>

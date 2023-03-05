@@ -66,4 +66,4 @@ export const classStudentHandler: NextApiHandler = async (
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
   }
 };
-export default withLogging(classStudentHandler);
+export default withLogging(withAuth(classStudentHandler));

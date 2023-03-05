@@ -21,11 +21,10 @@ import { withAuth } from "../../../../middleware/withAuth";
 import { withLogging } from "../../../../middleware/withLogging";
 import { logData, logger, onError } from "../../../../logger/logger";
 
-
-const timeFunc = (before: number, after: number, message: string) => {
+const timeFunc = (before: number, after: number, message: string): void => {
   const elapsed = after - before;
   logger.error(message + " took " + elapsed + " to complete");
-}
+};
 
 /**
  * @swagger
@@ -99,7 +98,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
         const intervals: Interval[] = [];
 
         // Create start-end interval from each date
-        before = Date.now()
+        before = Date.now();
         for (const date of allDates) {
           const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -122,13 +121,13 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
         }
 
-        after = Date.now()
+        after = Date.now();
 
-        timeFunc(before, after, "Generating all intervals")
+        timeFunc(before, after, "Generating all intervals");
 
         const validateTimesPromises: Promise<void>[] = [];
         // verify scheduling for each teacher
-        before = Date.now()
+        before = Date.now();
         try {
           for (const teacher of teachers) {
             // verify that teacher doesn't have another event during this class
@@ -149,8 +148,8 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           } else return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
         }
 
-        after = Date.now()
-        timeFunc(before, after, "Checking if teachers are available")
+        after = Date.now();
+        timeFunc(before, after, "Checking if teachers are available");
 
         // create the class event in event_information table
         const result = await createClassEvent(
@@ -162,7 +161,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
         logData("Class Event", result);
 
         const calenderInformationInsertPromises: Promise<void>[] = [];
-        before = Date.now()
+        before = Date.now();
         // insert all date intervals into calendar_information table
         try {
           for (const interval of intervals) {
@@ -177,7 +176,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
         }
 
         after = Date.now();
-        timeFunc(before, after, "Inserting calendar information")
+        timeFunc(before, after, "Inserting calendar information");
 
         // Loops through teachers and inserts into commitments table
         const commitmentPromises: Promise<void>[] = [];

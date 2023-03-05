@@ -3,9 +3,9 @@ import React, { useState, useContext } from "react";
 import { APIContext } from "../../../context/APIContext";
 import { AuthContext } from "../../../context/AuthContext";
 import { Announcement } from "../../../models";
-import {Dialog} from "@mui/material";
-import {ModalActions, ModalHeader} from "../../util/ModalComponents";
-import {CustomError} from "../../util/CustomError";
+import { Dialog } from "@mui/material";
+import { ModalActions, ModalHeader } from "../../util/ModalComponents";
+import { CustomError } from "../../util/CustomError";
 
 type CommunicateItemProps = {
   id: string;
@@ -58,10 +58,13 @@ export const CommunicateItem: React.FC<CommunicateItemProps> = ({
       )}
 
       {deleteItem ? (
-          <Dialog open={deleteItem} onClose={handleCancel}>
-            <ModalHeader title={"Delete Announcement"} description={` Do you want to delete the following lesson: ${announcement.title}?`}/>
-            <ModalActions handleCancel={handleCancel} handleSubmit={handleDeleteConfirm}/>
-          </Dialog>
+        <Dialog open={deleteItem} onClose={handleCancel}>
+          <ModalHeader
+            title={"Delete Announcement"}
+            description={` Do you want to delete the following lesson: ${announcement.title}?`}
+          />
+          <ModalActions handleCancel={handleCancel} handleSubmit={handleDeleteConfirm} />
+        </Dialog>
       ) : null}
     </>
   );

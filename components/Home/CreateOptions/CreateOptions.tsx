@@ -103,14 +103,14 @@ const CreateOptions: React.FC<CreateOptionProps> = ({
   };
 
   const classClick = (): void => {
-    close()
-    handleClickClass(true)
-  }
+    close();
+    handleClickClass(true);
+  };
 
   const oneTimeEventClick = (): void => {
-    close()
-    handleClickOneOffEvent(true)
-  }
+    close();
+    handleClickOneOffEvent(true);
+  };
 
   return (
     <div>

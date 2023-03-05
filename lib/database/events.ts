@@ -1,5 +1,5 @@
 import { client } from "../db";
-import {UpdateEvent, User} from "../../models";
+import { UpdateEvent, User } from "../../models";
 import { Interval } from "luxon";
 
 class NonExistingTeacher extends Error {
@@ -144,14 +144,14 @@ const deleteEvent = async (id: string): Promise<string | null> => {
   return res.rows[0].id;
 };
 
-const updateEvent = async(id: string, newEvent: UpdateEvent): Promise<void> => {
+const updateEvent = async (id: string, newEvent: UpdateEvent): Promise<void> => {
   const query = {
     text: "UPDATE event_information SET name = COALESCE($2, name) WHERE id = $1",
-    values: [id, newEvent.name]
-  }
+    values: [id, newEvent.name],
+  };
 
   await client.query(query);
-  return
+  return;
 };
 
 export {

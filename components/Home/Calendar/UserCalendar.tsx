@@ -3,6 +3,7 @@ import styles from "./CalendarViews.module.css";
 import Calendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import { useRouter } from "next/router";
 
 type UserCalendarProp = {
   userId: string | undefined;
@@ -11,7 +12,7 @@ type UserCalendarProp = {
 // using daygrid plugin to allow time grid plugin to load
 const UserCalendar: React.FC<UserCalendarProp> = ({ userId }) => {
   const _ = dayGridPlugin;
-
+  const router = useRouter();
   return (
     <div className={styles.calendarContainer}>
       <Calendar
@@ -30,6 +31,9 @@ const UserCalendar: React.FC<UserCalendarProp> = ({ userId }) => {
         ]}
         eventColor="blue"
         eventTextColor="black"
+        eventClick={(eventClickInfo) => {
+          router.push(`/class/${eventClickInfo.event.id}`);
+        }}
       />
     </div>
   );

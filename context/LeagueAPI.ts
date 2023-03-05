@@ -21,6 +21,7 @@ import {
   SessionInformation,
   Staff,
   Student,
+  UpdateEvent,
   UpdateImage,
   UpdateUser,
   User,
@@ -107,10 +108,16 @@ class LeagueAPI {
     return res.data;
   }
 
-  async deleteClassEvent(userId: string): Promise<Class> {
-    const res = await this.client.delete(`api/events/class/${userId}`);
+  async deleteEvent(id: string): Promise<Class> {
+    const res = await this.client.delete(`api/events/${id}`);
     return res.data;
   }
+
+  async updateEvent(id: string, updatedEvent: UpdateEvent): Promise<void> {
+    const res = await this.client.patch(`api/events/${id}`, updatedEvent);
+    return res.data;
+  }
+
   // create an even of type class
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
     const res = await this.client.post("api/events/class", classEvent);
@@ -287,6 +294,11 @@ class LeagueAPI {
   async getMissingAttednance(classId: string): Promise<MissingAttendance[]> {
     const res = await this.client.get(`api/class/${classId}/missing_attendance`);
     return res.data;
+  }
+
+  async refreshClassSessions(classId: string): Promise<void> {
+    await this.client.patch(`/api/class/${classId}/refresh`);
+    return;
   }
 }
 

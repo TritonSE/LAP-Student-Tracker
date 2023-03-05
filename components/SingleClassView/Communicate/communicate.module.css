@@ -193,11 +193,6 @@
   font-family: "Inter";
 }
 
-.popupError {
-  color: red;
-  margin-top: 20px;
-}
-
 .accordionHeader {
   border-radius: 5px;
 }

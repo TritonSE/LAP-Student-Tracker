@@ -1,14 +1,12 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { deleteEvent } from "../../../../../lib/database/events";
+import { deleteEvent, updateEvent } from "../../../../lib/database/events";
 import { StatusCodes } from "http-status-codes";
-import { withLogging } from "../../../../../middleware/withLogging";
-import { logData, onError } from "../../../../../logger/logger";
+import { withLogging } from "../../../../middleware/withLogging";
+import { logData, onError } from "../../../../logger/logger";
+import { decode } from "io-ts-promise";
+import { UpdateEvent } from "../../../../models";
 
-// Handles all requests to /api/events/class/{id}
-export const classEventHandler: NextApiHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-) => {
+const eventHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!req.query) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server CustomError");
   }
@@ -19,6 +17,17 @@ export const classEventHandler: NextApiHandler = async (
   }
 
   switch (req.method) {
+    case "PATCH": {
+      try {
+        const newEvent = await decode(UpdateEvent, req.body);
+        logData("Updated Event ", newEvent);
+        await updateEvent(eventId, newEvent);
+        return res.status(StatusCodes.OK).json("Ok");
+      } catch (e) {
+        onError(e);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
+      }
+    }
     case "DELETE": {
       try {
         const result = await deleteEvent(eventId);
@@ -36,4 +45,4 @@ export const classEventHandler: NextApiHandler = async (
   }
 };
 
-export default withLogging(classEventHandler);
+export default withLogging(eventHandler);

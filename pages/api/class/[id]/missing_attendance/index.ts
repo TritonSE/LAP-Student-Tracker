@@ -10,7 +10,7 @@ const missingAttendanceHandler: NextApiHandler = async (
   res: NextApiResponse
 ) => {
   const classId = req.query.id as string;
-  const currentDate = DateTime.local().plus({ year: 1 });
+  const currentDate = DateTime.local();
   switch (req.method) {
     case "GET": {
       try {

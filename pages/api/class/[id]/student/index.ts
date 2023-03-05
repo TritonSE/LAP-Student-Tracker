@@ -57,7 +57,7 @@ export const classStudentHandler: NextApiHandler = async (
       }
       try {
         const result = await createCommitment(studentId, classId);
-        return res.status(StatusCodes.CREATED).json(result);
+        return res.status(StatusCodes.OK).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
@@ -66,4 +66,4 @@ export const classStudentHandler: NextApiHandler = async (
       return res.status(StatusCodes.METHOD_NOT_ALLOWED).json("Method not allowed");
   }
 };
-export default withLogging(withAuth(classStudentHandler));
+export default withLogging(classStudentHandler);

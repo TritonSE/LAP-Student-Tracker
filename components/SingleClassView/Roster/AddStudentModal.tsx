@@ -27,10 +27,11 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
   const { data: allStudents } = useSWR("/api/users?filter=Student", () =>
     client.getAllUsers("Student")
   );
+
   const students = allStudents ? allStudents : [];
   const onConfirmClick = async ():Promise<void> => {
-    for (const id in selectedStudents) {
-      await addStudent(id);
+    for (const idx in selectedStudents) {
+      await addStudent(selectedStudents[idx]);
     }
     handleClose();
   };

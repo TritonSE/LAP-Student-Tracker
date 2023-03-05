@@ -137,6 +137,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
       </div>
       {showConnectStudentModal && (
         <AddStudentModal
+            showModal={showConnectStudentModal}
           linkParentAndStudent={createParentStudentLink}
           errorMsg={createParentStudentLinkError}
           setShowModalState={setShowConnectStudentState}

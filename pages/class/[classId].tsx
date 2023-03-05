@@ -23,9 +23,15 @@ const Class: NextApplicationPage = () => {
 
   useEffect(() => {
     (async () => {
-      const currClass = await client.getClass(classId);
+      let currClass;
+      try {
+        currClass = await client.getClass(classId);
+      } catch (e) {
+        // users might be able to get here when the class does not exist, so just redirect back to home
+        router.push("/home");
+      }
       await client.refreshClassSessions(classId);
-      setCurrClass(currClass);
+      setCurrClass(currClass as ClassType);
     })();
   }, []);
 

@@ -3,6 +3,7 @@ import styles from "./CalendarViews.module.css";
 import Calendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import {router} from "next/client";
 
 type UserCalendarProp = {
   userId: string | undefined;
@@ -30,6 +31,9 @@ const UserCalendar: React.FC<UserCalendarProp> = ({ userId }) => {
         ]}
         eventColor="blue"
         eventTextColor="black"
+        eventClick={ (eventClickInfo) => {
+            router.push(`/class/${eventClickInfo.event.id}`);
+        }}
       />
     </div>
   );

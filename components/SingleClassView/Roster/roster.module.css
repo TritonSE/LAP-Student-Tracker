@@ -157,56 +157,6 @@
   align-items: flex-start;
 }
 
-.modalTitle {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 22px;
-  line-height: 28px;
-  color: #1b1c1d;
-}
-
-.searchContainer {
-  height: 40px;
-  width: 100%;
-  background: #e1e2e4;
-  border-radius: 8px;
-}
-
-.modalButtonContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 39px;
-}
-
-.cancelButton {
-  width: 160px;
-  height: 48px;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 48px;
-  text-align: center;
-  border: 1px solid #000000;
-  border-radius: 10px;
-}
-
-.addButton {
-  width: 160px;
-  height: 48px;
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 48px;
-  text-align: center;
-  background: #f26522;
-  border-radius: 10px;
-}
-
 .deleteButton {
   background: #ffffff;
 }

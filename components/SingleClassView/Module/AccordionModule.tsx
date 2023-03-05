@@ -2,15 +2,13 @@ import { Item, Module } from "../../../models";
 import React, { useContext, useEffect, useState } from "react";
 import { APIContext } from "../../../context/APIContext";
 import { CustomLoader } from "../../util/CustomLoader";
-import {Dialog, DialogActions, DialogContent, Modal, TextField} from "@mui/material";
+import {Dialog, DialogContent, TextField} from "@mui/material";
 import styles from "./modules.module.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Fade from "@mui/material/Fade";
 import MenuItem from "@mui/material/MenuItem";
 import { AccordionItem } from "./AccordionItem";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContentText from "@mui/material/DialogContentText";
 import {ModalActions, ModalHeader} from "../../util/ModalComponents";
 
 type AccordionModuleProps = {
@@ -187,7 +185,7 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
           <Dialog PaperProps={{
             style: {borderRadius: 10, width: 450}
           }} open={updatePopUp} onClose={handleCancel}>
-            <ModalHeader title={"Update Module"} description={"Please enter the new name of this module"}/>
+            <ModalHeader title={"Update Module"}/>
               <DialogContent>
               <TextField
                   autoFocus

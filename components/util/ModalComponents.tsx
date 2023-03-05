@@ -6,12 +6,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
 
 type ModalActionsProps = {
-    handleSubmit: () => Promise<void>
+    handleSubmit?: () => void
     handleCancel: () => void;
 };
 
 
-const ModalActions: React.FC<ModalActionsProps> = ({handleSubmit, handleCancel}) => {
+const ModalActions: React.FC<ModalActionsProps> = ({ handleSubmit, handleCancel}) => {
     return (<DialogActions>
         <div className={styles.buttonContainer}>
             <Button variant="outlined" onClick={handleCancel}>

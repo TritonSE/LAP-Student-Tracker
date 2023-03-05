@@ -75,7 +75,7 @@ const ClassCard: React.FC<HomePageClassCard> = ({
     setAnchorEl(null);
   };
 
-  const onClassDelete = async (): Promise<void> => {
+  const onDeleteEvent = async (): Promise<void> => {
     await client.deleteEvent(eventInformationId);
     await refreshClassList();
     handleClose();
@@ -86,7 +86,6 @@ const ClassCard: React.FC<HomePageClassCard> = ({
   const onEventEdit = () => {
     handleClose()
     setShowEventModal(true);
-
   };
 
   const closeEventModal = () => {
@@ -159,7 +158,7 @@ const ClassCard: React.FC<HomePageClassCard> = ({
                 key={option}
                 selected={option === "Delete"}
                 onClick={async () => {
-                  await onClassDelete();
+                  await onDeleteEvent();
                 }}
               >
                 {option}

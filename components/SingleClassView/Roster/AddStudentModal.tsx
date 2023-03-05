@@ -1,12 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { APIContext } from "../../../context/APIContext";
 import styles from "./roster.module.css";
-import { Autocomplete } from "@mui/material";
+import {Autocomplete, Modal} from "@mui/material";
 import TextField from "@mui/material/TextField";
 import useSWR from "swr";
-import { User } from "../../../models/User";
+import { User } from "../../../models";
 
 type AddStudentModalProps = {
+  showModal: boolean
   handleClose: () => void;
   setRosterChange: (changed: boolean) => void;
   classId: string;
@@ -14,6 +15,7 @@ type AddStudentModalProps = {
 };
 
 const AddStudentModal: React.FC<AddStudentModalProps> = ({
+    showModal,
   handleClose,
   setRosterChange,
   classId,
@@ -51,6 +53,12 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
   }, [confirmAdd]);
 
   return (
+      <Modal
+          open={showModal}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+      >
     <div className={styles.modalWrapper}>
       <div className={styles.modalContent}>
         <div className={styles.column}>
@@ -100,6 +108,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
         </div>
       </div>
     </div>
+      </Modal>
   );
 };
 

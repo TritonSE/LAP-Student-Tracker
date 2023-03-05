@@ -1,0 +1,19 @@
+.title {
+    composes: headlineSmall from "../../../styles/globals.css";
+    font-weight: bold;
+}
+
+.description {
+    composes: titleMedium from "../../../styles/globals.css";
+}
+
+.buttonContainer {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.dialogStyles {
+ border-width: 100px;
+}

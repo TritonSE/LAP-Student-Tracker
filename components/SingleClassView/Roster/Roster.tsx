@@ -59,6 +59,7 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
     <>
       {showAddStudentPopup && (
         <AddStudentModal
+            showModal={showAddStudentPopup}
           handleClose={handleClose}
           setRosterChange={setRosterChange}
           classId={id}

@@ -709,3 +709,9 @@ components:
       required:
         - sessionId
         - startStr
+    UpdateEvent:
+      title: UpdateEvent
+      type: object
+      properties:
+        name:
+          type: string

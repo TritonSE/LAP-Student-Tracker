@@ -1,5 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { deleteClassEvent } from "../../../../../lib/database/events";
+import { deleteEvent } from "../../../../../lib/database/events";
 import { StatusCodes } from "http-status-codes";
 import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
@@ -21,7 +21,7 @@ export const classEventHandler: NextApiHandler = async (
   switch (req.method) {
     case "DELETE": {
       try {
-        const result = await deleteClassEvent(eventId);
+        const result = await deleteEvent(eventId);
         logData("Deleted class", result);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {

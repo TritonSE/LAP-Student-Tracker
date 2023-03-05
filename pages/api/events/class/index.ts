@@ -21,6 +21,12 @@ import { withAuth } from "../../../../middleware/withAuth";
 import { withLogging } from "../../../../middleware/withLogging";
 import { logData, logger, onError } from "../../../../logger/logger";
 
+
+const timeFunc = (before: number, after: number, message: string) => {
+  const elapsed = after - before;
+  logger.error(message + " took " + elapsed + " to complete");
+}
+
 /**
  * @swagger
  * /events/class:
@@ -57,16 +63,25 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
       }
       try {
         // verify the teachers exist in the database
+        let before = Date.now();
         const teachers = await teachersExist(newEvent.teachers);
+        let after = Date.now();
+        timeFunc(before, after, "Checking if a teacher exists");
         logData("Teachers For Creating Class", teachers);
 
         const ruleObj = rrulestr(newEvent.rrule);
-        const initialDate = ruleObj.all()[0];
-        logger.info("Initial Date: " + initialDate.toDateString());
+
         // const yearInAdvanceDate = ruleObj.all()[0];
         // yearInAdvanceDate.setFullYear(initialDate.getFullYear() + 1);
         // Get all date instances unless never-ending is true, then only get the first 20 occurrences
+        before = Date.now();
         const allDates = newEvent.neverEnding ? ruleObj.all((_, idx) => idx < 20) : ruleObj.all();
+        after = Date.now();
+
+        const initialDate = allDates[0];
+        logger.info("Initial Date: " + initialDate.toDateString());
+
+        timeFunc(before, after, "Generating all dates");
 
         logger.info("End Date: " + allDates[allDates.length - 1].toDateString());
 
@@ -84,6 +99,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
         const intervals: Interval[] = [];
 
         // Create start-end interval from each date
+        before = Date.now()
         for (const date of allDates) {
           const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -106,8 +122,13 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
         }
 
+        after = Date.now()
+
+        timeFunc(before, after, "Generating all intervals")
+
         const validateTimesPromises: Promise<void>[] = [];
         // verify scheduling for each teacher
+        before = Date.now()
         try {
           for (const teacher of teachers) {
             // verify that teacher doesn't have another event during this class
@@ -128,6 +149,9 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           } else return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal server error");
         }
 
+        after = Date.now()
+        timeFunc(before, after, "Checking if teachers are available")
+
         // create the class event in event_information table
         const result = await createClassEvent(
           newEvent.name,
@@ -138,6 +162,7 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
         logData("Class Event", result);
 
         const calenderInformationInsertPromises: Promise<void>[] = [];
+        before = Date.now()
         // insert all date intervals into calendar_information table
         try {
           for (const interval of intervals) {
@@ -150,6 +175,9 @@ const classEventHandler: NextApiHandler = async (req: NextApiRequest, res: NextA
           onError(e);
           return res.status(StatusCodes.BAD_REQUEST).json("Calendar information is incorrect");
         }
+
+        after = Date.now();
+        timeFunc(before, after, "Inserting calendar information")
 
         // Loops through teachers and inserts into commitments table
         const commitmentPromises: Promise<void>[] = [];

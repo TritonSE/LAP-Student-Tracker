@@ -2,12 +2,16 @@ import { Item, Module } from "../../../models";
 import React, { useContext, useEffect, useState } from "react";
 import { APIContext } from "../../../context/APIContext";
 import { CustomLoader } from "../../util/CustomLoader";
+import {Dialog, DialogActions, DialogContent, Modal, TextField} from "@mui/material";
 import styles from "./modules.module.css";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Fade from "@mui/material/Fade";
 import MenuItem from "@mui/material/MenuItem";
 import { AccordionItem } from "./AccordionItem";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContentText from "@mui/material/DialogContentText";
+import {ModalActions, ModalHeader} from "../../util/ModalComponents";
 
 type AccordionModuleProps = {
   module: Module;
@@ -64,10 +68,11 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     handleClose();
   };
 
-  const handleCancel = async (): Promise<void> => {
+  const handleCancel = (): void => {
     setName(module.name);
     setUpdatePopUp(false);
     setAddModal(false);
+    setDeleteItemModal(false)
   };
 
   // shows delete pop up
@@ -95,13 +100,13 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     setUpdatePopUp(false);
   };
 
-  const handleDeleteSubmit: VoidFunction = async () => {
+  const handleDeleteSubmit = async (): Promise<void> => {
     await api.deleteModule(module.moduleId);
     deleteModuleWithinState(module.moduleId);
     setDeleteItemModal(false);
   };
 
-  const handleAddSubmit: VoidFunction = async () => {
+  const handleAddSubmit = async (): Promise<void> => {
     const lesson = {
       title: itemName,
       link: itemLink,
@@ -178,71 +183,60 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
         </div>
       </div>
       {updatePopUp ? (
-        <div className={styles.popupBackground}>
-          <div className={styles.popupContainer}>
-            <div className={styles.popupTitle}>Update Module</div>
-            <input
-              className={`${styles.label} ${styles.classInput}`}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="text"
-              placeholder="Module Name"
-            />
-            <div className={styles.buttonContainer}>
-              <button onClick={handleCancel} className={styles.cancel}>
-                Cancel
-              </button>
-              <button onClick={handleSubmit} className={styles.submit}>
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
+
+          <Dialog PaperProps={{
+            style: {borderRadius: 10, width: 450}
+          }} open={updatePopUp} onClose={handleCancel}>
+            <ModalHeader title={"Update Module"} description={"Please enter the new name of this module"}/>
+              <DialogContent>
+              <TextField
+                  autoFocus
+                  margin="dense"
+                  id="ModuleName"
+                  label="Module Name"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => setName(e.target.value)}              />
+            </DialogContent>
+
+            <ModalActions handleSubmit={handleAddSubmit} handleCancel={handleCancel}/>
+          </Dialog>
       ) : null}
       {addModal ? (
-        <div className={styles.popupBackground}>
-          <div className={styles.popupContainer}>
-            <div className={styles.popupTitle}>Add Lesson</div>
-            <input
-              className={`${styles.label} ${styles.classInput}`}
-              value={itemName}
-              onChange={(e) => setItemName(e.target.value)}
-              type="text"
-              placeholder="Lesson Title"
-            />
-            <br />
-            <input
-              className={`${styles.label} ${styles.classInput}`}
-              value={itemLink}
-              onChange={(e) => setItemLink(e.target.value)}
-              type="text"
-              placeholder="Lesson Link"
-            />
-            <div className={styles.buttonContainer}>
-              <button onClick={handleCancel} className={styles.cancel}>
-                Cancel
-              </button>
-              <button onClick={handleAddSubmit} className={styles.submit}>
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
+          <Dialog PaperProps={{
+            style: {borderRadius: 10, width: 450}
+          }} open={addModal}>
+            <ModalHeader title={"Add Item"}/>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin = "dense"
+                id="addModal"
+                label="Lesson Title"
+                fullWidth
+                variant="standard"
+                onChange={(e) => setItemName(e.target.value)}
+                ></TextField>
+              <TextField
+                  margin = "dense"
+                  id="itemLink"
+                  label="Lesson Link"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => setItemLink(e.target.value)}              ></TextField>
+            </DialogContent>
+            <ModalActions handleSubmit={handleAddSubmit} handleCancel={handleCancel}/>
+          </Dialog>
       ) : null}
       {deleteItemModal ? (
-        <div className={styles.popupBackground}>
-          <div className={styles.popupContainer}>
-            <div className={styles.popupTitle}>Delete Module?</div>
-            <div className={styles.buttonContainer}>
-              <button onClick={handleCancel} className={styles.cancel}>
-                Cancel
-              </button>
-              <button onClick={handleDeleteSubmit} className={styles.submit}>
-                Yes
-              </button>
-            </div>
-          </div>
-        </div>
+          <Dialog PaperProps={{
+            style: {borderRadius: 10, width: 450}
+          }} open={deleteItemModal} onClose={handleCancel}>
+
+            <ModalHeader title={"Delete Module"} description={"Are you sure you would like to delete this module?"}/>
+
+            <ModalActions handleSubmit={handleDeleteSubmit} handleCancel={handleCancel}/>
+          </Dialog>
       ) : null}
     </div>
   );

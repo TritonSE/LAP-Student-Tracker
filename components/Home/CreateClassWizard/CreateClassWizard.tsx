@@ -34,7 +34,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const [multipleLevels, setMultipleLevels] = useState<boolean>(false);
   const [minLevel, setMinLevel] = useState<number>(1);
   const [maxLevel, setMaxLevel] = useState<number>(1);
-  const [startDate, setStartDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
+  const [startDate, setStartDate] = useState<DateTime>(DateTime.now());
   const [startTime, setStartTime] = useState<DateTime | null>(null);
   const [endTime, setEndTime] = useState<DateTime | null>(null);
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
@@ -196,30 +196,34 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       return;
     }
 
+
     // construct rrule object
     let rrule;
     if (endType === "on") {
       rrule = new RRule({
-        dtstart: startDate.toJSDate(),
+        dtstart:startDate.setZone("UTC", {keepLocalTime: true}).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays,
         until: endDate.toJSDate(),
+        tzid: 'America/Los_Angeles'
       });
     } else if (endType === "after") {
       rrule = new RRule({
-        dtstart: startDate.toJSDate(),
+        dtstart: startDate.setZone("UTC", {keepLocalTime: true}).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
-        byweekday: weekDays,
+        byweekday: weekDays.sort(),
         count: count,
+        tzid: 'America/Los_Angeles'
       });
     } else {
       rrule = new RRule({
-        dtstart: startDate.toJSDate(),
+        dtstart: startDate.setZone("UTC", {keepLocalTime: true}).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
-        byweekday: weekDays,
+        byweekday: weekDays.sort(),
+        tzid: 'America/Los_Angeles'
       });
     }
     const rruleStr = rrule.toString();

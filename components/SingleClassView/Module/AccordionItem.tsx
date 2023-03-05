@@ -2,6 +2,8 @@ import { Item } from "../../../models";
 import React, { useContext, useState } from "react";
 import { APIContext } from "../../../context/APIContext";
 import styles from "./modules.module.css";
+import {ModalActions, ModalHeader} from "../../util/ModalComponents";
+import {Dialog, DialogContent, TextField} from "@mui/material";
 
 type AccordionItemProps = {
   lesson: Item;
@@ -17,11 +19,14 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   const [link, setLink] = useState(lesson.link.toString());
   const [deleteItem, setDeleteItem] = useState(false);
 
+  const [newTitle, setNewTitle] = useState(lesson.title);
+  const [newLink, setNewLink] = useState(lesson.link);
+
   // submit creating a new item
   const handleSubmit = async (): Promise<void> => {
     const item = {
-      title: title,
-      link: link,
+      title: newTitle,
+      link: newLink,
       moduleId: lesson.moduleId,
       itemId: lesson.itemId,
     };
@@ -56,51 +61,42 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
       </div>
 
       {edit ? (
-        <div className={styles.popupBackground}>
-          <div className={styles.popupContainer}>
-            <div className={styles.popupTitle}>Edit Lesson</div>
-            <input
-              className={`${styles.label} ${styles.classInput}`}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              type="text"
-              placeholder="Lesson Title"
-            />
-            <br />
-            <input
-              className={`${styles.label} ${styles.classInput}`}
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
-              type="text"
-              placeholder="Lesson Link"
-            />
-            <div className={styles.buttonContainer}>
-              <button onClick={handleCancel} className={styles.cancel}>
-                Cancel
-              </button>
-              <button onClick={handleSubmit} className={styles.submit}>
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
+
+          <Dialog PaperProps={{
+            style: {borderRadius: 10, width: 450}
+          }} open={edit} onClose={handleCancel}>
+            <ModalHeader title={"Update Lesson"}/>
+
+            <DialogContent>
+              <TextField
+                  autoFocus
+                  margin = "dense"
+                  id="addModal"
+                  label="Lesson Title"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => setNewTitle(e.target.value)}
+              />
+              <TextField
+                  margin = "dense"
+                  id="itemLink"
+                  label="Lesson Link"
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => setNewLink(e.target.value)}/>
+            </DialogContent>
+
+            <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel}/>
+          </Dialog>
       ) : null}
       {deleteItem ? (
-        <div className={styles.popupBackground}>
-          <div className={styles.popupContainer}>
-            <div className={styles.popupTitle}>
-              Do you want to delete the following lesson: {lesson.title}?
-            </div>
-            <div className={styles.buttonContainer}>
-              <button onClick={handleCancel} className={styles.cancel}>
-                Cancel
-              </button>
-              <button onClick={handleDeleteConfirm} className={styles.submit}>
-                Yes
-              </button>
-            </div>
-          </div>
-        </div>
+          <Dialog PaperProps={{
+            style: {borderRadius: 10, width: 450}
+          }} open={deleteItem} onClose={handleCancel}>
+
+            <ModalHeader title={"Delete Module"} description={`Do you want to delete the following lesson: ${lesson.title}?`}/>
+            <ModalActions handleSubmit={handleDeleteConfirm} handleCancel={handleCancel}/>
+          </Dialog>
       ) : null}
     </div>
   );

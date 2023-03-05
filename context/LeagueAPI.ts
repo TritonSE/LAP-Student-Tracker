@@ -20,7 +20,7 @@ import {
   ParentStudentLink,
   SessionInformation,
   Staff,
-  Student,
+  Student, UpdateClass, UpdateEvent,
   UpdateImage,
   UpdateUser,
   User,
@@ -107,15 +107,22 @@ class LeagueAPI {
     return res.data;
   }
 
-  async deleteClassEvent(userId: string): Promise<Class> {
-    const res = await this.client.delete(`api/events/class/${userId}`);
+  async deleteEvent(id: string): Promise<Class> {
+    const res = await this.client.delete(`api/events/${id}`);
     return res.data;
   }
+
+  async updateEvent(id: string, updatedEvent: UpdateEvent ): Promise<void> {
+    const res = await this.client.patch(`api/events/${id}`, updatedEvent);
+    return res.data;
+  }
+
   // create an even of type class
   async createClassEvent(classEvent: CreateClassEvent): Promise<ClassEvent> {
     const res = await this.client.post("api/events/class", classEvent);
     return res.data;
   }
+
 
   async createOneOffEvent(oneOffEvent: CreateOneOffEvent): Promise<OneOffEvent> {
     const res = await this.client.post("api/events/event", oneOffEvent);

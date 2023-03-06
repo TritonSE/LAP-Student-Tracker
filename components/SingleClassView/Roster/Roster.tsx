@@ -16,7 +16,7 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
   const { user } = useContext(AuthContext);
 
   if (user == null) return <CustomError />;
-  
+
   const [showTeacher, setShowTeacher] = useState(true);
   const [showStudent, setShowStudent] = useState(true);
   const [showAddStudentPopup, setShowAddStudentPopup] = useState(false);
@@ -61,7 +61,6 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
     getUsers();
   }, [rosterChange]);
 
-
   return (
     <>
       {showAddStudentPopup && (
@@ -77,23 +76,23 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
           <div className={styles.title}>Roster</div>
           {(user.role == "Teacher" || user.role == "Admin") && (
             <div className={styles.editButtonContainer}>
-            {showDeleteStudents ? (
-              <button className={styles.editButton} onClick={() => setShowDeleteStudents(false)}>
-                Done
-              </button>
-            ) : (
-              <>
-                <button className={styles.editButton}>
-                  Edit
-                  <img src={"/EditIcon.png"} />
+              {showDeleteStudents ? (
+                <button className={styles.editButton} onClick={() => setShowDeleteStudents(false)}>
+                  Done
                 </button>
-                <div className={styles.editDropdown}>
-                  <button onClick={() => setShowAddStudentPopup(true)}> Add </button>
-                  <button onClick={() => setShowDeleteStudents(true)}> Delete </button>
-                </div>
-              </>
-            )}
-          </div>
+              ) : (
+                <>
+                  <button className={styles.editButton}>
+                    Edit
+                    <img src={"/EditIcon.png"} />
+                  </button>
+                  <div className={styles.editDropdown}>
+                    <button onClick={() => setShowAddStudentPopup(true)}> Add </button>
+                    <button onClick={() => setShowDeleteStudents(true)}> Delete </button>
+                  </div>
+                </>
+              )}
+            </div>
           )}
         </div>
         <div className={styles.spacer} />

@@ -3,7 +3,6 @@ import { StatusCodes } from "http-status-codes";
 import { getSingleUserAttendanceFromSessionID } from "../../../../../../lib/database/attendance";
 import { withLogging } from "../../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../../logger/logger";
-import { classIDHandler } from "../../../../class/[id]";
 
 /**
  * @swagger

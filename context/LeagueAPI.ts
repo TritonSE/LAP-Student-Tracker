@@ -245,7 +245,11 @@ class LeagueAPI {
     return res.data;
   }
 
-  async getSingleUserAttendanceFromSessionID(userId: string, session: string, classId: string): Promise<SingleUserAttendance[]> {
+  async getSingleUserAttendanceFromSessionID(
+    userId: string,
+    session: string,
+    classId: string
+  ): Promise<SingleUserAttendance[]> {
     const res = await this.client.get(`api/users/${userId}/attendance/${classId}/${session}`);
     return res.data;
   }

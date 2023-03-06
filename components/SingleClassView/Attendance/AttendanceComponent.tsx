@@ -11,7 +11,6 @@ import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { Attendance, MissingAttendance, SingleUserAttendance } from "../../../models";
 import { MissingAttendanceComponent } from "./MissingAttendance";
 import { AuthContext } from "../../../context/AuthContext";
-import moment from "moment";
 import { StudentAttendanceBox } from "./StudentAttendanceBox";
 
 type AttendanceComponentProps = {
@@ -20,7 +19,6 @@ type AttendanceComponentProps = {
 export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classId }) => {
   const api = useContext(APIContext);
   const { user } = useContext(AuthContext);
-
 
   const [date, setDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,13 +43,16 @@ export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classI
       }
       setSessionID(sessions[0].sessionId);
       const sessionId = sessions[0].sessionId;
-      if (user){
-        if (user.role == "Teacher" || user.role == "Admin"){
+      if (user) {
+        if (user.role == "Teacher" || user.role == "Admin") {
           const attendances = await api.getAttendanceFromSessionID(sessionId, classId);
           setAttendance(attendances);
-        }
-        else{
-          const studentAttendance = await api.getSingleUserAttendanceFromSessionID(user.id, sessionId, classId);
+        } else {
+          const studentAttendance = await api.getSingleUserAttendanceFromSessionID(
+            user.id,
+            sessionId,
+            classId
+          );
           setStudentAttendance(studentAttendance);
         }
       }
@@ -93,17 +94,17 @@ export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classI
             />
           </LocalizationProvider>
         </div>
-        {(user && (user.role == "Teacher" || user.role == "Admin")) && (
-           <div className={styles.missingAttendance}>
-           {loadMissingAttendance ? (
-             <CustomLoader></CustomLoader>
-           ) : (
-             <MissingAttendanceComponent
-               changeDate={changeDate}
-               missingAttendance={missingAttendance}
-             />
-           )}
-         </div>
+        {user && (user.role == "Teacher" || user.role == "Admin") && (
+          <div className={styles.missingAttendance}>
+            {loadMissingAttendance ? (
+              <CustomLoader></CustomLoader>
+            ) : (
+              <MissingAttendanceComponent
+                changeDate={changeDate}
+                missingAttendance={missingAttendance}
+              />
+            )}
+          </div>
         )}
       </div>
       {/* Show all attendances for Teacher and Admin. Fot students only show that student's attendance 
@@ -112,18 +113,16 @@ export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classI
       */}
       {loading ? (
         <CustomLoader></CustomLoader>
-        ) : (user && (user.role == "Teacher" || user.role == "Admin") ? (
+      ) : user && (user.role == "Teacher" || user.role == "Admin") ? (
         <AttendanceBox
           attendances={attendances}
           classId={classId}
           sessionId={sessionID}
           refreshMissingAttendanceList={refreshMissingAttendanceList}
         ></AttendanceBox>
-        ) : (
-        <StudentAttendanceBox
-          studentAttendance={studentAttendance}
-        ></StudentAttendanceBox>
-      ))}
+      ) : (
+        <StudentAttendanceBox studentAttendance={studentAttendance}></StudentAttendanceBox>
+      )}
     </div>
   );
 };

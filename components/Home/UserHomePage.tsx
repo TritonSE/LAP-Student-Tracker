@@ -44,8 +44,8 @@ const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
                   className={homeStyles.createBtn}
                   onClick={() => setShowManageAvailability(true)}
                 >
-                Manage
-                <img className={homeStyles.addIcon} src="/AddIcon.png" />
+                  Manage
+                  <img className={homeStyles.addIcon} src="/AddIcon.png" />
                 </button>
               </div>
             )}

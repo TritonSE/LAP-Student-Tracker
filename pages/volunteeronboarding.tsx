@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/VolunteerOnboarding.module.css";
 import TextField from "@mui/material/TextField";
+import { AvailabilityModal } from "../components/Home/ManageAvailabilityWizard/AvailabilityModal";
 
 const cssTextField = {
     color: "black",
@@ -31,6 +32,10 @@ const cssBigTextField = {
 
 const VolunteerSignUp: React.FC  = () => {
     const router = useRouter();
+    const { user } = useContext(AuthContext);
+    if ( !user || user.role != "Volunteer"){
+        return <div></div>
+    }
     const [stage, setNextStage] =  useState<number>(1);
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -39,6 +44,11 @@ const VolunteerSignUp: React.FC  = () => {
     const [city, setCity] = useState<string>("");
     const [introduction, setIntroduction] = useState<string>("");
     const [experience, setExperience] = useState<string>("");
+    const [showManageAvailability, setShowManageAvailability] = useState(false);
+
+    const handleClose = (): void => {
+        setShowManageAvailability(false);
+    };
 
     // simlpe regex to check if input is a valid email
     const regEx = RegExp(/\S+@\S+\.\S+/);
@@ -120,7 +130,15 @@ const VolunteerSignUp: React.FC  = () => {
                     </div>
                 </div>
                 <div className={styles.contentContainer}>
-                    <h1 className={styles.title}>Basic Information</h1>
+                    {stage == 1 && (
+                        <h1 className={styles.title}>Basic Information</h1>
+                    )}
+                    {stage == 2 && (
+                        <h1 className={styles.title}>Questions</h1>
+                    )}
+                    {stage == 3 && (
+                        <h1 className={styles.title}>Schedule Interview</h1>
+                    )}
                     <hr className={styles.divider}></hr>
                     {stage == 1 && (
                         <div className={styles.firstStageContainer}>
@@ -212,10 +230,16 @@ const VolunteerSignUp: React.FC  = () => {
                         </button>
                     )}
                     {stage == 3 && (
-                        <button className={styles.availabilityButton}>
+                        <button 
+                            className={styles.availabilityButton}
+                            onClick={() => setShowManageAvailability(true)}
+                        >
                             Enter your availability now
                         </button>
                     )}
+                    {showManageAvailability ? (
+                        <AvailabilityModal handleClose={handleClose} userId={user.id} />
+                    ) : null}
                 </div>
             </div>
         </div>

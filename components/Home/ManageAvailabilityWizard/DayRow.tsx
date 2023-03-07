@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./DayRow.module.css";
-
-import "react-date-picker/dist/DatePicker.css";
-import "react-calendar/dist/Calendar.css";
-
 import { TimeSlot } from "./TimeSlot";
 import { ValidDays } from "../../../models/custom/CustomTypes";
+import Button from "@mui/material/Button";
 
 type DayRowProps = {
   times: string[][];
@@ -69,14 +66,9 @@ const DayRow: React.FC<DayRowProps> = ({
         ))}
       </div>
 
-      <div
-        className={styles.modalAddTime}
-        onClick={() => {
-          addTimeSlot();
-        }}
-      >
-        <p>Add Time</p> <span className={styles.modalAddTimePlus}>+</span>
-      </div>
+      <Button variant={"outlined"} className={styles.modalAddTime} onClick={() => {
+        addTimeSlot();
+      }}>Add Time</Button>
     </div>
   );
 };

@@ -14,24 +14,6 @@ const getClassModules = async (classId: string): Promise<Module[]> => {
   return await decode(ModuleArraySchema, res.rows);
 };
 
-// update all modules for a particular class
-const updateClassModules = async (classId: string, new_modules: Module[]): Promise<Module[]> => {
-  const query1 = {
-    text: "DELETE FROM modules",
-  };
-  await client.query(query1);
-
-  new_modules.forEach(async (module) => {
-    const query2 = {
-      text: "INSERT INTO modules(class_id, name, position) VALUES($1, $2, $3) RETURNING module_id",
-      values: [module.classId, module.name, module.position],
-    };
-    await client.query(query2);
-  });
-
-  return getClassModules(classId);
-};
-
 // get module from database by module_id
 const getModule = async (moduleId: string): Promise<Module | null> => {
   const query = {

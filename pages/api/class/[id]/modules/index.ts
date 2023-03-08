@@ -1,6 +1,10 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getClass } from "../../../../../lib/database/classes";
-import { getClassModules, updateClassModules } from "../../../../../lib/database/modules";
+import {
+  getClassModules,
+  updateClassModules,
+  updateModule,
+} from "../../../../../lib/database/modules";
 import { StatusCodes } from "http-status-codes";
 import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
@@ -95,8 +99,18 @@ export const classModulesHandler: NextApiHandler = async (
           return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
         }
 
-        const result = await updateClassModules(classId, new_modules);
-        return res.status(StatusCodes.ACCEPTED).json(result);
+        let updated_modules: Module[] = [];
+        await new_modules.map(async (module) => {
+          const curr_mod = await updateModule(module.name, undefined, module.position);
+          console.log(curr_mod);
+          if (curr_mod) {
+            updated_modules.push(curr_mod);
+          }
+        });
+
+        console.log("updated:", updated_modules);
+
+        return res.status(StatusCodes.ACCEPTED).json(updated_modules);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }

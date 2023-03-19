@@ -101,7 +101,7 @@ export const classModulesHandler: NextApiHandler = async (
 
         let updated_modules: Module[] = [];
         await new_modules.map(async (module) => {
-          const curr_mod = await updateModule(module.name, undefined, module.position);
+          const curr_mod = await updateModule(module.moduleId, module.name, module.position);
           console.log(curr_mod);
           if (curr_mod) {
             updated_modules.push(curr_mod);

@@ -82,4 +82,4 @@ const deleteModule = async (moduleId: string): Promise<Module | null> => {
   return await decode(Module, res.rows[0]);
 };
 
-export { getClassModules, updateClassModules, getModule, createModule, updateModule, deleteModule };
+export { getClassModules, getModule, createModule, updateModule, deleteModule };

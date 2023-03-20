@@ -123,54 +123,47 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
 
   const handleMoveUp: VoidFunction = () => {
     // account for position not being zero indexed
+    setSave(true);
     const currentModuleIndex = position - 1;
-
+    console.log(currentModuleIndex);
     if (currentModuleIndex > 0) {
-      setSave(true);
-
       // move module up
-      setModules((previousModules) => {
-        const newModules = [...previousModules];
 
-        // swap module with item above it
-        const currentModule = previousModules[currentModuleIndex];
-        const aboveModule = previousModules[currentModuleIndex - 1];
-        const newPosition = aboveModule.position;
-        newModules[currentModuleIndex - 1].position = currentModule.position;
-        newModules[currentModuleIndex].position = newPosition;
+      const newModules = [...modules];
 
-        // resort array in order
-        newModules.sort((a, b) => a.position - b.position);
+      // swap module with item above it
+      const currentModule = modules[currentModuleIndex];
+      const aboveModule = modules[currentModuleIndex - 1];
+      const newPosition = aboveModule.position;
+      newModules[currentModuleIndex - 1].position = currentModule.position;
+      newModules[currentModuleIndex].position = newPosition;
 
-        return newModules;
-      });
+      newModules.sort((a, b) => a.position - b.position);
+      setModules(newModules);
     }
+    setTimeout(() => console.log({ modules }, 1000));
     handleClose();
   };
 
   const handleMoveDown: VoidFunction = () => {
     // account for position not being zero indexed
+    setSave(true);
     const currentModuleIndex = position - 1;
 
     if (currentModuleIndex < numModules - 1) {
-      setSave(true);
-
       // move module down
-      setModules((previousModules) => {
-        const newModules = [...previousModules];
+      const newModules = [...modules];
 
-        // swap module with item below it
-        const currentModule = previousModules[currentModuleIndex];
-        const belowModule = previousModules[currentModuleIndex + 1];
-        const newPosition = belowModule.position;
-        newModules[currentModuleIndex + 1].position = currentModule.position;
-        newModules[currentModuleIndex].position = newPosition;
+      // swap module with item below it
+      const currentModule = modules[currentModuleIndex];
+      const belowModule = modules[currentModuleIndex + 1];
+      const newPosition = belowModule.position;
+      newModules[currentModuleIndex + 1].position = currentModule.position;
+      newModules[currentModuleIndex].position = newPosition;
 
-        // resort array in order
-        newModules.sort((a, b) => a.position - b.position);
-
-        return newModules;
-      });
+      // resort array in order
+      newModules.sort((a, b) => a.position - b.position);
+      setModules(newModules);
     }
     handleClose();
   };

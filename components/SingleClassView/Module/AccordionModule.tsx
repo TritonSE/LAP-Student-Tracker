@@ -125,7 +125,6 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     // account for position not being zero indexed
     setSave(true);
     const currentModuleIndex = position - 1;
-    console.log(currentModuleIndex);
     if (currentModuleIndex > 0) {
       // move module up
 
@@ -141,7 +140,6 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
       newModules.sort((a, b) => a.position - b.position);
       setModules(newModules);
     }
-    setTimeout(() => console.log({ modules }, 1000));
     handleClose();
   };
 

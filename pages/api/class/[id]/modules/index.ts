@@ -1,10 +1,6 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { getClass } from "../../../../../lib/database/classes";
-import {
-  getClassModules,
-  updateClassModules,
-  updateModule,
-} from "../../../../../lib/database/modules";
+import { getClassModules, updateModule } from "../../../../../lib/database/modules";
 import { StatusCodes } from "http-status-codes";
 import { withLogging } from "../../../../../middleware/withLogging";
 import { logData, onError } from "../../../../../logger/logger";
@@ -99,16 +95,13 @@ export const classModulesHandler: NextApiHandler = async (
           return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
         }
 
-        let updated_modules: Module[] = [];
+        const updated_modules: Module[] = [];
         await new_modules.map(async (module) => {
           const curr_mod = await updateModule(module.moduleId, module.name, module.position);
-          console.log(curr_mod);
           if (curr_mod) {
             updated_modules.push(curr_mod);
           }
         });
-
-        console.log("updated:", updated_modules);
 
         return res.status(StatusCodes.ACCEPTED).json(updated_modules);
       } catch (e) {

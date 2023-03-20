@@ -34,7 +34,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const [multipleLevels, setMultipleLevels] = useState<boolean>(false);
   const [minLevel, setMinLevel] = useState<number>(1);
   const [maxLevel, setMaxLevel] = useState<number>(1);
-  const [startDate, setStartDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
+  const [startDate, setStartDate] = useState<DateTime>(DateTime.now());
   const [startTime, setStartTime] = useState<DateTime | null>(null);
   const [endTime, setEndTime] = useState<DateTime | null>(null);
   const [showColorPicker, setShowColorPicker] = useState<boolean>(false);
@@ -45,6 +45,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const [selectedTeachers, setSelectedTeachers] = useState<string[]>([]);
   // selected students from dropdown (sting of id's)
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
+  // selected volunteers from dropdown (string of id's)
+  const [selectedVolunteers, setSelectedVolunteers] = useState<string[]>([]);
   const [ignoreAvailabilities, setIgnoreAvailabilities] = useState(false);
 
   const [valid, setValid] = useState<boolean>(false);
@@ -74,9 +76,15 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     client.getAllUsers("Student")
   );
 
+  const { data: allVolunteers, error: fetchVolunteerError } = useSWR(
+    "/api/users?filter=Volunteer",
+    () => client.getAllUsers("Volunteer")
+  );
+
   // since all teachers can be undefined, check here and use an empty array if it is
   const teachers = allTeachers ? allTeachers : [];
   const students = allStudents ? allStudents : [];
+  const volunteers = allVolunteers ? allVolunteers : [];
 
   const client = useContext(APIContext);
 
@@ -98,6 +106,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
   const endTimeValid = endTime != null;
   const startBeforeEndTime = startTimeValid && endTimeValid && startTime < endTime;
   const startBeforeEndDate = startDate <= endDate || endType != "on";
+  const countValid = count < 20;
 
   useEffect(() => {
     setValid(
@@ -108,12 +117,15 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
         startTimeValid &&
         endTimeValid &&
         startBeforeEndDate &&
-        startBeforeEndTime
+        startBeforeEndTime &&
+        countValid
     );
     const errorMessage = fetchTeacherError
       ? fetchTeacherError.message
       : fetchStudentError
       ? fetchTeacherError.message
+      : fetchVolunteerError
+      ? fetchVolunteerError.message
       : !nameValid
       ? "Please enter a name for the class"
       : !teachersValid
@@ -130,6 +142,8 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       ? "Please ensure that the end date is after the start date"
       : !startBeforeEndTime
       ? "Please ensure that the start time is before the end time"
+      : !countValid
+      ? "Please only have 20 repeat occurrences of an event "
       : "";
     setErrMsg(errorMessage);
   }, [
@@ -141,6 +155,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     endTimeValid,
     startBeforeEndDate,
     startBeforeEndTime,
+    countValid,
   ]);
 
   // force max level to exceed min level
@@ -195,7 +210,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
     let rrule;
     if (endType === "on") {
       rrule = new RRule({
-        dtstart: startDate.toJSDate(),
+        dtstart: startDate.set({ hour: 0, minute: 0 }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
         byweekday: weekDays,
@@ -203,18 +218,18 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       });
     } else if (endType === "after") {
       rrule = new RRule({
-        dtstart: startDate.toJSDate(),
+        dtstart: startDate.set({ hour: 0, minute: 0 }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
-        byweekday: weekDays,
+        byweekday: weekDays.sort(),
         count: count,
       });
     } else {
       rrule = new RRule({
-        dtstart: startDate.toJSDate(),
+        dtstart: startDate.set({ hour: 0, minute: 0 }).toJSDate(),
         interval: 1,
         freq: RRule.WEEKLY,
-        byweekday: weekDays,
+        byweekday: weekDays.sort(),
       });
     }
     const rruleStr = rrule.toString();
@@ -235,6 +250,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
       backgroundColor: colorMap[color],
       teachers: selectedTeachers,
       studentIds: selectedStudents,
+      volunteerIds: selectedVolunteers,
       checkAvailabilities: !ignoreAvailabilities,
     };
     try {
@@ -451,6 +467,26 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                 sx={{ width: 750 }}
               />
             </div>
+
+            <div className={styles.row}>
+              <img className={styles.teacherIcon} src="TeacherIcon.png" />
+              <div className={styles.spacing} />
+
+              <Autocomplete
+                multiple
+                limitTags={10}
+                id="volunteer-input"
+                options={volunteers}
+                onChange={(event, value) => setSelectedVolunteers(value.map((user) => user.id))}
+                getOptionLabel={(vol) => vol.firstName + " " + vol.lastName}
+                renderInput={(params) => (
+                  <TextField {...params} label="Volunteers" placeholder="Volunteers" />
+                )}
+                isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
+                sx={{ width: 750 }}
+              />
+            </div>
+
             <div className={styles.availabilityWrapper}>
               <input
                 className={styles.checkbox}

@@ -39,6 +39,10 @@ const StyledMenuItem = styled(MenuItemUnstyled)(
   user-select: none;
   background: #ffffff;
   
+  &:hover {
+    cursor: pointer
+  }
+  
   &:last-of-type {
     border-bottom: none;
   }
@@ -98,6 +102,16 @@ const CreateOptions: React.FC<CreateOptionProps> = ({
     }
   };
 
+  const classClick = (): void => {
+    close();
+    handleClickClass(true);
+  };
+
+  const oneTimeEventClick = (): void => {
+    close();
+    handleClickOneOffEvent(true);
+  };
+
   return (
     <div>
       <button
@@ -120,8 +134,8 @@ const CreateOptions: React.FC<CreateOptionProps> = ({
         onClose={close}
         anchorEl={anchorEl}
       >
-        <StyledMenuItem onClick={() => handleClickClass(true)}>Class</StyledMenuItem>
-        <StyledMenuItem onClick={() => handleClickOneOffEvent(true)}>One-off Event</StyledMenuItem>
+        <StyledMenuItem onClick={classClick}>Class</StyledMenuItem>
+        <StyledMenuItem onClick={oneTimeEventClick}>One-off Event</StyledMenuItem>
       </MenuUnstyled>
     </div>
   );

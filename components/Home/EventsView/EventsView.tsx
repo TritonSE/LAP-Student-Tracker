@@ -10,13 +10,13 @@ import useSWR from "swr";
 
 type EventsViewProps = {
   setShowEventsViewPage: (showEventsPage: boolean) => void;
-  userId?: string;
+  userId?: string; // controls whether to get all classes, or classes for that particular user
 };
 
 const ClassCardRenderer: React.FC<EventsViewProps> = ({ userId }) => {
   const client = useContext(APIContext);
 
-  // Use SWR hook to get the data from the backend
+  // Use SWR hook to get the data from the backend. If user id is passed in, only get the classes for thus user. Else, get all classes
   const { data, mutate, error } = useSWR("/api/class", () => client.getAllClasses(userId));
   if (error) return <CustomError />;
   if (!data) return <CustomLoader />;
@@ -31,8 +31,8 @@ const ClassCardRenderer: React.FC<EventsViewProps> = ({ userId }) => {
       {data.map((classes: Class) => (
         <div key={classes.name} className={styles.cardContainer}>
           <ClassCard
-            //temporary id
-            id={userId}
+            // if user id is not there, this must be an admin account. Else, this is a teacher/student account
+            showEditButtons={userId == undefined}
             eventInformationId={classes.eventInformationId}
             key={classes.eventInformationId}
             name={classes.name}

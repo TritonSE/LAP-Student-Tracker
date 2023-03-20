@@ -3,6 +3,10 @@ import { Class } from "../../models";
 import { decode } from "io-ts-promise";
 import { array, TypeOf } from "io-ts";
 import * as t from "io-ts";
+import { DateTime, Interval } from "luxon";
+import { logger } from "../../logger/logger";
+import RRule from "rrule";
+import { createCalendarEvent } from "./calendar";
 
 const ClassWithUserInformationSchema = t.type({
   name: t.string,
@@ -31,6 +35,17 @@ type ClassWithoutTeacherInfo = {
   endTime: string;
   language: string;
 };
+const ClassWithoutTeacherInfoSchema = t.type({
+  name: t.string,
+  eventInformationId: t.string,
+  minLevel: t.number,
+  maxLevel: t.number,
+  rrstring: t.string,
+  startTime: t.string,
+  endTime: t.string,
+  language: t.string,
+});
+const ClassWithoutTeacherInfoArraySchema = array(ClassWithoutTeacherInfoSchema);
 
 const createClass = async (
   eventInformationId: string,
@@ -51,7 +66,7 @@ const createClass = async (
   return getClass(eventInformationId);
 };
 
-// updates class's veriables
+// updates class's variables
 const updateClass = async (
   eventInformationId: string,
   minLevel?: number,
@@ -196,4 +211,117 @@ const getAllClasses = async (): Promise<Class[]> => {
   return classesArray;
 };
 
-export { createClass, getClass, updateClass, getAllClasses };
+const addDatesToUnlimitedClass = async (eventInformationId: string): Promise<void> => {
+  const query = {
+    text:
+      "SELECT cl.rrstring, to_json(ci.start_str) as start_str_tmp, to_json(ci.end_str) as end_str_tmp, ci.event_information_id, ci.session_id FROM " +
+      "((event_information ei INNER JOIN calendar_information ci on ei.id = ci.event_information_id) INNER JOIN classes cl ON cl.event_information_id = ei.id)  WHERE ci.event_information_id = $1 AND ei.never_ending = true ORDER  BY start_str DESC LIMIT 1",
+    values: [eventInformationId],
+  };
+  const res = await client.query(query);
+  const rows = res.rows;
+
+  if (rows.length == 0) {
+    logger.debug("NO ROWS");
+    return;
+  }
+
+  const lastDateStart = DateTime.fromISO(rows[0].startStrTmp);
+  // calculate date 3 months before the last date in the database
+  const dateThreeMonthsBefore = lastDateStart.set({ month: lastDateStart.month - 3 });
+  if (DateTime.now() < dateThreeMonthsBefore) {
+    logger.debug("Date of last event is still 3 months away");
+    return;
+  }
+
+  const lastDateEnd = DateTime.fromISO(rows[0].endStrTmp);
+
+  const rrule = RRule.fromString(rows[0].rrstring);
+  const yearInAdvance = lastDateStart.set({ year: lastDateStart.year + 1 });
+  // get next 20 dates
+  const allDates = rrule.between(
+    lastDateStart.toJSDate(),
+    yearInAdvance.toJSDate(),
+    false,
+    (_, idx) => idx < 20
+  );
+  const intervals: Interval[] = [];
+
+  for (const date of allDates) {
+    const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+    const dateStart = DateTime.fromJSDate(dateWithoutTime)
+      .set({
+        hour: lastDateStart.hour,
+        minute: lastDateStart.minute,
+        second: lastDateStart.second,
+      })
+      .setZone(lastDateStart.zone, { keepLocalTime: true });
+
+    const dateEnd = DateTime.fromJSDate(dateWithoutTime)
+      .set({
+        hour: lastDateEnd.hour,
+        minute: lastDateEnd.minute,
+        second: lastDateEnd.second,
+      })
+      .setZone(lastDateStart.zone, { keepLocalTime: true });
+
+    intervals.push(Interval.fromDateTimes(dateStart, dateEnd));
+  }
+
+  const promises: Promise<void>[] = [];
+
+  for (const interval of intervals) {
+    promises.push(
+      createCalendarEvent(rows[0].eventInformationId, interval.start.toISO(), interval.end.toISO())
+    );
+  }
+
+  await Promise.all(promises);
+
+  return;
+};
+
+const getClassesByUser = async (id: string): Promise<Class[]> => {
+  const query = {
+    text:
+      "SELECT cl.min_level, cl.max_level, cl.rrstring, cl.start_time, cl.end_time, cl.language, cl.event_information_id, e.name " +
+      "FROM ((event_information e INNER JOIN classes cl ON e.id = cl.event_information_id) " +
+      "INNER JOIN commitments ON commitments.event_information_id = e.id) " +
+      "WHERE commitments.user_id  = $1",
+    values: [id],
+  };
+  const res = await client.query(query);
+  let classesWithoutTeacher: TypeOf<typeof ClassWithoutTeacherInfoArraySchema>;
+  try {
+    classesWithoutTeacher = await decode(ClassWithoutTeacherInfoArraySchema, res.rows);
+  } catch (e) {
+    throw Error("Fields returned incorrectly from database");
+  }
+
+  const classesArray: Class[] = [];
+  classesWithoutTeacher.forEach((singleClass) => {
+    const currClass = {
+      name: singleClass.name,
+      eventInformationId: singleClass.eventInformationId,
+      minLevel: singleClass.minLevel,
+      maxLevel: singleClass.maxLevel,
+      rrstring: singleClass.rrstring,
+      startTime: singleClass.startTime,
+      endTime: singleClass.endTime,
+      language: singleClass.language,
+      teachers: [],
+    };
+    classesArray.push(currClass);
+  });
+  return classesArray;
+};
+
+export {
+  createClass,
+  getClass,
+  updateClass,
+  getAllClasses,
+  getClassesByUser,
+  addDatesToUnlimitedClass,
+};

@@ -9,6 +9,7 @@ import axios from "axios";
 import { ConnectStudentProfile } from "./ConnectStudentProfile";
 import { ConnectedStudentDisplay } from "./ConnectedStudentDisplay";
 import { AddStudentModal } from "./AddStudentModal";
+import { StudentClasses } from "./StudentClasses";
 
 // component that renders the admin/teacher profile page
 type ParentProfileViewProps = {
@@ -126,12 +127,17 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
                 renderStudentCards[currentStudentIndex]
               )}
             </div>
-            <div className={styles.rightPanel}></div>
+            <div className={styles.rightPanel}>
+              <StudentClasses
+                id={allStudents[currentStudentIndex] ? allStudents[currentStudentIndex].id : ""}
+              />
+            </div>
           </div>
         </div>
       </div>
       {showConnectStudentModal && (
         <AddStudentModal
+          showModal={showConnectStudentModal}
           linkParentAndStudent={createParentStudentLink}
           errorMsg={createParentStudentLinkError}
           setShowModalState={setShowConnectStudentState}

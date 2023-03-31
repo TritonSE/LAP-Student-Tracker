@@ -1,8 +1,8 @@
 import styles from "./LoginViews.module.css";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const cssTextField = {
   color: "black",
@@ -43,26 +43,19 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
 }) => {
   const url = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
 
-  const [loading, setLoading]  = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const onLogin = () => {
-    setLoading(true)
-    onLoginClick()
-    // if (error != null) {
-    //   setLoading(false)
-    // }
-    // setLoading(false)
-    // setLoading(false)
-  }
+  const onLogin = (): void => {
+    setLoading(true);
+    onLoginClick();
+    return;
+  };
 
-  useEffect( () => {
+  useEffect(() => {
     if (loading && error != null) {
-      setLoading(false)
+      setLoading(false);
     }
-    // setLoading(false)
-  }, [error])
-
-
+  }, [error]);
 
   return (
     <div className={styles.comContainer}>
@@ -114,7 +107,12 @@ const LoginPageMain: React.FC<LoginPageMainProps> = ({
           <Button size="large" variant="outlined" onClick={() => changePage(pageNumber + 1)}>
             Create Account
           </Button>
-          <LoadingButton loading={loading} size="large" variant="contained" onClick={() => onLogin()}>
+          <LoadingButton
+            loading={loading}
+            size="large"
+            variant="contained"
+            onClick={() => onLogin()}
+          >
             Login
           </LoadingButton>
         </div>

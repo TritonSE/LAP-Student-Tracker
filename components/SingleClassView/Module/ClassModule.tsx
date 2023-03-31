@@ -48,7 +48,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
   };
 
   const handleSubmit = async (): Promise<void> => {
-    setLoading(true)
+    setLoading(true);
     const module = {
       classId: id,
       name: name,
@@ -60,7 +60,6 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
     setRefresh(!refresh);
     setPopup(false);
     setName("");
-
   };
 
   const handleCancel = async (): Promise<void> => {

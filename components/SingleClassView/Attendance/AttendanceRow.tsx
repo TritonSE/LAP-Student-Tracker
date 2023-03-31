@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./attendance.module.css";
 import { AttendanceTypes } from "../../../models";
-import Button from "@mui/material/Button";
 
 type AttendanceRowProps = {
   onAttendanceChange: (userId: string, newAttendance: AttendanceTypes) => void;

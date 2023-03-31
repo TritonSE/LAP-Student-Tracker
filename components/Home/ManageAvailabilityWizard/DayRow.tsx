@@ -66,9 +66,15 @@ const DayRow: React.FC<DayRowProps> = ({
         ))}
       </div>
 
-      <Button variant={"outlined"} className={styles.modalAddTime} onClick={() => {
-        addTimeSlot();
-      }}>Add Time</Button>
+      <Button
+        variant={"outlined"}
+        className={styles.modalAddTime}
+        onClick={() => {
+          addTimeSlot();
+        }}
+      >
+        Add Time
+      </Button>
     </div>
   );
 };

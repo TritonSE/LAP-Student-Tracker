@@ -5,7 +5,7 @@ import { getUser } from "../../../../../lib/database/users";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../../middleware/withAuth";
 import { withLogging } from "../../../../../middleware/withLogging";
-import {onError} from "../../../../../logger/logger";
+import { onError } from "../../../../../logger/logger";
 
 //Handles all requests to /api/class/[id]/user
 /**
@@ -53,14 +53,14 @@ export const classStudentHandler: NextApiHandler = async (
         return res.status(StatusCodes.BAD_REQUEST).json("no user id specified");
       }
       const userObj = await getUser(userId);
-      if (userObj == null){
+      if (userObj == null) {
         return res.status(StatusCodes.NOT_FOUND).json("user not found");
       }
       try {
         const result = await createCommitment(userId, classId);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
-        onError(e)
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

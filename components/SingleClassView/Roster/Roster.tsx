@@ -5,7 +5,7 @@ import { StudentTableView } from "./StudentTableView";
 import { AddPeopleModal } from "./AddPeopleModal";
 import { APIContext } from "../../../context/APIContext";
 import { User } from "../../../models";
-import {RemovePeopleModal} from "./RemovePeopleModal";
+import { RemovePeopleModal } from "./RemovePeopleModal";
 
 type RosterProps = {
   id: string;
@@ -15,7 +15,7 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
   const [showTeacher, setShowTeacher] = useState(true);
   const [showStudent, setShowStudent] = useState(true);
   const [showAddStudentPopup, setShowAddStudentPopup] = useState(false);
-  const [showRemoveUsersPopup, setShowRemoveUsersPopup] = useState(false)
+  const [showRemoveUsersPopup, setShowRemoveUsersPopup] = useState(false);
   const [showDeleteStudents, setShowDeleteStudents] = useState(false);
   const [roster, setRoster] = useState<User[]>([]);
 
@@ -40,7 +40,6 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
     return;
   };
 
-
   useEffect(() => {
     (async () => {
       await getRoster();
@@ -58,8 +57,14 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
           currentUsersInClass={roster}
         />
       )}
-      { showRemoveUsersPopup && (
-          <RemovePeopleModal classId={id} refreshRoster={getRoster} currentUsersInClass={roster} showModal={showRemoveUsersPopup} handleClose={handleCloseRemoveUserPopup} ></RemovePeopleModal>
+      {showRemoveUsersPopup && (
+        <RemovePeopleModal
+          classId={id}
+          refreshRoster={getRoster}
+          currentUsersInClass={roster}
+          showModal={showRemoveUsersPopup}
+          handleClose={handleCloseRemoveUserPopup}
+        ></RemovePeopleModal>
       )}
       <div className={styles.container}>
         <div>
@@ -97,9 +102,11 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
           <div className={styles.buttonLabel}> Staff </div>
         </div>
         {showTeacher ? (
-          <StaffTableView teachers={roster.filter((user) => {
-            return user.role == "Teacher" || user.role == "Admin" || user.role == "Volunteer";
-          })} />
+          <StaffTableView
+            teachers={roster.filter((user) => {
+              return user.role == "Teacher" || user.role == "Admin" || user.role == "Volunteer";
+            })}
+          />
         ) : null}
         <div className={styles.spacer} />
         <div className={styles.dropdownHeader}>
@@ -115,9 +122,7 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
           <div className={styles.buttonLabel}> Students </div>
         </div>
         {showStudent ? (
-          <StudentTableView
-            students={roster.filter((user) => user.role == "Student")}
-          />
+          <StudentTableView students={roster.filter((user) => user.role == "Student")} />
         ) : null}
       </div>
     </>

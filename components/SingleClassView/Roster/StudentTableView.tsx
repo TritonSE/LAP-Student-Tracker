@@ -8,9 +8,7 @@ type StudentTableViewProps = {
   students: User[];
 };
 
-export const StudentTableView: React.FC<StudentTableViewProps> = ({
-  students,
-}) => {
+export const StudentTableView: React.FC<StudentTableViewProps> = ({ students }) => {
   // const [tableRows, setTableRows] = useState<JSX.Element[]>([]);
   const router = useRouter();
 

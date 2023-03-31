@@ -9,7 +9,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 type ModalActionsProps = {
   handleSubmit?: () => void;
   handleCancel: () => void;
-  loading?: boolean
+  loading?: boolean;
 };
 
 const ModalActions: React.FC<ModalActionsProps> = ({ handleSubmit, handleCancel, loading }) => {
@@ -19,7 +19,11 @@ const ModalActions: React.FC<ModalActionsProps> = ({ handleSubmit, handleCancel,
         <Button variant="outlined" onClick={handleCancel}>
           Cancel
         </Button>
-        <LoadingButton loading={loading ? loading: false} variant="contained" onClick={handleSubmit}>
+        <LoadingButton
+          loading={loading ? loading : false}
+          variant="contained"
+          onClick={handleSubmit}
+        >
           Confirm
         </LoadingButton>
       </div>

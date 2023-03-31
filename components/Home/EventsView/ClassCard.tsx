@@ -10,7 +10,7 @@ import { APIContext } from "../../../context/APIContext";
 import Link from "next/link";
 import { EditEventModal } from "./EditEventModal";
 import { UpdateEvent } from "../../../models";
-import {ConfirmDeleteModal} from "./ConfirmDeleteModal";
+import { ConfirmDeleteModal } from "./ConfirmDeleteModal";
 
 type HomePageClassCard = {
   showEditButtons: boolean;
@@ -76,9 +76,8 @@ const ClassCard: React.FC<HomePageClassCard> = ({
     setAnchorEl(null);
   };
 
-
   const [showEventModal, setShowEventModal] = useState(false);
-  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false)
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
 
   const onEventEdit = (): void => {
     handleClose();
@@ -90,9 +89,9 @@ const ClassCard: React.FC<HomePageClassCard> = ({
   };
 
   const onShowDeleteConfirmModal = (): void => {
-    handleClose()
-    setShowDeleteConfirmModal(true)
-  }
+    handleClose();
+    setShowDeleteConfirmModal(true);
+  };
 
   const saveChanges = async (newName: string): Promise<void> => {
     const updateEvent: UpdateEvent = {
@@ -112,9 +111,14 @@ const ClassCard: React.FC<HomePageClassCard> = ({
           saveChanges={saveChanges}
         ></EditEventModal>
       ) : null}
-      { showDeleteConfirmModal ? (
-          <ConfirmDeleteModal classId={eventInformationId} refreshClasses={refreshClassList} closeModal={() => setShowDeleteConfirmModal(false)} modalOpen={showDeleteConfirmModal}></ConfirmDeleteModal>
-      ): null}
+      {showDeleteConfirmModal ? (
+        <ConfirmDeleteModal
+          classId={eventInformationId}
+          refreshClasses={refreshClassList}
+          closeModal={() => setShowDeleteConfirmModal(false)}
+          modalOpen={showDeleteConfirmModal}
+        ></ConfirmDeleteModal>
+      ) : null}
       <div className={style.card}>
         <div className={style.title}>
           <div className={style.titleSpacing} />
@@ -167,7 +171,9 @@ const ClassCard: React.FC<HomePageClassCard> = ({
                 <MenuItem
                   key={option}
                   selected={option === "Delete"}
-                  onClick={() => {onShowDeleteConfirmModal()}}
+                  onClick={() => {
+                    onShowDeleteConfirmModal();
+                  }}
                 >
                   {option}
                 </MenuItem>

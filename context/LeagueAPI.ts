@@ -268,14 +268,14 @@ class LeagueAPI {
     );
     return res.data;
   }
-  async createCommitment(classId: string, studentId: string): Promise<void> {
-    await this.client.post(`api/class/${classId}/student`, {
-      studentId: studentId,
+  async createCommitment(classId: string, userId: string): Promise<void> {
+    await this.client.post(`api/class/${classId}/user`, {
+      userId: userId,
     });
   }
 
-  async deleteCommitment(classId: string, studentId: string): Promise<void> {
-    await this.client.delete(`api/class/${classId}/student/${studentId}`);
+  async deleteCommitment(classId: string, userId: string): Promise<void> {
+    await this.client.delete(`api/class/${classId}/user/${userId}`);
   }
 
   async createParentStudentLink(

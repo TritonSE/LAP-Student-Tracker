@@ -4,22 +4,24 @@ import styles from "./ModalComponents.module.css";
 import Button from "@mui/material/Button";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 type ModalActionsProps = {
   handleSubmit?: () => void;
   handleCancel: () => void;
+  loading?: boolean
 };
 
-const ModalActions: React.FC<ModalActionsProps> = ({ handleSubmit, handleCancel }) => {
+const ModalActions: React.FC<ModalActionsProps> = ({ handleSubmit, handleCancel, loading }) => {
   return (
     <DialogActions>
       <div className={styles.buttonContainer}>
         <Button variant="outlined" onClick={handleCancel}>
           Cancel
         </Button>
-        <Button variant="contained" onClick={handleSubmit}>
+        <LoadingButton loading={loading ? loading: false} variant="contained" onClick={handleSubmit}>
           Confirm
-        </Button>
+        </LoadingButton>
       </div>
     </DialogActions>
   );

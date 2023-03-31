@@ -103,7 +103,7 @@
   color: blue;
 }
 
-/* styles for individual class/student/staff card components */
+/* styles for individual class/user/staff card components */
 .listElem {
   background: var(--white);
   border: 1px solid #e1e2e4;

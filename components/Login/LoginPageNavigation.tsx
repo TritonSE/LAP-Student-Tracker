@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./LoginViews.module.css";
+import Button from "@mui/material/Button";
 
 type LoginPageNavigationProps = {
   completedPages: boolean[];
@@ -24,16 +25,15 @@ const LoginPageNavigation: React.FC<LoginPageNavigationProps> = ({
 
   return (
     <div className={styles.buttonContainer}>
-      <button className={styles.buttonOutline} onClick={() => onPageChange(currPage - 1)}>
+      <Button size="large" variant="outlined" onClick={() => onPageChange(currPage - 1)}>
         Back
-      </button>
-      <button
-        className={styles.buttonFilled}
+      </Button>
+      <Button size="large" variant="contained"
         onClick={() => nextButtonFunction()}
         disabled={!completedPages[currPage]}
       >
         {nextButtonText}
-      </button>
+      </Button>
     </div>
   );
 };

@@ -31,7 +31,7 @@ const ClassCardRenderer: React.FC<EventsViewProps> = ({ userId }) => {
       {data.map((classes: Class) => (
         <div key={classes.name} className={styles.cardContainer}>
           <ClassCard
-            // if user id is not there, this must be an admin account. Else, this is a teacher/student account
+            // if user id is not there, this must be an admin account. Else, this is a teacher/user account
             showEditButtons={userId == undefined}
             eventInformationId={classes.eventInformationId}
             key={classes.eventInformationId}

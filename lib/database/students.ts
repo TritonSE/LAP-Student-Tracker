@@ -27,7 +27,7 @@ const StudentInClassSchema = t.type({
 const StudentInClassArraySchema = array(StudentInClassSchema);
 
 const getAllStudents = async (): Promise<Student[]> => {
-  // query returns one object for each class a student is taking (with the classes respective name and id)
+  // query returns one object for each class a user is taking (with the classes respective name and id)
   const query = {
     text:
       "SELECT users.id, users.first_name, users.last_name, users.email, users.role, users.picture_id," +
@@ -46,10 +46,10 @@ const getAllStudents = async (): Promise<Student[]> => {
     throw Error("Fields returned incorrectly from database");
   }
 
-  // map from id to student objects
+  // map from id to user objects
   const idToObject = new Map<string, Student>();
 
-  // logic to assign the max level to the student for all the student objects that were returned
+  // logic to assign the max level to the user for all the user objects that were returned
   studentArrayWithDuplicates.forEach((studentInClass) => {
     // if an object is not in the map, then insert into the map
     if (!idToObject.has(studentInClass.id)) {
@@ -71,11 +71,11 @@ const getAllStudents = async (): Promise<Student[]> => {
     } else {
       const studentAlreadyAdded = idToObject.get(studentInClass.id) as Student;
 
-      // add current student object class to old student's array of classes
+      // add current user object class to old user's array of classes
       if (studentInClass.class) studentAlreadyAdded.classes.push(studentInClass.class);
 
-      // if current student object level is null, keep the old student objects level. If the current student level is not null but
-      // the old student object is null, then keep the current student's level. If both are not null, then return the maximum of both
+      // if current user object level is null, keep the old user objects level. If the current user level is not null but
+      // the old user object is null, then keep the current user's level. If both are not null, then return the maximum of both
       studentAlreadyAdded.level =
         studentInClass.level !== null && studentAlreadyAdded.level !== null
           ? Math.max(studentInClass.level, studentAlreadyAdded.level)

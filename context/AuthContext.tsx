@@ -81,8 +81,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     const fbConfig = {
       apiKey: process.env.NEXT_PUBLIC_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
       authDomain:
-        process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-      projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-student-tracker-staging",
+        process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-user-tracker-staging.firebaseapp.com",
+      projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-user-tracker-staging",
       appId: process.env.NEXT_PUBLIC_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
     };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);

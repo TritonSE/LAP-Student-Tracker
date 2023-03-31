@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./roster.module.css";
 import { User } from "../../../models";
 import { useRouter } from "next/router";
+import Button from "@mui/material/Button";
 
 type StudentTableViewProps = {
   students: User[];
@@ -37,10 +38,10 @@ export const StudentTableView: React.FC<StudentTableViewProps> = ({
         <td>{user.lastName}</td>
         <td>{user.role}</td>
         <td>
-          <button className={styles.profileButton} onClick={() => onProfileClick(user.id)}>
+          <Button onClick={() => onProfileClick(user.id)}>
             {" "}
             View Profile
-          </button>
+          </Button>
         </td>
       </tr>
     );

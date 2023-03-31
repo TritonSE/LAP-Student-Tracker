@@ -6,9 +6,9 @@ import { withLogging } from "../../../../../../middleware/withLogging";
 
 /**
  * @swagger
- * /api/class/{id}/student/{student_id}:
+ * /api/class/{id}/user/{student_id}:
  *  delete:
- *   description: Delete an student from a class
+ *   description: Delete an user from a class
  *   parameters:
  *      - in: path
  *        name: id
@@ -22,7 +22,7 @@ import { withLogging } from "../../../../../../middleware/withLogging";
  *          type: string
  *   responses:
  *      202:
- *        description: Delete student from class successfully
+ *        description: Delete user from class successfully
  */
 
 export const classStudentIdHandler: NextApiHandler = async (
@@ -33,19 +33,19 @@ export const classStudentIdHandler: NextApiHandler = async (
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
   }
   const classId = req.query.id as string;
-  const studentId = req.query.student_id as string;
+  const userId = req.query.user_id as string;
 
   if (!classId) {
     return res.status(400).json("no class id specified");
   }
-  if (!studentId) {
-    return res.status(400).json("no student id specified");
+  if (!userId) {
+    return res.status(400).json("no user id specified");
   }
 
   switch (req.method) {
     case "DELETE":
       try {
-        const result = await deleteCommitment(studentId, classId);
+        const result = await deleteCommitment(userId, classId);
         return res.status(StatusCodes.ACCEPTED).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");

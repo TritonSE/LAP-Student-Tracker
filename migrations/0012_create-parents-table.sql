@@ -1,6 +1,6 @@
 /**
  * This script sets up the parents table with its properties of
- * parent id and student id.
+ * parent id and user id.
  **/
 
 CREATE TABLE parents (

@@ -31,8 +31,8 @@ afterAll(async () => {
   await client.end();
 });
 
-describe("[POST] /api/parents/[id]/student", () => {
-  test("Create a valid parent-student link", async () => {
+describe("[POST] /api/parents/[id]/user", () => {
+  test("Create a valid parent-user link", async () => {
     const body: CreateParentStudentLink = {
       email: "john@gmail.com",
     };
@@ -45,7 +45,7 @@ describe("[POST] /api/parents/[id]/student", () => {
     };
     await makeHTTPRequest(
       parentStudentHandler,
-      "/api/parents/2/student",
+      "/api/parents/2/user",
       query,
       "POST",
       body,
@@ -53,7 +53,7 @@ describe("[POST] /api/parents/[id]/student", () => {
       expected
     );
   });
-  test("Create an invalid link between a parent and a non-student", async () => {
+  test("Create an invalid link between a parent and a non-user", async () => {
     const body: CreateParentStudentLink = {
       email: "teacher@gmail.com",
     };
@@ -62,7 +62,7 @@ describe("[POST] /api/parents/[id]/student", () => {
     };
     await makeHTTPRequest(
       parentStudentHandler,
-      "/api/parents/2/student",
+      "/api/parents/2/user",
       query,
       "POST",
       body,
@@ -79,7 +79,7 @@ describe("[POST] /api/parents/[id]/student", () => {
     };
     await makeHTTPRequest(
       parentStudentHandler,
-      "/api/parents/2/student",
+      "/api/parents/2/user",
       query,
       "POST",
       body,

@@ -25,7 +25,8 @@
     "@fullcalendar/react": "5.10.0",
     "@fullcalendar/timegrid": "5.10.0",
     "@mui/icons-material": "^5.8.2",
-    "@mui/material": "^5.5.2",
+    "@mui/lab": "^5.0.0-alpha.124",
+    "@mui/material": "^5.11.15",
     "@mui/x-date-pickers": "^5.0.4",
     "@next/env": "^12.1.6",
     "@testing-library/jest-dom": "^5.16.2",
@@ -85,11 +86,11 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "jest": "^27.5.1",
+    "next-swagger-doc": "^0.3.6",
     "node-mocks-http": "^1.11.0",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.3",
     "ts-node": "^10.5.0",
-    "typescript": "4.5.4",
-    "next-swagger-doc": "^0.3.6"
+    "typescript": "4.5.4"
   }
 }

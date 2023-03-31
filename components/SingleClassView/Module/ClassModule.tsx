@@ -19,6 +19,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
   const [popup, setPopup] = useState(false);
   const [name, setName] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -47,6 +48,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
   };
 
   const handleSubmit = async (): Promise<void> => {
+    setLoading(true)
     const module = {
       classId: id,
       name: name,
@@ -54,9 +56,11 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
       moduleId: "",
     };
     await api.createModule(module);
+    setLoading(false);
     setRefresh(!refresh);
     setPopup(false);
     setName("");
+
   };
 
   const handleCancel = async (): Promise<void> => {
@@ -92,7 +96,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
               onChange={(e) => setName(e.target.value)}
             />
           </DialogContent>
-          <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} />
+          <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} loading={loading} />
         </Dialog>
       ) : null}
       <div className={styles.spacer} />

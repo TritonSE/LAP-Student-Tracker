@@ -9,9 +9,7 @@
 
 .title {
   composes: headlineLarge from "../../../styles/globals.css";
-  padding-bottom: 2rem;
   position: relative;
-  align-self: left;
   padding: 1rem;
 }
 
@@ -77,13 +75,11 @@
 .button {
   float: right;
   cursor: pointer;
-  background-color: #dadada;
+  background-color: #5d5fef;
   border-radius: 10px;
   text-transform: none;
-  color: black;
-  font-weight: bold;
+  color: white;
   padding: 5px 25px 5px 25px;
-  width: 135px;
 }
 
 .button:hover {

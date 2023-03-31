@@ -17,9 +17,7 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
   const [showAddStudentPopup, setShowAddStudentPopup] = useState(false);
   const [showRemoveUsersPopup, setShowRemoveUsersPopup] = useState(false)
   const [showDeleteStudents, setShowDeleteStudents] = useState(false);
-  const [studentToDelete, setStudentToDelete] = useState("");
   const [roster, setRoster] = useState<User[]>([]);
-  const [rosterChange, setRosterChange] = useState(false);
 
   const onTeacherDropdownClick = (): void => {
     setShowTeacher(!showTeacher);
@@ -36,48 +34,18 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
     setShowRemoveUsersPopup(false);
   };
 
-  const handleDelete = (id: string): void => {
-    setStudentToDelete(id);
-  };
-
   const getRoster = async (): Promise<void> => {
     const roster = await api.getRoster(id);
     setRoster(roster);
     return;
   };
 
-  // const updateRoster = () => {
-  //   setRosterChange(!rosterChange)
-  // }
-  //
-  // useEffect(() => {
-  //   const deleteStudent = async (studentId: string): Promise<void> => {
-  //     await api.deleteCommitment(id, studentId).then(() => setRosterChange(true));
-  //   };
-  //
-  //   if (studentToDelete != "") {
-  //     deleteStudent(studentToDelete);
-  //   }
-  //   setStudentToDelete("");
-  // }, [studentToDelete]);
 
   useEffect(() => {
     (async () => {
       await getRoster();
     })();
   }, []);
-
-  // useEffect(() => {
-  //
-  //
-  //   const getUsers = async (): Promise<void> => {
-  //     await api.getRoster(id).then((fetchedUsers) => {
-  //       setRoster(fetchedUsers);
-  //       setRosterChange(false);
-  //     });
-  //   };
-  //   getUsers();
-  // }, [rosterChange]);
 
   return (
     <>
@@ -149,8 +117,6 @@ export const Roster: React.FC<RosterProps> = ({ id }) => {
         {showStudent ? (
           <StudentTableView
             students={roster.filter((user) => user.role == "Student")}
-            isDeleteEnabled={showDeleteStudents}
-            handleDelete={handleDelete}
           />
         ) : null}
       </div>

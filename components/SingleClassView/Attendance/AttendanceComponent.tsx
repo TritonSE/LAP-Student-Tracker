@@ -15,8 +15,9 @@ import { StudentAttendanceBox } from "./StudentAttendanceBox";
 
 type AttendanceComponentProps = {
   classId: string;
+  studentId?: string;
 };
-export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classId }) => {
+export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classId, studentId }) => {
   const api = useContext(APIContext);
   const { user } = useContext(AuthContext);
 
@@ -49,7 +50,7 @@ export const AttendanceComponent: React.FC<AttendanceComponentProps> = ({ classI
           setAttendance(attendances);
         } else {
           const studentAttendance = await api.getSingleUserAttendanceFromSessionID(
-            user.id,
+            studentId ? studentId : user.id,
             sessionId,
             classId
           );

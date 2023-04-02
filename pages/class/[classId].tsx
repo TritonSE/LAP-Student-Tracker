@@ -17,6 +17,10 @@ const Class: NextApplicationPage = () => {
   const router = useRouter();
   const client = useContext(APIContext);
 
+  const query = router.query;
+  const studentId = query.studentId as string| undefined;
+
+
   const { user } = useContext(AuthContext);
   const [currClass, setCurrClass] = useState<ClassType | null>(null);
   const classId = router.query.classId as string;
@@ -85,7 +89,7 @@ const Class: NextApplicationPage = () => {
         </ul>
       </nav>
       {currentModule == "attendance" ? (
-        <AttendanceComponent classId={classId} />
+        <AttendanceComponent classId={classId} studentId={studentId} />
       ) : currentModule == "roster" ? (
         <Roster id={classId} />
       ) : currentModule == "modules" ? (

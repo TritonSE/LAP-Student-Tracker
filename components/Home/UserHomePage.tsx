@@ -50,11 +50,12 @@ const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
               </div>
             )}
             <button
-              className={homeStyles.manageBtn}
-              onClick={() => setShowManageClassesViewView(true)}
+                className={homeStyles.manageBtn}
+                onClick={() => setShowManageClassesViewView(true)}
             >
               {<div style={{ color: "white" }}>Manage Classes</div>}
             </button>
+
           </div>
         </div>
       )}

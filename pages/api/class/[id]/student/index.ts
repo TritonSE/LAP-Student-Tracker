@@ -57,7 +57,7 @@ export const classStudentHandler: NextApiHandler = async (
       }
       try {
         const result = await createCommitment(studentId, classId);
-        return res.status(StatusCodes.CREATED).json(result);
+        return res.status(StatusCodes.OK).json(result);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }

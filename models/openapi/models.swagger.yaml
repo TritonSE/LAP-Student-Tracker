@@ -352,6 +352,10 @@ components:
           type: array
           items:
             type: string
+        volunteerIds:
+          type: array
+          items:
+            type: string
         checkAvailabilities:
           type: boolean
       required:
@@ -364,6 +368,7 @@ components:
         - backgroundColor
         - teachers
         - studentIds
+        - volunteerIds
         - checkAvailabilities
         - name
     UpdateClass:
@@ -712,3 +717,9 @@ components:
       required:
         - sessionId
         - startStr
+    UpdateEvent:
+      title: UpdateEvent
+      type: object
+      properties:
+        name:
+          type: string

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import style from "./ClassCard.module.css";
 import { RRule } from "rrule";
 import { DateTime } from "luxon";
@@ -8,9 +8,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { APIContext } from "../../../context/APIContext";
 import Link from "next/link";
+import { EditEventModal } from "./EditEventModal";
+import { UpdateEvent } from "../../../models";
 
 type HomePageClassCard = {
-  id?: string;
+  showEditButtons: boolean;
   eventInformationId: string;
   name: string;
   minLevel: number;
@@ -27,7 +29,7 @@ type HomePageClassCard = {
 };
 
 const ClassCard: React.FC<HomePageClassCard> = ({
-  id,
+  showEditButtons,
   eventInformationId,
   name,
   minLevel,
@@ -48,7 +50,7 @@ const ClassCard: React.FC<HomePageClassCard> = ({
     "Saturday",
     "Sunday",
   ];
-  const options = ["Delete"];
+  const options = ["Delete", "Edit Name"];
 
   const rule = RRule.fromString(rrstring);
   const dates = rule.options.byweekday
@@ -73,21 +75,41 @@ const ClassCard: React.FC<HomePageClassCard> = ({
     setAnchorEl(null);
   };
 
-  const onClassDelete = async (id: string): Promise<void> => {
-    await client.deleteClassEvent(id);
+  const onDeleteEvent = async (): Promise<void> => {
+    await client.deleteEvent(eventInformationId);
     await refreshClassList();
     handleClose();
   };
-  // const deleteBut = () => {
-  //   setAnchorEl(null);
-  //   const { data, error } = useSWR("/api/class", () => client.deleteClassEvent("5"));
-  //   //deleteClassEvent(id);
-  //
-  //
-  // };
+
+  const [showEventModal, setShowEventModal] = useState(false);
+
+  const onEventEdit = (): void => {
+    handleClose();
+    setShowEventModal(true);
+  };
+
+  const closeEventModal = (): void => {
+    setShowEventModal(false);
+  };
+
+  const saveChanges = async (newName: string): Promise<void> => {
+    const updateEvent: UpdateEvent = {
+      name: newName,
+    };
+
+    await client.updateEvent(eventInformationId, updateEvent);
+    await refreshClassList();
+  };
 
   return (
     <div>
+      {showEventModal ? (
+        <EditEventModal
+          modalOpen={true}
+          closeModal={closeEventModal}
+          saveChanges={saveChanges}
+        ></EditEventModal>
+      ) : null}
       <div className={style.card}>
         <div className={style.title}>
           <div className={style.titleSpacing} />
@@ -102,7 +124,7 @@ const ClassCard: React.FC<HomePageClassCard> = ({
         <div className={style.name}>{teacherNames.join(", ")}</div>
         <div className={style.times}>{[dates, "•", convertTime(startTime, endTime)].join(" ")}</div>
       </div>
-      {!id ? (
+      {showEditButtons ? (
         <>
           <IconButton
             size="small"
@@ -135,17 +157,27 @@ const ClassCard: React.FC<HomePageClassCard> = ({
               },
             }}
           >
-            {options.map((option) => (
-              <MenuItem
-                key={option}
-                selected={option === "Delete"}
-                onClick={async () => {
-                  await onClassDelete(eventInformationId);
-                }}
-              >
-                {option}
-              </MenuItem>
-            ))}
+            {options.map((option) =>
+              option == "Delete" ? (
+                <MenuItem
+                  key={option}
+                  selected={option === "Delete"}
+                  onClick={async () => {
+                    await onDeleteEvent();
+                  }}
+                >
+                  {option}
+                </MenuItem>
+              ) : (
+                <MenuItem
+                  key={option}
+                  selected={option === "Edit Name"}
+                  onClick={() => onEventEdit()}
+                >
+                  {option}
+                </MenuItem>
+              )
+            )}
           </Menu>
         </>
       ) : null}

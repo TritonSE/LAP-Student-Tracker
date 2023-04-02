@@ -25,26 +25,26 @@ const StudentAttendanceBox: React.FC<StudentAttendanceBoxProps> = ({ studentAtte
             .toFormat("h:mm a");
           const endTimeISO = DateTime.fromISO(singleAttendance.end).toLocal().toFormat("h:mm a");
           const time = startTimeISO + " - " + endTimeISO;
-          const date = DateTime.fromISO(singleAttendance.end).toLocal().toFormat("MM/dd EEEE");
+          const date = DateTime.fromISO(singleAttendance.end).toLocal().toFormat("MM/dd");
           return (
             <div key={singleAttendance.sessionId} className={styles.attendanceRow}>
               <p className={styles.classDate}>{date}</p>
               <p className={styles.classTime}>{time}</p>
               <div className={styles.userAttendanceStudent}>
                 {singleAttendance.attendance == "Present" ? (
-                  <button className={styles.presentButton}>Present</button>
+                  <button disabled className={styles.presentButtonStudent}>Present</button>
                 ) : (
-                  <button className={styles.uncheckedButton}>Present</button>
+                  <button disabled className={styles.uncheckedButtonStudent}>Present</button>
                 )}
                 {singleAttendance.attendance == "Excused" ? (
-                  <button className={styles.excusedButton}>Excused</button>
+                  <button disabled className={styles.excusedButtonStudent}>Excused</button>
                 ) : (
-                  <button className={styles.uncheckedButton}>Excused</button>
+                  <button disabled className={styles.uncheckedButtonStudent}>Excused</button>
                 )}
                 {singleAttendance.attendance == "Unexcused" ? (
-                  <button className={styles.unexcusedButton}>Unexcused</button>
+                  <button disabled className={styles.unexcusedButtonStudent}>Unexcused</button>
                 ) : (
-                  <button className={styles.uncheckedButton}>Unexcused</button>
+                  <button disabled className={styles.uncheckedButtonStudent}>Unexcused</button>
                 )}
               </div>
             </div>

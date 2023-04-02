@@ -30,6 +30,10 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.fc-event {
+  cursor: pointer;
+}
+
 :root {
   --orange: #f37121;
   --white: #ffffff;

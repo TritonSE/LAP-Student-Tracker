@@ -5,8 +5,10 @@ import { CustomLoader } from "../../util/CustomLoader";
 import { Module } from "../../../models";
 import Button from "@mui/material/Button";
 import { AccordionModule } from "./AccordionModule";
-import { AuthContext } from "../../../context/AuthContext";
-import { CustomError } from "../../util/CustomError";
+import { Dialog, DialogContent, TextField } from "@mui/material";
+import { ModalActions, ModalHeader } from "../../util/ModalComponents";
+import {AuthContext} from "../../../context/AuthContext";
+import {CustomError} from "../../util/CustomError";
 
 type ModuleProps = {
   id: string;
@@ -77,26 +79,28 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
         )}
       </div>
       {popup ? (
-        <div className={styles.popupBackground}>
-          <div className={styles.popupContainer}>
-            <div className={styles.popupTitle}>Create Module</div>
-            <input
-              className={`${styles.label} ${styles.classInput}`}
-              value={name}
+        <Dialog
+          PaperProps={{
+            style: { borderRadius: 10, width: 450 },
+          }}
+          open={popup}
+          onClose={handleCancel}
+        >
+          <ModalHeader title={"Create Module"} />
+
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="ModuleName"
+              label="Module Name"
+              fullWidth
+              variant="standard"
               onChange={(e) => setName(e.target.value)}
-              type="text"
-              placeholder="Module Name"
             />
-            <div className={styles.buttonContainer}>
-              <button onClick={handleCancel} className={styles.cancel}>
-                Cancel
-              </button>
-              <button onClick={handleSubmit} className={styles.submit}>
-                Save
-              </button>
-            </div>
-          </div>
-        </div>
+          </DialogContent>
+          <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} />
+        </Dialog>
       ) : null}
       <div className={styles.spacer} />
       {modules.length === 0 ? (

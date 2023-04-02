@@ -4,6 +4,8 @@ import { APIContext } from "../../../context/APIContext";
 import styles from "./modules.module.css";
 import { ModalActions, ModalHeader } from "../../util/ModalComponents";
 import { Dialog, DialogContent, TextField } from "@mui/material";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomError } from "../../util/CustomError";
 
 type AccordionItemProps = {
   lesson: Item;
@@ -13,8 +15,12 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
   lesson,
   triggerItemDataWithinModuleRefresh,
 }) => {
-  const [edit, setEdit] = useState(false);
   const api = useContext(APIContext);
+  const { user } = useContext(AuthContext);
+
+  if (user == null) return <CustomError />;
+
+  const [edit, setEdit] = useState(false);
   const [title, setTitle] = useState(lesson.title);
   const [link, setLink] = useState(lesson.link.toString());
   const [deleteItem, setDeleteItem] = useState(false);
@@ -56,8 +62,12 @@ const AccordionItem: React.FC<AccordionItemProps> = ({
     <div>
       <div className={styles.dropdownItem}>
         <a href={link}>{title}</a>
-        <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
-        <img src="/Trash.svg" className={styles.trash} onClick={() => setDeleteItem(true)} />
+        {user.role == "Teacher" || user.role == "Admin" ? (
+          <>
+            <img src="/Pencil.svg" className={styles.editPencil} onClick={pencilClick} />
+            <img src="/Trash.svg" className={styles.trash} onClick={() => setDeleteItem(true)} />
+          </>
+        ) : null}
       </div>
 
       {edit ? (

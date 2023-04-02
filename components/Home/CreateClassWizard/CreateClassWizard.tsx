@@ -445,7 +445,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                   <TextField {...params} label="Teachers" placeholder="Teachers" />
                 )}
                 isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
-                sx={{ width: 750, zIndex:0 }}
+                sx={{ width: 750, zIndex: 0 }}
               />
             </div>
 
@@ -464,7 +464,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                   <TextField {...params} label="Students" placeholder="Students" />
                 )}
                 isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
-                sx={{ width: 750, zIndex:0 }}
+                sx={{ width: 750, zIndex: 0 }}
               />
             </div>
 
@@ -483,7 +483,7 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
                   <TextField {...params} label="Volunteers" placeholder="Volunteers" />
                 )}
                 isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
-                sx={{ width: 750, zIndex:0 }}
+                sx={{ width: 750, zIndex: 0 }}
               />
             </div>
 

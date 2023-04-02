@@ -7,8 +7,8 @@ import Button from "@mui/material/Button";
 import { AccordionModule } from "./AccordionModule";
 import { Dialog, DialogContent, TextField } from "@mui/material";
 import { ModalActions, ModalHeader } from "../../util/ModalComponents";
-import {AuthContext} from "../../../context/AuthContext";
-import {CustomError} from "../../util/CustomError";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomError } from "../../util/CustomError";
 
 type ModuleProps = {
   id: string;

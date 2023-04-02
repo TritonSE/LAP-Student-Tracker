@@ -18,8 +18,7 @@ const Class: NextApplicationPage = () => {
   const client = useContext(APIContext);
 
   const query = router.query;
-  const studentId = query.studentId as string| undefined;
-
+  const studentId = query.studentId as string | undefined;
 
   const { user } = useContext(AuthContext);
   const [currClass, setCurrClass] = useState<ClassType | null>(null);

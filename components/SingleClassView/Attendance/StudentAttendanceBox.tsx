@@ -32,19 +32,31 @@ const StudentAttendanceBox: React.FC<StudentAttendanceBoxProps> = ({ studentAtte
               <p className={styles.classTime}>{time}</p>
               <div className={styles.userAttendanceStudent}>
                 {singleAttendance.attendance == "Present" ? (
-                  <button disabled className={styles.presentButtonStudent}>Present</button>
+                  <button disabled className={styles.presentButtonStudent}>
+                    Present
+                  </button>
                 ) : (
-                  <button disabled className={styles.uncheckedButtonStudent}>Present</button>
+                  <button disabled className={styles.uncheckedButtonStudent}>
+                    Present
+                  </button>
                 )}
                 {singleAttendance.attendance == "Excused" ? (
-                  <button disabled className={styles.excusedButtonStudent}>Excused</button>
+                  <button disabled className={styles.excusedButtonStudent}>
+                    Excused
+                  </button>
                 ) : (
-                  <button disabled className={styles.uncheckedButtonStudent}>Excused</button>
+                  <button disabled className={styles.uncheckedButtonStudent}>
+                    Excused
+                  </button>
                 )}
                 {singleAttendance.attendance == "Unexcused" ? (
-                  <button disabled className={styles.unexcusedButtonStudent}>Unexcused</button>
+                  <button disabled className={styles.unexcusedButtonStudent}>
+                    Unexcused
+                  </button>
                 ) : (
-                  <button disabled className={styles.uncheckedButtonStudent}>Unexcused</button>
+                  <button disabled className={styles.uncheckedButtonStudent}>
+                    Unexcused
+                  </button>
                 )}
               </div>
             </div>

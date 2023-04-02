@@ -1,6 +1,6 @@
 import { sessionHandler } from "../pages/api/class/[id]/sessions";
 import { sessionIDHandler } from "../pages/api/class/[id]/attendance/[session_id]";
-import { userAttendanceHandler } from "../pages/api/users/[id]/attendance/[class_id]";
+import { userAttendanceHandler } from "../pages/api/users/[id]/attendance/[class_id]/[session_id]";
 import { client } from "../lib/db";
 import {
   makeHTTPRequest,
@@ -238,24 +238,20 @@ describe("[POST] /api/class/[id]/attendance/[session_id]", () => {
   });
 });
 
-describe("[GET] /api/users/[id]/attendance/[class_id]", () => {
+describe("[GET] /api/users/[id]/attendance/[class_id]/[session_id]", () => {
   test("get single user attendances for specified user in a class", async () => {
     const query = {
       id: "1",
       class_id: "id_a",
+      session_id: "a",
     };
     const expected: SingleUserAttendance[] = [
       {
         sessionId: "a",
         userId: "1",
         attendance: "Present",
-        start: "2022-02-26T21:00:00-08:00",
-      },
-      {
-        sessionId: "b",
-        userId: "1",
-        attendance: null,
-        start: "2022-02-28T21:11:00-08:00",
+        start: "2022-02-27T05:00:00+00:00",
+        end: "2022-02-27T05:00:00+00:00",
       },
     ];
     await makeSingleUserAttendanceHTTPRequest(

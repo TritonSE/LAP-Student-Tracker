@@ -19,6 +19,7 @@ import {
   OneOffEvent,
   ParentStudentLink,
   SessionInformation,
+  SingleUserAttendance,
   Staff,
   Student,
   UpdateEvent,
@@ -190,6 +191,11 @@ class LeagueAPI {
     return res.data;
   }
 
+  async updateClassModules(classId: string, modules: Module[]): Promise<Module[]> {
+    const res = await this.client.patch(`api/class/${classId}/modules`, modules);
+    return res.data;
+  }
+
   async getAnnouncements(classId: string): Promise<Announcement[]> {
     const res = await this.client.get(`api/class/${classId}/announcement`);
     return res.data;
@@ -254,6 +260,15 @@ class LeagueAPI {
 
   async getAttendanceFromSessionID(session: string, classId: string): Promise<Attendance[]> {
     const res = await this.client.get(`api/class/${classId}/attendance/${session}`);
+    return res.data;
+  }
+
+  async getSingleUserAttendanceFromSessionID(
+    userId: string,
+    session: string,
+    classId: string
+  ): Promise<SingleUserAttendance[]> {
+    const res = await this.client.get(`api/users/${userId}/attendance/${classId}/${session}`);
     return res.data;
   }
 

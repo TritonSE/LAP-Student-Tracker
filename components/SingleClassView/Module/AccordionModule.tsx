@@ -1,5 +1,5 @@
 import { Item, Module } from "../../../models";
-import React, { useContext, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { APIContext } from "../../../context/APIContext";
 import { CustomLoader } from "../../util/CustomLoader";
 import { Dialog, DialogContent, TextField } from "@mui/material";
@@ -10,26 +10,34 @@ import Fade from "@mui/material/Fade";
 import MenuItem from "@mui/material/MenuItem";
 import { AccordionItem } from "./AccordionItem";
 import { ModalActions, ModalHeader } from "../../util/ModalComponents";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomError } from "../../util/CustomError";
 
 type AccordionModuleProps = {
   module: Module;
   numModules: number;
   deleteModuleWithinState: (id: string) => void;
   triggerClassModuleRefresh: () => void;
+  setSave: Dispatch<SetStateAction<boolean>>;
+  modules: Module[];
+  setModules: Dispatch<SetStateAction<Module[]>>;
 };
 export const AccordionModule: React.FC<AccordionModuleProps> = ({
   module,
   numModules,
   deleteModuleWithinState,
   triggerClassModuleRefresh,
+  setSave,
+  modules,
+  setModules,
 }) => {
+  const position = module.position;
   const api = useContext(APIContext);
   const [lessons, setLessons] = useState<Item[]>([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [updatePopUp, setUpdatePopUp] = useState(false);
   const [name, setName] = useState(module.name);
-  const [position, setPosition] = useState(module.position);
   const [addModal, setAddModal] = useState(false);
   const [itemName, setItemName] = useState("");
   const [deleteItemModal, setDeleteItemModal] = useState(false);
@@ -41,9 +49,13 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
       const res = await api.getModuleItems(module.moduleId);
       setLessons(res);
     })();
-  }, [refresh]);
+  }, [refresh, modules]);
 
   if (!lessons) return <CustomLoader />;
+
+  const { user } = useContext(AuthContext);
+
+  if (user == null) return <CustomError />;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget);
@@ -118,18 +130,47 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
     setItemLink("");
   };
 
-  // TODO: work on implementing this
   const handleMoveUp: VoidFunction = () => {
-    if (position > 0) {
-      setPosition(position - 1);
+    // account for position not being zero indexed
+    setSave(true);
+    const currentModuleIndex = position - 1;
+    if (currentModuleIndex > 0) {
+      // move module up
+
+      const newModules = [...modules];
+
+      // swap module with item above it
+      const currentModule = modules[currentModuleIndex];
+      const aboveModule = modules[currentModuleIndex - 1];
+      const newPosition = aboveModule.position;
+      newModules[currentModuleIndex - 1].position = currentModule.position;
+      newModules[currentModuleIndex].position = newPosition;
+
+      newModules.sort((a, b) => a.position - b.position);
+      setModules(newModules);
     }
     handleClose();
   };
 
-  // TODO: work on implementing this
   const handleMoveDown: VoidFunction = () => {
-    if (position < numModules) {
-      setPosition(position + 1);
+    // account for position not being zero indexed
+    setSave(true);
+    const currentModuleIndex = position - 1;
+
+    if (currentModuleIndex < numModules - 1) {
+      // move module down
+      const newModules = [...modules];
+
+      // swap module with item below it
+      const currentModule = modules[currentModuleIndex];
+      const belowModule = modules[currentModuleIndex + 1];
+      const newPosition = belowModule.position;
+      newModules[currentModuleIndex + 1].position = currentModule.position;
+      newModules[currentModuleIndex].position = newPosition;
+
+      // resort array in order
+      newModules.sort((a, b) => a.position - b.position);
+      setModules(newModules);
     }
     handleClose();
   };
@@ -140,34 +181,36 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
         <div>
           <div className={styles.dropdownHeader}>
             {module.name}
-            <div className={styles.verticalMenu}>
-              <Button
-                id="fade-button"
-                aria-controls={open ? "fade-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              >
-                {/* Edit Module */}
-                <img src="/VerticalMenu.svg" />
-              </Button>
-              <Menu
-                id="fade-menu"
-                MenuListProps={{
-                  "aria-labelledby": "fade-button",
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Fade}
-              >
-                <MenuItem onClick={handleRename}>Rename Module</MenuItem>
-                <MenuItem onClick={handleDelete}>Delete Module</MenuItem>
-                <MenuItem onClick={handleAdd}>Add Item</MenuItem>
-                <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
-                <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
-              </Menu>
-            </div>
+            {user.role == "Teacher" || user.role == "Admin" ? (
+              <div className={styles.verticalMenu}>
+                <Button
+                  id="fade-button"
+                  aria-controls={open ? "fade-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  {/* Edit Module */}
+                  <img src="/VerticalMenu.svg" />
+                </Button>
+                <Menu
+                  id="fade-menu"
+                  MenuListProps={{
+                    "aria-labelledby": "fade-button",
+                  }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem onClick={handleRename}>Rename Module</MenuItem>
+                  <MenuItem onClick={handleDelete}>Delete Module</MenuItem>
+                  <MenuItem onClick={handleAdd}>Add Item</MenuItem>
+                  <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
+                  <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
+                </Menu>
+              </div>
+            ) : null}
           </div>
         </div>
         <div>

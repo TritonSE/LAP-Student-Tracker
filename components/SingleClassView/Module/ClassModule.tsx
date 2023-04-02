@@ -7,25 +7,31 @@ import Button from "@mui/material/Button";
 import { AccordionModule } from "./AccordionModule";
 import { Dialog, DialogContent, TextField } from "@mui/material";
 import { ModalActions, ModalHeader } from "../../util/ModalComponents";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomError } from "../../util/CustomError";
 
-type ModuleProps = {
+type ClassModuleProps = {
   id: string;
   enableEditing: boolean;
 };
 
-export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
+const ClassModule: React.FC<ClassModuleProps> = ({ id }) => {
   const api = useContext(APIContext);
+  const { user } = useContext(AuthContext);
+
+  if (user == null) return <CustomError />;
   const [modules, setModules] = useState<Module[]>([]);
   const [popup, setPopup] = useState(false);
   const [name, setName] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [save, setSave] = useState(false);
 
   useEffect(() => {
     (async () => {
       const res = await api.getClassModules(id);
       res.sort((a, b) => {
-        return a > b ? -1 : 1;
+        return a.position < b.position ? -1 : 1;
       });
       setModules(res);
     })();
@@ -66,13 +72,24 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
     setPopup(false);
   };
 
+  const handleSave: VoidFunction = async () => {
+    await api.updateClassModules(id, modules);
+    setSave(false);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>
         Modules{" "}
-        <Button className={styles.button} onClick={handleClick}>
-          Add module
-        </Button>
+        {save ? (
+          <Button className={styles.button} id="save-button" onClick={handleSave}>
+            Save
+          </Button>
+        ) : user.role == "Teacher" || user.role == "Admin" ? (
+          <Button className={styles.button} onClick={handleClick}>
+            Add module
+          </Button>
+        ) : null}
       </div>
       {popup ? (
         <Dialog
@@ -99,6 +116,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
         </Dialog>
       ) : null}
       <div className={styles.spacer} />
+
       {modules.length === 0 ? (
         <div className={styles.title}>No modules found</div>
       ) : (
@@ -110,6 +128,9 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
               numModules={modules.length}
               deleteModuleWithinState={deleteModuleWithinState}
               triggerClassModuleRefresh={triggerClassModuleRefresh}
+              setSave={setSave}
+              modules={modules}
+              setModules={setModules}
             />
           );
         })
@@ -117,3 +138,5 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
     </div>
   );
 };
+
+export { ClassModule };

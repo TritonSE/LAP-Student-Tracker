@@ -84,26 +84,24 @@ export const classModulesHandler: NextApiHandler = async (
         if (classObj == null) {
           return res.status(StatusCodes.NOT_FOUND).json("Class Not Found");
         }
-        let new_modules: Module[];
+        let newModules: Module[];
         try {
-          new_modules = req.body;
+          newModules = req.body;
 
-          if (new_modules == null) {
+          if (newModules == null) {
             return res.status(StatusCodes.BAD_REQUEST).json("Invalid Request");
           }
         } catch (e) {
           return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
         }
 
-        const updated_modules: Module[] = [];
-        await new_modules.map(async (module) => {
-          const curr_mod = await updateModule(module.moduleId, module.name, module.position);
-          if (curr_mod) {
-            updated_modules.push(curr_mod);
-          }
-        });
-
-        return res.status(StatusCodes.ACCEPTED).json(updated_modules);
+        const promises = [];
+        for (const id in newModules) {
+          const module = newModules[id];
+          promises.push(updateModule(module.moduleId, module.name, module.position));
+        }
+        const updatedModules = await Promise.all(promises);
+        return res.status(StatusCodes.ACCEPTED).json(updatedModules);
       } catch (e) {
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }

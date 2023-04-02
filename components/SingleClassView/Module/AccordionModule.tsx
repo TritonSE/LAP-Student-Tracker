@@ -10,6 +10,8 @@ import Fade from "@mui/material/Fade";
 import MenuItem from "@mui/material/MenuItem";
 import { AccordionItem } from "./AccordionItem";
 import { ModalActions, ModalHeader } from "../../util/ModalComponents";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomError } from "../../util/CustomError";
 
 type AccordionModuleProps = {
   module: Module;
@@ -50,6 +52,10 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
   }, [refresh, modules]);
 
   if (!lessons) return <CustomLoader />;
+
+  const { user } = useContext(AuthContext);
+
+  if (user == null) return <CustomError />;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget);
@@ -175,34 +181,36 @@ export const AccordionModule: React.FC<AccordionModuleProps> = ({
         <div>
           <div className={styles.dropdownHeader}>
             {module.name}
-            <div className={styles.verticalMenu}>
-              <Button
-                id="fade-button"
-                aria-controls={open ? "fade-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
-              >
-                {/* Edit Module */}
-                <img src="/VerticalMenu.svg" />
-              </Button>
-              <Menu
-                id="fade-menu"
-                MenuListProps={{
-                  "aria-labelledby": "fade-button",
-                }}
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                TransitionComponent={Fade}
-              >
-                <MenuItem onClick={handleRename}>Rename Module</MenuItem>
-                <MenuItem onClick={handleDelete}>Delete Module</MenuItem>
-                <MenuItem onClick={handleAdd}>Add Item</MenuItem>
-                <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
-                <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
-              </Menu>
-            </div>
+            {user.role == "Teacher" || user.role == "Admin" ? (
+              <div className={styles.verticalMenu}>
+                <Button
+                  id="fade-button"
+                  aria-controls={open ? "fade-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  onClick={handleClick}
+                >
+                  {/* Edit Module */}
+                  <img src="/VerticalMenu.svg" />
+                </Button>
+                <Menu
+                  id="fade-menu"
+                  MenuListProps={{
+                    "aria-labelledby": "fade-button",
+                  }}
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem onClick={handleRename}>Rename Module</MenuItem>
+                  <MenuItem onClick={handleDelete}>Delete Module</MenuItem>
+                  <MenuItem onClick={handleAdd}>Add Item</MenuItem>
+                  <MenuItem onClick={handleMoveUp}>Move Up</MenuItem>
+                  <MenuItem onClick={handleMoveDown}>Move Down</MenuItem>
+                </Menu>
+              </div>
+            ) : null}
           </div>
         </div>
         <div>

@@ -235,7 +235,7 @@ const CreateEventWizard: React.FC<CreateEventWizardProps> = ({ handleClose }) =>
                   <TextField {...params} label="Attendees" placeholder="Attendees" />
                 )}
                 isOptionEqualToValue={(userA, userB) => userA.id === userB.id}
-                sx={{ width: 750 }}
+                sx={{ width: 750, zIndex: 0 }}
               />
             </div>
 

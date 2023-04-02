@@ -76,7 +76,7 @@ const StudentClasses: React.FC<StudentClassesProps> = ({ id }) => {
               <br />
               <School />{" "}
               <div className={styles.info}>
-                <a href={"/class/" + Class.eventInformationId}>Class Link</a>
+                <a href={"/class/" + Class.eventInformationId + "?studentId=" + id}>Class Link</a>
               </div>
             </AccordionItemPanel>
           </AccordionItem>

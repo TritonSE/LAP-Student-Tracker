@@ -46,9 +46,29 @@
   flex-basis: 20%;
 }
 
+.classDate {
+  flex-basis: 15%;
+}
+
+.classTime {
+  flex-basis: 20%;
+}
+
+.attendanceBoxtext {
+  flex-basis: 60%;
+  padding-left: 1rem;
+}
+
 .userAttendance {
   display: flex;
   width: 80%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.userAttendanceStudent {
+  display: flex;
+  width: 60%;
   padding-left: 1rem;
   align-items: center;
   justify-content: space-between;
@@ -61,43 +81,54 @@
   border: none;
 }
 
-.uncheckedButton {
+.baseAttendanceButton {
   composes: labelLarge from "../../../styles/globals.css";
   width: 182px;
   height: 40px;
   border: 1px solid #1b1c1d;
   border-radius: 10px;
+  font-size: 17px;
+}
+
+.uncheckedButton {
+  composes: baseAttendanceButton;
+  /*background-color: gray;*/
 }
 
 .presentButton {
-  width: 182px;
-  height: 40px;
-  border: 1px solid #1b1c1d;
-  border-radius: 10px;
+  composes: baseAttendanceButton;
   background: #46d5b3;
-  font-size: 17px;
 }
 
 .unexcusedButton {
-  width: 182px;
-  height: 40px;
-  border: 1px solid #1b1c1d;
-  border-radius: 10px;
+  composes: baseAttendanceButton;
   background: #ef5da8;
-  font-size: 17px;
 }
 
 .excusedButton {
-  width: 182px;
-  height: 40px;
-  border: 1px solid #1b1c1d;
-  border-radius: 10px;
+  composes: baseAttendanceButton;
   background: #ffc702;
-  font-size: 17px;
 }
 
-.attendanceButton:hover {
-  opacity: 0.6;
+.presentButtonStudent {
+  composes: baseAttendanceButton;
+  background: #46d5b3 !important;
+}
+
+.unexcusedButtonStudent {
+  composes: baseAttendanceButton;
+  background: #ef5da8 !important;
+}
+
+.excusedButtonStudent {
+  composes: baseAttendanceButton;
+  background: #ffc702 !important;
+}
+
+.uncheckedButtonStudent {
+  composes: baseAttendanceButton;
+  background-color: lightgray !important;
+  /*background-color: gray;*/
 }
 
 .saveAttendance {

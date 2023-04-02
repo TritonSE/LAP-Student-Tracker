@@ -564,11 +564,14 @@ components:
           $ref: "#/components/schemas/AttendanceTypes"
         start:
           type: string
+        end:
+          type: string
       required:
         - sessionId
         - userId
         - attendance
         - start
+        - end
     Announcement:
       title: Announcement
       type: object

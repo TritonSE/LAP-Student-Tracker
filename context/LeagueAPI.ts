@@ -19,6 +19,7 @@ import {
   OneOffEvent,
   ParentStudentLink,
   SessionInformation,
+  SingleUserAttendance,
   Staff,
   Student,
   UpdateEvent,
@@ -254,6 +255,15 @@ class LeagueAPI {
 
   async getAttendanceFromSessionID(session: string, classId: string): Promise<Attendance[]> {
     const res = await this.client.get(`api/class/${classId}/attendance/${session}`);
+    return res.data;
+  }
+
+  async getSingleUserAttendanceFromSessionID(
+    userId: string,
+    session: string,
+    classId: string
+  ): Promise<SingleUserAttendance[]> {
+    const res = await this.client.get(`api/users/${userId}/attendance/${classId}/${session}`);
     return res.data;
   }
 

@@ -8,15 +8,16 @@ const roleSpecificSetup = async (
   id: string,
   role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer"
 ): Promise<void> => {
+  console.log("HERE........");
   switch (role) {
-    case "Teacher": {
+    case "Volunteer":
+    case "Teacher":
       const query = {
         text: "INSERT INTO availabilities (user_id, time_zone) VALUES ($1, 	$2)",
         values: [id, "America/Los_Angeles"],
       };
       await client.query(query);
       return;
-    }
     default:
       return;
   }

@@ -13,7 +13,11 @@ const Login: React.FC = () => {
   const router = useRouter();
 
   if (auth.user !== null) {
-    router.push("/home");
+    if (auth.user.role == "Volunteer") {
+      router.push("/volunteeronboarding");
+    } else {
+      router.push("/home");
+    }
   }
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [email, setEmail] = useState<string>("");
@@ -92,7 +96,8 @@ const Login: React.FC = () => {
 
   const onSignUpClick = (): void => {
     auth.clearError();
-    setSignupLoading(true)
+    setSignupLoading(true);
+
     auth.signup(firstName, lastName, email, position, password);
   };
 

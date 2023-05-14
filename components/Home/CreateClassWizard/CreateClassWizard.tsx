@@ -16,12 +16,6 @@ import Button from "@mui/material/Button";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import TextField from "@mui/material/TextField";
 import { DesktopTimePicker } from "@mui/x-date-pickers";
-
-// // Work around for date/time picker library to work with NextJS
-// // https://github.com/vercel/next.js/issues/19936
-// import "react-date-picker/dist/DatePicker.css";
-// import "react-time-picker/dist/TimePicker.css";
-// import "react-calendar/dist/Calendar.css";
 import { Autocomplete } from "@mui/material";
 
 type CreateClassWizardProps = {

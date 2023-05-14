@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "./AvailabilityModal.module.css";
-
-import "react-date-picker/dist/DatePicker.css";
-import "react-calendar/dist/Calendar.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import { DayRow } from "./DayRow";
 import { DateTime } from "luxon";

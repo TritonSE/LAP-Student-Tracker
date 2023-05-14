@@ -19,20 +19,17 @@ const postExperience = async (id: string, about: string, experience: string): Pr
 
 const getResponse = async (id: string): Promise<VolunteerResponse | null> => {
     const query = {
-        text: "SELECT * FROM volunteer WHERE id = $1",
+        text: "SELECT about, experience FROM volunteer WHERE id = $1",
         values: [id]
-    }
-
+    };
     const res = await client.query(query);
     if (res.rows.length == 0) {
         return null;
     }
 
     return await decode(VolunteerResponse, res.rows[0]);
-
-
-}
+};
 
 
 
-export { postExperience, getResponse }
+export { postExperience, getResponse };

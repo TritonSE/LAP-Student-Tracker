@@ -129,7 +129,15 @@ time isn't valid
   }, [availability]);
 
   if (error) return <CustomError />;
-  if (!data) return <CustomLoader />;
+  if (!data) return (<>
+    <div className={styles.wizardWrapper}>
+      <div className={styles.wizardContent}>
+
+        {<CustomLoader/>}
+      </div>
+    </div>
+    </>);
+
 
   let availabilityFromDB: Availability = {
     mon: data.mon == null ? [] : data.mon,
@@ -289,6 +297,7 @@ time isn't valid
   }
 
   return (
+
     <div className={styles.wizardWrapper}>
       <div className={styles.wizardContent}>
         <div className={styles.headerContent}>

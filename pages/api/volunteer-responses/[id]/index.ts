@@ -23,16 +23,17 @@ export const volunteerHandler: NextApiHandler = async(req: NextApiRequest, res: 
         return res.status(StatusCodes.NOT_FOUND).json("user not found");
     }
 
-
-    let responses: VolunteerResponse;
-    try {
-        responses = await decode(VolunteerResponse, req.body);
-    } catch (e) {
-        onError(e);
-        return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
-    }
     switch (req.method) {
         case "POST": {
+
+            let responses: VolunteerResponse;
+            try {
+                responses = await decode(VolunteerResponse, req.body);
+            } catch (e) {
+                onError(e);
+                return res.status(StatusCodes.BAD_REQUEST).json("Fields are not correctly entered");
+            }
+
             try {
                 await postExperience(
                     id,

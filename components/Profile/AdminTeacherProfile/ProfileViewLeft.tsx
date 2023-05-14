@@ -1,8 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import styles from "./ProfileViewLeft.module.css";
 import { CustomLoader } from "../../util/CustomLoader";
 import { ProfilePicture } from "./ProfilePicture";
 import { Button } from "@mui/material";
+import {Roles, VolunteerResponse} from "../../../models";
+import {VolunteerResponsesView} from "../VolunteerResponses/VolunteerResponses";
 
 type ProfileViewLeftProps = {
   firstName: string;
@@ -15,6 +17,8 @@ type ProfileViewLeftProps = {
   onImageChange: (img: File) => void;
   handleEditProfileClicked: () => Promise<void>;
   onError: (errorMsg: string) => void;
+  id: string
+  role: Roles
 };
 
 // component for left hand side of the profile view. Display first and last names, as well as edit profile button
@@ -29,8 +33,16 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
   onImageChange,
   handleEditProfileClicked,
   onError,
+    id,
+    role,
 }) => {
   const buttonText = editProfileClicked ? "Save" : "Edit Profile";
+
+  const [showResponses, setShowResponses] = useState(false);
+
+  const closeResponsesView = () => {
+    setShowResponses(false)
+  }
 
   return (
     <div className={styles.rightContainer}>
@@ -61,15 +73,15 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
             {" "}
             {buttonText}
           </Button>
-          {/*<button*/}
-          {/*  disabled={!validInput}*/}
-          {/*  onClick={async () => await handleEditProfileClicked()}*/}
-          {/*  className={styles.editButton}*/}
-          {/*>*/}
-          {/*  {buttonText}*/}
-          {/*</button>*/}
         </div>
-      ) : null}
+      ): role == "Volunteer" ?  <div className={styles.center}> <Button
+          variant="contained"
+          onClick={ () => setShowResponses(true)}
+          className={styles.editButton}
+      >
+        View Responses
+      </Button> </div> : null}
+      {showResponses ? <VolunteerResponsesView id={id} open={showResponses} handleClose={closeResponsesView}/> : null}
     </div>
   );
 };

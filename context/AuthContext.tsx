@@ -151,10 +151,11 @@ export const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   const refreshLocalUser  = async (): Promise<void> => {
-    setInitializing(true)
+    setInitializing(true);
+    sessionStorage.removeItem("user");
+    localStorage.removeItem("user");
     const uid = sessionStorage.getItem("userId");
     const token = sessionStorage.getItem("apiToken");
-
     if (uid && token) {
       await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
       setLocality("Session");

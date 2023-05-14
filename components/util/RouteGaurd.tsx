@@ -24,6 +24,8 @@ const AuthGuard: React.FC = ({ children }) => {
     }
     else if (user.approved) {
       return <>{children}</>;
+    } else if (!user.approved && user.role == "Volunteer") {
+      return <>{children}</>;
     } else {
       router.push("/unapproved");
     }

@@ -224,7 +224,7 @@
   background: #ffffff;
 }
 
-.accountBarGrey p {
+.rows {
   float: left;
   width: 20%;
   font-family: "Inter";
@@ -239,7 +239,7 @@
   margin: 0;
 }
 
-.accountBarWhite p {
+.linkRow {
   float: left;
   width: 20%;
   font-family: "Inter";
@@ -253,6 +253,37 @@
   color: #494c4e;
   margin: 0;
 }
+
+
+/*.accountBarGrey p {*/
+/*  float: left;*/
+/*  width: 20%;*/
+/*  font-family: "Inter";*/
+/*  font-style: normal;*/
+/*  font-weight: 500;*/
+/*  font-size: 18px;*/
+/*  line-height: 20px;*/
+/*  align-items: center;*/
+/*  text-align: center;*/
+/*  letter-spacing: 0.1px;*/
+/*  color: #494c4e;*/
+/*  margin: 0;*/
+/*}*/
+
+/*.accountBarWhite p {*/
+/*  float: left;*/
+/*  width: 20%;*/
+/*  font-family: "Inter";*/
+/*  font-style: normal;*/
+/*  font-weight: 500;*/
+/*  font-size: 18px;*/
+/*  line-height: 20px;*/
+/*  align-items: center;*/
+/*  text-align: center;*/
+/*  letter-spacing: 0.1px;*/
+/*  color: #494c4e;*/
+/*  margin: 0;*/
+/*}*/
 
 .accountsContainer {
   margin: auto;

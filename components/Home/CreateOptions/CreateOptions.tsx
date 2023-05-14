@@ -125,7 +125,7 @@ const CreateOptions: React.FC<CreateOptionProps> = ({
         aria-haspopup="menu"
       >
         Create
-        <img className={styles.addIcon} src="/AddIcon.png" />
+        <img className={styles.addIcon} src="/add_icon.png" />
       </button>
       <MenuUnstyled
         className={styles.createMenu}

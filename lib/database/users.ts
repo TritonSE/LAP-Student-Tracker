@@ -42,7 +42,17 @@ const createUser = async (
   const trimmedLastName = lastName.trim();
   const query = {
     text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, picture_id, onboarded) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9 )",
-    values: [id, trimmedFirstName, trimmedLastName, email, role, approved, dateCreated, imgId, role != "Volunteer"],
+    values: [
+      id,
+      trimmedFirstName,
+      trimmedLastName,
+      email,
+      role,
+      approved,
+      dateCreated,
+      imgId,
+      role != "Volunteer",
+    ],
   };
   await client.query(query);
 
@@ -72,7 +82,7 @@ const updateUser = async (
       "approved = COALESCE($6, approved)," +
       "address = COALESCE($7, address), " +
       "phone_number = COALESCE($8, phone_number), " +
-        "onboarded = COALESCE($9, onboarded) " +
+      "onboarded = COALESCE($9, onboarded) " +
       "WHERE id=$1",
     values: [id, firstName, lastName, email, role, approved, address, phone_number, onboarded],
   };

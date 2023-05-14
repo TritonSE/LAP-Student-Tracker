@@ -20,8 +20,8 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { Autocomplete } from "@mui/material";
-import {AuthContext} from "../../../context/AuthContext";
-import {CustomLoader} from "../../util/CustomLoader";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomLoader } from "../../util/CustomLoader";
 
 type CreateEventWizardProps = {
   handleClose: () => void;
@@ -33,11 +33,10 @@ type Attendee = {
 };
 
 const CreateEventWizard: React.FC<CreateEventWizardProps> = ({ handleClose }) => {
-
-  const { user:currUser } = useContext(AuthContext);
+  const { user: currUser } = useContext(AuthContext);
 
   if (currUser == null) {
-    return <CustomLoader/>
+    return <CustomLoader />;
   }
 
   // const currUser = user as User;

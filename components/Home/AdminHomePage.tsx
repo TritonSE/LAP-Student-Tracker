@@ -9,10 +9,9 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import useSWR from "swr";
 import { APIContext } from "../../context/APIContext";
 import { AvailabilityCalendar } from "./Calendar/AvailabilityCalendar";
-import {User} from "../../models";
+import { User } from "../../models";
 
 const AdminHomePage: React.FC<object> = () => {
   const [showClassWizard, setShowClassWizard] = useState(false);
@@ -26,18 +25,17 @@ const AdminHomePage: React.FC<object> = () => {
 
   const client = useContext(APIContext);
 
-  useEffect( () => {
-    ( async () => {
+  useEffect(() => {
+    (async () => {
       try {
         const allUsers = await client.getAllUsers();
-        allUsers.filter( (user) => {
+        allUsers.filter((user) => {
           return user.role == "Volunteer" || user.role == "Teacher";
         });
         setAllPeople(allUsers);
       } catch (e) {
         setError("Internal Error");
       }
-
     })();
   }, []);
 
@@ -119,7 +117,7 @@ const AdminHomePage: React.FC<object> = () => {
             </div>
             {/*show teacher selecting input if availability is selected and no error is seen*/}
             {calendar == "availability" ? (
-                error ? (
+              error ? (
                 "System Error"
               ) : (
                 <Select

@@ -21,8 +21,7 @@ const AuthGuard: React.FC = ({ children }) => {
   if (!initializing && user !== null) {
     if (user.role == "Volunteer" && !user.onboarded) {
       router.push("/volunteeronboarding");
-    }
-    else if (user.approved) {
+    } else if (user.approved) {
       return <>{children}</>;
     } else if (!user.approved && user.role == "Volunteer") {
       return <>{children}</>;

@@ -116,7 +116,7 @@ const userIDHandler: NextApiHandler = async (req: NextApiRequest, res: NextApiRe
           newUser.approved,
           newUser.address,
           newUser.phoneNumber,
-            newUser.onboarded
+          newUser.onboarded
         );
         logData("Updated User", user);
         return res.status(StatusCodes.CREATED).json(result);

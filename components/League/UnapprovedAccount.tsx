@@ -17,26 +17,26 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
   rejectAccount,
 }) => {
   // if (index % 2 == 0) {
-    return (
-      <div className={ index % 2 == 0 ? styles.accountBarGrey : styles.accountBarWhite}>
-          <Link href={`/profile/${user.id}`}>
-              <a className={styles.linkRow}>{user.firstName + " " + user.lastName} </a>
-          </Link>
-        {/*<Link>{user.firstName + " " + user.lastName}</Link>*/}
-        <p className={styles.rows}>{user.email}</p>
-        <p className={styles.rows}>{user.dateCreated}</p>
-        <p className={styles.rows}>{user.role}</p>
-        <div>
-          <button className={styles.approveBtn} onClick={() => approveAccount(user)}>
-            Yes
-          </button>{" "}
-          /{" "}
-          <button className={styles.rejectBtn} onClick={() => rejectAccount(user)}>
-            No
-          </button>
-        </div>
+  return (
+    <div className={index % 2 == 0 ? styles.accountBarGrey : styles.accountBarWhite}>
+      <Link href={`/profile/${user.id}`}>
+        <a className={styles.linkRow}>{user.firstName + " " + user.lastName} </a>
+      </Link>
+      {/*<Link>{user.firstName + " " + user.lastName}</Link>*/}
+      <p className={styles.rows}>{user.email}</p>
+      <p className={styles.rows}>{user.dateCreated}</p>
+      <p className={styles.rows}>{user.role}</p>
+      <div>
+        <button className={styles.approveBtn} onClick={() => approveAccount(user)}>
+          Yes
+        </button>{" "}
+        /{" "}
+        <button className={styles.rejectBtn} onClick={() => rejectAccount(user)}>
+          No
+        </button>
       </div>
-    );
+    </div>
+  );
   // } else {
   //   return (
   //     <div className={styles.accountBarWhite}>

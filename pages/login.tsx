@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LoginPageMain } from "../components/Login/LoginPageMain";
 import { LoginNameInput } from "../components/Login/LoginNameInput";
 import { LoginPositionInput } from "../components/Login/LoginPositionInput";
@@ -101,7 +101,7 @@ const Login: React.FC = () => {
     auth.signup(firstName, lastName, email, position, password);
   };
 
-  useEffect( () => {
+  useEffect(() => {
     if (signupLoading && auth.error != null) {
       setSignupLoading(false);
     }

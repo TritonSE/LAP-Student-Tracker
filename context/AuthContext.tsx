@@ -30,7 +30,7 @@ export type AuthState = {
     newPassword?: string,
     newAddress?: string | null
   ) => Promise<boolean>;
-  refreshLocalUser: () => Promise<void>
+  refreshLocalUser: () => Promise<void>;
 };
 
 const init: AuthState = {
@@ -51,8 +51,8 @@ const init: AuthState = {
     return new Promise<boolean>(() => false);
   },
   refreshLocalUser: () => {
-    return new Promise<void>( () => false);
-  }
+    return new Promise<void>(() => false);
+  },
 };
 
 export const AuthContext = createContext<AuthState>(init);
@@ -150,7 +150,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     })();
   }, []);
 
-  const refreshLocalUser  = async (): Promise<void> => {
+  const refreshLocalUser = async (): Promise<void> => {
     setInitializing(true);
     sessionStorage.removeItem("user");
     localStorage.removeItem("user");
@@ -176,7 +176,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       }
     }
     setInitializing(false);
-  }
+  };
 
   const login = (email: string, password: string, rememberMe: boolean): void => {
     (async () => {
@@ -375,7 +375,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         updateUser,
         forgotPassword,
         resetPassword,
-        refreshLocalUser
+        refreshLocalUser,
       }}
     >
       {children}

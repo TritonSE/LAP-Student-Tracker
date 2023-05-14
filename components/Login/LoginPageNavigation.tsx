@@ -8,7 +8,7 @@ type LoginPageNavigationProps = {
   currPage: number;
   onPageChange: (newPage: number) => void;
   onSignUpClick: () => void;
-  loading: boolean
+  loading: boolean;
 };
 // handles navigating the create account navigation (login page navigation in LoginPageMain component)
 const LoginPageNavigation: React.FC<LoginPageNavigationProps> = ({
@@ -16,14 +16,13 @@ const LoginPageNavigation: React.FC<LoginPageNavigationProps> = ({
   currPage,
   onPageChange,
   onSignUpClick,
-    loading
+  loading,
 }) => {
   const nextButtonText = currPage === 3 ? "Sign Up" : "Next";
   const nextButtonFunction = (): void => {
     if (currPage === 3) {
-        onSignUpClick();
-    }
-    else {
+      onSignUpClick();
+    } else {
       onPageChange(currPage + 1);
     }
   };
@@ -34,7 +33,7 @@ const LoginPageNavigation: React.FC<LoginPageNavigationProps> = ({
         Back
       </Button>
       <LoadingButton
-          loading={loading}
+        loading={loading}
         size="large"
         variant="contained"
         onClick={() => nextButtonFunction()}

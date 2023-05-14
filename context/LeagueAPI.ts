@@ -25,9 +25,9 @@ import {
   UpdateEvent,
   UpdateImage,
   UpdateUser,
-  User, VolunteerResponse,
+  User,
+  VolunteerResponse,
 } from "../models";
-import Volunteeronboarding from "../pages/volunteeronboarding";
 
 // LeagueAPI class to connect front and backend
 class LeagueAPI {
@@ -319,15 +319,15 @@ class LeagueAPI {
 
   async postReponses(id: string, about: string, experience: string): Promise<void> {
     const body: VolunteerResponse = {
-      about: about, experience: experience
+      about: about,
+      experience: experience,
     };
     await this.client.post(`/api/volunteer-responses/${id}`, body);
   }
 
-  async getResponses(id:string): Promise<VolunteerResponse> {
+  async getResponses(id: string): Promise<VolunteerResponse> {
     const res = await this.client.get(`/api/volunteer-responses/${id}`);
     return res.data;
-
   }
 }
 

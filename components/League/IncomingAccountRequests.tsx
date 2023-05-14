@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { APIContext } from "../../context/APIContext";
 import useSWR, { mutate } from "swr";
 import styles from "./LeagueViews.module.css";
@@ -14,31 +14,45 @@ type IncomingAccountRequestsProp = {
 const IncomingAccountRequests: React.FC<IncomingAccountRequestsProp> = ({ offShowRequests }) => {
   const client = useContext(APIContext);
 
+  const [usersToApprove, setUsersToApprove] = useState<User[]>([]);
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    ( async () => {
+      const users = await client.getAllUsers(undefined, false);
+      setUsersToApprove(users);
+    })();
+  }, [refresh]);
+
   // Use SWR hook to get the data from the backend
-  const { data, error } = useSWR(
-    "/api/users/?approved=false",
-    () => client.getAllUsers(undefined, false),
-    {
-      refreshInterval: 100,
-    }
-  );
+  // const { data, error } = useSWR(
+  //   "/api/users/?approved=false",
+  //   () => client.getAllUsers(undefined, false),
+  //   {
+  //     refreshInterval: 100,
+  //   }
+  // );
 
-  if (error) return <CustomError />;
-  if (!data) return <Loader />;
+  // if (error) return <CustomError />;
+  // if (!data) return <Loader />;
 
-  const approveAccount = (user: User): void => {
-    client.updateUser(
+  const approveAccount = async(user: User): Promise<void> => {
+    await client.updateUser(
       {
         approved: true,
       },
       user.id
     );
-    mutate("/api/users/?approved=false");
+
+    setRefresh(!refresh);
   };
 
-  const rejectAccount = (user: User): void => {
-    client.deleteUser(user.id);
-    mutate("/api/users/?approved=false");
+
+
+  const rejectAccount = async (user: User): Promise<void> => {
+    await client.deleteUser(user.id);
+    setRefresh(!refresh)
+    // mutate("/api/users/?approved=false");
   };
 
   return (
@@ -54,7 +68,7 @@ const IncomingAccountRequests: React.FC<IncomingAccountRequestsProp> = ({ offSho
           <p>Approve</p>
         </div>
       </div>
-      {data.map((user: User, index) => (
+      {usersToApprove.map((user: User, index) => (
         <div className={styles.accountsContainer} key={user.id}>
           <UnapprovedAccount
             key={user.id}

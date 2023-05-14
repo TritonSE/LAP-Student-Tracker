@@ -29,20 +29,16 @@ const AdminHomePage: React.FC<object> = () => {
     (async () => {
       try {
         const allUsers = await client.getAllUsers();
-        allUsers.filter((user) => {
+        const filteredUsers = allUsers.filter((user) => {
           return user.role == "Volunteer" || user.role == "Teacher";
         });
-        setAllPeople(allUsers);
+        setAllPeople(filteredUsers);
       } catch (e) {
         setError("Internal Error");
       }
     })();
   }, []);
 
-  // // get all people in order to select them in the dropdown
-  // const { data: allTeachers, error: fetchTeacherError } = useSWR("/api/users?filter=Teacher", () =>
-  //   client.getAllUsers("Teacher")
-  // );
 
   // handles changing calendar from full schedule to just availability
   const handleCalendar = (

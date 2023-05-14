@@ -56,6 +56,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
+        onboarded: true,
       },
       {
         id: "4",
@@ -68,6 +69,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
+        onboarded: true
       },
       {
         id: "2",
@@ -80,6 +82,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "2",
+        onboarded: true
       },
       {
         id: "5",
@@ -92,6 +95,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "2",
+        onboarded: true
       },
       {
         id: "3",
@@ -104,6 +108,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "3",
+        onboarded: true
       },
       {
         id: "6",
@@ -116,6 +121,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "3",
+        onboarded: true
       },
     ];
 
@@ -148,6 +154,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "2",
+        onboarded: true
       },
       {
         id: "5",
@@ -160,6 +167,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "2",
+        onboarded: true
       },
     ];
 
@@ -191,6 +199,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
+        onboarded: true
       },
       {
         id: "4",
@@ -203,6 +212,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
+        onboarded: true
       },
     ];
 
@@ -234,6 +244,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "3",
+        onboarded: true
       },
       {
         id: "6",
@@ -246,6 +257,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "3",
+        onboarded: true
       },
     ];
 
@@ -285,7 +297,7 @@ describe("[GET] /api/users/?filter", () => {
       approved: "true",
     };
 
-    const expected = [
+    const expected: User[] = [
       {
         id: "1",
         firstName: "John",
@@ -297,6 +309,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         pictureId: "1",
         phoneNumber: "1234567890",
+        onboarded: true
       },
       {
         id: "4",
@@ -309,6 +322,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         phoneNumber: "1234567890",
         pictureId: "1",
+        onboarded: true
       },
     ];
 
@@ -328,7 +342,7 @@ describe("[GET] /api/users/?filter", () => {
       approved: "false",
     };
 
-    const expected = [
+    const expected: User[] = [
       {
         id: "2",
         firstName: "Teacher",
@@ -340,6 +354,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         pictureId: "2",
         phoneNumber: "1234567890",
+        onboarded: true
       },
       {
         id: "5",
@@ -352,6 +367,7 @@ describe("[GET] /api/users/?filter", () => {
         pictureId: "2",
         address: "123 Main Street",
         phoneNumber: "1234567890",
+        onboarded: true
       },
       {
         id: "3",
@@ -364,6 +380,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         pictureId: "3",
         phoneNumber: "1234567890",
+        onboarded: true
       },
       {
         id: "6",
@@ -376,6 +393,7 @@ describe("[GET] /api/users/?filter", () => {
         address: "123 Main Street",
         pictureId: "3",
         phoneNumber: "1234567890",
+        onboarded: true
       },
     ];
 
@@ -412,6 +430,7 @@ describe("[POST] /api/users", () => {
       dateCreated: "",
       address: null,
       phoneNumber: null,
+      onboarded: true
     };
     await makeHTTPRequest(
       userHandler,
@@ -485,6 +504,7 @@ describe("[POST] /api/users", () => {
       address: null,
       phoneNumber: null,
       pictureId: "",
+      onboarded: true
     };
 
     await makeHTTPRequest(
@@ -519,6 +539,7 @@ describe("[POST] /api/users", () => {
       approved: false,
       address: null,
       phoneNumber: null,
+      onboarded: true
     };
 
     await makeHTTPRequest(
@@ -567,6 +588,7 @@ describe("[GET] /api/users/[id]", () => {
       address: "123 Main Street",
       phoneNumber: "1234567890",
       pictureId: "1",
+      onboarded: true
     };
 
     const query = {
@@ -614,6 +636,7 @@ describe("[PATCH] /api/users/[id]", () => {
       pictureId: "1",
       address: "456 Main Street",
       phoneNumber: "4567890",
+      onboarded: true
     };
 
     const query = {
@@ -653,6 +676,7 @@ describe("[PATCH] /api/users/[id]", () => {
       pictureId: "3",
       address: "456 Main Street",
       phoneNumber: "4567890",
+      onboarded: true
     };
 
     const query = {

@@ -129,38 +129,6 @@
   width: 690px;
 }
 
-/*.buttonOutline {*/
-/*  background-color: white;*/
-/*  border: 2px solid #1b1c1d;*/
-/*  width: 200px;*/
-/*  height: 60px;*/
-/*  border-radius: 16px;*/
-/*  font-size: 18px;*/
-/*  line-height: 36px;*/
-/*  color: #000000;*/
-/*  text-align: center;*/
-/*  padding: 10px;*/
-/*}*/
-
-/*.buttonFilled {*/
-/*  width: 200px;*/
-/*  height: 60px;*/
-/*  border-radius: 16px;*/
-/*  font-size: 18px;*/
-/*  line-height: 36px;*/
-/*  color: #000000;*/
-/*  text-align: center;*/
-/*  padding: 10px;*/
-/*}*/
-
-/*.buttonOutline:hover {*/
-/*  opacity: 0.6;*/
-/*}*/
-
-/*.buttonFilled:hover {*/
-/*  opacity: 0.8;*/
-/*}*/
-
 .passwordError {
   composes: labelSmall from "../../styles/globals.css";
   color: red;

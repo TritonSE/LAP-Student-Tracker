@@ -10,18 +10,6 @@ type VolunteerResponsesProps = {
   handleClose: () => void;
 };
 
-// const cssTextField = {
-//     color: "black",
-//     width: 690,
-//     height: 80,
-//     "& .MuiFilledInput-input": {
-//         color: "#000000",
-//     },
-//     "& .MuiFormLabel-root": {
-//         color: "#494C4E",
-//     },
-// };
-
 const cssBigTextField = {
   width: 650,
   height: 150,

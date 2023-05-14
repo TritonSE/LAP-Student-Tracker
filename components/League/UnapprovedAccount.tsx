@@ -31,19 +31,6 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
     await rejectAccount(user);
     setNoLoading(false);
   };
-
-  // const client = useContext(APIContext);
-
-  // <LoadingButton
-  //     loading={loading}
-  //     size="large"
-  //     variant="contained"
-  //     onClick={() => onLogin()}
-  // >
-  //     Login
-  // </LoadingButton>
-
-  // if (index % 2 == 0) {
   return (
     <div className={index % 2 == 0 ? styles.accountBarGrey : styles.accountBarWhite}>
       <Link href={`/profile/${user.id}`}>
@@ -61,15 +48,10 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
         >
           Yes
         </LoadingButton>
-        {/*<button className={styles.approveBtn} onClick={() => approveAccount(user)}>*/}
-        {/*  Yes*/}
-        {/*</button>*/} /{" "}
+        /{" "}
         <LoadingButton loading={noLoading} size={"small"} variant={"contained"} onClick={onNoClick}>
           No
         </LoadingButton>
-        {/*<button className={styles.rejectBtn} onClick={() => rejectAccount(user)}>*/}
-        {/*  No*/}
-        {/*</button>*/}
       </div>
     </div>
   );

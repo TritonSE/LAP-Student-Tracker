@@ -32,8 +32,6 @@ const CreateEventWizard: React.FC<CreateEventWizardProps> = ({ handleClose }) =>
   if (currUser == null) {
     return <CustomLoader />;
   }
-
-  // const currUser = user as User;
   // create wizard states
   const [name, setName] = useState<string>("");
   const [startDate, setStartDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));

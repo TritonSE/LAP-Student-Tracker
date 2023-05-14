@@ -48,7 +48,11 @@ const Class: NextApplicationPage = () => {
       <nav className={styles.navbar}>
         <ul className={styles.navmenu}>
           <BackButton linkTo="/home" />
-          <li className={styles.navtitle}>{currClass.name.length <= 10 ? currClass.name.trim() : currClass.name.substring(0, 10) + " ..."}</li>
+          <li className={styles.navtitle}>
+            {currClass.name.length <= 10
+              ? currClass.name.trim()
+              : currClass.name.substring(0, 10) + " ..."}
+          </li>
           <li className={styles.navitem}>
             <a
               className={currentModule == "attendance" ? styles.clicked : styles.navlink}

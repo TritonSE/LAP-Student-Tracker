@@ -6,6 +6,9 @@ import TextField from "@mui/material/TextField";
 import { AvailabilityModal } from "../components/Home/ManageAvailabilityWizard/AvailabilityModal";
 import {User} from "../models";
 import Button from "@mui/material/Button";
+import {CustomError} from "../components/util/CustomError";
+import {CustomLoader} from "../components/util/CustomLoader";
+import {APIContext} from "../context/APIContext";
 
 const cssTextField = {
     color: "black",
@@ -33,18 +36,29 @@ const cssBigTextField = {
 
 
 const VolunteerSignUp: React.FC  = () => {
+    const { user, refreshLocalUser } = useContext(AuthContext);
     const router = useRouter();
-    const { user } = useContext(AuthContext);
-    console.log(user);
-    if ( !user || user.role != "Volunteer"){
-        router.push("/home");
-    }
+    const client = useContext(APIContext);
+    if (user == undefined) return <CustomLoader/>;
+
+    useEffect(() => {
+
+        if (user.onboarded) {
+            router.push("/home");
+        }
+        if (!user || user.role != "Volunteer") {
+            router.push("/login");
+        }
+
+    }, []);
+
 
     // done to appease TS
-    const currUser = user as User;
+    const currUser = user;
 
     const [stage, setStage] =  useState<number>(1);
     const [address, setAddress] = useState<string>("");
+    const [firstStageDone, setFirstStageDone] = useState(false);
     const [secondStageDone, setSecondStageDone] = useState(false);
     const [introduction, setIntroduction] = useState<string>("");
     const [experience, setExperience] = useState<string>("");
@@ -58,15 +72,33 @@ const VolunteerSignUp: React.FC  = () => {
         setSecondStageDone(introduction != "" && experience != "");
     }, [introduction, experience]);
 
+    useEffect(() => {
+        setFirstStageDone(address != "");
+    }, [address]);
 
-    const handleNextButton = () => {
+
+    const handleNextButton = async (): Promise<void> => {
         if (stage == 1) {
             setStage(stage+1);
         }
         else if (stage == 2 && secondStageDone) {
             setStage(stage+1);
+        } else if (stage == 3) {
+            try {
+                await client.updateUser({onboarded: true, address: address}, user.id);
+                await client.postReponses(user.id, introduction, experience);
+                await refreshLocalUser();
+                await router.push("/home");
+            } catch {
+                alert("Something Went Wrong....");
+            }
         }
-    }
+    };
+
+    // const onboardVolunteer = async (): Promise<void> => {
+    //
+    //
+    // }
 
     const handlePrevButton = () => {
         if(stage > 1) {
@@ -189,6 +221,7 @@ const VolunteerSignUp: React.FC  = () => {
                                     id="filled-basic"
                                     multiline={true}
                                     rows={5}
+                                    value={introduction}
                                     type="text"
                                     color="warning"
                                     InputProps={{ disableUnderline: true }}
@@ -201,6 +234,7 @@ const VolunteerSignUp: React.FC  = () => {
                                 <TextField
                                     id="filled-basic"
                                     multiline={true}
+                                    value={experience}
                                     rows={5}
                                     type="text"
                                     color="warning"
@@ -229,10 +263,10 @@ const VolunteerSignUp: React.FC  = () => {
                     ) : null}
                     {stage <= 3 && (
                         <div>
-                            <Button className={styles.prevButton} variant="outlined" onClick={() => handlePrevButton()}>
+                            <Button className={styles.prevButton} disabled={stage == 1} variant="outlined" onClick={() => handlePrevButton()}>
                                 Previous
                             </Button>
-                            <Button className={styles.nextButton} disabled={stage > 1 && !secondStageDone} variant="contained" onClick={() => handleNextButton()}>
+                            <Button className={styles.nextButton} disabled={stage == 1 && !firstStageDone || stage > 1 && !secondStageDone} variant="contained" onClick={handleNextButton}>
                                 Next
                             </Button>
                         </div>

@@ -19,7 +19,10 @@ const AuthGuard: React.FC = ({ children }) => {
 
   // if auth initialized with a valid user show protected page
   if (!initializing && user !== null) {
-    if (user.approved) {
+    if (user.role == "Volunteer" && !user.onboarded) {
+      router.push("/volunteeronboarding");
+    }
+    else if (user.approved) {
       return <>{children}</>;
     } else {
       router.push("/unapproved");

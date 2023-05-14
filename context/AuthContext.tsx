@@ -30,6 +30,7 @@ export type AuthState = {
     newPassword?: string,
     newAddress?: string | null
   ) => Promise<boolean>;
+  refreshLocalUser: () => Promise<void>
 };
 
 const init: AuthState = {
@@ -49,6 +50,9 @@ const init: AuthState = {
   updateUser: () => {
     return new Promise<boolean>(() => false);
   },
+  refreshLocalUser: () => {
+    return new Promise<void>( () => false);
+  }
 };
 
 export const AuthContext = createContext<AuthState>(init);
@@ -145,6 +149,33 @@ export const AuthProvider: React.FC = ({ children }) => {
       setInitializing(false);
     })();
   }, []);
+
+  const refreshLocalUser  = async (): Promise<void> => {
+    setInitializing(true)
+    const uid = sessionStorage.getItem("userId");
+    const token = sessionStorage.getItem("apiToken");
+
+    if (uid && token) {
+      await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+      setLocality("Session");
+      api.setToken(token);
+      const user = await api.getUser(uid);
+      setUser(user);
+      setError(null);
+    } else {
+      const uid = localStorage.getItem("userId");
+      const token = localStorage.getItem("apiToken");
+      if (uid && token) {
+        setLocality("Local");
+        await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        api.setToken(token);
+        const user = await api.getUser(uid);
+        setUser(user);
+        setError(null);
+      }
+    }
+    setInitializing(false);
+  }
 
   const login = (email: string, password: string, rememberMe: boolean): void => {
     (async () => {
@@ -343,6 +374,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         updateUser,
         forgotPassword,
         resetPassword,
+        refreshLocalUser
       }}
     >
       {children}

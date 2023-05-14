@@ -17,11 +17,11 @@ import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import TextField from "@mui/material/TextField";
 import { DesktopTimePicker } from "@mui/x-date-pickers";
 
-// Work around for date/time picker library to work with NextJS
-// https://github.com/vercel/next.js/issues/19936
-import "react-date-picker/dist/DatePicker.css";
-import "react-time-picker/dist/TimePicker.css";
-import "react-calendar/dist/Calendar.css";
+// // Work around for date/time picker library to work with NextJS
+// // https://github.com/vercel/next.js/issues/19936
+// import "react-date-picker/dist/DatePicker.css";
+// import "react-time-picker/dist/TimePicker.css";
+// import "react-calendar/dist/Calendar.css";
 import { Autocomplete } from "@mui/material";
 
 type CreateClassWizardProps = {
@@ -69,16 +69,16 @@ const CreateClassWizard: React.FC<CreateClassWizardProps> = ({ handleClose }) =>
 
   // get all teachers in order to select them in the dropdown
   const { data: allTeachers, error: fetchTeacherError } = useSWR("/api/users?filter=Teacher", () =>
-    client.getAllUsers("Teacher")
+    client.getAllUsers("Teacher", true)
   );
 
   const { data: allStudents, error: fetchStudentError } = useSWR("/api/users?filter=Student", () =>
-    client.getAllUsers("Student")
+    client.getAllUsers("Student", true)
   );
 
   const { data: allVolunteers, error: fetchVolunteerError } = useSWR(
     "/api/users?filter=Volunteer",
-    () => client.getAllUsers("Volunteer")
+    () => client.getAllUsers("Volunteer", true)
   );
 
   // since all teachers can be undefined, check here and use an empty array if it is

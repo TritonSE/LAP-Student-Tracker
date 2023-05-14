@@ -1,11 +1,11 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import styles from "./ProfileViewLeft.module.css";
 import { CustomLoader } from "../../util/CustomLoader";
 import { ProfilePicture } from "./ProfilePicture";
 import { Button } from "@mui/material";
 import { Roles } from "../../../models";
 import { VolunteerResponsesView } from "../VolunteerResponses/VolunteerResponses";
-import {AuthContext} from "../../../context/AuthContext";
+import { AuthContext } from "../../../context/AuthContext";
 
 type ProfileViewLeftProps = {
   firstName: string;
@@ -37,10 +37,9 @@ const ProfileViewLeft: React.FC<ProfileViewLeftProps> = ({
   id,
   role,
 }) => {
+  const { user } = useContext(AuthContext);
 
-  const {user} = useContext(AuthContext);
-
-  if (user == null) return <CustomLoader/>;
+  if (user == null) return <CustomLoader />;
   const buttonText = editProfileClicked ? "Save" : "Edit Profile";
 
   const [showResponses, setShowResponses] = useState(false);

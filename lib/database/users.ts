@@ -11,6 +11,7 @@ const roleSpecificSetup = async (
   switch (role) {
     case "Volunteer":
     case "Teacher":
+      // eslint-disable-next-line no-case-declarations
       const query = {
         text: "INSERT INTO availabilities (user_id, time_zone) VALUES ($1, 	$2)",
         values: [id, "America/Los_Angeles"],

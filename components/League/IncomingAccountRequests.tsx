@@ -1,11 +1,8 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { APIContext } from "../../context/APIContext";
-import useSWR, { mutate } from "swr";
 import styles from "./LeagueViews.module.css";
 import { UnapprovedAccount } from "./UnapprovedAccount";
-import Loader from "react-spinners/ClipLoader";
 import { User } from "../../models";
-import { CustomError } from "../util/CustomError";
 
 type IncomingAccountRequestsProp = {
   offShowRequests: () => void;
@@ -18,7 +15,7 @@ const IncomingAccountRequests: React.FC<IncomingAccountRequestsProp> = ({ offSho
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    ( async () => {
+    (async () => {
       const users = await client.getAllUsers(undefined, false);
       setUsersToApprove(users);
     })();
@@ -36,7 +33,7 @@ const IncomingAccountRequests: React.FC<IncomingAccountRequestsProp> = ({ offSho
   // if (error) return <CustomError />;
   // if (!data) return <Loader />;
 
-  const approveAccount = async(user: User): Promise<void> => {
+  const approveAccount = async (user: User): Promise<void> => {
     await client.updateUser(
       {
         approved: true,
@@ -47,11 +44,9 @@ const IncomingAccountRequests: React.FC<IncomingAccountRequestsProp> = ({ offSho
     setRefresh(!refresh);
   };
 
-
-
   const rejectAccount = async (user: User): Promise<void> => {
     await client.deleteUser(user.id);
-    setRefresh(!refresh)
+    setRefresh(!refresh);
     // mutate("/api/users/?approved=false");
   };
 

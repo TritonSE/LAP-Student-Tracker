@@ -39,7 +39,6 @@ const AdminHomePage: React.FC<object> = () => {
     })();
   }, []);
 
-
   // handles changing calendar from full schedule to just availability
   const handleCalendar = (
     event: React.MouseEvent<HTMLElement>,

@@ -41,23 +41,24 @@ const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
         <div>
           <div className={homeStyles.buttonWrapper}>
             {user.role === "Teacher" || user.role == "Volunteer" ? (
-                <>
-                  <div className={homeStyles.createBtnWrapper}>
-                    <button
-                        className={homeStyles.availBtn}
-                        onClick={() => setShowManageAvailability(true)}
-                    >
-                      Manage
-                      <img className={homeStyles.addIcon} src="/add_icon.png"/>
-                    </button>
-                  </div>
+              <>
+                <div className={homeStyles.createBtnWrapper}>
                   <button
-                      className={homeStyles.manageBtn}
-                      onClick={() => setShowManageClassesViewView(true)}
+                    className={homeStyles.availBtn}
+                    onClick={() => setShowManageAvailability(true)}
                   >
-                    {<div style={{color: "white"}}>Manage Classes</div>}
+                    Manage
+                    <img className={homeStyles.addIcon} src="/add_icon.png" />
                   </button>
-                </> ) : null}
+                </div>
+                <button
+                  className={homeStyles.manageBtn}
+                  onClick={() => setShowManageClassesViewView(true)}
+                >
+                  {<div style={{ color: "white" }}>Manage Classes</div>}
+                </button>
+              </>
+            ) : null}
           </div>
         </div>
       )}

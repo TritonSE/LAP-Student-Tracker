@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import styles from "./LeagueViews.module.css";
 import { User } from "../../models";
 import Link from "next/link";
@@ -17,32 +17,31 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
   approveAccount,
   rejectAccount,
 }) => {
+  const [yesLoading, setYesLoading] = useState(false);
+  const [noLoading, setNoLoading] = useState(false);
 
-    const [yesLoading, setYesLoading] = useState(false);
-    const [noLoading, setNoLoading] = useState(false);
+  const onYesClick = async (): Promise<void> => {
+    setYesLoading(true);
+    await approveAccount(user);
+    setYesLoading(false);
+  };
 
-    const onYesClick = async () => {
-        setYesLoading(true);
-        await approveAccount(user);
-        setYesLoading(false);
-    }
+  const onNoClick = async (): Promise<void> => {
+    setNoLoading(true);
+    await rejectAccount(user);
+    setNoLoading(false);
+  };
 
-    const onNoClick = async () => {
-        setNoLoading(true);
-        await rejectAccount(user);
-        setNoLoading(false);
-    }
+  // const client = useContext(APIContext);
 
-    // const client = useContext(APIContext);
-
-    // <LoadingButton
-    //     loading={loading}
-    //     size="large"
-    //     variant="contained"
-    //     onClick={() => onLogin()}
-    // >
-    //     Login
-    // </LoadingButton>
+  // <LoadingButton
+  //     loading={loading}
+  //     size="large"
+  //     variant="contained"
+  //     onClick={() => onLogin()}
+  // >
+  //     Login
+  // </LoadingButton>
 
   // if (index % 2 == 0) {
   return (
@@ -54,22 +53,20 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
       <p className={styles.rows}>{user.dateCreated}</p>
       <p className={styles.rows}>{user.role}</p>
       <div>
-          <LoadingButton
-              loading = {yesLoading}
-              size={"small"}
-              variant={"contained"}
-              onClick={onYesClick}>Yes</LoadingButton>
-
+        <LoadingButton
+          loading={yesLoading}
+          size={"small"}
+          variant={"contained"}
+          onClick={onYesClick}
+        >
+          Yes
+        </LoadingButton>
         {/*<button className={styles.approveBtn} onClick={() => approveAccount(user)}>*/}
         {/*  Yes*/}
-        {/*</button>*/}
-        {" "}
-        /{" "}
-          <LoadingButton
-              loading = {noLoading}
-              size={"small"}
-              variant={"contained"}
-              onClick={onNoClick}>No</LoadingButton>
+        {/*</button>*/} /{" "}
+        <LoadingButton loading={noLoading} size={"small"} variant={"contained"} onClick={onNoClick}>
+          No
+        </LoadingButton>
         {/*<button className={styles.rejectBtn} onClick={() => rejectAccount(user)}>*/}
         {/*  No*/}
         {/*</button>*/}

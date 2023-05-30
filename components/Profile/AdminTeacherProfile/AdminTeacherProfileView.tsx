@@ -202,6 +202,8 @@ const AdminTeacherProfileView: React.FC<AdminTeacherProfileViewProps> = ({ other
               onImageChange={handleImageChange}
               onError={setErrorMessage}
               editable={editable}
+              role={user.role}
+              id={user.id}
             ></ProfileViewLeft>
           </div>
           <div className={styles.rightContainer}>

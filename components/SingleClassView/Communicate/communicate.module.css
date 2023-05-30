@@ -9,9 +9,7 @@
 
 .title {
   composes: headlineLarge from "../../../styles/globals.css";
-  padding-bottom: 2rem;
   position: relative;
-  align-self: left;
   padding: 1rem;
 }
 
@@ -71,23 +69,17 @@
   color: black;
   margin-right: 1rem;
   padding-top: 0.2rem;
-  text-align: 50%;
 }
 
 .button {
   float: right;
-  cursor: pointer;
-  background-color: #dadada;
-  border-radius: 10px;
-  text-transform: none;
-  color: black;
-  font-weight: bold;
+  background-color: #5d5fef;
+  color: white;
   padding: 5px 25px 5px 25px;
-  width: 135px;
 }
 
 .button:hover {
-  background-color: #dadada;
+  background-color: #5d5fef;
 }
 
 .submit {

@@ -13,13 +13,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import TextField from "@mui/material/TextField";
 import { DesktopTimePicker } from "@mui/x-date-pickers";
-
-// Work around for date/time picker library to work with NextJS
-// https://github.com/vercel/next.js/issues/19936
-import "react-date-picker/dist/DatePicker.css";
-import "react-time-picker/dist/TimePicker.css";
-import "react-calendar/dist/Calendar.css";
 import { Autocomplete } from "@mui/material";
+import { AuthContext } from "../../../context/AuthContext";
+import { CustomLoader } from "../../util/CustomLoader";
 
 type CreateEventWizardProps = {
   handleClose: () => void;
@@ -31,6 +27,11 @@ type Attendee = {
 };
 
 const CreateEventWizard: React.FC<CreateEventWizardProps> = ({ handleClose }) => {
+  const { user: currUser } = useContext(AuthContext);
+
+  if (currUser == null) {
+    return <CustomLoader />;
+  }
   // create wizard states
   const [name, setName] = useState<string>("");
   const [startDate, setStartDate] = useState<DateTime>(DateTime.fromJSDate(new Date()));
@@ -49,11 +50,11 @@ const CreateEventWizard: React.FC<CreateEventWizardProps> = ({ handleClose }) =>
 
   // get all teachers in order to select them in the dropdown
   const { data: allUsers, error: fetchUsersError } = useSWR("/api/users", () =>
-    client.getAllUsers()
+    client.getAllUsers(undefined, true)
   );
 
   // since all teachers can be undefined, check here and use an empty array if it is
-  const users = allUsers ? allUsers : [];
+  const users = allUsers ? allUsers.filter((user) => user.id != currUser.id) : [];
 
   const client = useContext(APIContext);
 

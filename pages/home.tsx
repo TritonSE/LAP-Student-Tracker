@@ -16,7 +16,7 @@ const Home: NextApplicationPage = () => {
     switch (role) {
       case "Admin":
         return <AdminHomePage />;
-      case "Teacher":
+      case "Teacher" || "Volunteer":
         return <UserHomePage userId={user.id} />;
       default:
         return <UserHomePage userId={user.id} />;
@@ -32,5 +32,6 @@ const Home: NextApplicationPage = () => {
 };
 
 Home.requireAuth = true;
+Home.title = "Home";
 
 export default Home;

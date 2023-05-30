@@ -30,6 +30,7 @@ export type AuthState = {
     newPassword?: string,
     newAddress?: string | null
   ) => Promise<boolean>;
+  refreshLocalUser: () => Promise<void>;
 };
 
 const init: AuthState = {
@@ -48,6 +49,9 @@ const init: AuthState = {
   },
   updateUser: () => {
     return new Promise<boolean>(() => false);
+  },
+  refreshLocalUser: () => {
+    return new Promise<void>(() => false);
   },
 };
 
@@ -81,8 +85,8 @@ export const AuthProvider: React.FC = ({ children }) => {
     const fbConfig = {
       apiKey: process.env.NEXT_PUBLIC_FB_API_KEY || "AIzaSyAx2FF4MDHl7p7p84Y_ZwvnKNxDSVN2dLw",
       authDomain:
-        process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-student-tracker-staging.firebaseapp.com",
-      projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-student-tracker-staging",
+        process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN || "lap-user-tracker-staging.firebaseapp.com",
+      projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID || "lap-user-tracker-staging",
       appId: process.env.NEXT_PUBLIC_FB_APP_ID || "1:289395861172:web:14d3154b0aed87f96f99e1",
     };
     const app = firebase.apps[0] || firebase.initializeApp(fbConfig);
@@ -145,6 +149,34 @@ export const AuthProvider: React.FC = ({ children }) => {
       setInitializing(false);
     })();
   }, []);
+
+  const refreshLocalUser = async (): Promise<void> => {
+    setInitializing(true);
+    sessionStorage.removeItem("user");
+    localStorage.removeItem("user");
+    const uid = sessionStorage.getItem("userId");
+    const token = sessionStorage.getItem("apiToken");
+    if (uid && token) {
+      await auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+      setLocality("Session");
+      api.setToken(token);
+      const user = await api.getUser(uid);
+      setUser(user);
+      setError(null);
+    } else {
+      const uid = localStorage.getItem("userId");
+      const token = localStorage.getItem("apiToken");
+      if (uid && token) {
+        setLocality("Local");
+        await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        api.setToken(token);
+        const user = await api.getUser(uid);
+        setUser(user);
+        setError(null);
+      }
+    }
+    setInitializing(false);
+  };
 
   const login = (email: string, password: string, rememberMe: boolean): void => {
     (async () => {
@@ -343,6 +375,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         updateUser,
         forgotPassword,
         resetPassword,
+        refreshLocalUser,
       }}
     >
       {children}

@@ -26,6 +26,7 @@ import {
   UpdateImage,
   UpdateUser,
   User,
+  VolunteerResponse,
 } from "../models";
 
 // LeagueAPI class to connect front and backend
@@ -283,14 +284,14 @@ class LeagueAPI {
     );
     return res.data;
   }
-  async createCommitment(classId: string, studentId: string): Promise<void> {
-    await this.client.post(`api/class/${classId}/student`, {
-      studentId: studentId,
+  async createCommitment(classId: string, userId: string): Promise<void> {
+    await this.client.post(`api/class/${classId}/user`, {
+      userId: userId,
     });
   }
 
-  async deleteCommitment(classId: string, studentId: string): Promise<void> {
-    await this.client.delete(`api/class/${classId}/student/${studentId}`);
+  async deleteCommitment(classId: string, userId: string): Promise<void> {
+    await this.client.delete(`api/class/${classId}/user/${userId}`);
   }
 
   async createParentStudentLink(
@@ -314,6 +315,19 @@ class LeagueAPI {
   async refreshClassSessions(classId: string): Promise<void> {
     await this.client.patch(`/api/class/${classId}/refresh`);
     return;
+  }
+
+  async postReponses(id: string, about: string, experience: string): Promise<void> {
+    const body: VolunteerResponse = {
+      about: about,
+      experience: experience,
+    };
+    await this.client.post(`/api/volunteer-responses/${id}`, body);
+  }
+
+  async getResponses(id: string): Promise<VolunteerResponse> {
+    const res = await this.client.get(`/api/volunteer-responses/${id}`);
+    return res.data;
   }
 }
 

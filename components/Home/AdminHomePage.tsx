@@ -9,9 +9,9 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import useSWR from "swr";
 import { APIContext } from "../../context/APIContext";
 import { AvailabilityCalendar } from "./Calendar/AvailabilityCalendar";
+import { User } from "../../models";
 
 const AdminHomePage: React.FC<object> = () => {
   const [showClassWizard, setShowClassWizard] = useState(false);
@@ -20,13 +20,24 @@ const AdminHomePage: React.FC<object> = () => {
   const [showMainScreenButtons, setShowMainScreenButtons] = useState(true);
   const [calendar, setCalendar] = useState<string>("full");
   const [selectedTeacher, setSelectedTeacher] = useState<string | undefined>(undefined);
+  const [allPeople, setAllPeople] = useState<User[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const client = useContext(APIContext);
 
-  // get all teachers in order to select them in the dropdown
-  const { data: allTeachers, error: fetchTeacherError } = useSWR("/api/users?filter=Teacher", () =>
-    client.getAllUsers("Teacher")
-  );
+  useEffect(() => {
+    (async () => {
+      try {
+        const allUsers = await client.getAllUsers();
+        const filteredUsers = allUsers.filter((user) => {
+          return user.role == "Volunteer" || user.role == "Teacher";
+        });
+        setAllPeople(filteredUsers);
+      } catch (e) {
+        setError("Internal Error");
+      }
+    })();
+  }, []);
 
   // handles changing calendar from full schedule to just availability
   const handleCalendar = (
@@ -48,9 +59,9 @@ const AdminHomePage: React.FC<object> = () => {
     setShowEventWizard(false);
   };
 
-  // make teachers a list of menu items, to be selectable by MUI's select component
-  const teachers = allTeachers
-    ? allTeachers.map((teacher) => (
+  // make people a list of menu items, to be selectable by MUI's select component
+  const people = allPeople
+    ? allPeople.map((teacher) => (
         <MenuItem key={teacher.id} value={teacher.id}>
           {teacher.firstName + teacher.lastName}
         </MenuItem>
@@ -101,7 +112,7 @@ const AdminHomePage: React.FC<object> = () => {
             </div>
             {/*show teacher selecting input if availability is selected and no error is seen*/}
             {calendar == "availability" ? (
-              fetchTeacherError ? (
+              error ? (
                 "System Error"
               ) : (
                 <Select
@@ -114,7 +125,7 @@ const AdminHomePage: React.FC<object> = () => {
                     width: 500,
                   }}
                 >
-                  {teachers}
+                  {people}
                 </Select>
               )
             ) : null}

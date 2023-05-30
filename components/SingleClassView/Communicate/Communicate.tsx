@@ -4,7 +4,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import Button from "@mui/material/Button";
 import styles from "./communicate.module.css";
 import { Announcement } from "../../../models";
-import { CustomError } from "../../../components/util/CustomError";
+import { CustomError } from "../../util/CustomError";
 import { CommunicateItem } from "./CommunicateItem";
 
 type CommunicateProps = {
@@ -94,16 +94,16 @@ export const Communicate: React.FC<CommunicateProps> = ({ id }) => {
         </div>
       ) : null}
 
-      <div className={styles.title}>Communicate</div>
-      <div className={styles.line} />
-      {(user.role == "Teacher" || user.role == "Admin") && (
-        <>
-          <div className={styles.spacer} />
-          <Button className={styles.button} onClick={handleClick}>
-            + New Post
-          </Button>
-        </>
-      )}
+      <div className={styles.title}>
+        Communicate
+        {(user.role == "Teacher" || user.role == "Admin") && (
+          <>
+            <Button className={styles.button} onClick={handleClick}>
+              + New Post
+            </Button>
+          </>
+        )}
+      </div>
       <div className={styles.spacer} />
       <div className={styles.accordionHeader}>
         <div>

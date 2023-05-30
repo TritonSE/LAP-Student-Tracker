@@ -33,9 +33,10 @@
 .timeContainer {
   display: inline-flex;
   gap: 20px;
-  width: 240px;
+  width: 380px;
   align-items: center;
   margin: 0px 25px;
+  padding-bottom: 15px;
 }
 
 .deleteIcon {

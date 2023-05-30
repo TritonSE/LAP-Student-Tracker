@@ -13,12 +13,12 @@ import { getUserByEmail } from "../../../../../lib/database/users";
 
 /**
  * @swagger
- * /api/parents/[id]/student:
+ * /api/parents/[id]/user:
  *  post:
- *    description: Adds a parent and student relationship to the database
+ *    description: Adds a parent and user relationship to the database
  *    responses:
  *      200:
- *        description: Parent and student successfully linked
+ *        description: Parent and user successfully linked
  *        content:
  *          application/json:
  *            schema:

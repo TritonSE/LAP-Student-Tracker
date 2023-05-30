@@ -103,7 +103,7 @@
   color: blue;
 }
 
-/* styles for individual class/student/staff card components */
+/* styles for individual class/user/staff card components */
 .listElem {
   background: var(--white);
   border: 1px solid #e1e2e4;
@@ -224,7 +224,7 @@
   background: #ffffff;
 }
 
-.accountBarGrey p {
+.rows {
   float: left;
   width: 20%;
   font-family: "Inter";
@@ -239,7 +239,7 @@
   margin: 0;
 }
 
-.accountBarWhite p {
+.linkRow {
   float: left;
   width: 20%;
   font-family: "Inter";

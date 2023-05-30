@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./LeagueViews.module.css";
 import { User } from "../../models";
+import Link from "next/link";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 type UnapprovedAccountProps = {
   user: User;
   index: number;
-  approveAccount: (user: User) => void;
-  rejectAccount: (user: User) => void;
+  approveAccount: (user: User) => Promise<void>;
+  rejectAccount: (user: User) => Promise<void>;
 };
 
 const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
@@ -15,43 +17,44 @@ const UnapprovedAccount: React.FC<UnapprovedAccountProps> = ({
   approveAccount,
   rejectAccount,
 }) => {
-  if (index % 2 == 0) {
-    return (
-      <div className={styles.accountBarGrey}>
-        <p>{user.firstName + " " + user.lastName}</p>
-        <p>{user.email}</p>
-        <p>{user.dateCreated}</p>
-        <p>{user.role}</p>
-        <div>
-          <button className={styles.approveBtn} onClick={() => approveAccount(user)}>
-            Yes
-          </button>{" "}
-          /{" "}
-          <button className={styles.rejectBtn} onClick={() => rejectAccount(user)}>
-            No
-          </button>
-        </div>
+  const [yesLoading, setYesLoading] = useState(false);
+  const [noLoading, setNoLoading] = useState(false);
+
+  const onYesClick = async (): Promise<void> => {
+    setYesLoading(true);
+    await approveAccount(user);
+    setYesLoading(false);
+  };
+
+  const onNoClick = async (): Promise<void> => {
+    setNoLoading(true);
+    await rejectAccount(user);
+    setNoLoading(false);
+  };
+  return (
+    <div className={index % 2 == 0 ? styles.accountBarGrey : styles.accountBarWhite}>
+      <Link href={`/profile/${user.id}`}>
+        <a className={styles.linkRow}>{user.firstName + " " + user.lastName} </a>
+      </Link>
+      <p className={styles.rows}>{user.email}</p>
+      <p className={styles.rows}>{user.dateCreated}</p>
+      <p className={styles.rows}>{user.role}</p>
+      <div>
+        <LoadingButton
+          loading={yesLoading}
+          size={"small"}
+          variant={"contained"}
+          onClick={onYesClick}
+        >
+          Yes
+        </LoadingButton>
+        /{" "}
+        <LoadingButton loading={noLoading} size={"small"} variant={"contained"} onClick={onNoClick}>
+          No
+        </LoadingButton>
       </div>
-    );
-  } else {
-    return (
-      <div className={styles.accountBarWhite}>
-        <p>{user.firstName + " " + user.lastName}</p>
-        <p>{user.email}</p>
-        <p>00/00/00</p>
-        <p>{user.role}</p>
-        <div className={styles.approveBtnsContainer}>
-          <button className={styles.approveBtn} onClick={() => approveAccount(user)}>
-            Yes
-          </button>{" "}
-          /{" "}
-          <button className={styles.rejectBtn} onClick={() => rejectAccount(user)}>
-            No
-          </button>
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 };
 
 export { UnapprovedAccount };

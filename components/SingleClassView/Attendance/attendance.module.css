@@ -128,7 +128,6 @@
 .uncheckedButtonStudent {
   composes: baseAttendanceButton;
   background-color: lightgray !important;
-  /*background-color: gray;*/
 }
 
 .saveAttendance {
@@ -152,7 +151,6 @@
 }
 
 .dateInput {
-  /*composes: labelLarge from "../../../styles/globals.css";*/
   width: 180px;
   cursor: pointer;
 }

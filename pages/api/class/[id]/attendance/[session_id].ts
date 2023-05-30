@@ -37,7 +37,7 @@ const CreateAttendanceArraySchema = array(CreateAttendance);
  *                type: object
  *                $ref: '#/components/schemas/AttendanceComponent'
  *  post:
- *    description: Add attendance records for multiple students in this session. Will overwrite or create attendance records for each student
+ *    description: Add attendance records for multiple students in this session. Will overwrite or create attendance records for each user
  *    parameters:
  *      - in: path
  *        name: id

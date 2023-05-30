@@ -5,12 +5,13 @@ import { getUser } from "../../../../../lib/database/users";
 import { StatusCodes } from "http-status-codes";
 import { withAuth } from "../../../../../middleware/withAuth";
 import { withLogging } from "../../../../../middleware/withLogging";
+import { onError } from "../../../../../logger/logger";
 
-//Handles all requests to /api/class/[id]/student
+//Handles all requests to /api/class/[id]/user
 /**
  * @swagger
  *  post:
- *    description: Add a student to a class
+ *    description: Add a user to a class
  *    parameters:
  *      - in: path
  *        name: id
@@ -18,7 +19,7 @@ import { withLogging } from "../../../../../middleware/withLogging";
  *        schema:
  *          type: string
  *    requestBody:
- *      description: ID of student to add
+ *      description: ID of user to add
  *      required: true
  *      content:
  *        application/json:
@@ -26,7 +27,7 @@ import { withLogging } from "../../../../../middleware/withLogging";
  *            type: string
  *    responses:
  *      201:
- *        description: Successfully added student to class
+ *        description: Successfully added user to class
  */
 
 export const classStudentHandler: NextApiHandler = async (
@@ -47,18 +48,19 @@ export const classStudentHandler: NextApiHandler = async (
 
   switch (req.method) {
     case "POST": {
-      const studentId = req.body.studentId as string;
-      if (!studentId) {
-        return res.status(StatusCodes.BAD_REQUEST).json("no student id specified");
+      const userId = req.body.userId as string;
+      if (!userId) {
+        return res.status(StatusCodes.BAD_REQUEST).json("no user id specified");
       }
-      const userObj = await getUser(studentId);
-      if (userObj == null || (userObj.role as string) != "Student") {
-        return res.status(StatusCodes.NOT_FOUND).json("student not found");
+      const userObj = await getUser(userId);
+      if (userObj == null) {
+        return res.status(StatusCodes.NOT_FOUND).json("user not found");
       }
       try {
-        const result = await createCommitment(studentId, classId);
+        const result = await createCommitment(userId, classId);
         return res.status(StatusCodes.OK).json(result);
       } catch (e) {
+        onError(e);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json("Internal Server Error");
       }
     }

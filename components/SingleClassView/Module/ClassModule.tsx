@@ -10,12 +10,12 @@ import { ModalActions, ModalHeader } from "../../util/ModalComponents";
 import { AuthContext } from "../../../context/AuthContext";
 import { CustomError } from "../../util/CustomError";
 
-type ModuleProps = {
+type ClassModuleProps = {
   id: string;
   enableEditing: boolean;
 };
 
-export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
+const ClassModule: React.FC<ClassModuleProps> = ({ id }) => {
   const api = useContext(APIContext);
   const { user } = useContext(AuthContext);
 
@@ -24,6 +24,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
   const [popup, setPopup] = useState(false);
   const [name, setName] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [save, setSave] = useState(false);
 
   useEffect(() => {
@@ -53,6 +54,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
   };
 
   const handleSubmit = async (): Promise<void> => {
+    setLoading(true);
     const module = {
       classId: id,
       name: name,
@@ -60,6 +62,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
       moduleId: "",
     };
     await api.createModule(module);
+    setLoading(false);
     setRefresh(!refresh);
     setPopup(false);
     setName("");
@@ -109,7 +112,7 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
               onChange={(e) => setName(e.target.value)}
             />
           </DialogContent>
-          <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} />
+          <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} loading={loading} />
         </Dialog>
       ) : null}
       <div className={styles.spacer} />
@@ -135,3 +138,5 @@ export const ClassModule: React.FC<ModuleProps> = ({ id }) => {
     </div>
   );
 };
+
+export { ClassModule };

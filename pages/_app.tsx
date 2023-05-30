@@ -14,6 +14,7 @@ import "@fullcalendar/common/main.css";
 import "@fullcalendar/daygrid/main.css";
 import "@fullcalendar/timegrid/main.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Head from "next/head";
 
 declare module "@mui/material/styles" {
   interface Theme {
@@ -44,6 +45,7 @@ const theme = createTheme({
 
 export type NextApplicationPage<P = any, IP = P> = NextPage<P, IP> & {
   requireAuth?: boolean;
+  title?: string;
 };
 
 function MyApp(props: AppProps): JSX.Element {
@@ -53,6 +55,9 @@ function MyApp(props: AppProps): JSX.Element {
     <APIProvider>
       <AuthProvider>
         <ThemeProvider theme={theme}>
+          <Head>
+            <title>{Component.title ? Component.title : "League of Amazing Programmers"}</title>
+          </Head>
           <Layout>
             {Component.requireAuth ? (
               <AuthGuard>

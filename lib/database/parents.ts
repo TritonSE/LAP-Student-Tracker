@@ -5,7 +5,7 @@ import { decode } from "io-ts-promise";
 
 const UserArraySchema = array(User);
 
-// Creates a parent-student link in database
+// Creates a parent-user link in database
 const linkParentAndStudent = async (parent_id: string, student_id: string): Promise<void> => {
   // Return type is Any[] because an empty array should be returned
   const query = {

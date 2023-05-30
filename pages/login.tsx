@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { LoginPageMain } from "../components/Login/LoginPageMain";
 import { LoginNameInput } from "../components/Login/LoginNameInput";
 import { LoginPositionInput } from "../components/Login/LoginPositionInput";
@@ -13,7 +13,11 @@ const Login: React.FC = () => {
   const router = useRouter();
 
   if (auth.user !== null) {
-    router.push("/home");
+    if (auth.user.role == "Volunteer") {
+      router.push("/volunteeronboarding");
+    } else {
+      router.push("/home");
+    }
   }
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [email, setEmail] = useState<string>("");
@@ -23,6 +27,8 @@ const Login: React.FC = () => {
   const [lastName, setLastName] = useState<string>("");
   const [position, setPosition] = useState<Roles>("Admin");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+  const [signupLoading, setSignupLoading] = useState(false);
 
   const handleEmail = (newEmail: string): void => {
     setEmail(newEmail);
@@ -90,8 +96,17 @@ const Login: React.FC = () => {
 
   const onSignUpClick = (): void => {
     auth.clearError();
+    setSignupLoading(true);
+
     auth.signup(firstName, lastName, email, position, password);
   };
+
+  useEffect(() => {
+    if (signupLoading && auth.error != null) {
+      setSignupLoading(false);
+    }
+    // setLoading(false)
+  }, [auth.error]);
 
   const pages = [
     <LoginPageMain
@@ -143,6 +158,7 @@ const Login: React.FC = () => {
           onSignUpClick={onSignUpClick}
           currPage={currentPage}
           completedPages={check}
+          loading={signupLoading}
         ></LoginPageNavigation>
       )}
     </div>

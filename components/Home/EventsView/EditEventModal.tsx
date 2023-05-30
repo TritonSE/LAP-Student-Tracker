@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./EditEventModal.module.css";
-// import styles from "../../Profile/ParentProfile/AddStudentModal.module.css";
 import TextField from "@mui/material/TextField";
 import { Button } from "@mui/material";
 import Dialog from "@mui/material/Dialog";

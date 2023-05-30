@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./RepeatModal.module.css";
 
-import "react-date-picker/dist/DatePicker.css";
-import "react-calendar/dist/Calendar.css";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";

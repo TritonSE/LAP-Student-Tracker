@@ -11,7 +11,7 @@ type ConnectStudentProfileProps = {
   decrementStudent: () => void;
 };
 
-// card to connect a student to the current parent. Main function is to open the modal
+// card to connect a user to the current parent. Main function is to open the modal
 export const ConnectStudentProfile: React.FC<ConnectStudentProfileProps> = ({
   setShowModalState,
   incrementStudent,

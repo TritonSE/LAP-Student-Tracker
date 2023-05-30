@@ -9,14 +9,15 @@ const roleSpecificSetup = async (
   role: "Admin" | "Teacher" | "Student" | "Parent" | "Volunteer"
 ): Promise<void> => {
   switch (role) {
-    case "Teacher": {
+    case "Volunteer":
+    case "Teacher":
+      // eslint-disable-next-line no-case-declarations
       const query = {
         text: "INSERT INTO availabilities (user_id, time_zone) VALUES ($1, 	$2)",
         values: [id, "America/Los_Angeles"],
       };
       await client.query(query);
       return;
-    }
     default:
       return;
   }
@@ -33,7 +34,7 @@ const createUser = async (
 ): Promise<User | null> => {
   const approved = process.env.ALWAYS_APPROVE
     ? process.env.ALWAYS_APPROVE == "true"
-    : !(role == "Admin" || role == "Teacher" || role == "Student");
+    : !(role == "Admin" || role == "Teacher" || role == "Student" || role == "Volunteer");
   const currentDate = new Date();
   const dateCreated = currentDate.toLocaleString("en-US", {
     timeZone: "America/Los_Angeles",
@@ -41,8 +42,18 @@ const createUser = async (
   const trimmedFirstName = firstName.trim();
   const trimmedLastName = lastName.trim();
   const query = {
-    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, picture_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8 )",
-    values: [id, trimmedFirstName, trimmedLastName, email, role, approved, dateCreated, imgId],
+    text: "INSERT INTO users(id, first_name, last_name, email, role, approved, date_created, picture_id, onboarded) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9 )",
+    values: [
+      id,
+      trimmedFirstName,
+      trimmedLastName,
+      email,
+      role,
+      approved,
+      dateCreated,
+      imgId,
+      role != "Volunteer",
+    ],
   };
   await client.query(query);
 
@@ -59,7 +70,8 @@ const updateUser = async (
   role?: string,
   approved?: boolean,
   address?: string | null,
-  phone_number?: string | null
+  phone_number?: string | null,
+  onboarded?: boolean
 ): Promise<User | null> => {
   const query = {
     text:
@@ -70,9 +82,10 @@ const updateUser = async (
       "role = COALESCE($5, role), " +
       "approved = COALESCE($6, approved)," +
       "address = COALESCE($7, address), " +
-      "phone_number = COALESCE($8, phone_number) " +
+      "phone_number = COALESCE($8, phone_number), " +
+      "onboarded = COALESCE($9, onboarded) " +
       "WHERE id=$1",
-    values: [id, firstName, lastName, email, role, approved, address, phone_number],
+    values: [id, firstName, lastName, email, role, approved, address, phone_number, onboarded],
   };
 
   await client.query(query);
@@ -83,7 +96,7 @@ const updateUser = async (
 // get a user given an id
 const getUser = async (id: string): Promise<User | null> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id, approved, date_created FROM users WHERE id = $1",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id, approved, date_created, onboarded FROM users WHERE id = $1",
     values: [id],
   };
 
@@ -98,7 +111,7 @@ const getUser = async (id: string): Promise<User | null> => {
 
 const getUserByEmail = async (email: string): Promise<User | null> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id, approved, date_created FROM users WHERE email = $1",
+    text: "SELECT id, first_name, last_name, email, role, phone_number, address, picture_id, approved, date_created, onboarded FROM users WHERE email = $1",
     values: [email],
   };
 
@@ -124,7 +137,7 @@ const deleteUser = async (id: string): Promise<boolean> => {
 
 const getAllUsers = async (): Promise<User[]> => {
   const query = {
-    text: "SELECT id, first_name, last_name, email, role, approved, date_created, picture_id, phone_number, address FROM users",
+    text: "SELECT id, first_name, last_name, email, role, approved, date_created, picture_id, phone_number, address, onboarded FROM users",
   };
 
   const res = await client.query(query);

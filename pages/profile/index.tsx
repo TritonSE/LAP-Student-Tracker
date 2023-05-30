@@ -4,6 +4,7 @@ import { ParentProfileView } from "../../components/Profile/ParentProfile/Parent
 import { NextApplicationPage } from "../_app";
 import { AuthContext } from "../../context/AuthContext";
 import { CustomError } from "../../components/util/CustomError";
+import OtherUserProfile from "./[userId]";
 
 //This is the page that is rendered when the 'Index' button from the Navbar is clicked
 const Index: NextApplicationPage = () => {
@@ -20,5 +21,6 @@ const Index: NextApplicationPage = () => {
 };
 
 Index.requireAuth = true;
+OtherUserProfile.title = "Profile";
 
 export default Index;

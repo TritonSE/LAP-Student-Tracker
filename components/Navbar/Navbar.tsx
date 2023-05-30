@@ -12,8 +12,8 @@ export const Navbar: React.FC = ({ children }) => {
     <div className={styles.navbarContainer}>
       <nav className={styles.navbar}>
         <a className={styles.navlogo}>
-          <img src="logo1.png"></img>
-          <img src="logo2.png"></img>
+          <img src="./logo1.png"></img>
+          <img src="./logo2.png"></img>
         </a>
         <div>
           <div>
@@ -35,7 +35,7 @@ export const Navbar: React.FC = ({ children }) => {
                 </a>
               </li>
 
-              {user.role != "Student" && user.role != "Parent" ? (
+              {user.role != "Student" && user.role != "Parent" && user.approved ? (
                 <li className={styles.navitem}>
                   <a
                     className={router.pathname == "/league" ? styles.clicked : styles.navlink}

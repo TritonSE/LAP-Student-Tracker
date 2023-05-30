@@ -27,7 +27,9 @@ const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
   }, [showManageClassesView]);
 
   useEffect(() => {
-    setShowMainScreenButtons(user.role === "Teacher" || user.role === "Student");
+    setShowMainScreenButtons(
+      user.role === "Teacher" || user.role === "Student" || user.role === "Volunteer"
+    );
   }, []);
 
   const handleClose = (): void => {
@@ -38,23 +40,25 @@ const UserHomePage: React.FC<UserHomePageProp> = ({ userId }) => {
       {showMainScreenButtons && (
         <div>
           <div className={homeStyles.buttonWrapper}>
-            {user.role === "Teacher" && (
-              <div className={homeStyles.createBtnWrapper}>
+            {user.role === "Teacher" || user.role == "Volunteer" ? (
+              <>
+                <div className={homeStyles.createBtnWrapper}>
+                  <button
+                    className={homeStyles.availBtn}
+                    onClick={() => setShowManageAvailability(true)}
+                  >
+                    Manage
+                    <img className={homeStyles.addIcon} src="/add_icon.png" />
+                  </button>
+                </div>
                 <button
-                  className={homeStyles.createBtn}
-                  onClick={() => setShowManageAvailability(true)}
+                  className={homeStyles.manageBtn}
+                  onClick={() => setShowManageClassesViewView(true)}
                 >
-                  Manage
-                  <img className={homeStyles.addIcon} src="/AddIcon.png" />
+                  {<div style={{ color: "white" }}>Manage Classes</div>}
                 </button>
-              </div>
-            )}
-            <button
-              className={homeStyles.manageBtn}
-              onClick={() => setShowManageClassesViewView(true)}
-            >
-              {<div style={{ color: "white" }}>Manage Classes</div>}
-            </button>
+              </>
+            ) : null}
           </div>
         </div>
       )}

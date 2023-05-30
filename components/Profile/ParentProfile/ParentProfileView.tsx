@@ -40,7 +40,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
   const getStudentsLinkedToParent = async (): Promise<void> => {
     const studentsLinkedToParent = await api.getStudentsLinkedToParent(loggedInUser.id);
     setAllStudents(studentsLinkedToParent);
-    // if there is already one connected student, set the first one as the main one
+    // if there is already one connected user, set the first one as the main one
     if (studentsLinkedToParent.length > 0) {
       setCurrentStudent(studentsLinkedToParent[0]);
       setShowAddNewStudentBox(false);
@@ -55,7 +55,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
       setCurrentStudent(allStudents[newIndex]);
     }
 
-    // if incrementing past end of student list, render the add student box
+    // if incrementing past end of user list, render the add user box
     if (newIndex == allStudents.length) {
       setShowAddNewStudentBox(true);
       setCurrentStudentIndex(newIndex);
@@ -67,7 +67,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
     const newIndex = currentStudentIndex - 1;
 
     if (newIndex > -1) {
-      // decrementing should stop displaying the add student box
+      // decrementing should stop displaying the add user box
       setShowAddNewStudentBox(false);
       setCurrentStudentIndex(newIndex);
       setCurrentStudent(allStudents[newIndex]);
@@ -75,7 +75,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
     }
   };
 
-  // array of rendered student cards (we flip between these when hitting left/right arrows)
+  // array of rendered user cards (we flip between these when hitting left/right arrows)
   const renderStudentCards = allStudents.map((student) => (
     <ConnectedStudentDisplay
       key={student.id}
@@ -89,7 +89,7 @@ const ParentProfileView: React.FC<ParentProfileViewProps> = ({ otherUser }) => {
     setShowConnectStudentModal(newState);
   };
 
-  // function used to link parent and student
+  // function used to link parent and user
   const createParentStudentLink = async (studentEmail: string): Promise<void> => {
     try {
       await api.createParentStudentLink(loggedInUser.id, { email: studentEmail });

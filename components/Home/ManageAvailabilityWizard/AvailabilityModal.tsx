@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "./AvailabilityModal.module.css";
-
-import "react-date-picker/dist/DatePicker.css";
-import "react-calendar/dist/Calendar.css";
 import ClipLoader from "react-spinners/ClipLoader";
 import { DayRow } from "./DayRow";
 import { DateTime } from "luxon";
@@ -129,7 +126,14 @@ time isn't valid
   }, [availability]);
 
   if (error) return <CustomError />;
-  if (!data) return <CustomLoader />;
+  if (!data)
+    return (
+      <>
+        <div className={styles.wizardWrapper}>
+          <div className={styles.wizardContent}>{<CustomLoader />}</div>
+        </div>
+      </>
+    );
 
   let availabilityFromDB: Availability = {
     mon: data.mon == null ? [] : data.mon,

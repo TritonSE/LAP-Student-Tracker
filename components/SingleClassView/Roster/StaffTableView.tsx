@@ -2,12 +2,13 @@ import React from "react";
 import styles from "./roster.module.css";
 import { User } from "../../../models";
 import { useRouter } from "next/router";
+import Button from "@mui/material/Button";
 
-type TeacherTableViewProps = {
+type StaffTableViewProps = {
   teachers: User[];
 };
 
-export const TeacherTableView: React.FC<TeacherTableViewProps> = ({ teachers }) => {
+export const StaffTableView: React.FC<StaffTableViewProps> = ({ teachers }) => {
   const router = useRouter();
 
   const onProfileClick = (id: string): void => {
@@ -22,10 +23,10 @@ export const TeacherTableView: React.FC<TeacherTableViewProps> = ({ teachers }) 
         <td>{user.lastName}</td>
         <td>{user.role}</td>
         <td>
-          <button className={styles.profileButton} onClick={() => onProfileClick(user.id)}>
+          <Button variant="outlined" onClick={() => onProfileClick(user.id)}>
             {" "}
             View Profile
-          </button>
+          </Button>
         </td>
       </tr>
     );

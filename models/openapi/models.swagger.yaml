@@ -58,6 +58,8 @@ components:
         address:
           type: string
           nullable: true
+        onboarded:
+          type: boolean
     User:
       title: User
       type: object
@@ -84,6 +86,8 @@ components:
         address:
           type: string
           nullable: true
+        onboarded:
+          type: boolean
       required:
         - id
         - firstName
@@ -95,6 +99,7 @@ components:
         - dateCreated
         - phoneNumber
         - address
+        - onboarded
       additionalProperties: false
     Student:
       title: Student
@@ -723,3 +728,14 @@ components:
       properties:
         name:
           type: string
+    VolunteerResponse:
+      title: CreateVolunteer
+      type: object
+      properties:
+        about:
+          type: string
+        experience:
+          type: string
+      required:
+        - about
+        - experience

@@ -38,7 +38,7 @@ afterAll(async () => {
 });
 
 describe("[GET] /api/students", () => {
-  test("look for all student", async () => {
+  test("look for all user", async () => {
     const expected: Student[] = [
       {
         id: "1",

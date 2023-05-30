@@ -45,7 +45,7 @@ const theme = createTheme({
 
 export type NextApplicationPage<P = any, IP = P> = NextPage<P, IP> & {
   requireAuth?: boolean;
-  title?: string
+  title?: string;
 };
 
 function MyApp(props: AppProps): JSX.Element {

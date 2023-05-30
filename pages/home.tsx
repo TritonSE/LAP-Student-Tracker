@@ -32,6 +32,6 @@ const Home: NextApplicationPage = () => {
 };
 
 Home.requireAuth = true;
-Home.title = 'Home';
+Home.title = "Home";
 
 export default Home;

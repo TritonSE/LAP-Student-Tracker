@@ -21,6 +21,6 @@ const Index: NextApplicationPage = () => {
 };
 
 Index.requireAuth = true;
-OtherUserProfile.title = "Profile"
+OtherUserProfile.title = "Profile";
 
 export default Index;

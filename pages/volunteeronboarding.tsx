@@ -7,7 +7,7 @@ import { AvailabilityModal } from "../components/Home/ManageAvailabilityWizard/A
 import Button from "@mui/material/Button";
 import { CustomLoader } from "../components/util/CustomLoader";
 import { APIContext } from "../context/APIContext";
-import {NextApplicationPage} from "./_app";
+import { NextApplicationPage } from "./_app";
 
 const cssTextField = {
   color: "black",

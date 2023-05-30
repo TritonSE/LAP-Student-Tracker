@@ -22,21 +22,24 @@ type LogHttp = {
   body: Record<never, never>;
 };
 
-export const logger = process.env.NODE_ENV == "development" ||  process.env.NODE_ENV == "test" ? pino({
-  customLevels: levels,
-  useOnlyCustomLevels: true,
-  level: process.env.NODE_ENV == "test" ? "fatal" : "http",
-  transport: {
-    target: "pino-pretty",
-    options: {
-      colorize: true,
-    },
-  },
-}) : pino({
-  customLevels: levels,
-  useOnlyCustomLevels: true,
-  level: "debug"
-});
+export const logger =
+  process.env.NODE_ENV == "development" || process.env.NODE_ENV == "test"
+    ? pino({
+        customLevels: levels,
+        useOnlyCustomLevels: true,
+        level: process.env.NODE_ENV == "test" ? "fatal" : "http",
+        transport: {
+          target: "pino-pretty",
+          options: {
+            colorize: true,
+          },
+        },
+      })
+    : pino({
+        customLevels: levels,
+        useOnlyCustomLevels: true,
+        level: "debug",
+      });
 
 const onError = (e: unknown): void => {
   if (e instanceof Error) {

@@ -64,5 +64,6 @@ const League: NextApplicationPage = () => {
 };
 
 League.requireAuth = true;
+League.title = "League";
 
 export default League;

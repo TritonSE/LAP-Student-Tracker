@@ -201,8 +201,6 @@
   border: none;
   border-radius: 8px;
 
-  /*background: var(--gray-4);*/
-  /*color: var(--black);*/
   cursor: pointer;
   border-color: var(--orange);
 

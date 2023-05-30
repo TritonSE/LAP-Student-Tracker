@@ -12,6 +12,7 @@ import { AttendanceComponent } from "../../components/SingleClassView/Attendance
 import { ClassModule } from "../../components/SingleClassView/Module/ClassModule";
 import { Communicate } from "../../components/SingleClassView/Communicate/Communicate";
 import { Class as ClassType } from "../../models";
+import OtherUserProfile from "../profile/[userId]";
 
 const Class: NextApplicationPage = () => {
   const router = useRouter();
@@ -105,5 +106,6 @@ const Class: NextApplicationPage = () => {
 };
 
 Class.requireAuth = true;
+Class.title = "Class";
 
 export default Class;

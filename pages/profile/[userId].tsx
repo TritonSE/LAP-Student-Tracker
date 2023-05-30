@@ -20,5 +20,6 @@ const OtherUserProfile: NextApplicationPage = () => {
   return <AdminTeacherProfileView otherUser={user} />;
 };
 OtherUserProfile.requireAuth = true;
+OtherUserProfile.title = "Profile"
 
 export default OtherUserProfile;

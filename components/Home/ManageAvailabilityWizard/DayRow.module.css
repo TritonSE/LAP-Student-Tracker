@@ -16,9 +16,7 @@
 }
 
 .modalAddTime {
-  /*width: 144px;*/
   height: 40px;
-  /*line-height: 40px;*/
   composes: labelLarge from "../../../styles/globals.css";
   flex: 0 0 auto;
   text-align: center;

@@ -7,6 +7,7 @@ import { AvailabilityModal } from "../components/Home/ManageAvailabilityWizard/A
 import Button from "@mui/material/Button";
 import { CustomLoader } from "../components/util/CustomLoader";
 import { APIContext } from "../context/APIContext";
+import {NextApplicationPage} from "./_app";
 
 const cssTextField = {
   color: "black",
@@ -32,7 +33,7 @@ const cssBigTextField = {
   },
 };
 
-const VolunteerSignUp: React.FC = () => {
+const VolunteerSignUp: NextApplicationPage = () => {
   const { user, refreshLocalUser } = useContext(AuthContext);
   const router = useRouter();
   const client = useContext(APIContext);
@@ -271,4 +272,6 @@ const VolunteerSignUp: React.FC = () => {
   );
 };
 
+VolunteerSignUp.requireAuth = true;
+VolunteerSignUp.title = "Volunteer Onboarding";
 export default VolunteerSignUp;

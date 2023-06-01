@@ -189,6 +189,7 @@ const VolunteerSignUp: NextApplicationPage = () => {
                 label="Address"
                 type="text"
                 color="warning"
+                value={address}
                 InputProps={{ disableUnderline: true }}
                 sx={cssTextField}
                 onChange={(e) => setAddress(e.target.value)}
@@ -272,6 +273,5 @@ const VolunteerSignUp: NextApplicationPage = () => {
   );
 };
 
-VolunteerSignUp.requireAuth = true;
 VolunteerSignUp.title = "Volunteer Onboarding";
 export default VolunteerSignUp;

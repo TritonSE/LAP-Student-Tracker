@@ -6,6 +6,10 @@ import styles from "./communicate.module.css";
 import { Announcement } from "../../../models";
 import { CustomError } from "../../util/CustomError";
 import { CommunicateItem } from "./CommunicateItem";
+import {Dialog, DialogContent} from "@mui/material";
+import {ModalActions, ModalHeader} from "../../util/ModalComponents";
+import DialogActions from "@mui/material/DialogActions";
+import TextField from "@mui/material/TextField";
 
 type CommunicateProps = {
   id: string;
@@ -19,7 +23,8 @@ export const Communicate: React.FC<CommunicateProps> = ({ id }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [refresh, setRefresh] = useState(false);
-  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [disableSubmit, setDisableSubmit]  =useState(true);
 
   useEffect(() => {
     (async () => {
@@ -28,29 +33,38 @@ export const Communicate: React.FC<CommunicateProps> = ({ id }) => {
     })();
   }, [refresh]);
 
+  useEffect( () => {
+    if(title == "" || content == "") {
+      setDisableSubmit(true);
+    } else  {
+      setDisableSubmit(false );
+    }
+  }, [title, content]);
+
   const handleClick: VoidFunction = () => {
     setPopup(!popup);
   };
 
   const handleCancel = async (): Promise<void> => {
-    setError(false);
     setPopup(false);
   };
 
   const handleSubmit = async (): Promise<void> => {
     if (title == "" || content == "") {
-      setError(true);
+      // setError(true);
     } else {
+      setLoading(true);
       const announcement = {
         title: title,
         content: content,
       };
       await api.createAnnouncement(id, announcement);
       triggerClassModuleRefresh();
-      setError(false);
+      // setError(false);
       setPopup(false);
       setTitle("");
       setContent("");
+      setLoading(false);
     }
   };
 
@@ -63,36 +77,43 @@ export const Communicate: React.FC<CommunicateProps> = ({ id }) => {
   return (
     <div className={styles.container}>
       {popup ? (
-        <div className={styles.popupBackground}>
-          <div className={styles.popupContainer}>
-            <div className={styles.popupTitle}>New Post</div>
-            <input
-              className={`${styles.label} ${styles.titleInput}`}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              type="text"
-              placeholder="Summary"
-            />
-            <textarea
-              className={`${styles.label} ${styles.contentInput}`}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              placeholder="Message here"
-            />
-            {error && (
-              <div className={styles.popupError}> Please give the post a title and a message. </div>
-            )}
-            <div className={styles.buttonContainer}>
-              <button onClick={handleCancel} className={styles.cancel}>
-                Cancel
-              </button>
-              <button onClick={handleSubmit} className={styles.submit}>
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : null}
+          <Dialog
+            PaperProps={{
+              style: { borderRadius: 10, width: 600},
+            }}
+            open={popup}
+            onClose={handleCancel}
+            >
+            <ModalHeader title={"Create Announcement"}/>
+
+            <DialogContent>
+              <TextField
+                  autoFocus
+                  margin="dense"
+                  id="announcement-title"
+                  label="Title"
+                  value={title}
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => setTitle(e.target.value)}/>
+              <TextField
+                  id={"filled-basic"}
+                  rows={6}
+                  // sx = {cssBigTextField}
+                  multiline={true}
+                  autoFocus
+                  margin="dense"
+                  label="Content"
+                  value={content}
+                  fullWidth
+                  variant="standard"
+                  onChange={(e) => setContent(e.target.value)}/>
+              {/*<br/>*/}
+              {/*<div>*/}
+              {/*  /!*{error ? "An Error Occured" : null} </div>*!/*/}
+            </DialogContent>
+            <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} loading={loading} disableSubmit={disableSubmit}/>
+          </Dialog>) : null}
 
       <div className={styles.title}>
         Communicate

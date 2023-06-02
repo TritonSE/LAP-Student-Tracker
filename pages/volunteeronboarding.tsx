@@ -232,13 +232,13 @@ const VolunteerSignUp: NextApplicationPage = () => {
             <div className={styles.thirdStageContainer}>
               <p className={styles.text}>
                 Please schedule an interview with a representative from The League. Enter your
-                availability for the next 7-10 busines days below
+                availability for the next 7-10 business days below
               </p>
             </div>
           )}
           {stage == 3 && (
             <Button
-                variant={"contained"}
+              variant={"contained"}
               className={styles.availabilityButton}
               onClick={() => setShowManageAvailability(true)}
             >
@@ -264,7 +264,7 @@ const VolunteerSignUp: NextApplicationPage = () => {
                 variant="contained"
                 onClick={handleNextButton}
               >
-                { stage < 3 ? "Next" : "Finish" }
+                {stage < 3 ? "Next" : "Finish"}
               </Button>
             </div>
           )}

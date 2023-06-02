@@ -237,7 +237,7 @@ const VolunteerSignUp: NextApplicationPage = () => {
             </div>
           )}
           {stage == 3 && (
-              <div className={styles.availabilityButtonSpacing}>
+            <div className={styles.availabilityButtonSpacing}>
               <Button
                 variant={"contained"}
                 className={styles.availabilityButton}
@@ -245,7 +245,7 @@ const VolunteerSignUp: NextApplicationPage = () => {
               >
                 Enter your availability here
               </Button>
-              </div>
+            </div>
           )}
           {showManageAvailability ? (
             <AvailabilityModal handleClose={handleClose} userId={currUser.id} />

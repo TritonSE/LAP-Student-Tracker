@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../../../styles/ForgotPassword.module.css";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const cssTextField = {
   color: "black",
@@ -49,12 +50,20 @@ const ForgotPasswordMain: React.FC<ForgotPasswordMainProps> = ({
       />
       <div className={styles.errorMessage}> {error != null ? error.message : ""} </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.backButton} onClick={() => onBackButtonClick()}>
+        <Button
+          variant={"outlined"}
+          className={styles.backButton}
+          onClick={() => onBackButtonClick()}
+        >
           Back
-        </button>
-        <button className={styles.nextButton} onClick={() => onNextButtonClick()}>
+        </Button>
+        <Button
+          variant={"contained"}
+          className={styles.nextButton}
+          onClick={() => onNextButtonClick()}
+        >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

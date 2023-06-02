@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./attendance.module.css";
 import { SingleUserAttendance } from "../../../models";
 import { DateTime } from "luxon";
+import Button from "@mui/material/Button";
+import { grey } from "@mui/material/colors";
 
 type StudentAttendanceBoxProps = {
   studentAttendance: SingleUserAttendance[];
@@ -32,31 +34,61 @@ const StudentAttendanceBox: React.FC<StudentAttendanceBoxProps> = ({ studentAtte
               <p className={styles.classTime}>{time}</p>
               <div className={styles.userAttendanceStudent}>
                 {singleAttendance.attendance == "Present" ? (
-                  <button disabled className={styles.presentButtonStudent}>
+                  <Button
+                    disabled
+                    style={{ backgroundColor: "#F5B7B1", color: "#fff" }} // Replace with your desired color
+                    variant="contained"
+                    className={styles.baseAttendanceButton}
+                  >
                     Present
-                  </button>
+                  </Button>
                 ) : (
-                  <button disabled className={styles.uncheckedButtonStudent}>
+                  <Button
+                    style={{ backgroundColor: grey[500], color: "#fff" }} // Replace with your desired color
+                    className={styles.baseAttendanceButton}
+                    variant="contained"
+                    disabled
+                  >
                     Present
-                  </button>
+                  </Button>
                 )}
                 {singleAttendance.attendance == "Excused" ? (
-                  <button disabled className={styles.excusedButtonStudent}>
+                  <Button
+                    disabled
+                    style={{ backgroundColor: "#E6BE8A", color: "#fff" }} // Replace with your desired color
+                    variant="contained"
+                    className={styles.baseAttendanceButton}
+                  >
                     Excused
-                  </button>
+                  </Button>
                 ) : (
-                  <button disabled className={styles.uncheckedButtonStudent}>
+                  <Button
+                    style={{ backgroundColor: grey[500], color: "#fff" }} // Replace with your desired color
+                    className={styles.baseAttendanceButton}
+                    variant="contained"
+                    disabled
+                  >
                     Excused
-                  </button>
+                  </Button>
                 )}
                 {singleAttendance.attendance == "Unexcused" ? (
-                  <button disabled className={styles.unexcusedButtonStudent}>
+                  <Button
+                    disabled
+                    style={{ backgroundColor: "#B0E0E6", color: "#fff" }} // Replace with your desired color
+                    variant="contained"
+                    className={styles.baseAttendanceButton}
+                  >
                     Unexcused
-                  </button>
+                  </Button>
                 ) : (
-                  <button disabled className={styles.uncheckedButtonStudent}>
+                  <Button
+                    style={{ backgroundColor: grey[500], color: "#fff" }} // Replace with your desired color
+                    className={styles.baseAttendanceButton}
+                    variant="contained"
+                    disabled
+                  >
                     Unexcused
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>

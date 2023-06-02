@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../../../styles/ForgotPassword.module.css";
+import Button from "@mui/material/Button";
 
 type ForgotPasswordMainProps = {
   onNextButtonClick: () => void;
@@ -23,12 +24,20 @@ const ForgotPasswordHelp: React.FC<ForgotPasswordMainProps> = ({
       </p>
 
       <div className={styles.buttonContainer}>
-        <button className={styles.backButton} onClick={() => onBackButtonClick()}>
+        <Button
+          variant={"outlined"}
+          className={styles.backButton}
+          onClick={() => onBackButtonClick()}
+        >
           Back
-        </button>
-        <button className={styles.nextButton} onClick={() => onNextButtonClick()}>
+        </Button>
+        <Button
+          variant={"contained"}
+          className={styles.nextButton}
+          onClick={() => onNextButtonClick()}
+        >
           Return to Sign In
-        </button>
+        </Button>
       </div>
     </div>
   );

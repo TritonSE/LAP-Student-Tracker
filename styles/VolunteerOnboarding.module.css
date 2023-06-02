@@ -120,10 +120,11 @@
   padding-left: 5rem;
   padding-right: 5rem;
   height: 67px;
+  width: 100px;
   font-family: "Inter";
   font-style: normal;
   font-size: 20px;
-  border-radius: 20px;
+  /*border-radius: 20px;*/
 }
 
 .prevButton {
@@ -150,14 +151,14 @@
   margin-top: 6rem;
   width: 443px;
   height: 66px;
-  background: #f37121;
-  border-radius: 20px;
+  /*background: #f37121;*/
+  /*border-radius: 20px;*/
   font-family: "Inter";
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
-  line-height: 34px;
-  text-align: center;
-  color: #000000;
+  /*line-height: 34px;*/
+  /*text-align: center;*/
+  /*color: #000000;*/
   margin-left: 20%;
 }

@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
 import styles from "./attendance.module.css";
 import { Attendance } from "../../../models";
-import { CustomLoader } from "../../util/CustomLoader";
-import { AttendanceTypes, CreateAttendance } from "../,,/../../../models";
+import { AttendanceTypes, CreateAttendance } from "../../../models";
 import { AttendanceRow } from "./AttendanceRow";
 import { APIContext } from "../../../context/APIContext";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 type AttendanceBoxProps = {
   attendances: Attendance[];
@@ -84,14 +84,17 @@ const AttendanceBox: React.FC<AttendanceBoxProps> = ({
           })}
         </div>
         <hr></hr>
-        <button
+        <LoadingButton
+          loading={loadingSave}
           className={styles.saveAttendance}
           onClick={async () => {
             await updateAttendance();
           }}
+          style={{ backgroundColor: "#9370DB", color: "#000" }}
+          variant="contained"
         >
-          {loadingSave ? <CustomLoader></CustomLoader> : "Save Attendance  "}
-        </button>
+          {"Save Attendance"}
+        </LoadingButton>
       </div>
     </div>
   );

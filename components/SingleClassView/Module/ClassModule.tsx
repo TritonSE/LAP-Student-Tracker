@@ -15,8 +15,6 @@ type ClassModuleProps = {
   enableEditing: boolean;
 };
 
-
-
 const ClassModule: React.FC<ClassModuleProps> = ({ id }) => {
   const api = useContext(APIContext);
   const { user } = useContext(AuthContext);

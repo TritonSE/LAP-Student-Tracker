@@ -10,10 +10,15 @@ type ModalActionsProps = {
   handleSubmit?: () => void;
   handleCancel: () => void;
   loading?: boolean;
-  disableSubmit?: boolean
+  disableSubmit?: boolean;
 };
 
-const ModalActions: React.FC<ModalActionsProps> = ({ handleSubmit, handleCancel, loading, disableSubmit }) => {
+const ModalActions: React.FC<ModalActionsProps> = ({
+  handleSubmit,
+  handleCancel,
+  loading,
+  disableSubmit,
+}) => {
   return (
     <DialogActions>
       <div className={styles.buttonContainer}>

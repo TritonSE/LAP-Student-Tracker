@@ -50,10 +50,18 @@ const ForgotPasswordMain: React.FC<ForgotPasswordMainProps> = ({
       />
       <div className={styles.errorMessage}> {error != null ? error.message : ""} </div>
       <div className={styles.buttonContainer}>
-        <Button variant={"outlined"} className={styles.backButton} onClick={() => onBackButtonClick()}>
+        <Button
+          variant={"outlined"}
+          className={styles.backButton}
+          onClick={() => onBackButtonClick()}
+        >
           Back
         </Button>
-        <Button variant={"contained"} className={styles.nextButton} onClick={() => onNextButtonClick()}>
+        <Button
+          variant={"contained"}
+          className={styles.nextButton}
+          onClick={() => onNextButtonClick()}
+        >
           Next
         </Button>
       </div>

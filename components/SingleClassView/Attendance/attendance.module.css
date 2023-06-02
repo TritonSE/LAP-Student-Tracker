@@ -85,57 +85,20 @@
   composes: labelLarge from "../../../styles/globals.css";
   width: 182px;
   height: 40px;
-  border: 1px solid #1b1c1d;
-  border-radius: 10px;
-  font-size: 17px;
 }
 
 .uncheckedButton {
   composes: baseAttendanceButton;
-  /*background-color: gray;*/
 }
 
 .presentButton {
-  composes: baseAttendanceButton;
+  width: 182px;
+  height: 40px;
   background: #46d5b3;
 }
 
-.unexcusedButton {
-  composes: baseAttendanceButton;
-  background: #ef5da8;
-}
-
-.excusedButton {
-  composes: baseAttendanceButton;
-  background: #ffc702;
-}
-
-.presentButtonStudent {
-  composes: baseAttendanceButton;
-  background: #46d5b3 !important;
-}
-
-.unexcusedButtonStudent {
-  composes: baseAttendanceButton;
-  background: #ef5da8 !important;
-}
-
-.excusedButtonStudent {
-  composes: baseAttendanceButton;
-  background: #ffc702 !important;
-}
-
-.uncheckedButtonStudent {
-  composes: baseAttendanceButton;
-  background-color: lightgray !important;
-}
-
 .saveAttendance {
-  padding: 1rem 2rem;
   float: right;
-  background: #5d5fef;
-  border-radius: 10px;
-  color: white;
   width: 180px;
   margin-right: 2rem;
   margin-bottom: 1rem;

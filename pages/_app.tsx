@@ -16,22 +16,6 @@ import "@fullcalendar/timegrid/main.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
 
-declare module "@mui/material/styles" {
-  interface Theme {
-    palette: {
-      primary: {
-        main: string;
-      };
-      secondary: {
-        main: string;
-      };
-      neutral: {
-        main: string;
-      };
-    };
-  }
-}
-
 const theme = createTheme({
   palette: {
     primary: {

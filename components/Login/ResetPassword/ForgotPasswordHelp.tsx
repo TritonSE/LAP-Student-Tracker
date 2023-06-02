@@ -24,10 +24,18 @@ const ForgotPasswordHelp: React.FC<ForgotPasswordMainProps> = ({
       </p>
 
       <div className={styles.buttonContainer}>
-        <Button variant={"outlined"} className={styles.backButton} onClick={() => onBackButtonClick()}>
+        <Button
+          variant={"outlined"}
+          className={styles.backButton}
+          onClick={() => onBackButtonClick()}
+        >
           Back
         </Button>
-        <Button variant={"contained"} className={styles.nextButton} onClick={() => onNextButtonClick()}>
+        <Button
+          variant={"contained"}
+          className={styles.nextButton}
+          onClick={() => onNextButtonClick()}
+        >
           Return to Sign In
         </Button>
       </div>

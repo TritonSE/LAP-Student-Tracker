@@ -6,9 +6,8 @@ import styles from "./communicate.module.css";
 import { Announcement } from "../../../models";
 import { CustomError } from "../../util/CustomError";
 import { CommunicateItem } from "./CommunicateItem";
-import {Dialog, DialogContent} from "@mui/material";
-import {ModalActions, ModalHeader} from "../../util/ModalComponents";
-import DialogActions from "@mui/material/DialogActions";
+import { Dialog, DialogContent } from "@mui/material";
+import { ModalActions, ModalHeader } from "../../util/ModalComponents";
 import TextField from "@mui/material/TextField";
 
 type CommunicateProps = {
@@ -24,7 +23,7 @@ export const Communicate: React.FC<CommunicateProps> = ({ id }) => {
   const [content, setContent] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [disableSubmit, setDisableSubmit]  =useState(true);
+  const [disableSubmit, setDisableSubmit] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -33,11 +32,11 @@ export const Communicate: React.FC<CommunicateProps> = ({ id }) => {
     })();
   }, [refresh]);
 
-  useEffect( () => {
-    if(title == "" || content == "") {
+  useEffect(() => {
+    if (title == "" || content == "") {
       setDisableSubmit(true);
-    } else  {
-      setDisableSubmit(false );
+    } else {
+      setDisableSubmit(false);
     }
   }, [title, content]);
 
@@ -77,43 +76,51 @@ export const Communicate: React.FC<CommunicateProps> = ({ id }) => {
   return (
     <div className={styles.container}>
       {popup ? (
-          <Dialog
-            PaperProps={{
-              style: { borderRadius: 10, width: 600},
-            }}
-            open={popup}
-            onClose={handleCancel}
-            >
-            <ModalHeader title={"Create Announcement"}/>
+        <Dialog
+          PaperProps={{
+            style: { borderRadius: 10, width: 600 },
+          }}
+          open={popup}
+          onClose={handleCancel}
+        >
+          <ModalHeader title={"Create Announcement"} />
 
-            <DialogContent>
-              <TextField
-                  autoFocus
-                  margin="dense"
-                  id="announcement-title"
-                  label="Title"
-                  value={title}
-                  fullWidth
-                  variant="standard"
-                  onChange={(e) => setTitle(e.target.value)}/>
-              <TextField
-                  id={"filled-basic"}
-                  rows={6}
-                  // sx = {cssBigTextField}
-                  multiline={true}
-                  autoFocus
-                  margin="dense"
-                  label="Content"
-                  value={content}
-                  fullWidth
-                  variant="standard"
-                  onChange={(e) => setContent(e.target.value)}/>
-              {/*<br/>*/}
-              {/*<div>*/}
-              {/*  /!*{error ? "An Error Occured" : null} </div>*!/*/}
-            </DialogContent>
-            <ModalActions handleSubmit={handleSubmit} handleCancel={handleCancel} loading={loading} disableSubmit={disableSubmit}/>
-          </Dialog>) : null}
+          <DialogContent>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="announcement-title"
+              label="Title"
+              value={title}
+              fullWidth
+              variant="standard"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <TextField
+              id={"filled-basic"}
+              rows={6}
+              // sx = {cssBigTextField}
+              multiline={true}
+              autoFocus
+              margin="dense"
+              label="Content"
+              value={content}
+              fullWidth
+              variant="standard"
+              onChange={(e) => setContent(e.target.value)}
+            />
+            {/*<br/>*/}
+            {/*<div>*/}
+            {/*  /!*{error ? "An Error Occured" : null} </div>*!/*/}
+          </DialogContent>
+          <ModalActions
+            handleSubmit={handleSubmit}
+            handleCancel={handleCancel}
+            loading={loading}
+            disableSubmit={disableSubmit}
+          />
+        </Dialog>
+      ) : null}
 
       <div className={styles.title}>
         Communicate
